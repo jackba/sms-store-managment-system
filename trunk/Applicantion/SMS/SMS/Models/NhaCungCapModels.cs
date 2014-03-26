@@ -20,7 +20,7 @@ namespace SMS.Models
         public string DiaChi { get; set; }
 
         [Required]
-        [MaxLength(15)]
+        [StringLength(15)]
         public string CoDienThoai { get; set; }
 
         [Required]
@@ -37,5 +37,8 @@ namespace SMS.Models
         public DateTime NgayTaoMoi { get; set; }
 
         public DateTime NgayCapNhat { get; set; }
+
+        [StringLength(1)]
+        public string active { get; set; }
     }
 }

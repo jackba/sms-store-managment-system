@@ -25,5 +25,8 @@ namespace SMS.Models
         public DateTime NgayTaoMoi { get; set; }
 
         public DateTime NgayCapNhat { get; set; }
+
+        [StringLength(1)]
+        public string active { get; set; }
     }
 }

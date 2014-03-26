@@ -24,6 +24,7 @@ namespace SMS.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            Session["UserId"] = 1;
             return View();
         }
 
