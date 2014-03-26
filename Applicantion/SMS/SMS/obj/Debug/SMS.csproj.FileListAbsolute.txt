@@ -102,6 +102,5 @@ D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.OA
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.OAuth.xml
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.OpenId.xml
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
-D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.csprojResolveAssemblyReference.cache
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.dll
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.pdb

@@ -1,0 +1,43 @@
+﻿@model SMS.Models.KhoModels
+
+@{
+    ViewBag.Title = "Thêm mới kho";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.TenKho)
+            </div>
+            <div> 
+                @Html.TextBoxFor(u => u.TenKho)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.GhiChu)
+            </div>
+            <div> 
+                @Html.TextAreaFor(u => u.GhiChu)
+            </div>
+            <div>
+                <input type = "submit"  style ="width:100px" value = "Lưu"/>
+                <span> </span>
+                <input  type = "button" style ="width:100px" value = "Hủy" onclick = "reset()"/>
+            </div>
+        </fieldset>
+    </div>     
+    <script >
+        function reset() {
+            var name = document.getElementById("TenKho");
+            var note = document.getElementById("GhiChu");
+            name.value = "";
+            note.value = "";
+            return false;
+        }
+    </script>   
+    
+            
+}
+
