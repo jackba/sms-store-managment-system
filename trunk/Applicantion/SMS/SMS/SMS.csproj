@@ -181,73 +181,67 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CHUYEN_DOI_DON_VI_TINH.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DON_VI_TINH.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HOA_DON.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KHACH_HANG.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KHO.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\KhoModels.cs" />
-    <Compile Include="Models\KhuVucModels.cs" />
     <Compile Include="Models\KHU_VUC.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KIEM_KHO_HISTORY.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NGUOI_DUNG.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\NhaCungCapModels.cs" />
-    <Compile Include="Models\HangSanXuatModels.cs" />
-    <Compile Include="Models\DonViModels.cs" />
     <Compile Include="Models\NHAP_KHO.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHA_CUNG_CAP.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHA_SAN_XUAT.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHOM_NGUOI_DUNG.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHAN_QUYEN.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SanPhamModels.cs" />
     <Compile Include="Models\SAN_PHAM.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmsModels.Context.cs">
+    <Compile Include="Models\SmsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SmsModels.Context.tt</DependentUpon>
+      <DependentUpon>SmsModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmsModels.cs">
+    <Compile Include="Models\SmsModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SmsModels.Designer.cs">
+    <Compile Include="Models\SmsModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SmsModels.edmx</DependentUpon>
+      <DependentUpon>SmsModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\XUAT_KHO.cs">
-      <DependentUpon>SmsModels.tt</DependentUpon>
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -419,28 +413,28 @@
     <Content Include="Views\Kho\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\SmsModels.edmx">
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Models\SmsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SmsModels.Designer.cs</LastGenOutput>
+      <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\SmsModels.Context.tt">
+    <Content Include="Models\SmsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SmsModels.edmx</DependentUpon>
-      <LastGenOutput>SmsModels.Context.cs</LastGenOutput>
+      <DependentUpon>SmsModel.edmx</DependentUpon>
+      <LastGenOutput>SmsModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\SmsModels.edmx.diagram">
-      <DependentUpon>SmsModels.edmx</DependentUpon>
+    <Content Include="Models\SmsModel.edmx.diagram">
+      <DependentUpon>SmsModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Models\SmsModels.tt">
+    <Content Include="Models\SmsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SmsModels.edmx</DependentUpon>
-      <LastGenOutput>SmsModels.cs</LastGenOutput>
+      <DependentUpon>SmsModel.edmx</DependentUpon>
+      <LastGenOutput>SmsModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

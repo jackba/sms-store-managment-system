@@ -1,9 +1,9 @@
-﻿@model SMS.Models.DonViModels
+﻿@model SMS.Models.DON_VI_TINH
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh mục đơn vị tính";
 }
 
-<h2>Danh </h2>
+<h2>@ViewBag.Title </h2>
 
 <style type="text/css">
     .webGrid {
@@ -28,6 +28,7 @@
         background-color: white;
         padding: 5px;
     }
+
     .alt {
         background-color: #E4E9F5;
         color: #000;
@@ -44,8 +45,16 @@
     .select {
         background-color: #71857C;
     }
-</style> 
-
+</style>
+<hr style="width:100%" />
+<div style="float:right">
+    <p>
+        Từ khóa tìm kiếm: @Html.TextBox("SearchString")
+        <input type="submit" value="Tìm kiếm" />
+        <input type="button" value="Thêm Mới" onclick="window.location.href('@Url.Action("AddNew","DonVi")')" />
+    </p>
+</div>
+<hr style="width:100%" />
 <table class="webGrid">
 
     <tr>
@@ -56,9 +65,9 @@
     @foreach (var donvi in ViewBag.theList)
     {
         <tr>
-            <td> @donvi.MadonVi </td>
-            <td> @donvi.TenDonVi </td>
-            <td> @donvi.GhiChu </td>
+            <td> @donvi.MA_DON_VI </td>
+            <td> @donvi.TEN_DON_VI </td>
+            <td> @donvi.GHI_CHU </td>
         </tr>
     }
 
