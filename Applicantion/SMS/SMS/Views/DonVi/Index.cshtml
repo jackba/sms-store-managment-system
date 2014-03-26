@@ -1,23 +1,65 @@
-﻿@{
+﻿@model SMS.Models.DonViModels
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Danh </h2>
-@helper sortLink(string name, int id)
-{
-    <a href="@Url.Action("CountryList", "GridView", new { sortby = id, search = @Model.Search, isasc = (id == Model.sortBy ? (!Model.isAsc).ToString() : "true"), TotalCount = Model.TotalPages })">@name</a>
-    if (id == Model.sortBy)
-    {
-    <span class="arrow @(Model.isAsc ? "up" : "down")"></span>
+
+<style type="text/css">
+    .webGrid {
+        margin: 4px;
+        border-collapse: collapse;
+        width: 500px;
+        background-color: #B4CFC3;
     }
-}
-<table class="FilterTable">
- 
+
+    .header {
+        background-color: #C1D4E6;
+        font-weight: bold;
+        color: #FFF;
+    }
+
+    .webGrid th, .webGrid td {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+    }
+
+    .webGrid td {
+        background-color: white;
+        padding: 5px;
+    }
+    .alt {
+        background-color: #E4E9F5;
+        color: #000;
+    }
+
+    .gridHead a:hover {
+        text-decoration: underline;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .select {
+        background-color: #71857C;
+    }
+</style> 
+
+<table class="webGrid">
+
     <tr>
         <th>Mã Đơn Vị</th>
         <th>Tên đơn vị</th>
         <th>Ghi Chú</th>
     </tr>
- 
-    
+    @foreach (var donvi in ViewBag.theList)
+    {
+        <tr>
+            <td> @donvi.MadonVi </td>
+            <td> @donvi.TenDonVi </td>
+            <td> @donvi.GhiChu </td>
+        </tr>
+    }
+
 </table>

@@ -13,9 +13,11 @@ namespace SMS.Models
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Tên đơn vị:")]
         public string TenDonVi { get; set; }
 
-         [StringLength(1000)]
+        [Display(Name = "Ghi chú:")]
+        [StringLength(1000)]
         public string GhiChu { get; set; }
 
         public int MaNhanVienTao { get; set; }
@@ -25,5 +27,8 @@ namespace SMS.Models
         public DateTime NgayTaoMoi { get; set; }
 
         public DateTime NgayCapNhat { get; set; }
+
+        [StringLength(1)]
+        public string active { get; set; }
     }
 }
