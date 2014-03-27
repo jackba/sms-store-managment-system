@@ -17,6 +17,7 @@ namespace SMS.Models
         public TRA_HANG()
         {
             this.NHAP_KHO = new HashSet<NHAP_KHO>();
+            this.CHI_TIET_TRA_HANG = new HashSet<CHI_TIET_TRA_HANG>();
         }
     
         public int MA_TRA_HANG { get; set; }
@@ -37,5 +38,6 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
         public virtual XUAT_KHO XUAT_KHO { get; set; }
+        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
     }
 }

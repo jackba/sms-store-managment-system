@@ -12,26 +12,25 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DON_VI_TINH
+    public partial class CHI_TIET_TRA_HANG
     {
-        public DON_VI_TINH()
-        {
-            this.CHUYEN_DOI_DON_VI_TINH = new HashSet<CHUYEN_DOI_DON_VI_TINH>();
-            this.SAN_PHAM = new HashSet<SAN_PHAM>();
-        }
-    
-        public int MA_DON_VI { get; set; }
-        public string TEN_DON_VI { get; set; }
-        public string GHI_CHU { get; set; }
+        public Nullable<int> MA_TRA_HANG { get; set; }
+        public Nullable<int> MA_SAN_PHAM { get; set; }
+        public Nullable<double> SO_LUONG_TRA { get; set; }
+        public Nullable<double> GIA_BAN { get; set; }
+        public Nullable<double> GIA_VON { get; set; }
+        public Nullable<bool> NHAP_LAI_KHO { get; set; }
+        public Nullable<double> SO_LUONG_NHAP_LAI_KHO { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+        public int ID { get; set; }
     
-        public virtual ICollection<CHUYEN_DOI_DON_VI_TINH> CHUYEN_DOI_DON_VI_TINH { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
+        public virtual SAN_PHAM SAN_PHAM { get; set; }
+        public virtual TRA_HANG TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
-        public virtual ICollection<SAN_PHAM> SAN_PHAM { get; set; }
     }
 }

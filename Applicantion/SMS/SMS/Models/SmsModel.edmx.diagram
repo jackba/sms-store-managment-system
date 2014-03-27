@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b16d0a303bb148559df439152f37f233" Name="Diagram1" ZoomLevel="32">
+      <Diagram DiagramId="b16d0a303bb148559df439152f37f233" Name="Diagram1" ZoomLevel="30">
         <EntityTypeShape EntityType="SmsModel.CHUYEN_DOI_DON_VI_TINH" Width="1.5" PointX="7.5" PointY="23.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.DON_VI_TINH" Width="1.5" PointX="5.25" PointY="18.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.HOA_DON" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
@@ -77,6 +77,28 @@
         <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__656C112C" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="13.125" PointY="33.75" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="19.625" PointY="29.875" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="17.375" PointY="24.5" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_XUAT_KHO" Width="1.5" PointX="15.125" PointY="28.75" />
+        <EntityTypeShape EntityType="SmsModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__5070F446" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_HO__4E88ABD4" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_KH__04E4BC85" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__4F7CD00D" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__5165187F" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__7A672E12" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_NH__787EE5A0" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__797309D9" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__7B5B524B" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__6C190EBB" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__6B24EA82" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_TR__6A30C649" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__6D0D32F4" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__5EBF139D" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__5DCAEF64" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_XU__5CD6CB2B" />
+        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__5FB337D6" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

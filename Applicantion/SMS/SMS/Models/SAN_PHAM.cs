@@ -17,6 +17,10 @@ namespace SMS.Models
         public SAN_PHAM()
         {
             this.CHUYEN_DOI_DON_VI_TINH = new HashSet<CHUYEN_DOI_DON_VI_TINH>();
+            this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
+            this.CHI_TIET_NHAP_KHO = new HashSet<CHI_TIET_NHAP_KHO>();
+            this.CHI_TIET_TRA_HANG = new HashSet<CHI_TIET_TRA_HANG>();
+            this.CHI_TIET_XUAT_KHO = new HashSet<CHI_TIET_XUAT_KHO>();
         }
     
         public int MA_SAN_PHAM { get; set; }
@@ -46,5 +50,9 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NHA_SAN_XUAT NHA_SAN_XUAT { get; set; }
+        public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
+        public virtual ICollection<CHI_TIET_NHAP_KHO> CHI_TIET_NHAP_KHO { get; set; }
+        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
+        public virtual ICollection<CHI_TIET_XUAT_KHO> CHI_TIET_XUAT_KHO { get; set; }
     }
 }

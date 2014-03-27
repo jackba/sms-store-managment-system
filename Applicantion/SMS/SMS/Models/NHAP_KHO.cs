@@ -17,6 +17,7 @@ namespace SMS.Models
         public NHAP_KHO()
         {
             this.KIEM_KHO_HISTORY = new HashSet<KIEM_KHO_HISTORY>();
+            this.CHI_TIET_NHAP_KHO = new HashSet<CHI_TIET_NHAP_KHO>();
         }
     
         public int MA_NHAP_KHO { get; set; }
@@ -41,5 +42,6 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual NHA_CUNG_CAP NHA_CUNG_CAP { get; set; }
         public virtual TRA_HANG TRA_HANG { get; set; }
+        public virtual ICollection<CHI_TIET_NHAP_KHO> CHI_TIET_NHAP_KHO { get; set; }
     }
 }

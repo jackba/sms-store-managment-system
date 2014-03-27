@@ -180,6 +180,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CHI_TIET_HOA_DON.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHI_TIET_NHAP_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHI_TIET_TRA_HANG.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHI_TIET_XUAT_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CHUYEN_DOI_DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -236,6 +248,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
