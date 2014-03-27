@@ -54,6 +54,14 @@ namespace SMS.Models
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
             this.XUAT_KHO2 = new HashSet<XUAT_KHO>();
+            this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
+            this.CHI_TIET_HOA_DON1 = new HashSet<CHI_TIET_HOA_DON>();
+            this.CHI_TIET_NHAP_KHO = new HashSet<CHI_TIET_NHAP_KHO>();
+            this.CHI_TIET_NHAP_KHO1 = new HashSet<CHI_TIET_NHAP_KHO>();
+            this.CHI_TIET_TRA_HANG = new HashSet<CHI_TIET_TRA_HANG>();
+            this.CHI_TIET_TRA_HANG1 = new HashSet<CHI_TIET_TRA_HANG>();
+            this.CHI_TIET_XUAT_KHO = new HashSet<CHI_TIET_XUAT_KHO>();
+            this.CHI_TIET_XUAT_KHO1 = new HashSet<CHI_TIET_XUAT_KHO>();
         }
     
         public int MA_NGUOI_DUNG { get; set; }
@@ -117,5 +125,13 @@ namespace SMS.Models
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO2 { get; set; }
+        public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
+        public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON1 { get; set; }
+        public virtual ICollection<CHI_TIET_NHAP_KHO> CHI_TIET_NHAP_KHO { get; set; }
+        public virtual ICollection<CHI_TIET_NHAP_KHO> CHI_TIET_NHAP_KHO1 { get; set; }
+        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
+        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG1 { get; set; }
+        public virtual ICollection<CHI_TIET_XUAT_KHO> CHI_TIET_XUAT_KHO { get; set; }
+        public virtual ICollection<CHI_TIET_XUAT_KHO> CHI_TIET_XUAT_KHO1 { get; set; }
     }
 }

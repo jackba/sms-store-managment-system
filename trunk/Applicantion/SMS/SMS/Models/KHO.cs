@@ -20,12 +20,12 @@ namespace SMS.Models
             this.NHAP_KHO = new HashSet<NHAP_KHO>();
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
+            this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
         }
     
         public int MA_KHO { get; set; }
         public string TEN_KHO { get; set; }
         public string SO_DIEN_THOAI { get; set; }
-
         public string DIA_CHI { get; set; }
         public string GHI_CHU { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
@@ -42,5 +42,6 @@ namespace SMS.Models
         public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
+        public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
     }
 }
