@@ -104,3 +104,13 @@ D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.Op
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.dll
 D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.pdb
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\obj\Debug\SMS.csprojResolveAssemblyReference.cache
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\Microsoft.Web.XmlTransform.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\Mvc.JQuery.Datatables.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\NuGet.Core.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\PagedList.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\PagedList.Mvc.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\QueryInterceptor.dll
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\PagedList.xml
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\PagedList.Mvc.xml
+D:\Project\sms-store-managment-system\Applicantion\SMS\SMS\bin\Content\themes\base\images\edit_delete.png

@@ -16,7 +16,7 @@ namespace SMS.Controllers
         public ActionResult Index()
         {
             var ctx = new SmsContext();
-            var theListContext = (from s in ctx.DON_VI_TINH
+            /*var theListContext = (from s in ctx.DON_VI_TINH
                                   where (s.ACTIVE == "A")
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
@@ -25,10 +25,10 @@ namespace SMS.Controllers
                                       MA_DON_VI = s.MA_DON_VI,
                                       TEN_DON_VI = s.TEN_DON_VI,
                                       GHI_CHU = s.GHI_CHU
-                                    });
-           /* var theListContext = (from s in ctx.DON_VI_TINH
+                                    });*/
+            var theListContext = (from s in ctx.DON_VI_TINH
                                   where (s.ACTIVE == "A")
-                                  select s);*/
+                                  select s);
             ViewBag.theList = theListContext;
             return View();
         }
@@ -59,7 +59,7 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (id == null || id <= 0)
+            if (id == null || id <= 100090)
             {
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
                 return View("../Home/Error"); ;
