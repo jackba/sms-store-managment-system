@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Quản lý kho";
+    ViewBag.Message = "";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <br />
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div >
+    <table width = "100%">
+        <tr>
+            <td><input type = "button" class ="myButton" style = "width:250px;" value ="DANH SÁCH KHO"/> </td>
+            <td><input type = "button" class ="myButton"  style = "width:250px;" value ="KIỂM TRA TỒN KHO"/></td>
+            <td><input type = "button" class ="myButton" style = "width:250px;"  value ="LẬP ĐỀ XUẤT MUA HÀNG"/></td>
+        </tr>
+         <tr>
+            <td><input type = "button" style = "width:250px;" value ="NHẬP KHO - MUA HÀNG"/> </td>
+            <td><input type = "button" style = "width:250px;"  value ="NHẬP CHUYỂN KHO"/></td>
+            <td><input type = "button" style = "width:250px;" value = "NHẬP LẠI HÀNG TRẢ"/></td>
+        </tr>
+        <tr>
+            <td><input type = "button" style = "width:250px;" value ="XUẤT BÁN HÀNG"/> </td>
+            <td><input type = "button" style = "width:250px;"  value ="XUẤT CHUYỂN KHO"/></td>
+            <td><input type = "button" style = "width:250px;" value = "XUẤT HỦY"/></td>
+        </tr>
+        <tr>
+            <td><input type = "button" style = "width:250px;" value ="KIỂM KHO"/> </td>
+            <td><input type = "button" style = "width:250px;"  value ="BÁO CÁO NHẬP XUẤT TỒN"/></td>
+            <td><input type = "button" style = "width:250px;" value = "BÁO CÁO NHẬP KHO"/></td>
+        </tr>
+         <tr>
+            <td><input type = "button" style = "width:250px;" value ="BÁO CÁO XUẤT KHO"/> </td>
+            <td><input type = "button" style = "width:250px;"  value ="THẺ KHO"/></td>
+            <td><input type = "button" style = "width:250px;"  onclick="window.location.href('@Url.Action("AddNew","Kho")')" value ="THÊM MỚI KHO"/> </td>
+        </tr>
+    </table>
+</div>
