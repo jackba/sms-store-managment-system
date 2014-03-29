@@ -1,4 +1,8 @@
 ﻿@model SMS.Models.DON_VI_TINH
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+
 @{
     ViewBag.Title = "Danh mục đơn vị tính";
 }
@@ -6,53 +10,21 @@
 <h2>@ViewBag.Title </h2>
 
 <style type="text/css">
-    .webGrid {
-        margin: 4px;
-        border-collapse: collapse;
-        width: 500px;
-        background-color: #B4CFC3;
-    }
 
-    .header {
-        background-color: #C1D4E6;
-        font-weight: bold;
-        color: #FFF;
-    }
-
-    .webGrid th, .webGrid td {
-        border: 1px solid #C0C0C0;
-        padding: 5px;
-    }
-
-    .webGrid td {
-        background-color: white;
-        padding: 5px;
-    }
-
-    .alt {
-        background-color: #E4E9F5;
-        color: #000;
-    }
-
-    .gridHead a:hover {
-        text-decoration: underline;
-    }
-
-    .description {
-        width: auto;
-    }
-
-    .select {
-        background-color: #71857C;
-    }
 </style>
 <hr style="width:100%" />
 <div style="float:right">
-    <p>
-        Từ khóa tìm kiếm: @Html.TextBox("SearchString")
-        <input type="submit" value="Tìm kiếm" />
-        <input type="button" value="Thêm Mới" onclick="window.location.href('@Url.Action("AddNew","DonVi")')" />
-    </p>
+
+    @using (Html.BeginForm("Index", "DonVi", FormMethod.Post))
+    {
+        <p>
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+            <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href('@Url.Action("AddNew","DonVi")')" />
+        </p>
+    }
+
+
 </div>
 <hr style="width:100%" />
 <table class="webGrid">
@@ -61,6 +33,8 @@
         <th>Mã Đơn Vị</th>
         <th>Tên đơn vị</th>
         <th>Ghi Chú</th>
+        <th style="text-align:center">Sửa</th>
+        <th style="text-align:center">Xóa</th>
     </tr>
     @foreach (var donvi in ViewBag.theList)
     {
@@ -68,7 +42,29 @@
             <td> @donvi.MA_DON_VI </td>
             <td> @donvi.TEN_DON_VI </td>
             <td> @donvi.GHI_CHU </td>
+            <td>
+                <a href="@Url.Action("Edit", "DonVi", new { id = @donvi.MA_DON_VI })" class="myEditButton">
+                    <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                </a>
+            </td>
+            <td>
+                <a href="@Url.Action("Delete", "DonVi", new { id = @donvi.MA_DON_VI })" class="myEditButton" onclick="return deleteSubmit()">
+                <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                </a>
+            </td>
         </tr>
     }
 
 </table>
+<input type="hidden" value="" id="delete" />
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn xóa đơn vị tính này!");
+        if (r == true) {
+            document.forms[0].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>   
