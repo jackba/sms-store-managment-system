@@ -17,33 +17,37 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var theListContext = (from s in ctx.DON_VI_TINH
-                where (s.ACTIVE == "A")
-                select s).ToList<DON_VI_TINH>();
+                                  where (s.ACTIVE == "A")
+                                  join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                  select  new 
+                                  {
+                                      MA_DON_VI = s.MA_DON_VI,
+                                      TEN_DON_VI = s.TEN_DON_VI,
+                                      GHI_CHU = s.GHI_CHU
+                                    });
+           /* var theListContext = (from s in ctx.DON_VI_TINH
+                                  where (s.ACTIVE == "A")
+                                  select s);*/
             ViewBag.theList = theListContext;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string searchString)
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
             var ctx = new SmsContext();
-            var theList = (from s in ctx.DON_VI_TINH
-                           where (s.TEN_DON_VI.ToUpper().Contains(searchString.ToUpper()) || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper())) && s.ACTIVE == "A"
-                select s).ToList<DON_VI_TINH>();
-            return View(theList);
+            var theListContext = (from s in ctx.DON_VI_TINH
+                                  where (s.ACTIVE == "A")
+                                  select s);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                theListContext = theListContext.Where(s => s.TEN_DON_VI.ToUpper().Contains(searchString.ToUpper()) || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper()));
+            }
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.theList = theListContext;
+            return View();
         }
-
 
         [HttpGet]
         public ActionResult AddNew()
@@ -52,26 +56,88 @@ namespace SMS.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (id == null || id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            DON_VI_TINH donvi = ctx.DON_VI_TINH.Find(id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+                ViewBag.donVi = donvi;
+                return View(donvi);
+            }else
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+           
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            if (id == null || id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.DON_VI_TINH.Find(id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+                donvi.ACTIVE = "I";
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
 
         [HttpPost]
-        public ActionResult AddNew(SMS.Models.DON_VI_TINH donVi)
+        public ActionResult Edit(SMS.Models.DON_VI_TINH donVi)
         {
             if (ModelState.IsValid)
             {
                 var db = new SmsContext();
-                var donVitinh = db.DON_VI_TINH.Create();
+                var donVitinh = db.DON_VI_TINH.Find((int)donVi.MA_DON_VI);
                 donVitinh.TEN_DON_VI = donVi.TEN_DON_VI;
                 donVitinh.GHI_CHU = donVi.GHI_CHU;
                 donVitinh.ACTIVE = "A";
                 donVitinh.UPDATE_AT = DateTime.Now;
-                donVitinh.CREATE_AT = DateTime.Now;
-                donVitinh.UPDATE_BY =  (int)Session["UserId"];
-                donVitinh.CREATE_BY = (int)Session["UserId"];
-                db.DON_VI_TINH.Add(donVitinh);
+                donVitinh.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return Redirect("Index");
+                return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNew(SMS.Models.DON_VI_TINH donVi)
+        {
+                if (ModelState.IsValid)
+                {
+                    var db = new SmsContext();
+                    var donVitinh = db.DON_VI_TINH.Create();
+                    donVitinh.TEN_DON_VI = donVi.TEN_DON_VI;
+                    donVitinh.GHI_CHU = donVi.GHI_CHU;
+                    donVitinh.ACTIVE = "A";
+                    donVitinh.UPDATE_AT = DateTime.Now;
+                    donVitinh.CREATE_AT = DateTime.Now;
+                    donVitinh.UPDATE_BY = (int)Session["UserId"];
+                    donVitinh.CREATE_BY = (int)Session["UserId"];
+                    db.DON_VI_TINH.Add(donVitinh);
+                    db.SaveChanges();
+                    return Redirect("Index");
+                }
+                return View();
         }
     }
 }

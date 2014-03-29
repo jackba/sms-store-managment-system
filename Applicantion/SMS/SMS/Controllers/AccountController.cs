@@ -25,6 +25,10 @@ namespace SMS.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             Session["UserId"] = 1;
+            Session["IsAdmin"] = true;
+            Session["IsAccount"] = true;
+            Session["IsMetadataManager"] = true;
+            Session["IsStoreManager"] = true;
             return View();
         }
 

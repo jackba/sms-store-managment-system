@@ -1,34 +1,42 @@
 ﻿@model SMS.Models.DON_VI_TINH
- 
+
 @{
-    ViewBag.Title = "Thêm mới đơn vị tính";
- }
+    ViewBag.Title = "Sửa đơn vị tính";
+}
+<h2>  @ViewBag.Title </h2>
+<hr style="width:100%"/>
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
     <div>
         <fieldset>
+
+            <div>
+               @Html.HiddenFor(u => u.MA_DON_VI)
+               
+            </div>
+
             <div>
                 @Html.LabelFor(u => u.TEN_DON_VI)
             </div>
-            <div> 
+            <div>
                 @Html.TextBoxFor(u => u.TEN_DON_VI)
             </div>
             <div>
                 @Html.LabelFor(u => u.GHI_CHU)
             </div>
-            <div> 
+            <div>
                 @Html.TextAreaFor(u => u.GHI_CHU)
             </div>
-            
+
             <div>
-                <input type = "submit"  style ="width:100px" value = "Lưu"/>
+                <input type="submit" style="width:100px" value="Lưu" />
                 <span> </span>
-                <input  type = "button" style ="width:100px" value = "Làm lại" onclick = "reset()"/>
+                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
             </div>
         </fieldset>
-    </div>     
-    <script >
+    </div>
+    <script>
         function reset() {
             var name = document.getElementById("TenDonVi");
             var note = document.getElementById("GhiChu");
@@ -36,7 +44,7 @@
             note.value = "";
             return false;
         }
-    </script>   
-    
-            
+    </script>
+
+
 }

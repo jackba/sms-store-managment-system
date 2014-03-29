@@ -6,12 +6,15 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System.Linq;
 namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     
+
     public partial class DON_VI_TINH
     {
         public DON_VI_TINH()
@@ -21,7 +24,14 @@ namespace SMS.Models
         }
     
         public int MA_DON_VI { get; set; }
+
+        [Required]
+        [Display(Name = "Tên đơn vị")]
+        [StringLength(100)]
         public string TEN_DON_VI { get; set; }
+
+        [Display(Name = "Ghi chú")]
+        [StringLength(1000)]
         public string GHI_CHU { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
@@ -33,5 +43,6 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual ICollection<SAN_PHAM> SAN_PHAM { get; set; }
+
     }
 }
