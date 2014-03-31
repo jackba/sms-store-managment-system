@@ -2,38 +2,72 @@
     ViewBag.Title = "Quản lý kho";
     ViewBag.Message = "";
 }
+<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
 
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
     <br />
     <h2>@ViewBag.Message</h2>
 </hgroup>
-<div >
-    <table width = "100%">
-        <tr>
-            <td><input type = "button" class ="myButton" style = "width:250px;" value ="DANH SÁCH KHO"/> </td>
-            <td><input type = "button" class ="myButton"  style = "width:250px;" value ="KIỂM TRA TỒN KHO"/></td>
-            <td><input type = "button" class ="myButton" style = "width:250px;"  value ="LẬP ĐỀ XUẤT MUA HÀNG"/></td>
-        </tr>
-         <tr>
-            <td><input type = "button" style = "width:250px;" value ="NHẬP KHO - MUA HÀNG"/> </td>
-            <td><input type = "button" style = "width:250px;"  value ="NHẬP CHUYỂN KHO"/></td>
-            <td><input type = "button" style = "width:250px;" value = "NHẬP LẠI HÀNG TRẢ"/></td>
-        </tr>
-        <tr>
-            <td><input type = "button" style = "width:250px;" value ="XUẤT BÁN HÀNG"/> </td>
-            <td><input type = "button" style = "width:250px;"  value ="XUẤT CHUYỂN KHO"/></td>
-            <td><input type = "button" style = "width:250px;" value = "XUẤT HỦY"/></td>
-        </tr>
-        <tr>
-            <td><input type = "button" style = "width:250px;" value ="KIỂM KHO"/> </td>
-            <td><input type = "button" style = "width:250px;"  value ="BÁO CÁO NHẬP XUẤT TỒN"/></td>
-            <td><input type = "button" style = "width:250px;" value = "BÁO CÁO NHẬP KHO"/></td>
-        </tr>
-         <tr>
-            <td><input type = "button" style = "width:250px;" value ="BÁO CÁO XUẤT KHO"/> </td>
-            <td><input type = "button" style = "width:250px;"  value ="THẺ KHO"/></td>
-            <td><input type = "button" style = "width:250px;"  onclick="window.location.href('@Url.Action("AddNew","Kho")')" value ="THÊM MỚI KHO"/> </td>
-        </tr>
-    </table>
+<div class="grid_7">
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>DANH SÁCH KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>KIỂM TRA TỒN KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>LẬP ĐỀ XUẤT MUA HÀNG</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP KHO - MUA HÀNG</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP CHUYỂN KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP LẠI HÀNG TRẢ</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>XUẤT BÁN HÀNG</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>XUẤT CHUYỂN KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>XUẤT HỦY</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>KIỂM KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>BÁO CÁO NHẬP XUẤT TỒN</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>BÁO CÁO NHẬP KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>BÁO CÁO XUẤT KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>THẺ KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>THÊM MỚI KHO</span>
+    </a>
 </div>
