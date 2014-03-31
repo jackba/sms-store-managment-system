@@ -11,9 +11,17 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class KHO
     {
+        public class KhoModel
+        {
+            public KHO DonVi { get; set; }
+            public NGUOI_DUNG NguoiDungDau { get; set; }
+            public NGUOI_DUNG NguoiTao { get; set; }
+            public NGUOI_DUNG NguoiCapNhat { get; set; }
+        }
         public KHO()
         {
             this.NGUOI_DUNG3 = new HashSet<NGUOI_DUNG>();
@@ -24,15 +32,34 @@ namespace SMS.Models
         }
     
         public int MA_KHO { get; set; }
+
+        [Required]
+        [Display(Name = "Tên kho")]
+        [StringLength(100)]
         public string TEN_KHO { get; set; }
+
+        [Required]
+        [Display(Name = "Số điện thoại")]
+        [StringLength(15)]
         public string SO_DIEN_THOAI { get; set; }
+
+        [Required]
+        [Display(Name = "Số điạ chỉ")]
+        [StringLength(300)]
         public string DIA_CHI { get; set; }
+
+        [Required]
+        [Display(Name = "Ghi chú")]
+        [StringLength(1000)]
         public string GHI_CHU { get; set; }
+
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
+
+         [Display(Name = "Người đứng đầu")]
         public Nullable<int> MA_NGUOI_DUNG_DAU { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }

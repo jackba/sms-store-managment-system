@@ -13,7 +13,13 @@ namespace SMS.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    
+
+    public class DonViTinh
+    {
+        public DON_VI_TINH DonVi { get; set; }
+        public NGUOI_DUNG NguoiTao { get; set; }
+        public NGUOI_DUNG NguoiCapNhat { get; set; }
+    }
 
     public partial class DON_VI_TINH
     {
@@ -35,8 +41,15 @@ namespace SMS.Models
         public string GHI_CHU { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "dd/MM/yyyy", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> CREATE_AT { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "dd/MM/yyyy", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
+
         public string ACTIVE { get; set; }
     
         public virtual ICollection<CHUYEN_DOI_DON_VI_TINH> CHUYEN_DOI_DON_VI_TINH { get; set; }

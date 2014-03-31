@@ -1,10 +1,10 @@
-﻿@model SMS.Models.DON_VI_TINH
+﻿@model SMS.Models.NHA_SAN_XUAT
 
 @{
-    ViewBag.Title = "Sửa đơn vị tính";
+    ViewBag.Title = "Sửa nhà sản xuất";
 }
 <h2>  @ViewBag.Title </h2>
-<hr style="width:100%"/>
+<hr style="width:100%" />
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
@@ -12,15 +12,15 @@
         <fieldset>
 
             <div>
-               @Html.HiddenFor(u => u.MA_DON_VI)
-               
+                @Html.HiddenFor(u => u.MA_NHA_SAN_XUAT)
+
             </div>
 
             <div>
-                @Html.LabelFor(u => u.TEN_DON_VI)
+                @Html.LabelFor(u => u.TEN_NHA_SAN_XUAT)
             </div>
             <div>
-                @Html.TextBoxFor(u => u.TEN_DON_VI)
+                @Html.TextBoxFor(u => u.TEN_NHA_SAN_XUAT)
             </div>
             <div>
                 @Html.LabelFor(u => u.GHI_CHU)
