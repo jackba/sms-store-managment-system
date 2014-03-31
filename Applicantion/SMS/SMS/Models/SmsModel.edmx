@@ -233,6 +233,7 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="NHAP_KHO">
           <Key>
@@ -282,6 +283,7 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+          <Property Name="QUYEN_QUAN_LY_KHO" Type="bit" />
         </EntityType>
         <EntityType Name="SAN_PHAM">
           <Key>
@@ -1833,6 +1835,7 @@
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__NHA_SAN_X__CREAT__2E1BDC42" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__NHA_SAN_X__UPDAT__2F10007B" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="SAN_PHAM" Relationship="Self.FK__SAN_PHAM__MA_NHA__3A81B327" FromRole="NHA_SAN_XUAT" ToRole="SAN_PHAM" />
+          <Property Name="GHI_CHU" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NHAP_KHO">
           <Key>
@@ -1899,6 +1902,7 @@
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__PHAN_QUYE__UPDAT__29572725" FromRole="PHAN_QUYEN" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="Self.FK__PHAN_QUYE__MA_NG__267ABA7A" FromRole="PHAN_QUYEN" ToRole="NHOM_NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG1" Relationship="Self.FK__PHAN_QUYE__MA_NH__276EDEB3" FromRole="PHAN_QUYEN" ToRole="NHOM_NGUOI_DUNG" />
+          <Property Name="QUYEN_QUAN_LY_KHO" Type="Boolean" />
         </EntityType>
         <EntityType Name="SAN_PHAM">
           <Key>
@@ -3479,6 +3483,7 @@
           <EntitySetMapping Name="NHA_SAN_XUAT">
             <EntityTypeMapping TypeName="SmsModel.NHA_SAN_XUAT">
               <MappingFragment StoreEntitySet="NHA_SAN_XUAT">
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
                 <ScalarProperty Name="MA_NHA_SAN_XUAT" ColumnName="MA_NHA_SAN_XUAT" />
                 <ScalarProperty Name="TEN_NHA_SAN_XUAT" ColumnName="TEN_NHA_SAN_XUAT" />
                 <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
@@ -3526,6 +3531,7 @@
           <EntitySetMapping Name="PHAN_QUYEN">
             <EntityTypeMapping TypeName="SmsModel.PHAN_QUYEN">
               <MappingFragment StoreEntitySet="PHAN_QUYEN">
+                <ScalarProperty Name="QUYEN_QUAN_LY_KHO" ColumnName="QUYEN_QUAN_LY_KHO" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="MA_NGUOI_DUNG" ColumnName="MA_NGUOI_DUNG" />
                 <ScalarProperty Name="QUYEN_ADMIN" ColumnName="QUYEN_ADMIN" />

@@ -16,20 +16,17 @@ namespace SMS.Controllers
         public ActionResult Index()
         {
             var ctx = new SmsContext();
-            /*var theListContext = (from s in ctx.DON_VI_TINH
+            var theListContext = (from s in ctx.DON_VI_TINH
                                   where (s.ACTIVE == "A")
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
-                                  select  new 
+                                  select new DonViTinh
                                   {
-                                      MA_DON_VI = s.MA_DON_VI,
-                                      TEN_DON_VI = s.TEN_DON_VI,
-                                      GHI_CHU = s.GHI_CHU
-                                    });*/
-            var theListContext = (from s in ctx.DON_VI_TINH
-                                  where (s.ACTIVE == "A")
-                                  select s);
-            ViewBag.theList = theListContext;
+                                      DonVi = s,
+                                      NguoiTao = u,
+                                      NguoiCapNhat = u1
+                                    });
+            ViewBag.theList = theListContext.ToList<DonViTinh>();
             return View();
         }
 
@@ -37,13 +34,16 @@ namespace SMS.Controllers
         public ActionResult Index(string searchString)
         {
             var ctx = new SmsContext();
-            var theListContext = (from s in ctx.DON_VI_TINH
-                                  where (s.ACTIVE == "A")
-                                  select s);
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                theListContext = theListContext.Where(s => s.TEN_DON_VI.ToUpper().Contains(searchString.ToUpper()) || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper()));
-            }
+            var theListContext = (from s in ctx.DON_VI_TINH                                  
+                                  join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                  where (s.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || s.TEN_DON_VI.ToUpper().Contains(searchString.ToUpper()) || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper())))
+                                  select new DonViTinh
+                                  {
+                                      DonVi = s,
+                                      NguoiTao = u,
+                                      NguoiCapNhat = u1
+                                    });
             ViewBag.CurrentFilter = searchString;
             ViewBag.theList = theListContext;
             return View();
@@ -59,7 +59,7 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (id == null || id <= 100090)
+            if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
                 return View("../Home/Error"); ;
@@ -78,10 +78,12 @@ namespace SMS.Controllers
            
         }
 
+       
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            if (id == null || id <= 0)
+            if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
                 return View("../Home/Error"); ;

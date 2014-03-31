@@ -1,7 +1,7 @@
-﻿@model SMS.Models.KHO
+﻿@model SMS.Models.NHA_CUNG_CAP
 
 @{
-    ViewBag.Title = "Thêm mới kho";
+    ViewBag.Title = "Thêm mới nhà cung cấp";
 }
 @using (Html.BeginForm())
 {
@@ -9,10 +9,14 @@
     <div>
         <fieldset>
             <div>
-                @Html.LabelFor(u => u.TEN_KHO)
+                @Html.HiddenFor(u => u.MA_NHA_CUNG_CAP)
+
             </div>
             <div>
-                @Html.TextBoxFor(u => u.TEN_KHO)
+                @Html.LabelFor(u => u.TEN_NHA_CUNG_CAP)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.TEN_NHA_CUNG_CAP)
             </div>
             <div>
                 @Html.LabelFor(u => u.DIA_CHI)
@@ -27,10 +31,16 @@
                 @Html.TextBoxFor(u => u.SO_DIEN_THOAI)
             </div>
             <div>
-                @Html.LabelFor(u => u.MA_NGUOI_DUNG_DAU)
+                @Html.LabelFor(u => u.EMAIL)
             </div>
             <div>
-                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG_DAU, (SelectList)ViewBag.NguoiLienHeList, "---------Chọn người đứng đầu---------")
+                @Html.TextBoxFor(u => u.EMAIL)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.TEN_NGUOI_LIEN_HE)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.TEN_NGUOI_LIEN_HE)
             </div>
             <div>
                 @Html.LabelFor(u => u.GHI_CHU)

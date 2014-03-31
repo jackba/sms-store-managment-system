@@ -11,7 +11,15 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    public class HangSanXuatModel
+    {
+        public NHA_SAN_XUAT HangSanXuat { get; set; }
+        public NGUOI_DUNG NguoiTao { get; set; }
+        public NGUOI_DUNG NguoiCapNhat { get; set; }
+    }
+
     public partial class NHA_SAN_XUAT
     {
         public NHA_SAN_XUAT()
@@ -20,7 +28,16 @@ namespace SMS.Models
         }
     
         public int MA_NHA_SAN_XUAT { get; set; }
+
+        [Required]
+        [Display(Name = "Tên hãng sản xuất")]
+        [StringLength(100)]
         public string TEN_NHA_SAN_XUAT { get; set; }
+
+        [Display(Name = "Ghi chú")]
+        [StringLength(1000)]
+        public string GHI_CHU { get; set; }
+
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
