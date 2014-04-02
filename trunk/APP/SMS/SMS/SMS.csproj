@@ -368,6 +368,7 @@
     <Content Include="Views\Home\QuanLyKho.cshtml" />
     <Content Include="Views\Home\BanHang.cshtml" />
     <Content Include="Views\Home\QuanTri.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

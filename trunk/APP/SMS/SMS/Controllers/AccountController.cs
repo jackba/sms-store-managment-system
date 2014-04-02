@@ -11,6 +11,7 @@ using System.Data.Entity.Validation;
 namespace SMS.Controllers
 {
     [Authorize]
+    [HandleError]
     public class AccountController : Controller
     {
         public ActionResult Index()
