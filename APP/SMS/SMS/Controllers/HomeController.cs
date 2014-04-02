@@ -7,6 +7,7 @@ using System.Web.Mvc;
 namespace SMS.Controllers
 {
     [Authorize]
+    [HandleError]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -47,7 +48,7 @@ namespace SMS.Controllers
         public ActionResult DanhMuc()
         {
             ViewBag.Message = "Các hạng mục danh mục";
-
+            int i = Convert.ToInt32("");
             return View();
         }
 
