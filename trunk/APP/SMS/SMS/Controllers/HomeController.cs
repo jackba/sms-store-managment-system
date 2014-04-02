@@ -48,7 +48,7 @@ namespace SMS.Controllers
         public ActionResult DanhMuc()
         {
             ViewBag.Message = "Các hạng mục danh mục";
-            int i = Convert.ToInt32("");
+
             return View();
         }
 
