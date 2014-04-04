@@ -1,5 +1,480 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách sản phẩm";
 }
+<link href="../../Content/style.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/SanPham.css" rel="stylesheet" type="text/css" />
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+<h2>@ViewBag.Title </h2>
+<hr style="width:100%" />
+<div style="float:right">
 
-<h2>Index</h2>
+    @using (Html.BeginForm("Index", "SanPham", FormMethod.Post))
+    {
+        <p>
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+            <input type="button" value="Thêm Mới" class="myButton" onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
+        </p>
+    }
+
+</div>
+
+<div>
+    <table border="0" cellpadding="0" cellspacing="0" class='main '>
+        <tr>
+            <td class='tablefrozencolumn'>
+                <div id='divroot' class='root'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
+                        <tr>
+                            <td class='inner frozencol colwidth head'>
+                                Mã sản phẩm
+                            </td>
+                             <td class='inner colwidth head'>
+                                Tên sản phẩm
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='divfrozen' class='frozen'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen'>
+                        <tr>
+                            <td class='inner frozencol toprow'>
+                                Col0Row2
+                            </td>
+                           <td class='inner frozencol toprow'>
+                                Col1Row2
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row3
+                            </td>
+                               <td class='inner frozencol'>
+                                Col1Row3
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row4
+                            </td>
+                             <td class='inner frozencol'>
+                                Col1Row4
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row5
+                            </td>
+                             <td class='inner frozencol'>
+                                Col1Row5
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row6
+                            </td>
+                              <td class='inner frozencol'>
+                                Col1Row6
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row7
+                            </td>
+                           <td class='inner frozencol'>
+                                Col1Row7
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row8
+                            </td>
+                             <td class='inner frozencol'>
+                                Col1Row8
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row9
+                            </td>
+                             <td class='inner frozencol'>
+                                Col1Row9
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol'>
+                                Col0Row10
+                            </td>
+                             <td class='inner frozencol'>
+                                Col1Row10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='inner frozencol bottomcol rightcol'>
+                                Col0Row11
+                            </td>
+                            <td class='inner frozencol bottomcol rightcol'>
+                                Col1Row11
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td class='tablecontent'>
+                <div id='headscroll' class='divhead'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
+                        <tr> 
+                            <td class='inner col2 head'>
+                                Kích thước
+                            </td>
+                            <td class='inner col3 head'>
+                                Cân nặng
+                            </td>
+                            <td class='inner col4 head'>
+                                Đặc tả
+                            </td>
+                            <td class='inner col5 head'>
+                               Đơn vị tính
+                            </td>
+                            <td class='inner col6 head'>
+                               Nhà sản xuất
+                            </td>
+                            <td class='inner col7 head'>
+                               Hình ảnh
+                            </td>
+                            <td class='inner col8 head'>
+                               Giá bán 1
+                            </td>
+                            <td class='inner col9 head'>
+                               Giá bán 2
+                            </td>
+                            <td class='inner col10 head rightcol'>
+                               Giá bán 3
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                        <tr>
+                             <td class='inner col2 toprow'>
+                                Col2Row2
+                            </td>
+                            <td class='inner col3'>
+                                Col3Row2
+                            </td>
+                            <td class='inner col4'>
+                                Col4Row2
+                            </td>
+                            <td class='inner col5'>
+                                Col5Row2
+                            </td>
+                            <td class='inner col6'>
+                                Col6Row2
+                            </td>
+                            <td class='inner col7'>
+                                Col7Row2
+                            </td>
+                            <td class='inner col8'>
+                                Col8Row2
+                            </td>
+                            <td class='inner col9'>
+                                Col9Row2
+                            </td>
+                            <td class='inner col10 rightcol'>
+                                Col10Row2
+                            </td>
+                        </tr>
+                        <tr>
+      
+                            <td class='inner col2'>
+                                Col2Row3
+                            </td>
+                            <td class='inner'>
+                                Col3Row3
+                            </td>
+                            <td class='inner'>
+                                Col4Row3
+                            </td>
+                            <td class='inner'>
+                                Col5Row3
+                            </td>
+                            <td class='inner'>
+                                Col6Row3
+                            </td>
+                            <td class='inner'>
+                                Col7Row3
+                            </td>
+                            <td class='inner'>
+                                Col8Row3
+                            </td>
+                            <td class='inner'>
+                                Col9Row3
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row3
+                            </td>
+                        </tr>
+                        <tr>
+      
+                            <td class='inner col2'>
+                                Col2Row4
+                            </td>
+                            <td class='inner'>
+                                Col3Row4
+                            </td>
+                            <td class='inner'>
+                                Col4Row4
+                            </td>
+                            <td class='inner'>
+                                Col5Row4
+                            </td>
+                            <td class='inner'>
+                                Col6Row4
+                            </td>
+                            <td class='inner'>
+                                Col7Row4
+                            </td>
+                            <td class='inner'>
+                                Col8Row4
+                            </td>
+                            <td class='inner'>
+                                Col9Row4
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row4
+                            </td>
+                        </tr>
+                        <tr>
+      
+                            <td class='inner col2'>
+                                Col2Row5
+                            </td>
+                            <td class='inner'>
+                                Col3Row5
+                            </td>
+                            <td class='inner'>
+                                Col4Row5
+                            </td>
+                            <td class='inner'>
+                                Col5Row5
+                            </td>
+                            <td class='inner'>
+                                Col6Row5
+                            </td>
+                            <td class='inner'>
+                                Col7Row5
+                            </td>
+                            <td class='inner'>
+                                Col8Row5
+                            </td>
+                            <td class='inner'>
+                                Col9Row5
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row5
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2'>
+                                Col2Row6
+                            </td>
+                            <td class='inner'>
+                                Col3Row6
+                            </td>
+                            <td class='inner'>
+                                Col4Row6
+                            </td>
+                            <td class='inner'>
+                                Col5Row6
+                            </td>
+                            <td class='inner'>
+                                Col6Row6
+                            </td>
+                            <td class='inner'>
+                                Col7Row6
+                            </td>
+                            <td class='inner'>
+                                Col8Row6
+                            </td>
+                            <td class='inner'>
+                                Col9Row6
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row6
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2'>
+                                Col2Row7
+                            </td>
+                            <td class='inner'>
+                                Col3Row7
+                            </td>
+                            <td class='inner'>
+                                Col4Row7
+                            </td>
+                            <td class='inner'>
+                                Col5Row7
+                            </td>
+                            <td class='inner'>
+                                Col6Row7
+                            </td>
+                            <td class='inner'>
+                                Col7Row7
+                            </td>
+                            <td class='inner'>
+                                Col8Row7
+                            </td>
+                            <td class='inner'>
+                                Col9Row7
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row7
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2'>
+                                Col2Row8
+                            </td>
+                            <td class='inner'>
+                                Col3Row8
+                            </td>
+                            <td class='inner'>
+                                Col4Row8
+                            </td>
+                            <td class='inner'>
+                                Col5Row8
+                            </td>
+                            <td class='inner'>
+                                Col6Row8
+                            </td>
+                            <td class='inner'>
+                                Col7Row8
+                            </td>
+                            <td class='inner'>
+                                Col8Row8
+                            </td>
+                            <td class='inner'>
+                                Col9Row8
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row8
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2'>
+                                Col2Row9
+                            </td>
+                            <td class='inner'>
+                                Col3Row9
+                            </td>
+                            <td class='inner'>
+                                Col4Row9
+                            </td>
+                            <td class='inner'>
+                                Col5Row9
+                            </td>
+                            <td class='inner'>
+                                Col6Row9
+                            </td>
+                            <td class='inner'>
+                                Col7Row9
+                            </td>
+                            <td class='inner'>
+                                Col8Row9
+                            </td>
+                            <td class='inner'>
+                                Col9Row9
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row9
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2'>
+                                Col2Row10
+                            </td>
+                            <td class='inner'>
+                                Col3Row10
+                            </td>
+                            <td class='inner'>
+                                Col4Row10
+                            </td>
+                            <td class='inner'>
+                                Col5Row10
+                            </td>
+                            <td class='inner'>
+                                Col6Row10
+                            </td>
+                            <td class='inner'>
+                                Col7Row10
+                            </td>
+                            <td class='inner'>
+                                Col8Row10
+                            </td>
+                            <td class='inner'>
+                                Col9Row10
+                            </td>
+                            <td class='inner rightcol'>
+                                Col10Row10
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class='inner col2 bottomcol'>
+                                Col2Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col3Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col4Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col5Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col6Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col7Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col8Row11
+                            </td>
+                            <td class='inner bottomcol'>
+                                Col9Row11
+                            </td>
+                            <td class='inner bottomcol rightcol'>
+                                Col10Row11
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td class='tableverticalscroll' rowspan="2">
+                <div class='vertical-scroll' onscroll='reposVertical(this);'>
+                    <div>
+                    </div>
+                </div>
+                <div class='ff-fill'>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
+                    <div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+ </div>

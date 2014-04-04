@@ -23,7 +23,7 @@
             @{
                 if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                 {
-                    <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href('@Url.Action("AddNew","DonVi")')" />
+                    <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew","DonVi")'" />
                 }
            }
         </p>
