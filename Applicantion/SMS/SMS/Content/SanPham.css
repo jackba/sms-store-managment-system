@@ -1,0 +1,220 @@
+﻿
+/*
+start customize to scroll table 
+*/
+table 
+{
+    margin-top:0em !important;
+}
+  table.main
+{
+    width: 960px;
+    height: 200px;
+    table-layout: fixed;
+   
+}
+/*
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}
+*/
+table.root
+{
+    table-layout: fixed;
+}
+table.content
+{
+    table-layout: fixed;
+    width: 1890px;
+}
+table.head
+{
+    table-layout: fixed;
+    width: 1890px;
+}
+table.frozen
+{
+    table-layout: fixed;
+}
+td
+{
+    line-height: 28px;
+}
+div.horizontal-scroll
+{
+    width: 941px;
+    height: 23px;
+    overflow: hidden;
+    overflow-x: scroll;
+    border: solid 1px #666;
+    margin-top:-7px;
+}
+div.horizontal-scroll div
+{
+    width: 2173px;
+    height: 1px;
+}
+div.vertical-scroll
+{
+    height: 228px;
+    width: 23px;
+    overflow: hidden;
+    overflow-y: scroll;
+    border: solid 1px #666;
+    margin-left :42px;
+}
+div.vertical-scroll div
+{
+    height: 377px;
+    width: 1px;
+}
+td.inner
+{
+    border-left: 1px solid #666;
+    border-bottom: 1px solid #666;
+    padding: 3px;
+    height: 28px;
+}
+td.frozencol
+{
+    border-right: 1px double #666;
+    width: 131px;
+}
+td.col1
+{
+    border-left: none;
+    width: 100px;
+}
+td.bottomcol
+{
+    /*border-bottom: 1px solid #666;*/
+}
+.col2, .col3, .col4, .col5, .col6, .col7, .col8, .col9, .col10
+{
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipses;
+    white-space: nowrap;
+}
+td.head
+{
+    /*border-bottom: 1px solid #666;*/
+    border-top: 1px solid #666;
+    background-color: #B4CFC3;
+    white-space: nowrap;    
+    font-weight: bold;
+}
+.rightcol
+{
+    border-right: 1px solid #666;
+}
+.toprow
+{
+    border-top: 0px;
+}
+div.root
+{
+    margin-left: 0px;
+    overflow: hidden;
+    width: 320px;
+    height: 28px;
+    border-bottom: 1px solid #666;
+}
+div.frozen
+{
+    overflow: hidden;
+    width: 275px; 
+    border-bottom: 1px solid #666;
+    height: 200px;
+}
+div.divhead
+{
+    overflow: hidden;
+    height: 28px;
+    width: 670px;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666; /*border-bottom: 0px solid #666;*/
+    border-bottom: 1px solid #666;
+}
+div.content
+{
+    overflow: hidden;
+    width: 670px;
+    height: 200px;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666; 
+    border-bottom: 1px solid #666;
+}
+td.tablefrozencolumn
+{
+    width: 200px;
+    /*border-right: 3px solid #666;*/
+}
+td.tablecontent
+{
+    width: 501px;
+}
+td.tableverticalscroll
+{
+    width: 24px;
+}
+div.ff-fill
+{
+    height: 23px;
+    width: 23px;
+    background-color: #ccc;
+    border-right: 1px solid #666;
+    border-bottom: 1px solid #666;
+    margin-left :43px;
+}
+/*
+end customize to scroll table 
+*/
+
+table.fixed input {
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    color: #333;
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 200px;
+    text-align:right;
+
+}
+table.fixed textarea {
+    margin-left: -120px;
+}
+
+#body {
+    background-color: #efeeef;
+    clear: both;
+    padding-bottom: 10px;
+    height:auto;
+}
+table.fixed{
+    table-layout:fixed;
+    width:1024px;
+    overflow: hidden;    
+    margin-left:-65px;
+}
+ table.fixed td select{
+    height:28px;
+ 
+}
+  table.fixed label{
+    margin: 5px 0 6px 0;
+ 
+    font-weight: bold;
+    float:left;
+    width: 30%;
+}
+  table.fixed td{
+         padding:0px 0px 0px 0px !important;
+         line-height:none;
+         width:400px;
+         padding-left:2em;
+         height:28px;
+  }
+  div.divTitle{
+      margin-left:-75px;
+  }

@@ -1,5 +1,193 @@
-﻿@{
-    ViewBag.Title = "AddNew";
-}
+﻿@model SMS.Models.SAN_PHAM
 
-<h2>AddNew</h2>
+
+@{
+    ViewBag.Title = "Thêm mới sản phẩm";
+
+    var listItems = new List<System.Web.UI.WebControls.ListItem>
+    {
+          new System.Web.UI.WebControls.ListItem { Text = "Exemplo1", Value="Exemplo1" },
+          new System.Web.UI.WebControls.ListItem { Text = "Exemplo2", Value="Exemplo2" },
+          new System.Web.UI.WebControls.ListItem { Text = "Exemplo3", Value="Exemplo3" }
+    };
+}
+<div class="divTitle">
+    <h2>@ViewBag.Title </h2>
+    <hr />
+</div>
+<link href="~/Content/SanPham.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <table class="fixed" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td width="37%">
+                    <div>
+                        @Html.LabelFor(u => u.TEN_SAN_PHAM)
+                        @Html.TextBoxFor(u => u.TEN_SAN_PHAM)
+                    </div>
+                </td>
+
+                <td width="35%"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.KICH_THUOC)
+                        @Html.TextBoxFor(u => u.KICH_THUOC)
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CAN_NANG)
+                        @Html.TextBoxFor(u => u.CAN_NANG)
+
+                    </div>
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.MA_DON_VI)
+                        @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(listItems), "-- Chọn đơn vị tính --")
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.MA_NHA_SAN_XUAT)
+                        @Html.DropDownListFor(u => u.MA_NHA_SAN_XUAT, new SelectList(listItems), "-- Chọn nhà sản xuất --")
+
+                    </div>
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>                        
+                        <div>
+                            @Html.LabelFor(u => u.DAC_TA)
+                            @Html.TextAreaFor(u => u.DAC_TA)
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.GIA_BAN_1)
+                        @Html.TextBoxFor(u => u.GIA_BAN_1)
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.GIA_BAN_2)
+                        @Html.TextBoxFor(u => u.GIA_BAN_2)
+
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.GIA_BAN_3)
+                        @Html.TextBoxFor(u => u.GIA_BAN_3)
+
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.KICH_THUOC)
+                        @Html.TextBoxFor(u => u.KICH_THUOC)
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CAN_NANG)
+                        @Html.TextBoxFor(u => u.CAN_NANG)
+
+                    </div>
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CHIEC_KHAU_1)
+                        @Html.TextBoxFor(u => u.CHIEC_KHAU_1)
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CHIEC_KHAU_2)
+                        @Html.TextBoxFor(u => u.CHIEC_KHAU_2)
+
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CHIEC_KHAU_3)
+                        @Html.TextBoxFor(u => u.CHIEC_KHAU_3)
+
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CO_SO_TOI_THIEU)
+                        @Html.TextBoxFor(u => u.CO_SO_TOI_THIEU)
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                        @Html.LabelFor(u => u.CO_SO_TOI_DA)
+                        @Html.TextBoxFor(u => u.CO_SO_TOI_DA)
+
+                    </div>
+                </td>
+                <td></td>
+
+            </tr>
+        </table>
+
+        <div class="divTitle">
+            <hr />
+            <input type="submit" style="width:100px" value="Lưu" />
+            <span> </span>
+            <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+        </div>
+
+        @*  <div>
+                <input type = "submit"  style ="width:100px" value = "Lưu"/>
+                <span> </span>
+                <input  type = "button" style ="width:100px" value = "Làm lại" onclick = "reset()"/>
+            </div>*@
+
+    </div>
+    <script>
+        function reset() {
+            var name = document.getElementById("TenDonVi");
+            var note = document.getElementById("GhiChu");
+            name.value = "";
+            note.value = "";
+            return false;
+        }
+    </script>
+
+
+}

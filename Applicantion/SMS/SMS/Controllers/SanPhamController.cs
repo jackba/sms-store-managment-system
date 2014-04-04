@@ -16,6 +16,7 @@ namespace SMS.Controllers
             return View();
         }
 
+         [HttpGet]
         public ActionResult AddNew()
         {
             return View();
