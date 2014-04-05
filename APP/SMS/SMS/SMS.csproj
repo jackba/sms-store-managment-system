@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -216,6 +217,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
     <Content Include="Content\images\Customer_Male_Light.png" />
@@ -226,9 +228,7 @@
     <Content Include="Content\images\industry.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\provider.png" />
-    <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\style.css" />
     <Content Include="Content\themes\base\images\edit-icon.png" />
     <Content Include="Content\themes\base\images\edit_delete.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -327,6 +327,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\js\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +370,7 @@
     <Content Include="Views\Home\BanHang.cshtml" />
     <Content Include="Views\Home\QuanTri.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\NguoiDung\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
