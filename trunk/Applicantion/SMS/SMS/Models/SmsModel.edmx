@@ -1835,7 +1835,7 @@
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__NHA_SAN_X__CREAT__2E1BDC42" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__NHA_SAN_X__UPDAT__2F10007B" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="SAN_PHAM" Relationship="Self.FK__SAN_PHAM__MA_NHA__3A81B327" FromRole="NHA_SAN_XUAT" ToRole="SAN_PHAM" />
-          <Property Name="GHI_CHU" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <!--<Property Name="GHI_CHU" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />-->
         </EntityType>
         <EntityType Name="NHAP_KHO">
           <Key>
@@ -3483,7 +3483,7 @@
           <EntitySetMapping Name="NHA_SAN_XUAT">
             <EntityTypeMapping TypeName="SmsModel.NHA_SAN_XUAT">
               <MappingFragment StoreEntitySet="NHA_SAN_XUAT">
-                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <!--<ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />-->
                 <ScalarProperty Name="MA_NHA_SAN_XUAT" ColumnName="MA_NHA_SAN_XUAT" />
                 <ScalarProperty Name="TEN_NHA_SAN_XUAT" ColumnName="TEN_NHA_SAN_XUAT" />
                 <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />

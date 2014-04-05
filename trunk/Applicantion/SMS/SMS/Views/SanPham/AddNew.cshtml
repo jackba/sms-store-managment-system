@@ -3,13 +3,7 @@
 
 @{
     ViewBag.Title = "Thêm mới sản phẩm";
-
-    var listItems = new List<System.Web.UI.WebControls.ListItem>
-    {
-          new System.Web.UI.WebControls.ListItem { Text = "Exemplo1", Value="Exemplo1" },
-          new System.Web.UI.WebControls.ListItem { Text = "Exemplo2", Value="Exemplo2" },
-          new System.Web.UI.WebControls.ListItem { Text = "Exemplo3", Value="Exemplo3" }
-    };
+   
 }
 <div class="divTitle">
     <h2>@ViewBag.Title </h2>
@@ -54,14 +48,14 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.MA_DON_VI)
-                        @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(listItems), "-- Chọn đơn vị tính --")
+                        @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(ViewBag.dsDonvi, "MA_DON_VI", "TEN_DON_VI", ViewBag.DVSelected))
                     </div>
                 </td>
 
                 <td>
                     <div>
                         @Html.LabelFor(u => u.MA_NHA_SAN_XUAT)
-                        @Html.DropDownListFor(u => u.MA_NHA_SAN_XUAT, new SelectList(listItems), "-- Chọn nhà sản xuất --")
+                        @Html.DropDownListFor(u => u.MA_NHA_SAN_XUAT, new SelectList(ViewBag.dsNSX, "MA_NHA_SAN_XUAT", "TEN_NHA_SAN_XUAT", ViewBag.NSXSelected))
 
                     </div>
                 </td>
@@ -103,24 +97,7 @@
                 </td>
 
             </tr>
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.KICH_THUOC)
-                        @Html.TextBoxFor(u => u.KICH_THUOC)
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CAN_NANG)
-                        @Html.TextBoxFor(u => u.CAN_NANG)
-
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
+           
             <tr>
                 <td>
                     <div>
@@ -171,21 +148,14 @@
             <span> </span>
             <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
         </div>
-
-        @*  <div>
-                <input type = "submit"  style ="width:100px" value = "Lưu"/>
-                <span> </span>
-                <input  type = "button" style ="width:100px" value = "Làm lại" onclick = "reset()"/>
-            </div>*@
-
+      
     </div>
+    
     <script>
         function reset() {
-            var name = document.getElementById("TenDonVi");
-            var note = document.getElementById("GhiChu");
-            name.value = "";
-            note.value = "";
-            return false;
+            $("form :input").each(function () {
+                $(this).text('');
+            });
         }
     </script>
 

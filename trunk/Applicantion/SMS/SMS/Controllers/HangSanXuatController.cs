@@ -36,7 +36,7 @@ namespace SMS.Controllers
             var theListContext = (from s in ctx.NHA_SAN_XUAT
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
-                                  where (s.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || s.TEN_NHA_SAN_XUAT.ToUpper().Contains(searchString.ToUpper()) || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper())))
+                                  where (s.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || s.TEN_NHA_SAN_XUAT.ToUpper().Contains(searchString.ToUpper()) /*|| s.GHI_CHU.ToUpper().Contains(searchString.ToUpper())*/))
                                   select new HangSanXuatModel
                                   {
                                       HangSanXuat = s,
@@ -61,7 +61,7 @@ namespace SMS.Controllers
                 var db = new SmsContext();
                 var khuVucNew = db.NHA_SAN_XUAT.Create();
                 khuVucNew.TEN_NHA_SAN_XUAT = khuVuc.TEN_NHA_SAN_XUAT;
-                khuVucNew.GHI_CHU = khuVuc.GHI_CHU;
+                //khuVucNew.GHI_CHU = khuVuc.GHI_CHU;
                 khuVucNew.ACTIVE = "A";
                 khuVucNew.UPDATE_AT = DateTime.Now;
                 khuVucNew.CREATE_AT = DateTime.Now;
@@ -104,7 +104,7 @@ namespace SMS.Controllers
                 var db = new SmsContext();
                 var khuvuc = db.NHA_SAN_XUAT.Find((int)khuVuc.MA_NHA_SAN_XUAT);
                 khuvuc.TEN_NHA_SAN_XUAT = khuVuc.TEN_NHA_SAN_XUAT;
-                khuvuc.GHI_CHU = khuVuc.GHI_CHU;
+                //khuvuc.GHI_CHU = khuVuc.GHI_CHU;
                 khuvuc.ACTIVE = "A";
                 khuvuc.UPDATE_AT = DateTime.Now;
                 khuvuc.UPDATE_BY = (int)Session["UserId"];
