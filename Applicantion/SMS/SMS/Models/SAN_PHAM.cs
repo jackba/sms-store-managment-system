@@ -26,7 +26,7 @@ namespace SMS.Models
 
         public int MA_SAN_PHAM { get; set; }
 
-        [Required]
+       [Required(ErrorMessage = "Hãy nhập tên sản phẩm.")]
         [Display(Name = "Tên sản phẩm")]
         [StringLength(50)]
         public string TEN_SAN_PHAM { get; set; }
@@ -50,7 +50,8 @@ namespace SMS.Models
         [Display(Name = "Hình ảnh")]        
         public byte[] HINH_ANH { get; set; }
 
-        [Display(Name = "Giá bán 1")]        
+        [Display(Name = "Giá bán 1")]
+        [DisplayFormat(DataFormatString = "#,###,###", ApplyFormatInEditMode = true)]
         public Nullable<double> GIA_BAN_1 { get; set; }
 
          [Display(Name = "Giá bán 2")]   

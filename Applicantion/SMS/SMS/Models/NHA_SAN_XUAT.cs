@@ -34,9 +34,9 @@ namespace SMS.Models
         [StringLength(100)]
         public string TEN_NHA_SAN_XUAT { get; set; }
 
-        [Display(Name = "Ghi chú")]
-        [StringLength(1000)]
-        public string GHI_CHU { get; set; }
+        //[Display(Name = "Ghi chú")]
+        //[StringLength(1000)]
+        //public string GHI_CHU { get; set; }
 
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
