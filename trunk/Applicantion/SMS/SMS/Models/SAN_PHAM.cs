@@ -36,7 +36,26 @@ namespace SMS.Models
         public string KICH_THUOC { get; set; }
 
         [Display(Name = "Cân nặng")]    
-        public Nullable<double> CAN_NANG { get; set; }
+        public Nullable<double> CAN_NANG{ get; set; }
+            //get
+            //{
+            //    return this.;
+            //}              
+      
+            //set{
+            //    object tagert = removeCommaInput(value);
+            //    if (tagert != null)
+            //    {
+            //            this.CAN_NANG =  double.Parse(tagert.ToString());
+            //    }
+            //    else
+            //    {
+            //        this.CAN_NANG =  null;
+            //    }               
+            //} 
+     
+
+       
 
         [Display(Name = "Đặc tả")]
         [StringLength(1000)]
@@ -99,4 +118,16 @@ namespace SMS.Models
         public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
         public virtual ICollection<CHI_TIET_XUAT_KHO> CHI_TIET_XUAT_KHO { get; set; }
     }
+    //public class FieldsOfProduct
+    //{
+    //    private String CanNang { get; set; }
+    //    private String GiaBan1 { get; set; }
+    //    private String GiaBan2 { get; set; }
+    //    private String GiaBan3 { get; set; }
+    //    private String ChietKhau1 { get; set; }
+    //    private String ChietKhau2 { get; set; }
+    //    private String ChietKhau3 { get; set; }
+    //    private String MinValue { get; set; }
+    //    private String MaxValue { get; set; }
+    //}
 }

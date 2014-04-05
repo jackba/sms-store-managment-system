@@ -209,12 +209,18 @@ table.fixed{
     width: 30%;
 }
   table.fixed td{
-         padding:0px 0px 0px 0px !important;
-         line-height:none;
-         width:400px;
-         padding-left:2em;
-         height:28px;
+    padding:0px 0px 0px 0px !important;
+    line-height:none;
+    width:400px;
+    padding-left:2em;
+    height:28px;
   }
-  div.divTitle{
-      margin-left:-75px;
-  }
+.required:after {
+    color: #e32;
+    content: ' (*)';
+    display:inline;
+    float:right;
+}
+div.divTitle{
+    margin-left:-75px;
+}
