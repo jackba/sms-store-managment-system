@@ -2,7 +2,19 @@
 
 @{
     ViewBag.Title = "Thêm mới kho";
+    List<SelectListItem> theList = new List<SelectListItem>();
+    SelectListItem item;
+    foreach (var donvi in ViewBag.nguoiDungList)
+    {
+        item = new SelectListItem();
+        item.Value = donvi.MA_NGUOI_DUNG + "";
+        item.Text = donvi.TEN_NGUOI_DUNG;
+        theList.Add(item);
+    }
 }
+
+
+
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
@@ -30,7 +42,7 @@
                 @Html.LabelFor(u => u.MA_NGUOI_DUNG_DAU)
             </div>
             <div>
-                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG_DAU, (SelectList)ViewBag.NguoiLienHeList, "---------Chọn người đứng đầu---------")
+                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG_DAU, theList, "--------------- Chọn người đứng đầu kho ---------------")
             </div>
             <div>
                 @Html.LabelFor(u => u.GHI_CHU)

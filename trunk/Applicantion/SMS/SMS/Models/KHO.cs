@@ -12,16 +12,18 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
+    public class KhoModel
+    {
+        public KHO Kho { get; set; }
+        public NGUOI_DUNG NguoiDungDau { get; set; }
+        public NGUOI_DUNG NguoiTao { get; set; }
+        public NGUOI_DUNG NguoiCapNhat { get; set; }
+    }
 
     public partial class KHO
     {
-        public class KhoModel
-        {
-            public KHO DonVi { get; set; }
-            public NGUOI_DUNG NguoiDungDau { get; set; }
-            public NGUOI_DUNG NguoiTao { get; set; }
-            public NGUOI_DUNG NguoiCapNhat { get; set; }
-        }
         public KHO()
         {
             this.NGUOI_DUNG3 = new HashSet<NGUOI_DUNG>();
@@ -59,8 +61,10 @@ namespace SMS.Models
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
 
-         [Display(Name = "Người đứng đầu")]
+        [Display(Name = "Người đứng đầu")]
         public Nullable<int> MA_NGUOI_DUNG_DAU { get; set; }
+
+        public IEnumerable<SelectListItem> NguoiDungDauList { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
