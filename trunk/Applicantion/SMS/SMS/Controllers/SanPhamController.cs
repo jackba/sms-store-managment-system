@@ -14,7 +14,29 @@ namespace SMS.Controllers
         // GET: /SanPham/
         public ActionResult Index()
         {
+            LayDanhSachSanPham("");
             return View();
+        }
+
+        private void LayDanhSachSanPham(String CurrentFilter)
+        {
+            var ctx = new SmsContext();
+            List<SanPhamDisplay> DisplayContentLst = (from s in ctx.SAN_PHAM
+                                                      where (s.ACTIVE == "A"
+                                                      && (String.IsNullOrEmpty(CurrentFilter)
+                                                      || s.TEN_SAN_PHAM.ToUpper().Contains(CurrentFilter.ToUpper())
+                                                      || s.DAC_TA.ToUpper().Contains(CurrentFilter.ToUpper())
+                                                      || s.KICH_THUOC.ToUpper().Contains(CurrentFilter.ToUpper())))
+                                                      join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
+                                                      join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                                      select new SanPhamDisplay
+                                                      {
+                                                          SanPham = s,
+                                                          NguoiTao = u,
+                                                          NguoiCapNhat = u1
+                                                      }).ToList<SanPhamDisplay>();
+            ViewBag.CurrentFilter = CurrentFilter;
+            ViewBag.DisplayContentLst = DisplayContentLst;
         }
 
           [HttpPost]
@@ -29,7 +51,7 @@ namespace SMS.Controllers
 
             BindListDV(ctx);
             BindListNSX(ctx);
-
+           // ViewBag.CanNang = "123545678910";
             return View();
         }
 
@@ -83,9 +105,9 @@ namespace SMS.Controllers
                  {
                      product.MA_DON_VI = null;
                  }
-                 if (-1 == product.MA_DON_VI)
+                 if (-1 == product.MA_NHA_SAN_XUAT)
                  {
-                     product.MA_DON_VI = null;
+                     product.MA_NHA_SAN_XUAT = null;
                  }
                  sp.MA_DON_VI   = product.MA_DON_VI;
                  sp.MA_NHA_SAN_XUAT = product.MA_NHA_SAN_XUAT;

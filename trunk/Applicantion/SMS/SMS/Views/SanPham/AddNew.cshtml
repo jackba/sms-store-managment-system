@@ -11,7 +11,23 @@
 <link href="~/Content/SanPham.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
 <script >
+    function NumbericOnly(ctrl) {
+        $(ctrl).keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                return false;
+            }
+        });
+
+    }
+    function formatNumberic() {
+         $('input.numberic').each(function () {
+             $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+         });
+    }
     $(document).ready(function () {
+        formatNumberic();
         $('input.numberic').keyup(function (event) {
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) {
@@ -23,37 +39,45 @@
             var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
             // the following line has been simplified. Revision history contains original.
             $this.val(num2);
+            });
+        $('input.numberic').bind("paste", function (e) {
+            e.preventDefault();
         });
     });
-    function NumbericOnly(ctrl) {
-        $(ctrl).keypress(function (e) {
-            //if the letter is not digit then display error and don't type anything
-            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                //display error message
-                $("#errmsg").html("Digits Only").show().fadeOut("slow");
-                return false;
-            }
-        });
-
-    }
-
-
+    
     function RemoveRougeChar(convertString) {
-
-
         if (convertString.substring(0, 1) == ",") {
-
             return convertString.substring(1, convertString.length)
-
         }
         return convertString;
-
     }
 
     function reset() {
         $("form :input").each(function () {
             $(this).text('');
         });
+        formatNumberic();
+    }
+    function submitForm() {
+        $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));
+        $("#GiaBan1ID").val(removeCommas($("#GIA_BAN_1").val()));
+        $("#GiaBan2ID").val(removeCommas($("#GIA_BAN_2").val()));
+        $("#GiaBan3ID").val(removeCommas($("#GIA_BAN_3").val()));
+        $("#ChietKhau1ID").val(removeCommas($("#CHIET_KHAU_1").val()));
+        $("#ChietKhau2ID").val(removeCommas($("#CHIET_KHAU_2").val()));
+        $("#ChietKhau3ID").val(removeCommas($("#CHIET_KHAU_3").val()));
+        $("#CoSoMinID").val(removeCommas($("#CO_SO_TOI_THIEU").val()));
+        $("#CoSoMaxID").val(removeCommas($("#CO_SO_TOI_DA").val()));
+
+        $("form:first").submit();
+    }
+    function removeCommas(str) {
+        if (str != null && str != '') {
+            return (str.replace(/,/g, ''));
+        } else {
+            return null;
+        }
+        
     }
 </script>
 @using (Html.BeginForm())
@@ -83,8 +107,8 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CAN_NANG)
-                        @Html.TextBoxFor(u => u.CAN_NANG,"#,###,###", new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
-                  
+                        <input id="CAN_NANG" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                         @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID"})
                     </div>
                 </td>
                 <td></td>
@@ -123,22 +147,23 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_1)
-                        @Html.TextBoxFor(u => u.GIA_BAN_1, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
-                    </div>
+                        <input id="GIA_BAN_1" value="@ViewBag.GiaBan1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.GIA_BAN_1, new { @id = "GiaBan1ID" })
+                     </div>
                 </td>
 
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_2)
-                        @Html.TextBoxFor(u => u.GIA_BAN_2, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
-
+                        <input id="GIA_BAN_2" value="@ViewBag.GiaBan2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.GIA_BAN_2, new { @id = "GiaBan2ID" })
                     </div>
                 </td>
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_3)
-                        @Html.TextBoxFor(u => u.GIA_BAN_3, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
-
+                        <input id="GIA_BAN_3" value="@ViewBag.GiaBan3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.GIA_BAN_3, new { @id = "GiaBan3ID" })
                     </div>
                 </td>
 
@@ -148,22 +173,24 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_1)
-                        @Html.TextBoxFor(u => u.CHIEC_KHAU_1, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
+                        <input id="CHIEC_KHAU_1" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CHIEC_KHAU_1, new { @id = "ChietKhau1ID" })
                     </div>
                 </td>
 
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_2)
-                        @Html.TextBoxFor(u => u.CHIEC_KHAU_2, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
+                        <input id="CHIEC_KHAU_2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2" })
 
                     </div>
                 </td>
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_3)
-                        @Html.TextBoxFor(u => u.CHIEC_KHAU_3, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
-
+                        <input id="CHIEC_KHAU_3" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CHIEC_KHAU_3, new { @id = "ChietKhau3ID" })
                     </div>
                 </td>
 
@@ -172,14 +199,16 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CO_SO_TOI_THIEU)
-                        @Html.TextBoxFor(u => u.CO_SO_TOI_THIEU, new { @class = "numberic", @onkeydown = "NumbericOnly(this);" })
+                        <input id="CO_SO_TOI_THIEU" value="@ViewBag.CoSoMin" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CO_SO_TOI_THIEU, new { @id = "CoSoMinID" })
                     </div>
                 </td>
 
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CO_SO_TOI_DA)
-                        @Html.TextBoxFor(u => u.CO_SO_TOI_DA, new { @class= "numberic", @onkeydown = "NumbericOnly(this);" })
+                        <input id="CO_SO_TOI_DA" value="@ViewBag.CoSoMax" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CO_SO_TOI_DA, new { @id = "CoSoMaxID" })
 
                     </div>
                 </td>
@@ -190,7 +219,7 @@
 
         <div class="divTitle">
             <hr />
-            <input type="submit"  style="width:100px" value="Lưu" />
+            <input type="submit"  style="width:100px" onclick="submitForm();" value="Lưu" />
             <span> </span>
             <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
         </div>
