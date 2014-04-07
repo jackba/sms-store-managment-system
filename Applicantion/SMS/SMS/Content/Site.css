@@ -102,7 +102,6 @@ h5, h6 {
     background-color: #efeeef;
     clear: both;
     padding-bottom: 35px;
-    height:450px;
 }
 
     .main-content {
@@ -764,43 +763,85 @@ tr.pager td {
         white-space:nowrap;
     }
 
-    .header {
-        background-color: #C1D4E6;
-        font-weight: bold;
-        color: #FFF;
-    }
+.header {
+    background-color: #C1D4E6;
+    font-weight: bold;
+    color: #FFF;
+}
 
-    .webGrid th, .webGrid td {
-        border: 1px solid #C0C0C0;
-        padding: 5px;
-    }
+.webGrid th, .webGrid td {
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .webGrid td {
-        background-color: white;
-        padding: 5px;
-        white-space:nowrap;
-    }
+.webGrid td {
+    background-color: white;
+    padding: 5px;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .alt {
-        background-color: #E4E9F5;
-        color: #000;
-    }
+.alt {
+    background-color: #E4E9F5;
+    color: #000;
+}
 
-    .gridHead a:hover {
-        text-decoration: underline;
-    }
+.gridHead a:hover {
+    text-decoration: underline;
+}
 
-    .description {
-        width: auto;
-    }
+.description {
+    width: auto;
+}
 
-    .select {
-        background-color: #71857C;
-    }
+.select {
+    background-color: #71857C;
+}
 
+.myButton{
+    border-collapse: collapse;
+    width: 150px;
+    background-color: #B4CFC3;
+}
 
-    .myButton{
-        border-collapse: collapse;
-        width: 150px;
-        background-color: #B4CFC3;
-    }
+.tooltip {
+    outline:none; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+.tooltip strong {
+    line-height:30px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+.tooltip:hover {text-decoration:none;} 
+.tooltip span {
+    z-index:10;display:none; padding:14px 20px;
+    margin-top:-30px; margin-left:28px;
+    width:300px; 
+    height:auto;
+    line-height:16px;
+    white-space:normal;
+}
+.tooltip:hover span{
+    display:inline; position:absolute; color:#111;
+    border:1px solid #DCA; background:#fffAF0;}
+.callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;}
+    
+/*CSS3 extras*/
+.tooltip span
+{
+    border-radius:4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+        
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}
