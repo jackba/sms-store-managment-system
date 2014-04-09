@@ -4,7 +4,7 @@
 }
 <link href="../../Content/css/grid.css" rel="stylesheet" type="text/css" />
 
-<h2>Highlighted rows, borders</h2>
+<h2>Người Dùng</h2>
 <table class="bordered">
     <thead>
 
@@ -17,7 +17,9 @@
         <th>Điện thoại</th>
         <th>Mã kho</th>
         <th>Username</th>
+        <!--
         <th>Mật khẩu</th>
+        -->
         <th>Ngày vào làm</th>
         <th>Mã nhóm</th>
         <th>Ghi chú</th>
@@ -28,16 +30,21 @@
         <tr>
             <td>@user.MA_NGUOI_DUNG</td>        
             <td>@user.TEN_NGUOI_DUNG</td>
-            <td>@user.NGAY_SINH.ToShortDateString()</td>
+            <td>@Html.DisplayFor(modelItem => user.NGAY_SINH)</td>
             <td>@user.SO_CHUNG_MINH</td>
             <td>@user.DIA_CHI</td>
             <td>@user.SO_DIEN_THOAI</td>
             <td>@user.MA_KHO</td>
             <td>@user.USER_NAME</td>
-            <td>@user.MAT_KHAU</td>
-            <td>@Convert.ToDateTime(user.NGAY_VAO_LAM).ToString("dd/MM/yyyy")</td>
+            <!--
+            <td>@Html.PasswordFor(modelItem => user.MAT_KHAU)</td>
+            -->
+            <td>@Html.DisplayFor(modelItem => user.NGAY_VAO_LAM)</td>
             <td>@user.MA_NHOM_NGUOI_DUNG</td>
             <td>@user.GHI_CHU</td>
         </tr>
     }
 </table>
+<div>
+    <a href="@Url.Action("AddNew", "NguoiDung")"><img src="../../Content/images/add_new.png" />Thêm</a>
+</div>
