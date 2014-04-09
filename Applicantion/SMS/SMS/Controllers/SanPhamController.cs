@@ -17,7 +17,12 @@ namespace SMS.Controllers
             LayDanhSachSanPham("");
             return View();
         }
-
+        [HttpPost]
+        public ActionResult Index(string CurrentFilter)
+        {
+            LayDanhSachSanPham(CurrentFilter);
+            return View();
+        }
         private void LayDanhSachSanPham(String CurrentFilter)
         {
             var ctx = new SmsContext();
@@ -29,33 +34,33 @@ namespace SMS.Controllers
                                                       || s.KICH_THUOC.ToUpper().Contains(CurrentFilter.ToUpper())))
                                                       join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                                                       join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                                      join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
+                                                      from dv in dv_join.DefaultIfEmpty()
+                                                      join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
+                                                      from nsx in nsx_join.DefaultIfEmpty()
                                                       select new SanPhamDisplay
                                                       {
                                                           SanPham = s,
                                                           NguoiTao = u,
-                                                          NguoiCapNhat = u1
+                                                          NguoiCapNhat = u1,
+                                                          DonVi =dv,
+                                                          NhaSanXuat = nsx
                                                       }).ToList<SanPhamDisplay>();
             ViewBag.CurrentFilter = CurrentFilter;
             ViewBag.DisplayContentLst = DisplayContentLst;
         }
 
-          [HttpPost]
-        public ActionResult Index(string searchString)
-        {
-            return View();
-        }
+       
          [HttpGet]
         public ActionResult AddNew()
         {
             var ctx = new SmsContext();
-
-            BindListDV(ctx);
-            BindListNSX(ctx);
-           // ViewBag.CanNang = "123545678910";
+            BindListDV(ctx, false);
+            BindListNSX(ctx, false);
             return View();
         }
 
-         private void BindListDV(SmsContext ctx)
+         private void BindListDV(SmsContext ctx, bool isModeUpdate)
          {
              var listDV = new List<DON_VI_TINH>();
              listDV.Add(new DON_VI_TINH { MA_DON_VI = -1, TEN_DON_VI = "Chọn đơn vị tính" });
@@ -63,10 +68,18 @@ namespace SMS.Controllers
              if(null != dsDonVi){
                  listDV.AddRange(dsDonVi);
              }
-             ViewBag.dsDonVi = listDV;           
+             ViewBag.dsDonVi = listDV;
+             if (isModeUpdate)
+             {
+                 ViewBag.Title = "Cập nhật sản phẩm";
+             }
+             else
+             {
+                 ViewBag.Title = "Thêm mới sản phẩm";
+             }
          }
 
-         private void BindListNSX(SmsContext ctx)
+         private void BindListNSX(SmsContext ctx, bool isModeUpdate)
          {             
              var listNSX = new List<NHA_SAN_XUAT>();
              listNSX.Add(new NHA_SAN_XUAT { MA_NHA_SAN_XUAT = -1, TEN_NHA_SAN_XUAT = "Chọn nhà sản xuất" });
@@ -76,26 +89,127 @@ namespace SMS.Controllers
                  listNSX.AddRange(dsNSX);
              }
              ViewBag.dsNSX = listNSX;
-    
+             if (isModeUpdate)
+             {
+                 ViewBag.Title = "Cập nhật sản phẩm";
+             }
+             else
+             {
+                 ViewBag.Title = "Thêm mới sản phẩm";
+             }
          }
 
          [HttpGet]
          public ActionResult Edit(int id)
          {
+             if (id <= 0)
+             {
+                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                 return View("../Home/Error"); ;
+             }
+             var ctx = new SmsContext();
+             SAN_PHAM sp = ctx.SAN_PHAM.Find(id);
+             if (sp.ACTIVE.Equals("A"))
+             {
+                 ViewBag.Title = "Cập nhật sản phẩm";
+                 BindListDV(ctx, true);
+                 ViewBag.DVSelected = sp.MA_DON_VI;
+                 BindListNSX(ctx, true);
+                 ViewBag.NSXSelected = sp.MA_NHA_SAN_XUAT;
+                 
+                 ViewBag.CanNang = sp.CAN_NANG;
+                 ViewBag.GiaBan1 = sp.GIA_BAN_1;
+                 ViewBag.GiaBan2 = sp.GIA_BAN_2;
+                 ViewBag.GiaBan3 = sp.GIA_BAN_3;
+                 ViewBag.ChietKhau1 = sp.CHIEC_KHAU_1;
+                 ViewBag.ChietKhau2 = sp.CHIEC_KHAU_2;
+                 ViewBag.ChietKhau3 = sp.CHIEC_KHAU_3;
+                 ViewBag.CoSoMin = sp.CO_SO_TOI_THIEU;
+                 ViewBag.CoSoMax = sp.CO_SO_TOI_DA;
+
+                 return View("../SanPham/AddNew",sp);
+
+             }
+             else
+             {
+                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                 return View("../Home/Error"); ;
+             }
+         }
+
+          [HttpPost]
+         public ActionResult Edit(SAN_PHAM product)
+         {
+             var db = new SmsContext();
+             if (ModelState.IsValid)
+             {          
+                 var sp = db.SAN_PHAM.Find((int)product.MA_SAN_PHAM);
+
+                 sp.TEN_SAN_PHAM = product.TEN_SAN_PHAM;
+                 sp.KICH_THUOC = product.KICH_THUOC;
+                 sp.CAN_NANG = product.CAN_NANG;
+                 if (-1 == product.MA_DON_VI)
+                 {
+                     product.MA_DON_VI = null;
+                 }
+                 if (-1 == product.MA_NHA_SAN_XUAT)
+                 {
+                     product.MA_NHA_SAN_XUAT = null;
+                 }
+                 sp.MA_DON_VI = product.MA_DON_VI;
+                 sp.MA_NHA_SAN_XUAT = product.MA_NHA_SAN_XUAT;
+                 sp.DAC_TA = product.DAC_TA;
+                 sp.GIA_BAN_1 = product.GIA_BAN_1;
+                 sp.GIA_BAN_2 = product.GIA_BAN_2;
+                 sp.GIA_BAN_3 = product.GIA_BAN_3;
+                 sp.CHIEC_KHAU_1 = product.CHIEC_KHAU_1;
+                 sp.CHIEC_KHAU_2 = product.CHIEC_KHAU_2;
+                 sp.CHIEC_KHAU_3 = product.CHIEC_KHAU_3;
+                 sp.CO_SO_TOI_THIEU = product.CO_SO_TOI_THIEU;
+                 sp.CO_SO_TOI_DA = product.CO_SO_TOI_DA;
+                 //common fields
+                 sp.ACTIVE = "A";
+                 sp.UPDATE_AT = DateTime.Now;
+                 sp.CREATE_AT = DateTime.Now;
+                 sp.UPDATE_BY = (int)Session["UserId"];
+                 sp.CREATE_BY = (int)Session["UserId"];
+
+                 db.SaveChanges();
+                 return RedirectToAction("Index");
+             }
+             BindListDV(db, true);
+             BindListNSX(db, true);
              return View();
          }
          [HttpGet]
          public ActionResult Delete(int id)
          {
-             return View();
+              if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var sp = ctx.SAN_PHAM.Find(id);
+            if (sp.ACTIVE.Equals("A"))
+            {
+                sp.ACTIVE = "I";
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
          }
         [HttpPost]
         public ActionResult AddNew(SAN_PHAM product)
          {
-
+             var db = new SmsContext();
              if (ModelState.IsValid)
              {
-                 var db = new SmsContext();
+                
                  var sp = db.SAN_PHAM.Create();
                  // input fields
                  sp.TEN_SAN_PHAM = product.TEN_SAN_PHAM;
@@ -131,9 +245,9 @@ namespace SMS.Controllers
                  db.SaveChanges();
                  return Redirect("Index");
              }
-             var ctx = new SmsContext();
-             BindListDV(ctx);
-             BindListNSX(ctx);
+
+             BindListDV(db, false);
+             BindListNSX(db, false);
 
              return View();
          }

@@ -1,9 +1,5 @@
 ﻿@model SMS.Models.SAN_PHAM 
 
-@{
-    ViewBag.Title = "Thêm mới sản phẩm";
-   
-}
 <div class="divTitle">
     <h2>@ViewBag.Title </h2>
     <hr />
@@ -90,6 +86,7 @@
                     <div class="required">
                         @Html.LabelFor(u => u.TEN_SAN_PHAM)
                         @Html.TextBoxFor(u => u.TEN_SAN_PHAM)
+                        @Html.HiddenFor(u => u.MA_SAN_PHAM)
                     </div>
                 </td>
 
@@ -173,7 +170,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_1)
-                        <input id="CHIEC_KHAU_1" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CHIET_KHAU_1" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CHIEC_KHAU_1, new { @id = "ChietKhau1ID" })
                     </div>
                 </td>
@@ -181,15 +178,15 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_2)
-                        <input id="CHIEC_KHAU_2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2" })
+                        <input id="CHIET_KHAU_2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2ID" })
 
                     </div>
                 </td>
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_3)
-                        <input id="CHIEC_KHAU_3" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CHIET_KHAU_3" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CHIEC_KHAU_3, new { @id = "ChietKhau3ID" })
                     </div>
                 </td>
