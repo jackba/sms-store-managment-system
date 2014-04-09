@@ -37,8 +37,29 @@ namespace SMS.Controllers
 
             if (IsValid(userr.USER_NAME, userr.MAT_KHAU))
             {
-
                 FormsAuthentication.SetAuthCookie(userr.USER_NAME, false);
+
+                using (var ctx = new SmsContext())
+                {
+                    var user_role = (from n in ctx.NGUOI_DUNG
+		                            join q in ctx.PHAN_QUYEN on n.MA_NGUOI_DUNG equals q.MA_NGUOI_DUNG
+                                    where n.USER_NAME == userr.USER_NAME
+		                            select new { n.MA_NGUOI_DUNG, 
+                                                 q.QUYEN_ADMIN, 
+                                                 q.QUYEN_THAU_NGAN, 
+                                                 q.QUYEN_DANH_MUC_SAN_PHAM }).ToList();
+                    
+                    if (user_role != null && user_role.Count > 0)
+                    {
+                        //Store Session
+                        Session["UserId"] = user_role[0].MA_NGUOI_DUNG;
+                        Session["IsAdmin"] = user_role[0].QUYEN_ADMIN;
+                        Session["IsAccount"] = user_role[0].QUYEN_THAU_NGAN;
+                        Session["IsMetadataManager"] = user_role[0].QUYEN_DANH_MUC_SAN_PHAM;
+                        Session["IsStoreManager"] = true;
+                    }
+
+                }
 
                 return RedirectToAction("Index", "Home");
             }
