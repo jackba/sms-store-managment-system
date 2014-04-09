@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebMatrix.WebData;
 using SMS.Models;
 using System.Web.Security;
 using System.Data.Entity.Validation;
@@ -160,6 +159,12 @@ namespace SMS.Controllers
                     if (user.MAT_KHAU.Equals(password))
                     {
                         IsValid = true;
+                        Session["UserId"] = 1;
+                        Session["IsAdmin"] = true;
+                        Session["IsAccounting"] = true;
+                        Session["IsSaler"] = true;
+                        Session["IsMetadataManager"] = true;
+                        Session["IsStoreManager"] = true;
                     }
                 }
             }

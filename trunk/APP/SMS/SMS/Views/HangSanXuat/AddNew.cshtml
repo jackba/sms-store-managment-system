@@ -1,0 +1,39 @@
+﻿@model SMS.Models.NHA_SAN_XUAT
+
+@{
+    ViewBag.Title = "Thêm mới hãng sản xuất";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.TEN_NHA_SAN_XUAT)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.TEN_NHA_SAN_XUAT)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.GHI_CHU)
+            </div>
+            <div>
+                @Html.TextAreaFor(u => u.GHI_CHU)
+            </div>
+
+            <div>
+                <input type="submit" style="width:100px" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+            </div>
+        </fieldset>
+    </div>
+    <script>
+        function reset() {
+            window.location.reload();
+            return false;
+        }
+    </script>
+
+
+}

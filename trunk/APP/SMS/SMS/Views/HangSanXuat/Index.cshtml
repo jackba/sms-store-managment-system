@@ -1,0 +1,174 @@
+﻿@model PagedList.IPagedList<SMS.Models.HangSanXuatModel>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/HangSanXuat.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+
+@{
+    ViewBag.Title = "Danh mục hãng sản xuất";
+}
+
+<h2>@ViewBag.Title </h2>
+
+<hr style="width:100%" />
+
+
+@using (Html.BeginForm("Index", "HangSanXuat", FormMethod.Get))
+{
+    <div style="float:right">
+        <p>
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+            @{
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+    {
+        <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew","HangSanXuat")'" />
+    }
+            }
+        </p>
+
+    </div>
+    <hr style="width:100%" />
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+        <tr>
+            <td class='tablefrozencolumn' width="15%">
+                <div id='divroot' class='root'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
+                        <tr>
+                            <td class='inner colwidth head ' width="40%">
+                                @Html.ActionLink("Mã hãng sản xuất", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })
+                            </td>
+                            <td class='inner colwidth head'>
+                                @Html.ActionLink("Tên hãng sản xuất", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='divfrozen' class='frozen'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
+                                    @donvi.HangSanXuat.MA_NHA_SAN_XUAT
+                                </td>
+                                <td class='inner frozencol toprow alignText'>
+                                    @donvi.HangSanXuat.TEN_NHA_SAN_XUAT
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+            <td class='tablecontent'>
+                <div id='headscroll' class='divhead'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
+                        <tr>
+                            <td class='inner column-hscroll head'>
+                                Ghi chú
+                            </td>
+
+                            @{
+    if ((bool)Session["IsAdmin"] == true)
+    {
+        <td class='inner head' style="width:70px;">Người tạo</td>
+                                <td class='inner  head' style="width:70px;">Ngày tạo</td>
+                                <td class='inner  head' style="width:70px;">Người cập nhật</td>
+                                <td class='inner  head' style="width:70px;">Ngày cập nhật</td>
+    }
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+    {
+        <td class='inner head' style="width:50px;">Sửa</td>
+                                <td class='inner head' style="width:50px;">Xóa</td>
+    }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                <td class='inner column-hscroll alignCenter' title="@donvi.HangSanXuat.GHI_CHU"> @donvi.HangSanXuat.GHI_CHU</td>
+                                @{
+                            if ((bool)Session["IsAdmin"] == true)
+                            {
+                                <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.HangSanXuat.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.HangSanXuat.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("Edit", "HangSanXuat", new { id = @donvi.HangSanXuat.MA_NHA_SAN_XUAT })" class="button-module">
+                                        <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                    </a>
+                                </td>
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("Delete", "HangSanXuat", new { id = @donvi.HangSanXuat.MA_NHA_SAN_XUAT })" class="button-module" onclick="return deleteSubmit()">
+                                            <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                        </a>
+                                    </td>
+                            }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
+                    <div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    @Html.Label(Model.Count.ToString() + ": Hãng sản xuất")
+                </div>
+            </td>
+            <td>
+                <div style="text-align:right; padding-top:3px;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn xóa khu vực này!");
+        if (r == true) {
+            document.forms[0].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
