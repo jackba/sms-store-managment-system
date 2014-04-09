@@ -20,13 +20,16 @@
         $("#innercontent tr:odd").css("background-color", "#f3f7f5");
         $("#innercontent tr:even").css("background-color", "#fff");
     });
-    $(function () {
-        //$(document).tooltip();
-        //$('div.tooltip').each(function () {
-        //    $(this).tooltip();
-        //});
 
-    });
+    function confirmDelete() {
+        var r = confirm("Bạn muốn xóa đơn sản phẩm này không?");
+        if (r == true) {
+            document.forms[0].submit();
+        }
+        else {
+            return false;
+        }
+    }
   
 </script>
 <hr style="width:100%" />
@@ -35,9 +38,15 @@
     @using (Html.BeginForm("Index", "SanPham", FormMethod.Post))
     {
         <p>
-            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string)
             <input type="submit" value="Tìm kiếm" class="myButton" />
-            <input type="button" value="Thêm Mới" class="myButton" onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
+@{
+            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+            {
+                 <input type="button" value="Thêm Mới" class="myButton" 
+                        onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
+            }
+}
         </p>
 
     }
@@ -71,7 +80,10 @@
                                     @sp.SanPham.MA_SAN_PHAM
                                 </td>
                                 <td class='inner frozencol toprow alignText'>
-                                    @sp.SanPham.TEN_SAN_PHAM
+                                    <div class="tooltip truncate">
+                                        @sp.SanPham.TEN_SAN_PHAM
+                                        <span>@sp.SanPham.TEN_SAN_PHAM</span>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -87,7 +99,7 @@
                                 Kích thước
                             </td>
                             <td class='inner column-hscroll head'>
-                                Cân nặng
+                                Trọng lượng
                             </td>
                             <td class='inner column-hscroll head'>
                                 Đặc tả
@@ -98,7 +110,7 @@
                             <td class='inner column-hscroll head'>
                                 Nhà sản xuất
                             </td>
-                            <td class='inner column-hscroll head'>
+                            <td class='inner column-hscroll head' style="display:none">
                                 Hình ảnh
                             </td>
                             <td class='inner column-hscroll head'>
@@ -125,6 +137,33 @@
                             <td class='inner column-hscroll head rightcol'>
                                 Cơ số tối đa
                             </td>
+@{
+                    if ((bool)Session["IsAdmin"] == true)
+                    {
+                            <td class='inner column-hscroll head '>
+                                Người tạo
+                            </td>
+                            <td class='inner column-hscroll head '>
+                                Ngày tạo
+                            </td>
+                            <td class='inner column-hscroll head '>
+                                Người cập nhật
+                            </td>
+                            <td class='inner column-hscroll head '>
+                                Ngày cập nhật
+                            </td>
+                    }
+
+                    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                    {
+                        <td class='inner column-action head '>
+                            Sửa
+                        </td>
+                        <td class='inner column-action head '>
+                            Xóa
+                        </td>
+                    }
+}
                         </tr>
                     </table>
                 </div>
@@ -140,18 +179,25 @@
                                     @sp.SanPham.CAN_NANG
                                 </td>
                                 <td class='inner column-hscroll alignText '  >
-                                    <div class="tooltip column-hscroll" title="@sp.SanPham.DAC_TA">
+                                    <div class="tooltip truncate">
                                         @sp.SanPham.DAC_TA
+                                        <span>@sp.SanPham.DAC_TA</span>
                                     </div>
                                   
                                 </td>
+@{
                                 <td class='inner column-hscroll alignCenter'>
-                                    @sp.SanPham.MA_DON_VI
+                                    @if (sp.DonVi != null) 
+                                    {@sp.DonVi.TEN_DON_VI }
+                                    
                                 </td>
                                 <td class='inner column-hscroll alignCenter'>
-                                    @sp.SanPham.MA_NHA_SAN_XUAT
+                                    @if (sp.NhaSanXuat != null)
+                                    {@sp.NhaSanXuat.TEN_NHA_SAN_XUAT }
+                                   
                                 </td>
-                                <td class='inner column-hscroll alignCenter'>
+}
+                                <td class='inner column-hscroll alignCenter' style="display:none">
                                     @sp.SanPham.HINH_ANH
                                 </td>
                                 <td class='inner column-hscroll alignNumberic'>
@@ -178,20 +224,37 @@
                                 <td class='inner column-hscroll rightcol alignNumberic'>
                                     @sp.SanPham.CO_SO_TOI_DA
                             </td>
+@{
+                            if ((bool)Session["IsAdmin"] == true)
+                            {
+                                <td class='inner column-hscroll alignText '> @sp.NguoiTao.TEN_NGUOI_DUNG </td>
+                                <td class='inner column-hscroll alignCenter '> @sp.SanPham.CREATE_AT.ToString("dd/MM/yyyy")  </td>
+                                <td class='inner column-hscroll alignText '> @sp.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                <td class='inner column-hscroll alignCenter '> @sp.SanPham.UPDATE_AT.ToString("dd/MM/yyyy")  </td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            {
+                                <td class='inner column-action alignCenter '>
+                                    <a href="@Url.Action("Edit", "SanPham", new { id = @sp.SanPham.MA_SAN_PHAM })"
+                                       class="myEditButton">
+                                        <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png" />
+                                    </a>
+                                </td>
+                                <td class='inner column-action alignCenter '>
+                                    <a href="@Url.Action("Delete", "SanPham", new { id = @sp.SanPham.MA_SAN_PHAM })"
+                                       class="myEditButton" onclick="return confirmDelete()">
+                                        <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png" />
+                                    </a>
+                                </td>
+                            }
+}
                         </tr>
                         }
 
                     </table>
                 </div>
             </td>
-            @*<td class='tableverticalscroll' rowspan="2">
-                    <div class='vertical-scroll' onscroll='reposVertical(this);'>
-                        <div>
-                        </div>
-                    </div>
-                    <div class='ff-fill'>
-                    </div>
-                </td>*@
+
         </tr>
         <tr>
             <td colspan="3">
