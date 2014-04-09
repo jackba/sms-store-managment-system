@@ -1,0 +1,84 @@
+div, a, img {
+    margin: 0px;
+    padding: 0px;
+    border: 0px none;
+    outline: 0px none;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: none repeat scroll 0% 0% transparent;
+}
+
+.grid_7 {
+   width: 960;
+   display: inline;
+   float: left;
+   margin-left: 1%;
+   margin-right: 1%;
+   font: 12px/1.5 "Lucida Sans Unicode","Lucida Grande",sans-serif;
+}
+
+a.dashboard-module:hover, a.dashboard-module:active {
+    background-position: left bottom;
+    text-decoration: none;
+    color: #0063BE;
+}
+
+a.dashboard-module, a.dashboard-module:visited {
+    width: 142px;
+    height: 142px;
+    display: block;
+    float: left;
+    background: url('/Content/images/dashboard-module.gif') no-repeat scroll left top transparent;
+    margin: 0px 8px 8px 0px;
+    text-align: center;
+    color: #444;
+}
+
+a, a:visited {
+    color: #0063BE;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
+}
+
+a.dashboard-module img {
+    margin-top: 20px;
+}
+
+a.dashboard-module span {
+    margin-top: 10px;
+    display: block;
+}
+
+
+
+a.dashboard-module:hover, a.dashboard-module:active {
+    background-position: left bottom;
+    text-decoration: none;
+    color: #0063BE;
+}
+
+a.myEditButton, a.myEditButton:visited {
+    width: 100%;
+    height: 100%;
+    display: block;
+    float: left;
+    background-color:lightblue;
+    background: url('/Content/images/dashboard-module.gif') no-repeat scroll left top transparent;
+    margin: 0px 8px 8px 0px;
+    text-align: center;
+    color: #444;
+}
+
+button.mySaveButton, button.mySaveButton{
+    width: 150%;
+    height: 25%;
+    display: block;
+    background-color:lightblue;
+    background-image:url('Content/themes/base/images/edit-icon.png');
+    text-align: center;
+}
+
+

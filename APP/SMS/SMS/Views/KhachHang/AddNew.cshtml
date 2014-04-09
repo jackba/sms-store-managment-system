@@ -1,0 +1,87 @@
+﻿@model SMS.Models.KHACH_HANG
+
+@{
+    ViewBag.Title = "Thêm mới khách hàng";
+    List<SelectListItem> theList = new List<SelectListItem>();
+    SelectListItem item;
+    if (ViewBag.khuVucList != null) 
+    { 
+        foreach (var donvi in ViewBag.khuVucList)
+        {
+            item = new SelectListItem();
+            item.Value = donvi.MA_KHU_VUC + "";
+            item.Text = donvi.TEN_KHU_VUC;
+            theList.Add(item);
+        }
+    }
+}
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+        <div>
+            <fieldset>
+                <div>
+                    @Html.LabelFor(u => u.MA_THE_KHACH_HANG)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.MA_THE_KHACH_HANG)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.TEN_KHACH_HANG)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.TEN_KHACH_HANG)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.DIA_CHI)
+                </div>
+                <div>
+                    @Html.TextAreaFor(u => u.DIA_CHI)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.SO_DIEN_THOAI)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.SO_DIEN_THOAI)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.EMAIL)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.EMAIL)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.MA_KHU_VUC)
+                </div>
+                <div>
+                    @Html.DropDownListFor(u => u.MA_KHU_VUC, theList, "--------------- Chọn khu vực ---------------")
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.DOANH_SO)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.DOANH_SO)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.NO_GOI_DAU)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.NO_GOI_DAU)
+                </div>
+                <div>
+                    <input type="submit" style="width:100px" value="Lưu" />
+                    <span> </span>
+                    <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+                </div>
+            </fieldset>
+        </div>
+        <script>
+            function reset() {
+                window.location.reload();
+                return false;
+            }
+        </script>
+
+    }
+</div>
