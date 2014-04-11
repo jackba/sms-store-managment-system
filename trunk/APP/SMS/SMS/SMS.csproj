@@ -17,6 +17,10 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +52,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -120,13 +127,21 @@
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WebMatrix.WebData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
+    <Compile Include="Controllers\DonViController.cs" />
+    <Compile Include="Controllers\HangSanXuatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KhachHangController.cs" />
+    <Compile Include="Controllers\KhoController.cs" />
+    <Compile Include="Controllers\KhuVucController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
+    <Compile Include="Controllers\NhaCungCapController.cs" />
+    <Compile Include="Controllers\SanPhamController.cs" />
+    <Compile Include="Controllers\SystemConstant.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -219,6 +234,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\DonVi.css" />
+    <Content Include="Content\HangSanXuat.css" />
+    <Content Include="Content\images\add_new.png" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
     <Content Include="Content\images\Customer_Male_Light.png" />
     <Content Include="Content\images\dashboard-module.gif" />
@@ -226,9 +244,18 @@
     <Content Include="Content\images\edit_delete.png" />
     <Content Include="Content\images\green_area.png" />
     <Content Include="Content\images\industry.png" />
+    <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\provider.png" />
+    <Content Include="Content\images\storage.png" />
+    <Content Include="Content\KhachHang.css" />
+    <Content Include="Content\Kho.css" />
+    <Content Include="Content\KhuVuc.css" />
+    <Content Include="Content\NhaCungCap.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\SanPham.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Content\themes\base\images\edit-icon.png" />
     <Content Include="Content\themes\base\images\edit_delete.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -315,6 +342,7 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\scrollTable.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -371,6 +399,26 @@
     <Content Include="Views\Home\QuanTri.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\NguoiDung\Index.cshtml" />
+    <Content Include="Views\ChuyenDoiDonVi\AddNew.cshtml" />
+    <Content Include="Views\ChuyenDoiDonVi\Index.cshtml" />
+    <Content Include="Views\DonVi\AddNew.cshtml" />
+    <Content Include="Views\DonVi\Edit.cshtml" />
+    <Content Include="Views\DonVi\Index.cshtml" />
+    <Content Include="Views\HangSanXuat\AddNew.cshtml" />
+    <Content Include="Views\HangSanXuat\Edit.cshtml" />
+    <Content Include="Views\HangSanXuat\Index.cshtml" />
+    <Content Include="Views\KhachHang\AddNew.cshtml" />
+    <Content Include="Views\KhachHang\Edit.cshtml" />
+    <Content Include="Views\KhachHang\Index.cshtml" />
+    <Content Include="Views\Kho\AddNew.cshtml" />
+    <Content Include="Views\Kho\Edit.cshtml" />
+    <Content Include="Views\Kho\Index.cshtml" />
+    <Content Include="Views\KhuVuc\AddNew.cshtml" />
+    <Content Include="Views\KhuVuc\Edit.cshtml" />
+    <Content Include="Views\KhuVuc\Index.cshtml" />
+    <Content Include="Views\NhaCungCap\AddNew.cshtml" />
+    <Content Include="Views\NhaCungCap\Edit.cshtml" />
+    <Content Include="Views\NhaCungCap\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
