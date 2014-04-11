@@ -17,6 +17,8 @@ namespace SMS.Models
         public SAN_PHAM SanPham { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
+        public DON_VI_TINH DonVi { get; set; }
+        public NHA_SAN_XUAT NhaSanXuat { get; set; }
     }
     public partial class SAN_PHAM
     {
@@ -40,7 +42,7 @@ namespace SMS.Models
         [StringLength(100)]
         public string KICH_THUOC { get; set; }
 
-        [Display(Name = "Cân nặng")]
+        [Display(Name = "Trọng lượng")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}")]
         public Nullable<double> CAN_NANG{ get; set; }
                 
