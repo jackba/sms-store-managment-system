@@ -13,25 +13,69 @@ namespace SMS.Controllers
         //
         // GET: /Kho/
 
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
-
             var ctx = new SmsContext();
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.IdSortParm = sortOrder == "id" ? "id_desc" : "id";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            ViewBag.AdminSortParm = sortOrder == "admin_name" ? "admin_name_desc" : "admin_name";
             var theListContext = (from s in ctx.KHOes
-                                  where (s.ACTIVE == "A")
                                   join u2 in ctx.NGUOI_DUNG on s.MA_NGUOI_DUNG_DAU equals u2.MA_NGUOI_DUNG
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                  where (s.ACTIVE == "A" && (String.IsNullOrEmpty(searchString)
+                                  || s.TEN_KHO.ToUpper().Contains(searchString.ToUpper())
+                                  || s.SO_DIEN_THOAI.ToUpper().Contains(searchString.ToUpper())
+                                  || u2.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper())
+                                  || s.GHI_CHU.ToUpper().Contains(searchString.ToUpper())))
                                   select new KhoModel
                                   {
                                       Kho = s,
-                                      NguoiDungDau = u2,
                                       NguoiTao = u,
+                                      NguoiDungDau = u2,
                                       NguoiCapNhat = u1
-                                  });
-            ViewBag.theList = theListContext.ToList<KhoModel>();
-            return View();
+                                  }).Take(SystemConstant.MAX_ROWS);
+            ViewBag.CurrentFilter = searchString;
+            IPagedList<KhoModel> khuVucs = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = 1;
+            switch (sortOrder)
+            {
+                case "id":
+                    khuVucs = theListContext.OrderBy(DonVi => DonVi.Kho.MA_KHO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "id_desc":
+                    khuVucs = theListContext.OrderByDescending(DonVi => DonVi.Kho.MA_KHO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    khuVucs = theListContext.OrderBy(DonVi => DonVi.Kho.TEN_KHO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    khuVucs = theListContext.OrderByDescending(DonVi => DonVi.Kho.TEN_KHO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "admin_name":
+                    khuVucs = theListContext.OrderBy(DonVi => DonVi.NguoiDungDau.TEN_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "admin_name_desc":
+                    khuVucs = theListContext.OrderByDescending(DonVi => DonVi.NguoiDungDau.TEN_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khuVucs = theListContext.OrderBy(DonVi => DonVi.Kho.MA_KHO).ToPagedList(pageIndex, pageSize);
+                    break;
+            }
+            return View(khuVucs);
         }
+
         [HttpPost]
         public ActionResult Index(string searchString)
         {

@@ -70,6 +70,12 @@
                     @Html.TextBoxFor(u => u.NO_GOI_DAU)
                 </div>
                 <div>
+                    @Html.LabelFor(u => u.NGAY_PHAT_SINH_NO)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, new {  @class = "datepicker" })
+                </div>
+                <div>
                     <input type="submit" style="width:100px" value="Lưu" />
                     <span> </span>
                     <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />

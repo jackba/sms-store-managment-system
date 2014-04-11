@@ -72,6 +72,8 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
 
         [Display(Name = "Ngày phát sinh nợ")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> NGAY_PHAT_SINH_NO { get; set; }
     
         public virtual ICollection<HOA_DON> HOA_DON { get; set; }
