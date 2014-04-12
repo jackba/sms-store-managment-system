@@ -29,7 +29,6 @@
         <th>Ngày vào làm</th>
         <th>Mã nhóm</th>
         <th>Ghi chú</th>
-        <th>Active</th>
     </tr>
     </thead>
     @foreach (var user in Model)
@@ -55,7 +54,6 @@
             <td>@Html.DisplayFor(modelItem => user.NGAY_VAO_LAM)</td>
             <td>@user.MA_NHOM_NGUOI_DUNG</td>
             <td>@user.GHI_CHU</td>
-            <td>@user.ACTIVE</td>
         </tr>
     }
 </table>
