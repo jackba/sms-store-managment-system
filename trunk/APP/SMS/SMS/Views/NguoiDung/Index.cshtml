@@ -3,12 +3,18 @@
     ViewBag.Title = "Index - Nguoi Dung";
 }
 <link href="../../Content/css/grid.css" rel="stylesheet" type="text/css" />
-
+<style type="text/css">
+.crud_btn:hover {
+    background: none;
+}
+</style>
 <h2>Người Dùng</h2>
 <table class="bordered">
     <thead>
 
     <tr>
+        <th>Sửa</th>
+        <th>Xóa</th>
         <th>#</th>        
         <th>Họ tên</th>
         <th>Ngày sinh</th>
@@ -17,17 +23,24 @@
         <th>Điện thoại</th>
         <th>Mã kho</th>
         <th>Username</th>
-        <!--
+<!--
         <th>Mật khẩu</th>
-        -->
+-->
         <th>Ngày vào làm</th>
         <th>Mã nhóm</th>
         <th>Ghi chú</th>
+        <th>Active</th>
     </tr>
     </thead>
     @foreach (var user in Model)
     {
         <tr>
+            <td>
+                <a class="crud_btn" href="@Url.Action("Edit", "NguoiDung", new { id = user.MA_NGUOI_DUNG })"><img alt="" src="../../Content/images/edit.png" /></a>
+            </td>
+            <td>
+                <a class="crud_btn" href="@Url.Action("Delete", "NguoiDung", new { id = user.MA_NGUOI_DUNG })"><img alt="" src="../../Content/images/delete.png" /></a>
+            </td>
             <td>@user.MA_NGUOI_DUNG</td>        
             <td>@user.TEN_NGUOI_DUNG</td>
             <td>@Html.DisplayFor(modelItem => user.NGAY_SINH)</td>
@@ -36,15 +49,16 @@
             <td>@user.SO_DIEN_THOAI</td>
             <td>@user.MA_KHO</td>
             <td>@user.USER_NAME</td>
-            <!--
-            <td>@Html.PasswordFor(modelItem => user.MAT_KHAU)</td>
-            -->
+<!--
+            <td>@Html.DisplayFor(modelItem => user.MAT_KHAU)</td>
+-->
             <td>@Html.DisplayFor(modelItem => user.NGAY_VAO_LAM)</td>
             <td>@user.MA_NHOM_NGUOI_DUNG</td>
             <td>@user.GHI_CHU</td>
+            <td>@user.ACTIVE</td>
         </tr>
     }
 </table>
 <div>
-    <a href="@Url.Action("AddNew", "NguoiDung")"><img src="../../Content/images/add_new.png" />Thêm</a>
+    <a class="crud_btn" href="@Url.Action("AddNew", "NguoiDung")"><img src="../../Content/images/add_new.png" />Thêm</a>
 </div>
