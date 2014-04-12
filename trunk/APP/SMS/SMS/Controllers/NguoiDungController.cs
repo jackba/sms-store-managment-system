@@ -16,7 +16,7 @@ namespace SMS.Controllers
         // GET: /NguoiDung/
         public ActionResult Index()
         {
-            List<NGUOI_DUNG> lsNguoiDung = ctx.NGUOI_DUNG.ToList();
+            List<NGUOI_DUNG> lsNguoiDung = ctx.NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
 
             return View(lsNguoiDung);
         }
@@ -24,14 +24,14 @@ namespace SMS.Controllers
         private void BindKho()
         {
             //List<KHO> city = ctx.KHOes.Where(a => a.ACTIVE == "A").ToList();
-            List<KHO> kho = ctx.KHOes.ToList();
+            List<KHO> kho = ctx.KHOes.Where(m => m.ACTIVE.Equals("A")).ToList();
             ViewBag.Kho = kho;
         }
 
         private void BindNhomNguoiDung()
         {
             //List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(a => a.ACTIVE == "A").ToList();
-            List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.ToList();
+            List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
             ViewBag.NhomNguoiDung = nhomNguoiDung;
         }
 
@@ -54,6 +54,9 @@ namespace SMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Active
+                nguoidung.ACTIVE = "A";
+
                 //Created By
                 nguoidung.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                 nguoidung.CREATE_AT = DateTime.Now;
@@ -108,12 +111,11 @@ namespace SMS.Controllers
                 dbNguoiDung.DIA_CHI = nguoidung.DIA_CHI;
                 dbNguoiDung.SO_DIEN_THOAI = nguoidung.SO_DIEN_THOAI;
                 dbNguoiDung.MA_KHO = nguoidung.MA_KHO;
-                if (true){}
+                dbNguoiDung.USER_NAME = nguoidung.USER_NAME;
                 dbNguoiDung.MAT_KHAU = nguoidung.MAT_KHAU;
                 dbNguoiDung.NGAY_VAO_LAM = nguoidung.NGAY_VAO_LAM;
                 dbNguoiDung.GHI_CHU = nguoidung.GHI_CHU;
                 dbNguoiDung.MA_NHOM_NGUOI_DUNG = nguoidung.MA_NHOM_NGUOI_DUNG;
-                dbNguoiDung.ACTIVE = nguoidung.ACTIVE;
 
                 //Updated By
                 nguoidung.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
@@ -130,6 +132,24 @@ namespace SMS.Controllers
                 BindKho();
                 BindNhomNguoiDung();
                 return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var dbNguoiDung = ctx.NGUOI_DUNG.Find(id);
+
+            if (dbNguoiDung == null)
+            {
+                ViewBag.Message = "Không thể xóa người dùng này";
+                return View("Error");
+            }
+            else
+            {
+                dbNguoiDung.ACTIVE = "I";
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
             }
         }
     }
