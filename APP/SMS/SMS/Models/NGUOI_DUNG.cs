@@ -63,6 +63,9 @@ namespace SMS.Models
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
             this.XUAT_KHO2 = new HashSet<XUAT_KHO>();
+            this.KHACH_HANG_DEBIT_HIST = new HashSet<KHACH_HANG_DEBIT_HIST>();
+            this.KHACH_HANG_DEBIT_HIST1 = new HashSet<KHACH_HANG_DEBIT_HIST>();
+            this.KHACH_HANG_DEBIT_HIST2 = new HashSet<KHACH_HANG_DEBIT_HIST>();
         }
         [Key]
         public int MA_NGUOI_DUNG { get; set; }
@@ -176,5 +179,8 @@ namespace SMS.Models
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO2 { get; set; }
+        public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
+        public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST1 { get; set; }
+        public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST2 { get; set; }
     }
 }
