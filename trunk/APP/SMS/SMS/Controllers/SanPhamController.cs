@@ -5,23 +5,30 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using PagedList;
 
 namespace SMS.Controllers
 {
     public class SanPhamController : Controller
     {
 
+     
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
-            LayDanhSachSanPham("");
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Index(string CurrentFilter)
-        {
-            LayDanhSachSanPham(CurrentFilter);
-            return View();
+           
+            //if (!String.IsNullOrEmpty(CurrentFilter))
+            //{
+            //    currentPageIndex = 1;
+            //}
+            //else
+            //{
+            //    ViewBag.CurrentFilter = CurrentFilter;
+            //}
+
+            IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(sortOrder, CurrentFilter, currentPageIndex);
+
+            return View(listResult);
         }
 
 
@@ -180,6 +187,8 @@ namespace SMS.Controllers
             return View();
         }
 
+        #region Common function
+      
 
         private void BindListDV(SmsContext ctx)
         {
@@ -238,31 +247,63 @@ namespace SMS.Controllers
             }
         }
 
-        private void LayDanhSachSanPham(String CurrentFilter)
+        private IPagedList<SanPhamDisplay> LayDanhSachSanPham(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
+            int pageSize = SystemConstant.ROWS;
+
+            ViewBag.CurrentFilter = CurrentFilter;
+            ViewBag.CurrentSort = sortOrder;
+
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+
             var ctx = new SmsContext();
-            List<SanPhamDisplay> DisplayContentLst = (from s in ctx.SAN_PHAM
-                                                      where (s.ACTIVE == "A"
-                                                      && (String.IsNullOrEmpty(CurrentFilter)
-                                                      || s.TEN_SAN_PHAM.ToUpper().Contains(CurrentFilter.ToUpper())
-                                                      || s.DAC_TA.ToUpper().Contains(CurrentFilter.ToUpper())
-                                                      || s.KICH_THUOC.ToUpper().Contains(CurrentFilter.ToUpper())))
-                                                      join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
-                                                      join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
-                                                      join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
-                                                      from dv in dv_join.DefaultIfEmpty()
-                                                      join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
-                                                      from nsx in nsx_join.DefaultIfEmpty()
-                                                      select new SanPhamDisplay
-                                                      {
-                                                          SanPham = s,
-                                                          NguoiTao = u,
-                                                          NguoiCapNhat = u1,
-                                                          DonVi = dv,
-                                                          NhaSanXuat = nsx
-                                                      }).ToList<SanPhamDisplay>();
+            var contentLst = (from s in ctx.SAN_PHAM
+                                where (s.ACTIVE == "A"
+                                && (String.IsNullOrEmpty(CurrentFilter)
+                                || s.TEN_SAN_PHAM.ToUpper().Contains(CurrentFilter.ToUpper())
+                                || s.DAC_TA.ToUpper().Contains(CurrentFilter.ToUpper())
+                                || s.KICH_THUOC.ToUpper().Contains(CurrentFilter.ToUpper())))
+                                join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
+                                join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
+                                from dv in dv_join.DefaultIfEmpty()
+                                join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
+                                from nsx in nsx_join.DefaultIfEmpty()
+                                select new SanPhamDisplay
+                                {
+                                    SanPham = s,
+                                    NguoiTao = u,
+                                    NguoiCapNhat = u1,
+                                    DonVi = dv,
+                                    NhaSanXuat = nsx
+                                }).Take(SystemConstant.MAX_ROWS);
+
+
+
+            IPagedList<SanPhamDisplay> DisplayContentLst = null;
+
+            int pageIndex = (currentPageIndex ?? 1);
+
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    DisplayContentLst = contentLst.OrderByDescending(u => u.SanPham.MA_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    DisplayContentLst = contentLst.OrderBy(u => u.SanPham.TEN_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    DisplayContentLst = contentLst.OrderByDescending(u => u.SanPham.TEN_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    DisplayContentLst = contentLst.OrderBy(u => u.SanPham.MA_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+            }
+
             ViewBag.CurrentFilter = CurrentFilter;
             ViewBag.DisplayContentLst = DisplayContentLst;
+            return DisplayContentLst;
         }
 
         private object removeCommaInput(object value)
@@ -274,6 +315,8 @@ namespace SMS.Controllers
             }
             return null;
         }
+
+        #endregion
     }
 
 }

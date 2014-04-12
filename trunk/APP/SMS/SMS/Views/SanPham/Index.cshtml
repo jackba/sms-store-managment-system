@@ -1,6 +1,10 @@
-﻿@{
+﻿@model PagedList.IPagedList<SMS.Models.SanPhamDisplay>
+@using PagedList.Mvc;
+
+@{
     ViewBag.Title = "Danh sách sản phẩm";
 }
+<link href="../../Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/style.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/SanPham.css" rel="stylesheet" type="text/css" />
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
@@ -35,7 +39,7 @@
 <hr style="width:100%" />
 <div style="float:right">
 
-    @using (Html.BeginForm("Index", "SanPham", FormMethod.Post))
+    @using (Html.BeginForm("Index", "SanPham", FormMethod.Get))
     {
         <p>
             Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string)
@@ -63,10 +67,10 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%" >
-                                Mã sản phẩm
+                                @Html.ActionLink("Mã sản phẩm", "Index", new { sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter })
                             </td>
                             <td class='inner colwidth head'>
-                                Tên sản phẩm
+                                @Html.ActionLink("Tên sản phẩm", "Index", new { sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter })
                             </td>
                         </tr>
                     </table>
@@ -265,4 +269,8 @@
             </td>
         </tr>
     </table>
+  <hr />
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) của @Model.PageCount
+    @Html.PagedListPager(Model, currentPageIndex => Url.Action("Index",
+    new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 </div>
