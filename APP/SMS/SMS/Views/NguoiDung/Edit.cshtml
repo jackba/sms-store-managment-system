@@ -1,7 +1,7 @@
 ﻿@model SMS.Models.NGUOI_DUNG
 
 @{
-    ViewBag.Title = "AddNew";
+    ViewBag.Title = "Edit";
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -14,7 +14,8 @@
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-60:+0"});
+                yearRange: "-60:+0"
+            });
         });
     </script>
     <style type="text/css">
@@ -26,13 +27,15 @@
         }
     </style>
 }
-<h2>Thêm Người Dùng</h2>
+<h2>Chỉnh sửa thông tin</h2>
 
 @using (Html.BeginForm()) {
     //@Html.ValidationSummary(true)
 
     <fieldset>
         <legend>NGUOI_DUNG</legend>
+
+        @Html.HiddenFor(model => model.MA_NGUOI_DUNG)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.TEN_NGUOI_DUNG)
@@ -45,7 +48,6 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.NGAY_SINH)
         </div>
-
         <div class="editor-field required">
             @Html.TextBoxFor(model => model.NGAY_SINH, "{0:d}", new { @class = "datePicker" })
             @Html.ValidationMessageFor(model => model.NGAY_SINH)
@@ -86,7 +88,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.USER_NAME)
         </div>
-        <div class="editor-field required">
+        <div class="editor-field">
             @Html.EditorFor(model => model.USER_NAME)
             @Html.ValidationMessageFor(model => model.USER_NAME)
         </div>
@@ -95,7 +97,7 @@
             @Html.LabelFor(model => model.MAT_KHAU)
         </div>
         <div class="editor-field required">
-            @Html.EditorFor(model => model.MAT_KHAU, new {value = ViewBag.SelPass})
+            @Html.EditorFor(model => model.MAT_KHAU)
             @Html.ValidationMessageFor(model => model.MAT_KHAU)
         </div>
 
@@ -133,7 +135,7 @@
         </div>
 -->
         <p>
-            <input type="submit" value="Lưu" />
+            <input type="submit" value="Cập nhật" />
         </p>
     </fieldset>
 }
