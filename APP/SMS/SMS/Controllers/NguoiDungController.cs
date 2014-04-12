@@ -70,7 +70,67 @@ namespace SMS.Controllers
                 BindNhomNguoiDung();
                 return View();
             }
+        }
 
+        [HttpGet]
+        public ActionResult Edit(int id = -1)
+        {
+            var nguoidung = ctx.NGUOI_DUNG.SingleOrDefault(n => n.MA_NGUOI_DUNG == id);
+
+            if (nguoidung == null)
+            {
+                //TODO: return error message
+                return View("Index");
+            }
+            else
+            {
+                //Ma Kho
+                BindKho();
+
+                //Ma Nhom
+                BindNhomNguoiDung();
+
+                return View(nguoidung);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, NGUOI_DUNG nguoidung)
+        {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (ModelState.IsValid)
+            {
+                var dbNguoiDung = ctx.NGUOI_DUNG.SingleOrDefault(n => n.MA_NGUOI_DUNG == id);
+
+                dbNguoiDung.TEN_NGUOI_DUNG = nguoidung.TEN_NGUOI_DUNG;
+                dbNguoiDung.NGAY_SINH = nguoidung.NGAY_SINH;
+                dbNguoiDung.SO_CHUNG_MINH = nguoidung.SO_CHUNG_MINH;
+                dbNguoiDung.DIA_CHI = nguoidung.DIA_CHI;
+                dbNguoiDung.SO_DIEN_THOAI = nguoidung.SO_DIEN_THOAI;
+                dbNguoiDung.MA_KHO = nguoidung.MA_KHO;
+                if (true){}
+                dbNguoiDung.MAT_KHAU = nguoidung.MAT_KHAU;
+                dbNguoiDung.NGAY_VAO_LAM = nguoidung.NGAY_VAO_LAM;
+                dbNguoiDung.GHI_CHU = nguoidung.GHI_CHU;
+                dbNguoiDung.MA_NHOM_NGUOI_DUNG = nguoidung.MA_NHOM_NGUOI_DUNG;
+                dbNguoiDung.ACTIVE = nguoidung.ACTIVE;
+
+                //Updated By
+                nguoidung.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                nguoidung.UPDATE_AT = DateTime.Now;
+
+                ctx.SaveChanges();
+
+                //return Redirect("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.SelPass = nguoidung.MAT_KHAU;
+                BindKho();
+                BindNhomNguoiDung();
+                return View();
+            }
         }
     }
 }

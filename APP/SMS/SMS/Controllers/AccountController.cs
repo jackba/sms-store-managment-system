@@ -46,7 +46,8 @@ namespace SMS.Controllers
 		                            select new { n.MA_NGUOI_DUNG, 
                                                  q.QUYEN_ADMIN, 
                                                  q.QUYEN_THAU_NGAN, 
-                                                 q.QUYEN_DANH_MUC_SAN_PHAM }).ToList();
+                                                 q.QUYEN_DANH_MUC_SAN_PHAM,
+                                                 q.QUYEN_QUAN_LY_KHO }).ToList();
                     
                     if (user_role != null && user_role.Count > 0)
                     {
@@ -55,7 +56,7 @@ namespace SMS.Controllers
                         Session["IsAdmin"] = user_role[0].QUYEN_ADMIN;
                         Session["IsAccount"] = user_role[0].QUYEN_THAU_NGAN;
                         Session["IsMetadataManager"] = user_role[0].QUYEN_DANH_MUC_SAN_PHAM;
-                        Session["IsStoreManager"] = true;
+                        Session["IsStoreManager"] = user_role[0].QUYEN_QUAN_LY_KHO;
                     }
 
                 }
