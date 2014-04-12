@@ -14,7 +14,7 @@
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-100:+0"});
+                yearRange: "-60:+0"});
         });
     </script>
     <style type="text/css">
@@ -95,7 +95,7 @@
             @Html.LabelFor(model => model.MAT_KHAU)
         </div>
         <div class="editor-field required">
-            @Html.PasswordFor(model => model.MAT_KHAU, new {value = ViewBag.SelPass})
+            @Html.EditorFor(model => model.MAT_KHAU, new {value = ViewBag.SelPass})
             @Html.ValidationMessageFor(model => model.MAT_KHAU)
         </div>
 
@@ -133,7 +133,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Lưu" />
         </p>
     </fieldset>
 }
