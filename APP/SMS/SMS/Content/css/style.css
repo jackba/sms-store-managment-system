@@ -21,6 +21,7 @@ a.dashboard-module:hover, a.dashboard-module:active {
     background-position: left bottom;
     text-decoration: none;
     color: #0063BE;
+    outline:2px solid #ef4e07;
 }
 
 a.dashboard-module, a.dashboard-module:visited {
