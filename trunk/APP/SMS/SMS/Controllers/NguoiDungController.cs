@@ -52,6 +52,12 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult AddNew(NGUOI_DUNG nguoidung)
         {
+            //Validation Form
+            if (string.IsNullOrEmpty(nguoidung.TEN_NGUOI_DUNG))
+                ModelState.AddModelError("TEN_NGUOI_DUNG", "Vui lòng nhập tên của bạn");
+
+
+
             if (ModelState.IsValid)
             {
                 //Active
