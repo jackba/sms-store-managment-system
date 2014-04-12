@@ -12,24 +12,25 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class NHA_SAN_XUAT
+    public partial class KHACH_HANG_DEBIT_HIST
     {
-        public NHA_SAN_XUAT()
-        {
-            this.SAN_PHAM = new HashSet<SAN_PHAM>();
-        }
-    
-        public int MA_NHA_SAN_XUAT { get; set; }
-        public string TEN_NHA_SAN_XUAT { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> MA_KHACH_HANG { get; set; }
+        public Nullable<double> NO_TRUOC { get; set; }
+        public Nullable<double> PHAT_SINH { get; set; }
+        public Nullable<double> NO_SAU { get; set; }
+        public Nullable<System.DateTime> NGAY_PHAT_SINH { get; set; }
+        public Nullable<int> MA_NHAN_VIEN_TH { get; set; }
+        public string GHI_CHU { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
-        public string GHI_CHU { get; set; }
     
+        public virtual KHACH_HANG KHACH_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
-        public virtual ICollection<SAN_PHAM> SAN_PHAM { get; set; }
+        public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
     }
 }

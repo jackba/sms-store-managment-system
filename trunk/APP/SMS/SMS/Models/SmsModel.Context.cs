@@ -47,5 +47,6 @@ namespace SMS.Models
         public DbSet<XUAT_KHO> XUAT_KHO { get; set; }
         public DbSet<HOA_DON_CHUA_XUAT_KHO> HOA_DON_CHUA_XUAT_KHO { get; set; }
         public DbSet<NHAP_XUAT_TON> NHAP_XUAT_TON { get; set; }
+        public DbSet<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
     }
 }

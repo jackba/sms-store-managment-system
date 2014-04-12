@@ -11,15 +11,7 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public class KhuVucModel
-    {
-        public KHU_VUC KhuVuc { get; set; }
-        public NGUOI_DUNG NguoiTao { get; set; }
-        public NGUOI_DUNG NguoiCapNhat { get; set; }
-    }
-
+    
     public partial class KHU_VUC
     {
         public KHU_VUC()
@@ -28,24 +20,11 @@ namespace SMS.Models
         }
     
         public int MA_KHU_VUC { get; set; }
-
-        [Required]
-        [Display(Name = "Tên khu vực")]
-        [StringLength(100)]
         public string TEN_KHU_VUC { get; set; }
-
-        [Display(Name = "Ghi chú")]
-        [StringLength(1000)]
         public string GHI_CHU { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> CREATE_AT { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
     

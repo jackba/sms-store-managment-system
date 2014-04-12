@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SMSModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="SMSModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="SMSModelStoreContainer">
           <EntitySet Name="CHI_TIET_HOA_DON" EntityType="SMSModel.Store.CHI_TIET_HOA_DON" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CHI_TIET_NHAP_KHO" EntityType="SMSModel.Store.CHI_TIET_NHAP_KHO" store:Type="Tables" Schema="dbo" />
@@ -14,6 +14,7 @@
           <EntitySet Name="DON_VI_TINH" EntityType="SMSModel.Store.DON_VI_TINH" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="HOA_DON" EntityType="SMSModel.Store.HOA_DON" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="KHACH_HANG" EntityType="SMSModel.Store.KHACH_HANG" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="KHACH_HANG_DEBIT_HIST" EntityType="SMSModel.Store.KHACH_HANG_DEBIT_HIST" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="KHO" EntityType="SMSModel.Store.KHO" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="KHU_VUC" EntityType="SMSModel.Store.KHU_VUC" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="KIEM_KHO_HISTORY" EntityType="SMSModel.Store.KIEM_KHO_HISTORY" store:Type="Tables" Schema="dbo" />
@@ -168,13 +169,29 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
           </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__CREAT__3C34F16F" Association="SMSModel.Store.FK__KHACH_HAN__CREAT__3C34F16F">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
           <AssociationSet Name="FK__KHACH_HAN__MA_KH__1A14E395" Association="SMSModel.Store.FK__KHACH_HAN__MA_KH__1A14E395">
             <End Role="KHU_VUC" EntitySet="KHU_VUC" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
           </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__MA_KH__3A4CA8FD" Association="SMSModel.Store.FK__KHACH_HAN__MA_KH__3A4CA8FD">
+            <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__MA_NH__3B40CD36" Association="SMSModel.Store.FK__KHACH_HAN__MA_NH__3B40CD36">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
           <AssociationSet Name="FK__KHACH_HAN__UPDAT__1BFD2C07" Association="SMSModel.Store.FK__KHACH_HAN__UPDAT__1BFD2C07">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__UPDAT__3D2915A8" Association="SMSModel.Store.FK__KHACH_HAN__UPDAT__3D2915A8">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
           <AssociationSet Name="FK__KHO__CREATE_BY__0EA330E9" Association="SMSModel.Store.FK__KHO__CREATE_BY__0EA330E9">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
@@ -479,6 +496,24 @@
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
           <Property Name="NGAY_PHAT_SINH_NO" Type="date" />
         </EntityType>
+        <EntityType Name="KHACH_HANG_DEBIT_HIST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MA_KHACH_HANG" Type="int" />
+          <Property Name="NO_TRUOC" Type="float" />
+          <Property Name="PHAT_SINH" Type="float" />
+          <Property Name="NO_SAU" Type="float" />
+          <Property Name="NGAY_PHAT_SINH" Type="date" />
+          <Property Name="MA_NHAN_VIEN_TH" Type="int" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CREATE_BY" Type="int" />
+          <Property Name="UPDATE_BY" Type="int" />
+          <Property Name="CREATE_AT" Type="date" />
+          <Property Name="UPDATE_AT" Type="date" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="KHO">
           <Key>
             <PropertyRef Name="MA_KHO" />
@@ -573,6 +608,7 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="NHAP_KHO">
           <Key>
@@ -622,6 +658,7 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+          <Property Name="QUYEN_QUAN_LY_KHO" Type="bit" />
         </EntityType>
         <EntityType Name="SAN_PHAM">
           <Key>
@@ -1069,6 +1106,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__KHACH_HAN__CREAT__3C34F16F">
+          <End Role="NGUOI_DUNG" Type="SMSModel.Store.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="KHACH_HANG_DEBIT_HIST" Type="SMSModel.Store.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__KHACH_HAN__MA_KH__1A14E395">
           <End Role="KHU_VUC" Type="SMSModel.Store.KHU_VUC" Multiplicity="0..1" />
           <End Role="KHACH_HANG" Type="SMSModel.Store.KHACH_HANG" Multiplicity="*" />
@@ -1081,6 +1130,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__KHACH_HAN__MA_KH__3A4CA8FD">
+          <End Role="KHACH_HANG" Type="SMSModel.Store.KHACH_HANG" Multiplicity="0..1" />
+          <End Role="KHACH_HANG_DEBIT_HIST" Type="SMSModel.Store.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACH_HANG">
+              <PropertyRef Name="MA_KHACH_HANG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="MA_KHACH_HANG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__MA_NH__3B40CD36">
+          <End Role="NGUOI_DUNG" Type="SMSModel.Store.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="KHACH_HANG_DEBIT_HIST" Type="SMSModel.Store.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="MA_NHAN_VIEN_TH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__KHACH_HAN__UPDAT__1BFD2C07">
           <End Role="NGUOI_DUNG" Type="SMSModel.Store.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KHACH_HANG" Type="SMSModel.Store.KHACH_HANG" Multiplicity="*" />
@@ -1089,6 +1162,18 @@
               <PropertyRef Name="MA_NGUOI_DUNG" />
             </Principal>
             <Dependent Role="KHACH_HANG">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__UPDAT__3D2915A8">
+          <End Role="NGUOI_DUNG" Type="SMSModel.Store.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="KHACH_HANG_DEBIT_HIST" Type="SMSModel.Store.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
               <PropertyRef Name="UPDATE_BY" />
             </Dependent>
           </ReferentialConstraint>
@@ -1603,8 +1688,7 @@
           <Parameter Name="SO_LUONG" Type="float" Mode="In" />
         </Function>
         <Function Name="STMA_GET_MAX_DATE_KIEM_KHO" ReturnType="date" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SMSModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -1923,6 +2007,23 @@
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
+          <EntitySet Name="KHACH_HANG_DEBIT_HIST" EntityType="SMSModel.KHACH_HANG_DEBIT_HIST" />
+          <AssociationSet Name="FK__KHACH_HAN__MA_KH__3A4CA8FD" Association="SMSModel.FK__KHACH_HAN__MA_KH__3A4CA8FD">
+            <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__CREAT__3C34F16F" Association="SMSModel.FK__KHACH_HAN__CREAT__3C34F16F">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__MA_NH__3B40CD36" Association="SMSModel.FK__KHACH_HAN__MA_NH__3B40CD36">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__UPDAT__3D2915A8" Association="SMSModel.FK__KHACH_HAN__UPDAT__3D2915A8">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
@@ -2093,6 +2194,7 @@
           <NavigationProperty Name="NGUOI_DUNG" Relationship="SMSModel.FK__KHACH_HAN__CREAT__1B0907CE" FromRole="KHACH_HANG" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="KHU_VUC" Relationship="SMSModel.FK__KHACH_HAN__MA_KH__1A14E395" FromRole="KHACH_HANG" ToRole="KHU_VUC" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__KHACH_HAN__UPDAT__1BFD2C07" FromRole="KHACH_HANG" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST" Relationship="SMSModel.FK__KHACH_HAN__MA_KH__3A4CA8FD" FromRole="KHACH_HANG" ToRole="KHACH_HANG_DEBIT_HIST" />
         </EntityType>
         <EntityType Name="KHO">
           <Key>
@@ -2223,6 +2325,9 @@
           <NavigationProperty Name="XUAT_KHO" Relationship="SMSModel.FK__XUAT_KHO__CREATE__59FA5E80" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO1" Relationship="SMSModel.FK__XUAT_KHO__MA_NHA__59063A47" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO2" Relationship="SMSModel.FK__XUAT_KHO__UPDATE__5AEE82B9" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
+          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST" Relationship="SMSModel.FK__KHACH_HAN__CREAT__3C34F16F" FromRole="NGUOI_DUNG" ToRole="KHACH_HANG_DEBIT_HIST" />
+          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST1" Relationship="SMSModel.FK__KHACH_HAN__MA_NH__3B40CD36" FromRole="NGUOI_DUNG" ToRole="KHACH_HANG_DEBIT_HIST" />
+          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST2" Relationship="SMSModel.FK__KHACH_HAN__UPDAT__3D2915A8" FromRole="NGUOI_DUNG" ToRole="KHACH_HANG_DEBIT_HIST" />
         </EntityType>
         <EntityType Name="NHA_CUNG_CAP">
           <Key>
@@ -2258,6 +2363,7 @@
           <NavigationProperty Name="NGUOI_DUNG" Relationship="SMSModel.FK__NHA_SAN_X__CREAT__2E1BDC42" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__NHA_SAN_X__UPDAT__2F10007B" FromRole="NHA_SAN_XUAT" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="SAN_PHAM" Relationship="SMSModel.FK__SAN_PHAM__MA_NHA__3A81B327" FromRole="NHA_SAN_XUAT" ToRole="SAN_PHAM" />
+          <Property Type="String" Name="GHI_CHU" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NHAP_KHO">
           <Key>
@@ -2324,6 +2430,7 @@
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__PHAN_QUYE__UPDAT__29572725" FromRole="PHAN_QUYEN" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="SMSModel.FK__PHAN_QUYE__MA_NG__267ABA7A" FromRole="PHAN_QUYEN" ToRole="NHOM_NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG1" Relationship="SMSModel.FK__PHAN_QUYE__MA_NH__276EDEB3" FromRole="PHAN_QUYEN" ToRole="NHOM_NGUOI_DUNG" />
+          <Property Type="Boolean" Name="QUYEN_QUAN_LY_KHO" />
         </EntityType>
         <EntityType Name="SAN_PHAM">
           <Key>
@@ -3316,6 +3423,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="KHACH_HANG_DEBIT_HIST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MA_KHACH_HANG" />
+          <Property Type="Double" Name="NO_TRUOC" />
+          <Property Type="Double" Name="PHAT_SINH" />
+          <Property Type="Double" Name="NO_SAU" />
+          <Property Type="DateTime" Name="NGAY_PHAT_SINH" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_TH" />
+          <Property Type="String" Name="GHI_CHU" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CREATE_BY" />
+          <Property Type="Int32" Name="UPDATE_BY" />
+          <Property Type="DateTime" Name="CREATE_AT" />
+          <Property Type="DateTime" Name="UPDATE_AT" />
+          <Property Type="String" Name="ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="KHACH_HANG" Relationship="SMSModel.FK__KHACH_HAN__MA_KH__3A4CA8FD" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="KHACH_HANG" />
+          <NavigationProperty Name="NGUOI_DUNG" Relationship="SMSModel.FK__KHACH_HAN__CREAT__3C34F16F" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__KHACH_HAN__MA_NH__3B40CD36" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG2" Relationship="SMSModel.FK__KHACH_HAN__UPDAT__3D2915A8" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
+        </EntityType>
+        <Association Name="FK__KHACH_HAN__MA_KH__3A4CA8FD">
+          <End Type="SMSModel.KHACH_HANG" Role="KHACH_HANG" Multiplicity="0..1" />
+          <End Type="SMSModel.KHACH_HANG_DEBIT_HIST" Role="KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACH_HANG">
+              <PropertyRef Name="MA_KHACH_HANG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="MA_KHACH_HANG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__CREAT__3C34F16F">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.KHACH_HANG_DEBIT_HIST" Role="KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__MA_NH__3B40CD36">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.KHACH_HANG_DEBIT_HIST" Role="KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="MA_NHAN_VIEN_TH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__UPDAT__3D2915A8">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.KHACH_HANG_DEBIT_HIST" Role="KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3501,7 +3678,8 @@
             <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="NHA_SAN_XUAT"><EntityTypeMapping TypeName="SMSModel.NHA_SAN_XUAT"><MappingFragment StoreEntitySet="NHA_SAN_XUAT">
-            <ScalarProperty Name="MA_NHA_SAN_XUAT" ColumnName="MA_NHA_SAN_XUAT" />
+            <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <ScalarProperty Name="MA_NHA_SAN_XUAT" ColumnName="MA_NHA_SAN_XUAT" />
             <ScalarProperty Name="TEN_NHA_SAN_XUAT" ColumnName="TEN_NHA_SAN_XUAT" />
             <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
             <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
@@ -3536,7 +3714,8 @@
             <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PHAN_QUYEN"><EntityTypeMapping TypeName="SMSModel.PHAN_QUYEN"><MappingFragment StoreEntitySet="PHAN_QUYEN">
-            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="QUYEN_QUAN_LY_KHO" ColumnName="QUYEN_QUAN_LY_KHO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
             <ScalarProperty Name="MA_NGUOI_DUNG" ColumnName="MA_NGUOI_DUNG" />
             <ScalarProperty Name="QUYEN_ADMIN" ColumnName="QUYEN_ADMIN" />
             <ScalarProperty Name="QUYEN_DANH_MUC_SAN_PHAM" ColumnName="QUYEN_DANH_MUC_SAN_PHAM" />
@@ -3624,6 +3803,25 @@
             <ScalarProperty Name="SO_LUONG_XUAT" ColumnName="SO_LUONG_XUAT" />
             <ScalarProperty Name="SO_LUONG_TON" ColumnName="SO_LUONG_TON" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="KHACH_HANG_DEBIT_HIST">
+            <EntityTypeMapping TypeName="SMSModel.KHACH_HANG_DEBIT_HIST">
+              <MappingFragment StoreEntitySet="KHACH_HANG_DEBIT_HIST">
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <ScalarProperty Name="MA_NHAN_VIEN_TH" ColumnName="MA_NHAN_VIEN_TH" />
+                <ScalarProperty Name="NGAY_PHAT_SINH" ColumnName="NGAY_PHAT_SINH" />
+                <ScalarProperty Name="NO_SAU" ColumnName="NO_SAU" />
+                <ScalarProperty Name="PHAT_SINH" ColumnName="PHAT_SINH" />
+                <ScalarProperty Name="NO_TRUOC" ColumnName="NO_TRUOC" />
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3669,15 +3867,13 @@
         <EntityTypeShape EntityType="SMSModel.HOA_DON_CHUA_XUAT_KHO" Width="1.5" PointX="0.75" PointY="0.75" Height="3.5186979166666674" IsExpanded="true" />
         <EntityTypeShape EntityType="SMSModel.NHAP_XUAT_TON" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333282" IsExpanded="true" />
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__5070F446" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.75" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.75" PointY="48.21875" />
-          <ConnectorPoint PointX="3.7682297916666663" PointY="48.21875" />
-          <ConnectorPoint PointX="4.1380227083333345" PointY="48.21875" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="48.21875" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="48.21875" />
-          <ConnectorPoint PointX="7.041666666666667" PointY="48.21875" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="48.21875" />
-          <ConnectorPoint PointX="7.5" PointY="48.21875" />
+          <ConnectorPoint PointX="3.75" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.75" PointY="48.47656375" />
+          <ConnectorPoint PointX="3.7818971354166666" PointY="48.47656375" />
+          <ConnectorPoint PointX="4.5437854817708327" PointY="48.47656375" />
+          <ConnectorPoint PointX="7.041666666666667" PointY="48.47656375" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="48.47656375" />
+          <ConnectorPoint PointX="7.5" PointY="48.47656375" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_HO__4E88ABD4" ManuallyRouted="false">
           <ConnectorPoint PointX="6.7257692307692318" PointY="44.874410807291667" />
@@ -3689,9 +3885,9 @@
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_KH__236943A5" ManuallyRouted="false">
           <ConnectorPoint PointX="6.7130769230769234" PointY="64.875" />
-          <ConnectorPoint PointX="7.1875" PointY="64.400576923076926" />
-          <ConnectorPoint PointX="7.1875" PointY="50.754993234375007" />
+          <ConnectorPoint PointX="7.197916666666667" PointY="64.400576923076926" />
           <ConnectorPoint PointX="7.197916666666667" PointY="50.754993234375007" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="50.754993234375007" />
           <ConnectorPoint PointX="7.427083333333333" PointY="50.754993234375007" />
           <ConnectorPoint PointX="7.5" PointY="50.754993234375007" />
         </AssociationConnector>
@@ -3700,19 +3896,17 @@
           <ConnectorPoint PointX="8.25" PointY="51.537903645833339" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__5165187F" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.1562525" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.1562525" PointY="47.7031225" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="47.7031225" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="47.7031225" />
-          <ConnectorPoint PointX="7.041666666666667" PointY="47.7031225" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="47.7031225" />
-          <ConnectorPoint PointX="7.5" PointY="47.7031225" />
+          <ConnectorPoint PointX="4.1562525" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.1562525" PointY="47.832029375" />
+          <ConnectorPoint PointX="4.195970260416666" PointY="47.832029375" />
+          <ConnectorPoint PointX="4.5437854817708319" PointY="47.832029375" />
+          <ConnectorPoint PointX="7.041666666666667" PointY="47.832029375" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="47.832029375" />
+          <ConnectorPoint PointX="7.5" PointY="47.832029375" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__797309D9" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="36.230499674479162" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="36.230499674479162" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="36.230499674479162" />
-          <ConnectorPoint PointX="5.25" PointY="36.230499674479162" />
+          <ConnectorPoint PointX="4.5" PointY="36.725624593098956" />
+          <ConnectorPoint PointX="5.25" PointY="36.725624593098956" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_NH__778AC167" ManuallyRouted="false">
           <ConnectorPoint PointX="15" PointY="53.624705403645834" />
@@ -3725,6 +3919,8 @@
           <ConnectorPoint PointX="9.25" PointY="50.625" />
           <ConnectorPoint PointX="9.25" PointY="45.124410807291667" />
           <ConnectorPoint PointX="7.427083333333333" PointY="45.124410807291667" />
+          <ConnectorPoint PointX="7.1145833333333348" PointY="45.124410807291667" />
+          <ConnectorPoint PointX="7.0844881794871783" PointY="45.124410807291667" />
           <ConnectorPoint PointX="6.8924358974358979" PointY="45.124410807291667" />
           <ConnectorPoint PointX="5" PointY="45.124410807291667" />
           <ConnectorPoint PointX="5" PointY="38.460999348958325" />
@@ -3738,15 +3934,11 @@
           <ConnectorPoint PointX="6.75" PointY="36.230499674479162" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__7A672E12" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="35.240249837239581" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="35.240249837239581" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="35.240249837239581" />
-          <ConnectorPoint PointX="5.25" PointY="35.240249837239581" />
+          <ConnectorPoint PointX="4.5" PointY="35.487812296549478" />
+          <ConnectorPoint PointX="5.25" PointY="35.487812296549478" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__6B24EA82" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="38.280701497395825" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="38.280701497395825" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="38.280701497395825" />
           <ConnectorPoint PointX="5.916666666666667" PointY="38.280701497395825" />
           <ConnectorPoint PointX="6.083333333333333" PointY="38.280701497395825" />
           <ConnectorPoint PointX="7.197916666666667" PointY="38.280701497395825" />
@@ -3760,21 +3952,21 @@
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_TR__693CA210" ManuallyRouted="false">
           <ConnectorPoint PointX="12.75" PointY="37.893951822916662" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="37.893951822916662" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="37.893951822916662" />
           <ConnectorPoint PointX="10.208333333333334" PointY="37.893951822916662" />
           <ConnectorPoint PointX="10.041666666666666" PointY="37.893951822916662" />
           <ConnectorPoint PointX="9.75" PointY="37.893951822916662" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__6C190EBB" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="34.21875" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="34.21875" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="34.21875" />
           <ConnectorPoint PointX="7.260416666666667" PointY="34.21875" />
           <ConnectorPoint PointX="7.427083333333333" PointY="34.21875" />
           <ConnectorPoint PointX="8.25" PointY="34.21875" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__5EBF139D" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="31.201650390624998" />
-          <ConnectorPoint PointX="5.25" PointY="31.201650390624998" />
+          <ConnectorPoint PointX="4.5" PointY="31.720812988281246" />
+          <ConnectorPoint PointX="5.25" PointY="31.720812988281246" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_SA__5DCAEF64" ManuallyRouted="false">
           <ConnectorPoint PointX="7.5565374615384622" PointY="53.125" />
@@ -3792,24 +3984,24 @@
           <ConnectorPoint PointX="6.75" PointY="33.152145935096151" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__5FB337D6" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="30.1633251953125" />
-          <ConnectorPoint PointX="5.25" PointY="30.1633251953125" />
+          <ConnectorPoint PointX="4.5" PointY="30.422906494140623" />
+          <ConnectorPoint PointX="5.25" PointY="30.422906494140623" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__CREAT__4316F928" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="39.34375" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="39.34375" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="39.34375" />
-          <ConnectorPoint PointX="7.197916666666667" PointY="39.34375" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="39.34375" />
-          <ConnectorPoint PointX="7.5" PointY="39.34375" />
+          <ConnectorPoint PointX="4.5" PointY="39.2578125" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="39.2578125" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="39.2578125" />
+          <ConnectorPoint PointX="7.197916666666667" PointY="39.2578125" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="39.2578125" />
+          <ConnectorPoint PointX="7.5" PointY="39.2578125" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__MA_DO__4222D4EF" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="49.312306692307693" />
-          <ConnectorPoint PointX="7.0660744349011209" PointY="48.996232257406575" />
-          <ConnectorPoint PointX="7.1839255650988791" PointY="48.878381127208812" />
-          <ConnectorPoint PointX="7.1875" PointY="48.874806692307693" />
-          <ConnectorPoint PointX="7.1875" PointY="41.024975958333336" />
+          <ConnectorPoint PointX="7.0653853183995388" PointY="49.004255916196513" />
+          <ConnectorPoint PointX="7.1846146816004612" PointY="48.887799328883986" />
+          <ConnectorPoint PointX="7.197916666666667" PointY="48.874806692307693" />
           <ConnectorPoint PointX="7.197916666666667" PointY="41.024975958333336" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="41.024975958333336" />
           <ConnectorPoint PointX="7.427083333333333" PointY="41.024975958333336" />
           <ConnectorPoint PointX="7.5" PointY="41.024975958333336" />
         </AssociationConnector>
@@ -3820,49 +4012,47 @@
           <ConnectorPoint PointX="9" PointY="42.642543070512822" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__UPDAT__440B1D61" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="39.515625" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="39.515625" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="39.515625" />
-          <ConnectorPoint PointX="7.197916666666667" PointY="39.515625" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="39.515625" />
-          <ConnectorPoint PointX="7.5" PointY="39.515625" />
+          <ConnectorPoint PointX="4.5" PointY="39.47265625" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="39.47265625" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="39.47265625" />
+          <ConnectorPoint PointX="7.197916666666667" PointY="39.47265625" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="39.47265625" />
+          <ConnectorPoint PointX="7.5" PointY="39.47265625" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__DON_VI_TI__CREAT__33D4B598" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.3437475" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.3437475" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="3.3619772916666664" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="3.7317702083333337" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="3.7682297916666663" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="4.1380227083333345" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="50.9131982421875" />
-          <ConnectorPoint PointX="5.25" PointY="50.9131982421875" />
+          <ConnectorPoint PointX="3.3437475" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.3437475" PointY="51.344624052734375" />
+          <ConnectorPoint PointX="3.3756446354166667" PointY="51.344624052734375" />
+          <ConnectorPoint PointX="3.9798163020833335" PointY="51.344624052734375" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="51.344624052734375" />
+          <ConnectorPoint PointX="4.5437854817708336" PointY="51.344624052734375" />
+          <ConnectorPoint PointX="5.25" PointY="51.344624052734375" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__DON_VI_TI__UPDAT__34C8D9D1" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.3593787499999994" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.3593787499999994" PointY="50.050346621093752" />
-          <ConnectorPoint PointX="4.3776085416666666" PointY="50.050346621093752" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="50.050346621093752" />
-          <ConnectorPoint PointX="5.25" PointY="50.050346621093752" />
+          <ConnectorPoint PointX="4.0039078125000005" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.0039078125000005" PointY="50.266059526367187" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="50.266059526367187" />
+          <ConnectorPoint PointX="4.5437854817708336" PointY="50.266059526367187" />
+          <ConnectorPoint PointX="5.25" PointY="50.266059526367187" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__SAN_PHAM__MA_DON__398D8EEE" ManuallyRouted="false">
           <ConnectorPoint PointX="6" PointY="52.576396484374996" />
           <ConnectorPoint PointX="6" PointY="56.562279017427883" />
-          <ConnectorPoint PointX="7.104166666666667" PointY="56.562279017427883" />
-          <ConnectorPoint PointX="7.270833333333333" PointY="56.562279017427883" />
+          <ConnectorPoint PointX="7.1145833333333339" PointY="56.562279017427883" />
+          <ConnectorPoint PointX="7.28125" PointY="56.562279017427883" />
           <ConnectorPoint PointX="7.5" PointY="56.562279017427883" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__HOA_DON__CREATE___4BAC3F29" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="41.422638346354162" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="41.422638346354162" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="41.422638346354162" />
-          <ConnectorPoint PointX="5.25" PointY="41.422638346354162" />
+          <ConnectorPoint PointX="4.5" PointY="41.238826566673374" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="41.238826566673374" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="41.238826566673374" />
+          <ConnectorPoint PointX="5.25" PointY="41.238826566673374" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__HOA_DON__EDIT_AP__4AB81AF0" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="40.461319173177081" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="40.461319173177081" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="40.461319173177081" />
-          <ConnectorPoint PointX="5.25" PointY="40.461319173177081" />
+          <ConnectorPoint PointX="4.5" PointY="40.369413283336684" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="40.369413283336684" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="40.369413283336684" />
+          <ConnectorPoint PointX="5.25" PointY="40.369413283336684" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__HOA_DON__MA_KHAC__48CFD27E" ManuallyRouted="false">
           <ConnectorPoint PointX="10.5" PointY="50.875" />
@@ -3876,20 +4066,20 @@
           <ConnectorPoint PointX="9.1666666666666661" PointY="45.249410807291667" />
           <ConnectorPoint PointX="7.427083333333333" PointY="45.249410807291667" />
           <ConnectorPoint PointX="7.197916666666667" PointY="45.249410807291667" />
-          <ConnectorPoint PointX="7.1515394615384622" PointY="45.249410807291667" />
-          <ConnectorPoint PointX="6.75" PointY="44.847871345753205" />
+          <ConnectorPoint PointX="7.1261548461538453" PointY="45.249410807291667" />
+          <ConnectorPoint PointX="6.75" PointY="44.873255961137822" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__HOA_DON__MA_NHAN__49C3F6B7" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="42.383957519531243" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="42.383957519531243" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="42.383957519531243" />
-          <ConnectorPoint PointX="5.25" PointY="42.383957519531243" />
+          <ConnectorPoint PointX="4.5" PointY="42.822687152992685" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="42.822687152992685" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="42.822687152992685" />
+          <ConnectorPoint PointX="5.25" PointY="42.822687152992685" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__HOA_DON__UPDATE___4CA06362" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="41.903297932942706" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="41.903297932942706" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="41.903297932942706" />
-          <ConnectorPoint PointX="5.25" PointY="41.903297932942706" />
+          <ConnectorPoint PointX="4.5" PointY="42.030756859833033" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="42.030756859833033" />
+          <ConnectorPoint PointX="5.083333333333333" PointY="42.030756859833033" />
+          <ConnectorPoint PointX="5.25" PointY="42.030756859833033" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_HOA__5629CD9C" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="43.69684645833334" />
@@ -3903,91 +4093,83 @@
           <ConnectorPoint PointX="11.2812525" PointY="44.75" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHACH_HAN__CREAT__1B0907CE" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.95312625" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.95312625" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="3.9713560416666671" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="4.1380227083333336" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="5.916666666666667" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="6.083333333333333" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="7.104166666666667" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="7.270833333333333" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="8.1666666666666661" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="8.3333333333333339" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="9.1909684244791681" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="9.3576350911458359" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="9.4166666666666661" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="9.5833333333333339" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="10.166666666666666" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="10.458333333333334" PointY="52.8506982421875" />
-          <ConnectorPoint PointX="10.5" PointY="52.8506982421875" />
+          <ConnectorPoint PointX="3.5976553125" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.5976553125" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="3.6354141666666666" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="3.9798163020833335" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="4.5437854817708336" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="5.916666666666667" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="6.083333333333333" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="7.1145833333333339" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="7.28125" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="8.1666666666666661" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="8.3333333333333339" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="9.1536442350260376" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="9.3203109016927055" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="9.4166666666666661" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="9.5833333333333339" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="10.166666666666666" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="10.458333333333334" PointY="52.888022431640628" />
+          <ConnectorPoint PointX="10.5" PointY="52.888022431640628" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_KH__1A14E395" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="71.817047526041662" />
           <ConnectorPoint PointX="8.1666666666666661" PointY="71.817047526041662" />
           <ConnectorPoint PointX="8.3333333333333339" PointY="71.817047526041662" />
           <ConnectorPoint PointX="11.25" PointY="71.817047526041662" />
-          <ConnectorPoint PointX="11.25" PointY="55.739807942708325" />
+          <ConnectorPoint PointX="11.25" PointY="55.932109375" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHACH_HAN__UPDAT__1BFD2C07" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.54687375" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.54687375" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="3.5651035416666668" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="3.7317702083333337" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="3.7682297916666663" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="4.1380227083333345" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="5.916666666666667" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="6.083333333333333" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="7.104166666666667" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="8.1666666666666661" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="8.3333333333333339" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="9.4166666666666661" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="9.5833333333333339" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="10.166666666666666" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="10.458333333333334" PointY="52.713544863281257" />
-          <ConnectorPoint PointX="10.5" PointY="52.713544863281257" />
+          <ConnectorPoint PointX="3.1914028125000002" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.1914028125000002" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="3.2291616666666667" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="3.9798163020833335" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="4.5437854817708336" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="5.916666666666667" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="6.083333333333333" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="7.1145833333333339" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="7.4270833333333339" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="8.1666666666666661" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="8.3333333333333339" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="9.4166666666666661" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="9.5833333333333339" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="10.166666666666666" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="10.458333333333334" PointY="52.732206958007822" />
+          <ConnectorPoint PointX="10.5" PointY="52.732206958007822" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHO__CREATE_BY__0EA330E9" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.14062125" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.14062125" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.1588510416666669" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.3255177083333338" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.3619772916666664" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.5286439583333333" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.5651035416666668" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.7317702083333337" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.7682297916666663" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="3.9348964583333332" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="4.3411489583333323" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="67.211253255208334" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="67.211253255208334" />
+          <ConnectorPoint PointX="3.89648296875" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.89648296875" PointY="67.211253255208334" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="67.211253255208334" />
+          <ConnectorPoint PointX="4.3626369270833321" PointY="67.211253255208334" />
           <ConnectorPoint PointX="5.25" PointY="67.211253255208334" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHO__MA_NGUOI_DU__22751F6C" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.460941875" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.460941875" PointY="66.011874127604173" />
-          <ConnectorPoint PointX="5.25" PointY="66.011874127604173" />
+          <ConnectorPoint PointX="3.49023046875" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.49023046875" PointY="66.311718909505217" />
+          <ConnectorPoint PointX="3.6354141666666666" PointY="66.311718909505217" />
+          <ConnectorPoint PointX="3.9798163020833335" PointY="66.311718909505217" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="66.311718909505217" />
+          <ConnectorPoint PointX="4.3626369270833321" PointY="66.311718909505217" />
+          <ConnectorPoint PointX="5.25" PointY="66.311718909505217" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHO__UPDATE_BY__0F975522" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.2578156249999992" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.2578156249999992" PointY="68.4106323828125" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="68.4106323828125" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="68.4106323828125" />
+          <ConnectorPoint PointX="4.279303593749999" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.279303593749999" PointY="68.4106323828125" />
           <ConnectorPoint PointX="5.25" PointY="68.4106323828125" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__MA_KH__08EA5793" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.3776085416666666" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.3411489583333323" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.1744822916666662" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.0546893750000006" PointY="65.4121845638021" />
-          <ConnectorPoint PointX="4.0546893750000006" PointY="43.220276692708325" />
+          <ConnectorPoint PointX="5.25" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="4.3626369270833321" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.9798163020833335" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.6354141666666666" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.5735638020833336" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.2291616666666667" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.08397796875" PointY="65.562106954752608" />
+          <ConnectorPoint PointX="3.08397796875" PointY="43.797180989583332" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHAP_KHO__MA_KHO__72C60C4A" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="67.273659101362171" />
@@ -4019,179 +4201,166 @@
           <ConnectorPoint PointX="10.5" PointY="49.9751800380609" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHU_VUC__CREATE___145C0A3F" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.8515631249999998" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.8515631249999998" PointY="71.817047526041662" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="71.817047526041662" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="71.817047526041662" />
-          <ConnectorPoint PointX="5.25" PointY="71.817047526041662" />
+          <ConnectorPoint PointX="4.125" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.125" PointY="72.224435657552078" />
+          <ConnectorPoint PointX="5.25" PointY="72.224435657552078" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KHU_VUC__UPDATE___15502E78" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.6484368750000002" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.6484368750000002" PointY="71.00227126302083" />
-          <ConnectorPoint PointX="3.7682297916666663" PointY="71.00227126302083" />
-          <ConnectorPoint PointX="3.9348964583333332" PointY="71.00227126302083" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="71.00227126302083" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="71.00227126302083" />
-          <ConnectorPoint PointX="5.25" PointY="71.00227126302083" />
+          <ConnectorPoint PointX="3.86523046875" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.86523046875" PointY="71.205965328776045" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="71.205965328776045" />
+          <ConnectorPoint PointX="4.208333333333333" PointY="71.205965328776045" />
+          <ConnectorPoint PointX="5.25" PointY="71.205965328776045" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KIEM_KHO___CREAT__00200768" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="33.795400390625" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="33.795400390625" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="33.795400390625" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.795400390625" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.795400390625" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="33.795400390625" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="33.795400390625" />
-          <ConnectorPoint PointX="16.072919166666669" PointY="33.795400390625" />
-          <ConnectorPoint PointX="16.239585833333333" PointY="33.795400390625" />
-          <ConnectorPoint PointX="17.510414166666667" PointY="33.795400390625" />
-          <ConnectorPoint PointX="17.677080833333331" PointY="33.795400390625" />
-          <ConnectorPoint PointX="18" PointY="33.795400390625" />
-          <ConnectorPoint PointX="18" PointY="41" />
+          <ConnectorPoint PointX="4.5" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="10.041666666666666" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="10.208333333333334" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="17.611977291666665" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="17.77864395833333" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="18.20312625" PointY="33.718871601926622" />
+          <ConnectorPoint PointX="18.20312625" PointY="41" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KIEM_KHO___MA_NH__7F2BE32F" ManuallyRouted="false">
           <ConnectorPoint PointX="15.75" PointY="51" />
           <ConnectorPoint PointX="15.75" PointY="42.663198242187505" />
+          <ConnectorPoint PointX="15.869792916666667" PointY="42.663198242187505" />
+          <ConnectorPoint PointX="16.036459583333333" PointY="42.663198242187505" />
           <ConnectorPoint PointX="16.072919166666669" PointY="42.663198242187505" />
           <ConnectorPoint PointX="16.239585833333333" PointY="42.663198242187505" />
           <ConnectorPoint PointX="17.25" PointY="42.663198242187505" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__KIEM_KHO___UPDAT__01142BA1" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="6.920222228966348" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="7.0868888956330141" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="17.5937475" PointY="33.405701497395832" />
-          <ConnectorPoint PointX="17.5937475" PointY="41" />
+          <ConnectorPoint PointX="4.5" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="17.695310624999998" PointY="33.579449433593751" />
+          <ConnectorPoint PointX="17.695310624999998" PointY="41" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__CREAT__0AD2A005" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.5319230769230767" PointY="29.125" />
-          <ConnectorPoint PointX="3.5319230769230767" PointY="28.875" />
-          <ConnectorPoint PointX="3.9784615384615383" PointY="28.875" />
-          <ConnectorPoint PointX="3.9784615384615383" PointY="29.125" />
+          <ConnectorPoint PointX="3.5215384615384617" PointY="29.125" />
+          <ConnectorPoint PointX="3.5215384615384617" PointY="28.703125" />
+          <ConnectorPoint PointX="3.8642307692307689" PointY="28.703125" />
+          <ConnectorPoint PointX="3.8642307692307689" PointY="29.125" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__MA_NH__09DE7BCC" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="36.259348958333334" />
-          <ConnectorPoint PointX="2.6666666666666665" PointY="36.259348958333334" />
-          <ConnectorPoint PointX="2.8333333333333335" PointY="36.259348958333334" />
           <ConnectorPoint PointX="3" PointY="36.259348958333334" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__UPDAT__0BC6C43E" ManuallyRouted="false">
-          <ConnectorPoint PointX="3" PointY="33.919939803685892" />
-          <ConnectorPoint PointX="2.75" PointY="33.919939803685892" />
-          <ConnectorPoint PointX="2.75" PointY="38.532608248197107" />
-          <ConnectorPoint PointX="3" PointY="38.532608248197107" />
+          <ConnectorPoint PointX="3.9576923076923078" PointY="29.125" />
+          <ConnectorPoint PointX="3.9576923076923078" PointY="28.59375" />
+          <ConnectorPoint PointX="4.2380769230769229" PointY="28.59375" />
+          <ConnectorPoint PointX="4.2380769230769229" PointY="29.125" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHA_CUNG___CREAT__20C1E124" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.445310625" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.445310625" PointY="76.201650390625" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="76.201650390625" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="76.201650390625" />
-          <ConnectorPoint PointX="5.25" PointY="76.201650390625" />
+          <ConnectorPoint PointX="3.7187475" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.7187475" PointY="76.70518923828125" />
+          <ConnectorPoint PointX="5.25" PointY="76.70518923828125" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHA_CUNG___UPDAT__21B6055D" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.2421843750000003" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.2421843750000003" PointY="75.1945726953125" />
-          <ConnectorPoint PointX="3.3619772916666664" PointY="75.1945726953125" />
-          <ConnectorPoint PointX="3.5286439583333333" PointY="75.1945726953125" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="75.1945726953125" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="75.1945726953125" />
-          <ConnectorPoint PointX="5.25" PointY="75.1945726953125" />
+          <ConnectorPoint PointX="3.45897796875" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.45897796875" PointY="75.446342119140638" />
+          <ConnectorPoint PointX="3.6354141666666666" PointY="75.446342119140638" />
+          <ConnectorPoint PointX="3.8020808333333336" PointY="75.446342119140638" />
+          <ConnectorPoint PointX="5.25" PointY="75.446342119140638" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHA_SAN_X__CREAT__2E1BDC42" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.039058125" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="3.039058125" PointY="80.345896809895834" />
-          <ConnectorPoint PointX="5.25" PointY="80.345896809895834" />
+          <ConnectorPoint PointX="3.312495" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.312495" PointY="80.794145478515617" />
+          <ConnectorPoint PointX="5.25" PointY="80.794145478515617" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHA_SAN_X__UPDAT__2F10007B" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.4804709375" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.4804709375" PointY="79.579195904947923" />
-          <ConnectorPoint PointX="5.25" PointY="79.579195904947923" />
+          <ConnectorPoint PointX="3.0527254687500003" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="3.0527254687500003" PointY="79.803320239257815" />
+          <ConnectorPoint PointX="3.2291616666666667" PointY="79.803320239257815" />
+          <ConnectorPoint PointX="3.3958283333333337" PointY="79.803320239257815" />
+          <ConnectorPoint PointX="5.25" PointY="79.803320239257815" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHAP_KHO__CREATE__74AE54BC" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="15.3437475" PointY="33.960202695312489" />
-          <ConnectorPoint PointX="15.3437475" PointY="51" />
+          <ConnectorPoint PointX="4.5" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="10.041666666666666" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="10.208333333333334" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="15.445310625" PointY="33.902181748643763" />
+          <ConnectorPoint PointX="15.445310625" PointY="51" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHAP_KHO__NHAN_V__70DDC3D8" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="33.630598085937507" />
-          <ConnectorPoint PointX="16.1562525" PointY="33.630598085937507" />
+          <ConnectorPoint PointX="4.5" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="10.041666666666666" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="10.208333333333334" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="15.108069479166666" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="15.274736145833334" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="15.361977291666666" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="15.528643958333333" PointY="34.026977597656241" />
+          <ConnectorPoint PointX="16.1562525" PointY="34.026977597656241" />
           <ConnectorPoint PointX="16.1562525" PointY="51" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHAP_KHO__UPDATE__75A278F5" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="15.140621249999999" PointY="33.991455195312483" />
-          <ConnectorPoint PointX="15.140621249999999" PointY="51" />
+          <ConnectorPoint PointX="4.5" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="10.041666666666666" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="10.208333333333334" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="15.1914028125" PointY="33.870929248643769" />
+          <ConnectorPoint PointX="15.1914028125" PointY="51" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHOM_NGUO__CREAT__0CBAE877" ManuallyRouted="false">
           <ConnectorPoint PointX="3" PointY="35.317174479166667" />
-          <ConnectorPoint PointX="2.8333333333333335" PointY="35.317174479166667" />
-          <ConnectorPoint PointX="2.6666666666666665" PointY="35.317174479166667" />
           <ConnectorPoint PointX="2.25" PointY="35.317174479166667" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHOM_NGUO__UPDAT__0DAF0CB0" ManuallyRouted="false">
           <ConnectorPoint PointX="3" PointY="37.2015234375" />
-          <ConnectorPoint PointX="2.8333333333333335" PointY="37.2015234375" />
-          <ConnectorPoint PointX="2.6666666666666665" PointY="37.2015234375" />
           <ConnectorPoint PointX="2.25" PointY="37.2015234375" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__CREAT__286302EC" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="29.15625" />
-          <ConnectorPoint PointX="7.541666666666667" PointY="29.15625" />
-          <ConnectorPoint PointX="7.708333333333333" PointY="29.15625" />
-          <ConnectorPoint PointX="7.791666666666667" PointY="29.15625" />
+          <ConnectorPoint PointX="7.666666666666667" PointY="29.15625" />
           <ConnectorPoint PointX="7.958333333333333" PointY="29.15625" />
           <ConnectorPoint PointX="8.25" PointY="29.15625" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__UPDAT__29572725" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="43.219121846554479" />
-          <ConnectorPoint PointX="4.875" PointY="43.594121846554479" />
-          <ConnectorPoint PointX="4.875" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="6.8601229451121837" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="7.02678961177885" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="7.260416666666667" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="7.427083333333333" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="8.125" PointY="33.345602213541667" />
-          <ConnectorPoint PointX="8.25" PointY="33.220602213541667" />
+          <ConnectorPoint PointX="4.5" PointY="33.314352213541667" />
+          <ConnectorPoint PointX="6.8288729451121837" PointY="33.314352213541667" />
+          <ConnectorPoint PointX="6.99553961177885" PointY="33.314352213541667" />
+          <ConnectorPoint PointX="7.260416666666667" PointY="33.314352213541667" />
+          <ConnectorPoint PointX="7.427083333333333" PointY="33.314352213541667" />
+          <ConnectorPoint PointX="8.25" PointY="33.314352213541667" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__SAN_PHAM__CREATE__3B75D760" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.4414128124999994" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.4414128124999994" PointY="54.855754893329326" />
+          <ConnectorPoint PointX="4.4604521484375" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.4604521484375" PointY="54.855754893329326" />
           <ConnectorPoint PointX="5.916666666666667" PointY="54.855754893329326" />
           <ConnectorPoint PointX="6.083333333333333" PointY="54.855754893329326" />
-          <ConnectorPoint PointX="7.104166666666667" PointY="54.855754893329326" />
-          <ConnectorPoint PointX="7.270833333333333" PointY="54.855754893329326" />
+          <ConnectorPoint PointX="7.1145833333333339" PointY="54.855754893329326" />
+          <ConnectorPoint PointX="7.28125" PointY="54.855754893329326" />
           <ConnectorPoint PointX="7.5" PointY="54.855754893329326" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__SAN_PHAM__UPDATE__3C69FB99" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.4003957812499994" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.4003957812499994" PointY="58.26880314152644" />
-          <ConnectorPoint PointX="7.104166666666667" PointY="58.26880314152644" />
-          <ConnectorPoint PointX="7.270833333333333" PointY="58.26880314152644" />
+          <ConnectorPoint PointX="4.3095766406249991" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.3095766406249991" PointY="58.26880314152644" />
+          <ConnectorPoint PointX="7.1145833333333339" PointY="58.26880314152644" />
+          <ConnectorPoint PointX="7.28125" PointY="58.26880314152644" />
           <ConnectorPoint PointX="7.5" PointY="58.26880314152644" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__TRA_HANG__CREATE__66603565" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="38.824249674479162" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="38.824249674479162" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="38.824249674479162" />
           <ConnectorPoint PointX="5.083333333333333" PointY="38.824249674479162" />
           <ConnectorPoint PointX="7.197916666666667" PointY="38.824249674479162" />
           <ConnectorPoint PointX="7.427083333333333" PointY="38.824249674479162" />
@@ -4199,11 +4368,13 @@
           <ConnectorPoint PointX="9.5833333333333339" PointY="38.824249674479162" />
           <ConnectorPoint PointX="10.041666666666666" PointY="38.824249674479162" />
           <ConnectorPoint PointX="10.208333333333334" PointY="38.824249674479162" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="38.824249674479162" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="38.824249674479162" />
           <ConnectorPoint PointX="12.75" PointY="38.824249674479162" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__TRA_HANG__NHAN_V__656C112C" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="39.005874837239581" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="39.005874837239581" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="39.005874837239581" />
           <ConnectorPoint PointX="5.083333333333333" PointY="39.005874837239581" />
           <ConnectorPoint PointX="7.197916666666667" PointY="39.005874837239581" />
           <ConnectorPoint PointX="7.427083333333333" PointY="39.005874837239581" />
@@ -4211,11 +4382,13 @@
           <ConnectorPoint PointX="9.5833333333333339" PointY="39.005874837239581" />
           <ConnectorPoint PointX="10.041666666666666" PointY="39.005874837239581" />
           <ConnectorPoint PointX="10.208333333333334" PointY="39.005874837239581" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="39.005874837239581" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="39.005874837239581" />
           <ConnectorPoint PointX="12.75" PointY="39.005874837239581" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__TRA_HANG__UPDATE__6754599E" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="38.642624511718743" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="38.642624511718743" />
+          <ConnectorPoint PointX="4.916666666666667" PointY="38.642624511718743" />
           <ConnectorPoint PointX="5.083333333333333" PointY="38.642624511718743" />
           <ConnectorPoint PointX="7.197916666666667" PointY="38.642624511718743" />
           <ConnectorPoint PointX="7.427083333333333" PointY="38.642624511718743" />
@@ -4223,11 +4396,13 @@
           <ConnectorPoint PointX="9.5833333333333339" PointY="38.642624511718743" />
           <ConnectorPoint PointX="10.041666666666666" PointY="38.642624511718743" />
           <ConnectorPoint PointX="10.208333333333334" PointY="38.642624511718743" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="38.642624511718743" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="38.642624511718743" />
           <ConnectorPoint PointX="12.75" PointY="38.642624511718743" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__XUAT_KHO__CREATE__59FA5E80" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.4209042968749994" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.4209042968749994" PointY="46.218455403645834" />
+          <ConnectorPoint PointX="4.4291996484375" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.4291996484375" PointY="46.218455403645834" />
           <ConnectorPoint PointX="7.041666666666667" PointY="46.218455403645834" />
           <ConnectorPoint PointX="7.427083333333333" PointY="46.218455403645834" />
           <ConnectorPoint PointX="9.1666666666666661" PointY="46.218455403645834" />
@@ -4237,10 +4412,8 @@
           <ConnectorPoint PointX="10.5" PointY="46.218455403645834" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_NHA__59063A47" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.3798872656249994" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.3798872656249994" PointY="45.702680605468757" />
-          <ConnectorPoint PointX="4.3971376041666668" PointY="45.702680605468757" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="45.702680605468757" />
+          <ConnectorPoint PointX="4.3979471484375" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.3979471484375" PointY="45.702680605468757" />
           <ConnectorPoint PointX="7.041666666666667" PointY="45.702680605468757" />
           <ConnectorPoint PointX="7.427083333333333" PointY="45.702680605468757" />
           <ConnectorPoint PointX="9.1666666666666661" PointY="45.702680605468757" />
@@ -4250,10 +4423,10 @@
           <ConnectorPoint PointX="10.5" PointY="45.702680605468757" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__XUAT_KHO__UPDATE__5AEE82B9" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.3398496874999992" PointY="43.220276692708325" />
-          <ConnectorPoint PointX="4.3398496874999992" PointY="46.734230201822911" />
-          <ConnectorPoint PointX="4.3580794791666664" PointY="46.734230201822911" />
-          <ConnectorPoint PointX="4.5638042708333328" PointY="46.734230201822911" />
+          <ConnectorPoint PointX="4.249030546875" PointY="43.797180989583332" />
+          <ConnectorPoint PointX="4.249030546875" PointY="46.734230201822911" />
+          <ConnectorPoint PointX="4.3771188151041667" PointY="46.734230201822911" />
+          <ConnectorPoint PointX="4.5437854817708327" PointY="46.734230201822911" />
           <ConnectorPoint PointX="7.041666666666667" PointY="46.734230201822911" />
           <ConnectorPoint PointX="7.427083333333333" PointY="46.734230201822911" />
           <ConnectorPoint PointX="9.1666666666666661" PointY="46.734230201822911" />
@@ -4270,37 +4443,90 @@
           <ConnectorPoint PointX="15.3437475" PointY="56.249410807291667" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__SAN_PHAM__MA_NHA__3A81B327" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="80.345896809895834" />
-          <ConnectorPoint PointX="8.25" PointY="80.345896809895834" />
+          <ConnectorPoint PointX="6.75" PointY="80.442047526041662" />
+          <ConnectorPoint PointX="8.25" PointY="80.442047526041662" />
           <ConnectorPoint PointX="8.25" PointY="59.91282226562501" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__NHAP_KHO__MA_PHI__73BA3083" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.5" PointY="41.855205078124996" />
-          <ConnectorPoint PointX="13.5" PointY="52.281100201822923" />
-          <ConnectorPoint PointX="15" PointY="52.281100201822923" />
+          <ConnectorPoint PointX="14.25" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.108069479166666" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.274736145833334" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.361977291666666" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.528643958333333" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.95312625" PointY="39.6151025390625" />
+          <ConnectorPoint PointX="15.95312625" PointY="51" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="34.5" />
-          <ConnectorPoint PointX="1.5" PointY="28.625" />
-          <ConnectorPoint PointX="7.875" PointY="28.625" />
-          <ConnectorPoint PointX="7.875" PointY="31.188426106770834" />
-          <ConnectorPoint PointX="8.25" PointY="31.188426106770834" />
+          <ConnectorPoint PointX="1.2968739999999999" PointY="34.5" />
+          <ConnectorPoint PointX="1.2968739999999999" PointY="28.859375" />
+          <ConnectorPoint PointX="3.4382051282051282" PointY="28.859375" />
+          <ConnectorPoint PointX="3.6048717948717952" PointY="28.859375" />
+          <ConnectorPoint PointX="3.7808974358974354" PointY="28.859375" />
+          <ConnectorPoint PointX="4.0410256410256409" PointY="28.859375" />
+          <ConnectorPoint PointX="4.15474358974359" PointY="28.859375" />
+          <ConnectorPoint PointX="4.3214102564102559" PointY="28.859375" />
+          <ConnectorPoint PointX="7.875" PointY="28.859375" />
+          <ConnectorPoint PointX="7.875" PointY="30.711634580078119" />
+          <ConnectorPoint PointX="8.25" PointY="30.711634580078119" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.9062519999999998" PointY="34.5" />
-          <ConnectorPoint PointX="1.9062519999999998" PointY="29" />
-          <ConnectorPoint PointX="3.4485897435897432" PointY="29" />
-          <ConnectorPoint PointX="3.61525641025641" PointY="29" />
-          <ConnectorPoint PointX="3.8951282051282048" PointY="29" />
-          <ConnectorPoint PointX="4.0617948717948718" PointY="29" />
-          <ConnectorPoint PointX="7.625" PointY="29" />
-          <ConnectorPoint PointX="7.625" PointY="32.204514160156251" />
-          <ConnectorPoint PointX="8.25" PointY="32.204514160156251" />
+          <ConnectorPoint PointX="1.8046889999999998" PointY="34.5" />
+          <ConnectorPoint PointX="1.8046889999999998" PointY="28.84375" />
+          <ConnectorPoint PointX="3.4382051282051282" PointY="28.84375" />
+          <ConnectorPoint PointX="3.6048717948717952" PointY="28.84375" />
+          <ConnectorPoint PointX="3.7808974358974354" PointY="28.84375" />
+          <ConnectorPoint PointX="4.0410256410256409" PointY="28.84375" />
+          <ConnectorPoint PointX="4.15474358974359" PointY="28.84375" />
+          <ConnectorPoint PointX="4.3214102564102559" PointY="28.84375" />
+          <ConnectorPoint PointX="7.75" PointY="28.84375" />
+          <ConnectorPoint PointX="7.75" PointY="32.01299339680989" />
+          <ConnectorPoint PointX="8.25" PointY="32.01299339680989" />
         </AssociationConnector>
         <AssociationConnector Association="SMSModel.FK__TRA_HANG__MA_XUA__6477ECF3" ManuallyRouted="false">
           <ConnectorPoint PointX="11.671878750000001" PointY="44.75" />
           <ConnectorPoint PointX="11.671878750000001" PointY="40.461792457682279" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="40.461792457682279" />
+          <ConnectorPoint PointX="12.458333333333334" PointY="40.461792457682279" />
           <ConnectorPoint PointX="12.75" PointY="40.461792457682279" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="SMSModel.KHACH_HANG_DEBIT_HIST" Width="1.5" PointX="12.75" PointY="43.375" Height="4.2879036458333246" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_KH__3A4CA8FD" >
+          <ConnectorPoint PointX="12" PointY="52.249852701822917" />
+          <ConnectorPoint PointX="12.166666666666666" PointY="52.249852701822917" />
+          <ConnectorPoint PointX="12.333333333333334" PointY="52.249852701822917" />
+          <ConnectorPoint PointX="13.5" PointY="52.249852701822917" />
+          <ConnectorPoint PointX="13.5" PointY="47.662903645833325" />
+        </AssociationConnector>
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__CREAT__3C34F16F" >
+          <ConnectorPoint PointX="3.75" PointY="29.125" />
+          <ConnectorPoint PointX="3.75" PointY="28.875" />
+          <ConnectorPoint PointX="3.7808974358974354" PointY="28.875" />
+          <ConnectorPoint PointX="4.0410256410256409" PointY="28.875" />
+          <ConnectorPoint PointX="4.15474358974359" PointY="28.875" />
+          <ConnectorPoint PointX="4.3214102564102559" PointY="28.875" />
+          <ConnectorPoint PointX="12.375" PointY="28.875" />
+          <ConnectorPoint PointX="12.375" PointY="45.518951822916662" />
+          <ConnectorPoint PointX="12.75" PointY="45.518951822916662" />
+        </AssociationConnector>
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_NH__3B40CD36" >
+          <ConnectorPoint PointX="4.156252" PointY="29.125" />
+          <ConnectorPoint PointX="4.156252" PointY="28.828125" />
+          <ConnectorPoint PointX="12.3125" PointY="28.828125" />
+          <ConnectorPoint PointX="12.3125" PointY="44.415723911458336" />
+          <ConnectorPoint PointX="12.75" PointY="44.415723911458336" />
+        </AssociationConnector>
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__UPDAT__3D2915A8" >
+          <ConnectorPoint PointX="3.343748" PointY="29.125" />
+          <ConnectorPoint PointX="3.343748" PointY="28.8125" />
+          <ConnectorPoint PointX="3.4382051282051282" PointY="28.8125" />
+          <ConnectorPoint PointX="3.6048717948717952" PointY="28.8125" />
+          <ConnectorPoint PointX="3.7808974358974354" PointY="28.8125" />
+          <ConnectorPoint PointX="4.0410256410256409" PointY="28.8125" />
+          <ConnectorPoint PointX="4.15474358974359" PointY="28.8125" />
+          <ConnectorPoint PointX="4.3214102564102559" PointY="28.8125" />
+          <ConnectorPoint PointX="12.25" PointY="28.8125" />
+          <ConnectorPoint PointX="12.25" PointY="46.622179734374988" />
+          <ConnectorPoint PointX="12.75" PointY="46.622179734374988" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
