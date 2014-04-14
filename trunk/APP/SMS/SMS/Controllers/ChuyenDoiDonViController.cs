@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class ChuyenDoiDonViController : Controller
     {
         //

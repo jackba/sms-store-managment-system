@@ -15,9 +15,33 @@
         }
     }
 }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datePicker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+}
 <div>
     @using (Html.BeginForm())
     {
+        
         @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
         <div>
             <fieldset>
@@ -49,7 +73,7 @@
                     @Html.LabelFor(u => u.EMAIL)
                 </div>
                 <div>
-                    @Html.TextBoxFor(u => u.EMAIL)
+                    @Html.TextBoxFor(u => u.EMAIL, new { type = "email" })
                 </div>
                 <div>
                     @Html.LabelFor(u => u.MA_KHU_VUC)
@@ -61,28 +85,78 @@
                     @Html.LabelFor(u => u.DOANH_SO)
                 </div>
                 <div>
-                    @Html.TextBoxFor(u => u.DOANH_SO)
+                    @Html.TextBoxFor(u => u.DOANH_SO, new { min = "0", max = "100000000000", @class = "input numberic" })
                 </div>
                 <div>
                     @Html.LabelFor(u => u.NO_GOI_DAU)
                 </div>
+                    @Html.TextBoxFor(u => u.NO_GOI_DAU, new { min = "0", max = "100000000000", @class = "input numberic" })
                 <div>
-                    @Html.TextBoxFor(u => u.NO_GOI_DAU)
+                    
                 </div>
                 <div>
                     @Html.LabelFor(u => u.NGAY_PHAT_SINH_NO)
                 </div>
                 <div>
-                    @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, new {  @class = "datepicker" })
+                    @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @class = "datePicker" })
                 </div>
                 <div>
-                    <input type="submit" style="width:100px" value="Lưu" />
+                    <input type="submit" style="width:100px"  value="Lưu" />
                     <span> </span>
                     <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
                 </div>
             </fieldset>
         </div>
         <script>
+
+            function NumbericOnly(ctrl) {
+                $(ctrl).keypress(function (e) {
+                    //if the letter is not digit then display error and don't type anything
+                    if (e.which != 8 && e.which != 190 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        //display error message
+                        return false;
+                    }
+                });
+
+            }
+            function formatNumberic() {
+                $('input.numberic').each(function () {
+                    $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+                });
+            }
+            $(document).ready(function () {
+                formatNumberic();
+                $('input.numberic').keydown(function (e) {
+                    //if the letter is not digit then display error and don't type anything
+                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        //display error message
+                        return false;
+                    }
+                });
+                $('input.numberic').keyup(function (event) {
+                    // skip for arrow keys
+                    if (event.which >= 37 && event.which <= 40) {
+                        //event.preventDefault();
+                        return true;
+                    }
+                    var $this = $(this);
+                    var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
+                    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                    // the following line has been simplified. Revision history contains original.
+                    $this.val(num2);
+                });
+                $('input.numberic').bind("paste", function (e) {
+                    e.preventDefault();
+                });
+            });
+
+            function RemoveRougeChar(convertString) {
+                if (convertString.substring(0, 1) == ",") {
+                    return convertString.substring(1, convertString.length)
+                }
+                return convertString;
+            }
+
             function reset() {
                 window.location.reload();
                 return false;

@@ -12,32 +12,19 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TRA_HANG
+    public partial class SMS_MASTER
     {
-        public TRA_HANG()
-        {
-            this.CHI_TIET_TRA_HANG = new HashSet<CHI_TIET_TRA_HANG>();
-            this.NHAP_KHO = new HashSet<NHAP_KHO>();
-        }
-    
-        public int MA_TRA_HANG { get; set; }
-        public Nullable<int> MA_XUAT_KHO { get; set; }
-        public string TEN_KHACH_HANG { get; set; }
-        public Nullable<System.DateTime> NGAY_TRA { get; set; }
-        public Nullable<int> NHAN_VIEN_NHAN { get; set; }
+        public int ID { get; set; }
+        public string NAME { get; set; }
+        public string VALUE { get; set; }
         public string GHI_CHU { get; set; }
-        public Nullable<short> STATUS { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
     
-        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
-        public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
-        public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
-        public virtual XUAT_KHO XUAT_KHO { get; set; }
     }
 }

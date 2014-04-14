@@ -8,6 +8,8 @@ using PagedList;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class NhaCungCapController : Controller
     {
         //

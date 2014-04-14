@@ -130,9 +130,14 @@
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="WebMatrix.WebData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v2.0\Assemblies\WebMatrix.WebData.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DecimalModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
@@ -169,10 +174,10 @@
     <Compile Include="Models\HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HOA_DON_CHUA_XUAT_KHO.cs">
+    <Compile Include="Models\KHACH_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\KHACH_HANG.cs">
+    <Compile Include="Models\KHACH_HANG_DEBIT_HIST.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KHO.cs">
@@ -188,9 +193,6 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHAP_KHO.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NHAP_XUAT_TON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHA_CUNG_CAP.cs">
@@ -223,6 +225,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SmsModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\SMS_MASTER.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -235,6 +243,46 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\Antlr3.Runtime.pdb" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\PagedList.dll" />
+    <Content Include="bin\PagedList.Mvc.dll" />
+    <Content Include="bin\PagedList.Mvc.xml" />
+    <Content Include="bin\PagedList.xml" />
+    <Content Include="bin\SMS.dll" />
+    <Content Include="bin\SMS.pdb" />
+    <Content Include="bin\System.Net.Http.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Net.Http.WebRequest.dll" />
+    <Content Include="bin\System.Net.Http.WebRequest.xml" />
+    <Content Include="bin\System.Net.Http.xml" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Http.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Optimization.dll" />
+    <Content Include="bin\System.Web.Optimization.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\DonVi.css" />
@@ -247,10 +295,9 @@
     <Content Include="Content\images\edit_delete.png" />
     <Content Include="Content\images\green_area.png" />
     <Content Include="Content\images\industry.png" />
-    <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\provider.png" />
-    <Content Include="Content\images\storage.png" />
+    <Content Include="Content\images\Retail-shop-icon.png" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />
@@ -314,6 +361,83 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Filters\Content\css\style.css" />
+    <Content Include="Filters\Content\DonVi.css" />
+    <Content Include="Filters\Content\HangSanXuat.css" />
+    <Content Include="Filters\Content\images\Crystal_Clear_write.gif" />
+    <Content Include="Filters\Content\images\Customer_Male_Light.png" />
+    <Content Include="Filters\Content\images\dashboard-module.gif" />
+    <Content Include="Filters\Content\images\edit-icon.png" />
+    <Content Include="Filters\Content\images\edit_delete.png" />
+    <Content Include="Filters\Content\images\green_area.png" />
+    <Content Include="Filters\Content\images\industry.png" />
+    <Content Include="Filters\Content\images\listproduct.png" />
+    <Content Include="Filters\Content\images\Measure_units.png" />
+    <Content Include="Filters\Content\images\provider.png" />
+    <Content Include="Filters\Content\KhachHang.css" />
+    <Content Include="Filters\Content\Kho.css" />
+    <Content Include="Filters\Content\KhuVuc.css" />
+    <Content Include="Filters\Content\NhaCungCap.css" />
+    <Content Include="Filters\Content\PagedList.css" />
+    <Content Include="Filters\Content\SanPham.css" />
+    <Content Include="Filters\Content\Site.css" />
+    <Content Include="Filters\Content\style.css" />
+    <Content Include="Filters\Content\themes\base\images\edit-icon.png" />
+    <Content Include="Filters\Content\themes\base\images\edit_delete.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Filters\Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Filters\Content\themes\base\jquery-ui.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Filters\Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Filters\Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Filters\Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Filters\Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\alfresco-logo.png" />
@@ -329,11 +453,39 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
+    <Content Include="bin\SMS.dll.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <EntityDeploy Include="Models\SmsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SmsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmsModel.edmx</DependentUpon>
+      <LastGenOutput>SmsModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SmsModel.edmx.diagram">
+      <DependentUpon>SmsModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\SmsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmsModel.edmx</DependentUpon>
+      <LastGenOutput>SmsModel.cs</LastGenOutput>
+    </Content>
+    <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\DatePickerReady.js" />
+    <Content Include="Scripts\jquery-1.4.4.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
+    <Content Include="Scripts\jquery.ui.core.js" />
+    <Content Include="Scripts\jquery.ui.core.min.js" />
+    <Content Include="Scripts\jquery.ui.datepicker.js" />
+    <Content Include="Scripts\jquery.ui.datepicker.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -346,7 +498,9 @@
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\scrollTable.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -354,11 +508,16 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="Views\SanPham\AddNew.cshtml" />
+    <Content Include="Views\SanPham\Index.cshtml" />
+    <Content Include="Views\NguoiDung\AddNew.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\NguoiDung\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\js\" />
-    <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -380,20 +539,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\SmsModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Models\SmsModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SmsModel.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Models\SmsModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SmsModel.cs</LastGenOutput>
-    </None>
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\DanhMuc.cshtml" />
     <Content Include="Views\Home\QuanLyKho.cshtml" />
@@ -406,11 +551,7 @@
     <Content Include="Views\DonVi\AddNew.cshtml" />
     <Content Include="Views\DonVi\Edit.cshtml" />
     <Content Include="Views\DonVi\Index.cshtml" />
-    <Content Include="Views\HangSanXuat\AddNew.cshtml" />
-    <Content Include="Views\HangSanXuat\Edit.cshtml" />
-    <Content Include="Views\HangSanXuat\Index.cshtml" />
     <Content Include="Views\KhachHang\AddNew.cshtml" />
-    <Content Include="Views\KhachHang\Edit.cshtml" />
     <Content Include="Views\KhachHang\Index.cshtml" />
     <Content Include="Views\Kho\AddNew.cshtml" />
     <Content Include="Views\Kho\Edit.cshtml" />
@@ -421,8 +562,10 @@
     <Content Include="Views\NhaCungCap\AddNew.cshtml" />
     <Content Include="Views\NhaCungCap\Edit.cshtml" />
     <Content Include="Views\NhaCungCap\Index.cshtml" />
-    <Content Include="Views\SanPham\AddNew.cshtml" />
-    <Content Include="Views\SanPham\Index.cshtml" />
+    <Content Include="Views\HangSanXuat\AddNew.cshtml" />
+    <Content Include="Views\HangSanXuat\Edit.cshtml" />
+    <Content Include="Views\HangSanXuat\Index.cshtml" />
+    <Content Include="Views\KhachHang\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

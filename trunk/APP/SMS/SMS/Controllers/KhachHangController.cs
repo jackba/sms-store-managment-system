@@ -7,6 +7,8 @@ using SMS.Models;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class KhachHangController : Controller
     {
         //
