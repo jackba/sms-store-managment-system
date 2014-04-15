@@ -302,7 +302,7 @@ namespace SMS.Controllers
                     DisplayContentLst = contentLst.OrderBy(u => u.SanPham.MA_SAN_PHAM).ToPagedList(pageIndex, pageSize);
                     break;
             }
-
+            ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.CurrentFilter = CurrentFilter;
             ViewBag.DisplayContentLst = DisplayContentLst;
             return DisplayContentLst;
