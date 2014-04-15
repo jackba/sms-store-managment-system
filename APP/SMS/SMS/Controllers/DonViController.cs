@@ -19,7 +19,7 @@ namespace SMS.Controllers
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
             var ctx = new SmsContext();
-            if (searchString != null)
+            if (!String.IsNullOrEmpty(searchString) &&( page == null || page == 0))
             {
                 page = 1;
             }
@@ -28,7 +28,7 @@ namespace SMS.Controllers
                 searchString = currentFilter;
             }
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.IdSortParm = sortOrder == "id" ? "id_desc" : "id";
+            ViewBag.IdSortParm = sortOrder == "id_desc" ? "id" : "id_desc";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
             var theListContext = (from s in ctx.DON_VI_TINH
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
@@ -41,9 +41,10 @@ namespace SMS.Controllers
                                       NguoiCapNhat = u1
                                   }).Take(SystemConstant.MAX_ROWS);
             ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentPageIndex = page == null ? 1 : (int)page;
             IPagedList<DonViTinh> donViTinhs = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = 1;
+            int pageIndex = page == null? 1: (int)page;
             switch (sortOrder)
             {
                 case "id":
