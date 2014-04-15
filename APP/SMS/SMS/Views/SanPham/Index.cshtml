@@ -67,10 +67,12 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%" >
-                                @Html.ActionLink("Mã sản phẩm", "Index", new { sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter })
+                                @*@Html.ActionLink("Mã sản phẩm", "Index", new { sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter })*@
+                                @Html.ActionLink("Mã sản phẩm", "Index", new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter })
+                             
                             </td>
                             <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên sản phẩm", "Index", new { sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter })
+                                @Html.ActionLink("Tên sản phẩm", "Index", new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter })
                             </td>
                         </tr>
                     </table>
