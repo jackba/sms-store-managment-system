@@ -3,7 +3,7 @@
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/KhuVuc.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Kho.css" rel="stylesheet" type="text/css" />
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
 
@@ -109,12 +109,12 @@
                             {
                                 <td class='inner alignCenter' style="width:50px;">
                                     <a href="@Url.Action("Edit", "Kho", new { id = @donvi.Kho.MA_KHO })" class="button-module">
-                                        <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                        <img width="16" height="16" alt="edit" src="~/Content/images/edit-icon.png"></img>
                                     </a>
                                 </td>
                                     <td class='inner alignCenter' style="width:50px;">
                                         <a href="@Url.Action("Delete", "Kho", new { id = @donvi.Kho.MA_KHO })" class="button-module" onclick="return deleteSubmit()">
-                                            <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                            <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
                                         </a>
                                     </td>
                             }

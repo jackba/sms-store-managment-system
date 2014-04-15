@@ -38,10 +38,10 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%">
-                                @Html.ActionLink("Mã đơn vị", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })
+                                @Html.ActionLink("Mã đơn vị", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
                             </td>
                             <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên đơn vị", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                                @Html.ActionLink("Tên đơn vị", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
                             </td>
                         </tr>
                     </table>
@@ -104,12 +104,12 @@
                             {
                                         <td class='inner alignCenter' style="width:50px;">
                                             <a href="@Url.Action("Edit", "DonVi", new { id = @donvi.DonVi.MA_DON_VI })" class="button-module">
-                                                <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                                <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
                                             </a>
                                         </td>
                                         <td class='inner alignCenter' style="width:50px;">
                                             <a href="@Url.Action("Delete", "DonVi", new { id = @donvi.DonVi.MA_DON_VI })" class="button-module" onclick="return deleteSubmit()">
-                                                <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                                <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
                                             </a>
                                         </td>
                                     }
@@ -136,7 +136,8 @@
             </td>
             <td>
                 <div style="text-align:right; padding-top:3px;">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                 </div>
             </td>
         </tr>

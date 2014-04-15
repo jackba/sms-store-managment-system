@@ -81,7 +81,7 @@ td.inner
 td.frozencol
 {
     border-right: 1px double #666;   
-    height: 33px;
+    height: auto;
 }
 td.col1
 {
