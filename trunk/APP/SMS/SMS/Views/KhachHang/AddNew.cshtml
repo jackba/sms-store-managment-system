@@ -14,6 +14,24 @@
             theList.Add(item);
         }
     }
+
+    
+    List<SelectListItem> kinds = new List<SelectListItem>();
+    SelectListItem kind;
+    kind = new SelectListItem();
+    kind.Value = "1";
+    kind.Text = "Khách hàng công ty , công trình";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "2";
+    kind.Text = "Khách hàng thân thiết";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "3";
+    kind.Text = "Khách hàng thường";
+    kinds.Add(kind);
 }
 @section Scripts {
     <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
@@ -51,6 +69,12 @@
                     @Html.TextBoxFor(u => u.MA_THE_KHACH_HANG)
                 </div>
                 <div>
+                    @Html.LabelFor(u => u.KIND)
+                </div>
+                <div>
+                    @Html.DropDownListFor(u => u.KIND, kinds, "---------- Chọn loại khách hàng ----------", new { style = "padding:5px;font-size:1.2em" })
+                </div>
+                <div>
                     @Html.LabelFor(u => u.TEN_KHACH_HANG)
                 </div>
                 <div>
@@ -78,7 +102,7 @@
                     @Html.LabelFor(u => u.MA_KHU_VUC)
                 </div>
                 <div>
-                    @Html.DropDownListFor(u => u.MA_KHU_VUC, theList, "--------------- Chọn khu vực ---------------")
+                    @Html.DropDownListFor(u => u.MA_KHU_VUC, theList, "--------------- Chọn khu vực ---------------", new { style = "padding:5px;font-size:1.2em" })
                 </div>
                 <div>
                     @Html.LabelFor(u => u.DOANH_SO)

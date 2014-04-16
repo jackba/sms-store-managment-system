@@ -41,10 +41,11 @@ namespace SMS.Controllers
                                       NguoiCapNhat = u1
                                   }).Take(SystemConstant.MAX_ROWS);
             ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentPageIndex = page == null ? 1 : (int)page;
+           
             IPagedList<DonViTinh> donViTinhs = null;
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null? 1: (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
             switch (sortOrder)
             {
                 case "id":

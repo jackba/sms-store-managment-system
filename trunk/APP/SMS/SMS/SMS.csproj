@@ -288,16 +288,22 @@
     <Content Include="Content\DonVi.css" />
     <Content Include="Content\HangSanXuat.css" />
     <Content Include="Content\images\add_new.png" />
+    <Content Include="Content\images\Credit-icon.png" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
+    <Content Include="Content\images\customer.jpg" />
     <Content Include="Content\images\Customer_Male_Light.png" />
     <Content Include="Content\images\dashboard-module.gif" />
+    <Content Include="Content\images\delete.png" />
     <Content Include="Content\images\edit-icon.png" />
+    <Content Include="Content\images\edit.png" />
     <Content Include="Content\images\edit_delete.png" />
     <Content Include="Content\images\green_area.png" />
     <Content Include="Content\images\industry.png" />
+    <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\provider.png" />
     <Content Include="Content\images\Retail-shop-icon.png" />
+    <Content Include="Content\images\storage.png" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />
@@ -305,6 +311,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\SanPham.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Content\themes\base\images\edit-icon.png" />
     <Content Include="Content\themes\base\images\edit_delete.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -514,6 +521,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\NguoiDung\Edit.cshtml" />
+    <Content Include="Views\KhachHang\UpdateDebit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,12 +19,12 @@ table.root
 table.content
 {
     table-layout: fixed;
-    width: 1890px;
+    width: 3600px;
 }
 table.head
 {
     table-layout: fixed;
-    width: 1890px;
+    width: 3600px;
 }
 table.frozen
 {
@@ -46,7 +46,7 @@ div.horizontal-scroll
 }
 div.horizontal-scroll div
 {
-    width: 3500px;
+    width: 4000px;
     height: 1px;
 }
 div.vertical-scroll

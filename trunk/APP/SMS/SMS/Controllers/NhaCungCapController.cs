@@ -19,7 +19,7 @@ namespace SMS.Controllers
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
             var ctx = new SmsContext();
-            if (searchString != null)
+            if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
             {
                 page = 1;
             }
@@ -47,7 +47,8 @@ namespace SMS.Controllers
             ViewBag.CurrentFilter = searchString;
             IPagedList<NhaCungCapModel> khuVucs = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = 1;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
             switch (sortOrder)
             {
                 case "id":

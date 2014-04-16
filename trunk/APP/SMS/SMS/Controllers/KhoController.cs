@@ -19,7 +19,7 @@ namespace SMS.Controllers
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
             var ctx = new SmsContext();
-            if (searchString != null)
+            if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
             {
                 page = 1;
             }
@@ -34,7 +34,7 @@ namespace SMS.Controllers
             var theListContext = (from s in ctx.KHOes
                                   join u2 in ctx.NGUOI_DUNG on s.MA_NGUOI_DUNG_DAU equals u2.MA_NGUOI_DUNG
                                   join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
-                                  join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on s.UPDATE_BY equals u1.MA_NGUOI_DUNG
                                   where (s.ACTIVE == "A" && (String.IsNullOrEmpty(searchString)
                                   || s.TEN_KHO.ToUpper().Contains(searchString.ToUpper())
                                   || s.SO_DIEN_THOAI.ToUpper().Contains(searchString.ToUpper())
@@ -50,7 +50,8 @@ namespace SMS.Controllers
             ViewBag.CurrentFilter = searchString;
             IPagedList<KhoModel> khuVucs = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = 1;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
             switch (sortOrder)
             {
                 case "id":
@@ -81,7 +82,6 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult Index(string searchString)
         {
-
             var ctx = new SmsContext();
             var theListContext = (from s in ctx.KHOes
                                   join u2 in ctx.NGUOI_DUNG on s.MA_NGUOI_DUNG_DAU equals u2.MA_NGUOI_DUNG
