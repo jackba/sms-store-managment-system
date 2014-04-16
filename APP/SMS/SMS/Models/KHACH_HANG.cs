@@ -31,7 +31,6 @@ namespace SMS.Models
         }
     
         public int MA_KHACH_HANG { get; set; }
-
         [Display(Name = "Mã thẻ khách hàng")]
         [StringLength(20)]
         public string MA_THE_KHACH_HANG { get; set; }
@@ -59,11 +58,11 @@ namespace SMS.Models
         public Nullable<int> MA_KHU_VUC { get; set; }
 
         [Display(Name = "Doanh số")]
-        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "0,0.n2", ApplyFormatInEditMode = true)]
         public decimal DOANH_SO { get; set; }
 
         [Display(Name = "Nợ gối đầu")]
-        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "0,0.n2",  ApplyFormatInEditMode = true)]
         public decimal NO_GOI_DAU { get; set; }
 
         public byte[] HINH_ANH { get; set; }
@@ -74,7 +73,10 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
 
         [Display(Name = "Ngày phát sinh nợ")]
-        public DateTime NGAY_PHAT_SINH_NO { get; set; }
+        public Nullable<DateTime> NGAY_PHAT_SINH_NO { get; set; }
+
+        [Display(Name = "Loại khách hàng")]
+        public int KIND { get; set; }
     
         public virtual ICollection<HOA_DON> HOA_DON { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
