@@ -1,5 +1,260 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model PagedList.IPagedList<SMS.Models.KhachHangModel>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+
+@{
+    ViewBag.Title = "Danh mục khách hàng";
+    List<SelectListItem> kinds = new List<SelectListItem>();
+   
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title </h2>
+
+<hr style="width:100%" />
+
+
+@using (Html.BeginForm("Index", "KhachHang", FormMethod.Get))
+{
+    <div style="float:right">
+        <p>
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+            @{
+            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+            {
+                <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew","KhachHang")'" />
+            }
+            }
+        </p>
+    </div>
+    <hr style="width:100%" />
+    <div id="advSearch" name="advSearch">
+            <div style="display:inline-block; width:200px; height:28px"> Loại khách hàng:</div> 
+            <div style="display: inline-block; width: 400px; height: 28px"> @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)</div> 
+            <br />
+            <div style="display:inline-block; width:200px; height:28px"> Khu vực: </div>
+            <div style="display: inline-block; width: 400px; height: 28px"> @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)</div> 
+            <br />
+            <div style="display:inline-block; width:200px; height:28px"> Doanh số: </div>
+            <div style="display: inline-block; width: 400px; height: 28px">
+                @Html.TextBox("SearchString", ViewBag.DoanhSoFrom as float?, new { style = "width:137px;" }) ~  @Html.TextBox("SearchString", ViewBag.DoanhSoTo as float?, new { style = "width:137px;" })
+            </div>
+            <br />  
+            <div style="display:inline-block; width:200px; height:28px"> Nợ gối đầu: </div>
+            <div style="display: inline-block; width: 400px; height: 28px">
+                @Html.TextBox("SearchString", ViewBag.NoGoiDauFrom as float?, new { style = "width:137px;" }) ~  @Html.TextBox("SearchString", ViewBag.NoGoiDauTo as float?, new { style = "width:137px;" })
+            </div> 
+    </div>
+    <hr style="width:100%" />
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+        <tr>
+            <td class='tablefrozencolumn' width="15%">
+                <div id='divroot' class='root'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
+                        <tr>
+                            <td class='inner colwidth head ' width="40%">
+                                @Html.ActionLink("Mã khách hàng", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                            </td>
+                            <td class='inner colwidth head'>
+                                @Html.ActionLink("Tên khách hàng", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='divfrozen' class='frozen'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
+                                    @donvi.KhachHang.MA_KHACH_HANG
+                                </td>
+                                <td class='inner frozencol toprow alignText'>
+                                    @donvi.KhachHang.TEN_KHACH_HANG
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+            <td class='tablecontent'>
+                <div id='headscroll' class='divhead'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
+                        <tr>
+                            <td class='inner column-hscroll head'> Mã thẻ </td>
+                            <td class='inner column-hscroll head'> Loại khách hàng </td>
+                            <td class='inner column-hscroll head'> Số điện thoại </td>
+                            <td class='inner column-hscroll head'> Email </td>
+                            <td class='inner column-hscroll head'> Địa chỉ </td>
+                            <td class='inner column-hscroll head'>@Html.ActionLink("Khu vực", "Index", new { sortOrder = ViewBag.AdminSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex }) </td>
+                            @{
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+    {
+                                <td class='inner column-hscroll head'> Doanh số </td>
+                                <td class='inner column-hscroll head'> Nợ gối đầu </td>
+                                <td class='inner column-hscroll head' title="Ngày phát sinh nợ"> Ngày p/s nợ </td>
+    }
+                           
+    if ((bool)Session["IsAdmin"] == true)
+    {
+        <td class='inner head' style="width:70px;">Người tạo</td>
+                                <td class='inner  head' style="width:70px;">Ngày tạo</td>
+                                <td class='inner  head' style="width:70px;">Người cập nhật</td>
+                                <td class='inner  head' style="width:70px;">Ngày cập nhật</td>
+    }
+
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+    {
+        <td class='inner head' style="width:50px;" title="Thay đổi công nợ">Thay đổi c/n</td>
+    }
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+    {
+        <td class='inner head' style="width:50px;">Sửa</td>
+                                <td class='inner head' style="width:50px;">Xóa</td>
+    }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.MA_THE_KHACH_HANG </td>
+                                <td class='inner column-hscroll alignCenter'>
+                                 @{
+                                     string kind = "";
+                                     if (String.IsNullOrEmpty(@donvi.KhachHang.KIND.ToString()))
+                                     {
+                                         kind = "--";
+                                     }
+                                     else
+                                     {
+                                         if (Int32.Parse(@donvi.KhachHang.KIND.ToString()) == 1)
+                                         {
+                                             kind = "Khách hàng Công ty - Công trình";
+                                         }
+                                         else if (Int32.Parse(@donvi.KhachHang.KIND.ToString()) == 2)
+                                         {
+                                             kind = "Khách hàng thân thiết";
+                                         }
+                                         else
+                                         {
+                                             kind = "Khách hàng thường";
+                                         }
+                                     }
+                                 }
+                                    @kind
+                                </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.SO_DIEN_THOAI </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.EMAIL </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.DIA_CHI </td>
+                                <td class='inner column-hscroll alignCenter'> 
+                                 @{
+                                    if (@donvi.KhuVuc == null || String.IsNullOrEmpty(@donvi.KhuVuc.TEN_KHU_VUC))
+                                        {
+                                             @Html.Label("--")
+                                        }
+                                        else
+                                        {
+                                            @Html.Label(@donvi.KhuVuc.TEN_KHU_VUC)
+                                           
+                                        }
+                                    }
+                                
+                                </td>
+                                @{
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                            {
+                                 <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.DOANH_SO.ToString("0,0.00")             
+                                </td>
+                                 <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.NO_GOI_DAU.ToString("0,0.00") </td>
+                                <td class='inner column-hscroll alignCenter' >
+                                @{
+                                if (@donvi.KhachHang.NGAY_PHAT_SINH_NO == null)
+                                {
+                                    @Html.Label("--");
+                                }
+                                else
+                                {
+                                    @Html.Label(DateTime.Parse(@donvi.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy"))
+                                }
+        }
+
+    </td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true)
+                            {
+                                <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.KhachHang.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.KhachHang.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                            {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
+                                        <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                                    </a>
+                                </td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("Edit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
+                                        <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                    </a>
+                                </td>
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("Delete", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module" onclick="return deleteSubmit()">
+                                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                        </a>
+                                    </td>
+                            }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
+                    <div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    @Html.Label(Model.Count.ToString() + ": Kho")
+                </div>
+            </td>
+            <td>
+                <div style="text-align:right; padding-top:3px;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn xóa kho này?");
+        if (r == true) {
+            document.forms[0].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>

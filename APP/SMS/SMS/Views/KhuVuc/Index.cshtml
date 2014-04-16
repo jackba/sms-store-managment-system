@@ -39,10 +39,10 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%">
-                                @Html.ActionLink("Mã khu vực", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })
+                                @Html.ActionLink("Mã khu vực", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
                             </td>
                             <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên khu vực", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                                @Html.ActionLink("Tên khu vực", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
                             </td>
                         </tr>
                     </table>
@@ -137,7 +137,8 @@
             </td>
             <td>
                 <div style="text-align:right; padding-top:3px;">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                 </div>
             </td>
         </tr>
