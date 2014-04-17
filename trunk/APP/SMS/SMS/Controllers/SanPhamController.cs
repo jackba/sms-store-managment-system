@@ -18,15 +18,6 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Index(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
-           
-            //if (!String.IsNullOrEmpty(CurrentFilter))
-            //{
-            //    currentPageIndex = 1;
-            //}
-            //else
-            //{
-            //    ViewBag.CurrentFilter = CurrentFilter;
-            //}
 
             IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(sortOrder, CurrentFilter, currentPageIndex);
 
@@ -72,6 +63,13 @@ namespace SMS.Controllers
             }
         }
 
+        [HttpPost]
+        public PartialViewResult SearchAdvance(string param1)
+        {
+            // TODO : Test ajax
+           IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(null, null, null);
+            return PartialView("SanPhamPV", listResult);
+       }
         [HttpPost]
         public ActionResult Edit(SAN_PHAM product)
         {
