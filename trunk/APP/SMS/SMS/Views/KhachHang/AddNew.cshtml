@@ -144,11 +144,11 @@
                     @{
         if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
         {
-            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @class = "datePicker" })
+            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:dd/MM/yyyy}", new { @class = "datePicker" })
         }
         else
         {
-            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @ReadOnly = true })
+            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:dd/MM/yyyy}", new { @ReadOnly = true })
 
         }
                     }
