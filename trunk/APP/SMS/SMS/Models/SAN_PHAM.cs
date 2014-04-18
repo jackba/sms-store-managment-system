@@ -13,6 +13,8 @@ namespace SMS.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
+    
+
     public class SanPhamDisplay {
         public SAN_PHAM SanPham { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
@@ -20,6 +22,23 @@ namespace SMS.Models
         public DON_VI_TINH DonVi { get; set; }
         public NHA_SAN_XUAT NhaSanXuat { get; set; }
     }
+
+    public class ProductSA
+    {
+        public string TenSanPham { get; set; }
+        public string KichThuoc { get; set; }
+        public string TrongLuong { get; set; }
+        public string DonViTinh { get; set; }
+        public string NhaSanXuat { get; set; }
+        public string DacTa { get; set; }
+        public string GiaBanFrom { get; set; }
+        public string GiaBanTo { get; set; }
+        public string ChietKhauFrom { get; set; }
+        public string ChietKhauTo { get; set; }
+        public string CoSoFrom { get; set; }
+        public string CoSoTo { get; set; }
+    }
+
     public partial class SAN_PHAM
     {
         public SAN_PHAM()
