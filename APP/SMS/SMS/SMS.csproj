@@ -546,8 +546,12 @@
     <Content Include="Views\NguoiDung\Edit.cshtml" />
     <Content Include="Views\KhachHang\UpdateDebit.cshtml" />
     <Content Include="Views\SanPham\SanPhamPV.cshtml" />
+
+    <Content Include="Views\SanPham\_PartialProductSA.cshtml" />
+
     <Content Include="Views\KhachHang\showDebitHist.cshtml" />
     <Content Include="Views\KhachHang\showOrderHist.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

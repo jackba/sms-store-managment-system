@@ -64,9 +64,62 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult SearchAdvance(string param1)
+        public PartialViewResult SearchAdvance(FormCollection collection)
         {
-            // TODO : Test ajax
+            ProductSA psa = new ProductSA();
+            if (collection.AllKeys.Contains("TenSanPham"))
+            {
+                psa.TenSanPham = collection.Get("TenSanPham");
+            }
+            if (collection.AllKeys.Contains("KichThuoc"))
+            {
+                psa.KichThuoc = collection.Get("KichThuoc");
+            }
+            if (collection.AllKeys.Contains("TrongLuong"))
+            {
+                psa.TrongLuong = collection.Get("TrongLuong");
+            }
+            if (collection.AllKeys.Contains("DonViTinh"))
+            {
+                psa.DonViTinh = collection.Get("DonViTinh");
+            }
+            if (collection.AllKeys.Contains("NhaSanXuat"))
+            {
+                psa.NhaSanXuat = collection.Get("NhaSanXuat");
+            }
+            if (collection.AllKeys.Contains("DacTa"))
+            {
+                psa.DacTa = collection.Get("DacTa");
+            }
+            if (collection.AllKeys.Contains("GiaBanFrom"))
+            {
+                psa.GiaBanFrom = collection.Get("GiaBanFrom");
+            }
+            if (collection.AllKeys.Contains("GiaBanTo"))
+            {
+                psa.GiaBanTo = collection.Get("GiaBanTo");
+            }
+
+            if (collection.AllKeys.Contains("ChietKhauFrom"))
+            {
+                psa.ChietKhauFrom = collection.Get("ChietKhauFrom");
+            }
+            if (collection.AllKeys.Contains("ChietKhauTo"))
+            {
+                psa.ChietKhauTo = collection.Get("ChietKhauTo");
+            }
+
+            if (collection.AllKeys.Contains("CoSoFrom"))
+            {
+                psa.CoSoFrom = collection.Get("CoSoFrom");
+            }
+            if (collection.AllKeys.Contains("CoSoTo"))
+            {
+                psa.CoSoTo = collection.Get("CoSoTo");
+            }
+
+
+           // TODO :  COMING SON
            IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(null, null, null);
             return PartialView("SanPhamPV", listResult);
        }

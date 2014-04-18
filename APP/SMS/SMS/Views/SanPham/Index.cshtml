@@ -1,4 +1,5 @@
 ﻿@model PagedList.IPagedList<SMS.Models.SanPhamDisplay>
+
 @using PagedList.Mvc;
 
 @{
@@ -39,14 +40,7 @@
 
     $(document).ready(function () {
         renderFormatTable();
-
-        $('#mainDiv').bind("DOMSubtreeModified", function () {
-            renderFormatTable();
-        });
     });
-  
-   
-        
 
     function renderFormatTable() {
         $('td.alignNumberic').each(function () {
@@ -67,11 +61,131 @@
             return false;
         }
     }
+
+    function RenderControls() {
+        
+        var idCtrl = null;
+        var headerCtrl = null
+        var isFromTo = null;
+        var idFocus = '#';
+
+        var option = parseInt($('#addOption').val());
+        if (option > -1) {
+            switch (option) {
+                case 0:
+                    if (!$("#R_TenSanPham").length) {
+                        idCtrl = 'TenSanPham';
+                        headerCtrl = 'Tên Sản Phẩm';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'TenSanPham';
+                    }
+                    break;
+                case 1:
+                    if (!$("#R_KichThuoc").length) {
+                        idCtrl = 'KichThuoc';
+                        headerCtrl = 'Kích thước';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'KichThuoc';
+                    }
+                    break;
+                case 2:
+                    if (!$("#R_TrongLuong").length) {
+                        idCtrl = 'TrongLuong';
+                        headerCtrl = 'Trọng lượng';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'TrongLuong';
+                    }
+                    break;
+                case 3:
+                    if (!$("#R_DonViTinh").length) {
+                        idCtrl = 'DonViTinh';
+                        headerCtrl = 'Đơn vị tính';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'DonViTinh';
+                    }
+                    break;
+                case 4:
+                    if (!$("#R_NhaSanXuat").length) {
+                        idCtrl = 'NhaSanXuat';
+                        headerCtrl = 'Nhà sản xuất';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'NhaSanXuat';
+                    }
+                    break;
+                case 5:
+                    if (!$("#R_DacTa").length) {
+                        idCtrl = 'DacTa';
+                        headerCtrl = 'Đặc tả';
+                        isFromTo = false;
+                    } else {
+                        idFocus += 'DacTa';
+                    }
+                    break;
+                case 6:
+                    if (!$("#R_GiaBan").length) {
+                        idCtrl = 'GiaBan';
+                        headerCtrl = 'Giá bán';
+                        isFromTo = true;
+                    } else {
+                        idFocus += 'GiaBanFrom';
+                    }
+                    break;
+                case 7:
+                    if (!$("#R_ChietKhau").length) {
+                        idCtrl = 'ChietKhau';
+                        headerCtrl = 'Chiết khấu';
+                        isFromTo = true;
+                    } else {
+                        idFocus += 'ChietKhauFrom';
+                    }
+                    break;
+                case 8:
+                    if (!$("#R_CoSo").length) {
+                        idCtrl = 'CoSo';
+                        headerCtrl = 'Cơ số';
+                        isFromTo = true;
+                    } else {
+                        idFocus += 'CoSoFrom';
+                    }
+                    break;
+            }
+           
+            if (idCtrl != null && headerCtrl != null && isFromTo != null) {
+                var result = '';
+                result += '<tr id="R_' + idCtrl + '" >';
+                result += '<td style="text-align: center;">' + headerCtrl + '</td>';
+                idFocus = '#';
+                if (isFromTo == false) {
+                    result += '<td><div><input type="text" id="' + idCtrl + '" name="' + idCtrl + '" value="">';
+                    result += '<img src="/Content/images/delete-20.png" style="cursor:pointer; vertical-align: middle;" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');" alt="Xóa" width="20" height="20"> </div></td>';
+                    idFocus += idCtrl;
+                } else {
+                    result += '<td> <div><input type="text"  id="' + idCtrl + 'From" name="' + idCtrl + 'To" value="">  ~  ';
+                    result += '<input type="text"  id="' + idCtrl + 'To" name="' + idCtrl + 'To" value="">';
+                    result += '<img src="/Content/images/delete-20.png" style="cursor:pointer; vertical-align: middle;" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');" alt="Xóa" width="20" height="20"></div></td>';
+                    idFocus += idCtrl + 'From';
+                }
+                result += '</tr>';
+                $('#conditionAdvanceTbl').append(result);
+            }
+            //Focus control added
+            $(idFocus).focus();
+        }
+    }
+
+    function RemoveConditionSearch(rowId){
+        $('#' + rowId).remove();
+    }
     //]]>  
 </script>
 <hr style="width:100%" />
 <div style="float:right " >
-
+  
     @using (Html.BeginForm("Index", "SanPham", FormMethod.Get))
     {
         <p>
@@ -93,27 +207,12 @@
 <div  class="containerSA">
     <div class="headerSA">Tìm kiếm nâng cao</div>
     <div class="contentSA">
-        <ul>
-            <li>Noi dung tim kiem 1</li>
-            <li>Noi dung tim kiem 2</li>
-            <li>Noi dung tim kiem 3</li>
-            <li>Noi dung tim kiem 4</li>
-        </ul>
-        @Ajax.ActionLink("Tìm kiếm", "SearchAdvance", "SanPham",
-        new
-        {
-            param1 = "1"
-        },
-        new AjaxOptions
-        {
-            HttpMethod = "POST",
-            InsertionMode = InsertionMode.Replace,
-            UpdateTargetId = "mainDiv"
-        }, new { @onchange = "renderFormatTable();" })
+        @Html.Partial("_PartialProductSA")
+  
     </div>
 </div>
  
-<div id="mainDiv" >
+<div id="mainDiv"  >
     <table id="mainTbl" border="0" cellpadding="0" cellspacing="0" style="width:100%">
 
         <tr>

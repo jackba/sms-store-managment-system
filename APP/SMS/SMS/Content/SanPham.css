@@ -275,3 +275,23 @@ div.tooltip span
     box-shadow: 5px 5px 8px #CCC;
 }
 /*end css tooltip*/
+/*start search advance (SA)*/
+.containerSA {
+    margin-top: 63px;
+    width:100%;
+    border:1px solid #d3d3d3;
+}
+/*.containerSA div {
+    width:100%;
+}*/
+.containerSA .headerSA {
+    background-color:#d3d3d3;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.containerSA .contentSA {
+    display: none;
+    padding : 5px;
+}
+/*end search advance (SA)*/
