@@ -11,7 +11,15 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
+    public class KhachHangDebitHistModel
+    {
+        public KHACH_HANG_DEBIT_HIST KhachHangDebitHist { get; set; }
+        public KHACH_HANG KhachHang { get; set; }
+        public NGUOI_DUNG NhanVienThucHien { get; set; }
+        public NGUOI_DUNG NguoiTao { get; set; }
+        public NGUOI_DUNG NguoiCapNhat { get; set; }
+    }
     public partial class KHACH_HANG_DEBIT_HIST
     {
         public int ID { get; set; }

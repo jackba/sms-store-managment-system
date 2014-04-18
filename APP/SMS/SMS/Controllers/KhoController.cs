@@ -210,6 +210,8 @@ namespace SMS.Controllers
             if (khuVuc.ACTIVE.Equals("A"))
             {
                 khuVuc.ACTIVE = "I";
+                khuVuc.UPDATE_AT = DateTime.Now;
+                khuVuc.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
