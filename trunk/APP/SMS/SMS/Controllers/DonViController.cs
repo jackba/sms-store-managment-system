@@ -111,6 +111,8 @@ namespace SMS.Controllers
             if (donvi.ACTIVE.Equals("A"))
             {
                 donvi.ACTIVE = "I";
+                donvi.UPDATE_AT = DateTime.Now;
+                donvi.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 return RedirectToAction("Index");
             }

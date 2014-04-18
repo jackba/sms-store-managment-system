@@ -108,20 +108,52 @@
                     @Html.LabelFor(u => u.DOANH_SO)
                 </div>
                 <div>
-                    @Html.TextBoxFor(u => u.DOANH_SO, new { min = "0", @class = "input numberic" })
+                    @{
+        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+        {
+            @Html.TextBoxFor(u => u.DOANH_SO, new { min = "0", max = "100000000000", @class = "numberic" })
+        }
+        else
+        {
+            @Html.TextBoxFor(u => u.DOANH_SO, new { min = "0", max = "100000000000", @class = "numberic", @ReadOnly = true })
+        }
+                    }
+
                 </div>
                 <div>
                     @Html.LabelFor(u => u.NO_GOI_DAU)
                 </div>
-                    @Html.TextBoxFor(u => u.NO_GOI_DAU, new { min = "0",  @class = "input numberic" })
+                @{
+        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+        {
+            @Html.TextBoxFor(u => u.NO_GOI_DAU, new { min = "0", max = "100000000000", @class = "numberic" })
+        }
+        else
+        {
+            @Html.TextBoxFor(u => u.NO_GOI_DAU, new { min = "0", max = "100000000000", @class = "numberic", @ReadOnly = true })
+        }
+                }
+
                 <div>
-                    
+
                 </div>
                 <div>
                     @Html.LabelFor(u => u.NGAY_PHAT_SINH_NO)
                 </div>
                 <div>
-                    @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @class = "datePicker" })
+                    @{
+        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+        {
+            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @class = "datePicker" })
+        }
+        else
+        {
+            @Html.TextBoxFor(u => u.NGAY_PHAT_SINH_NO, "{0:d}", new { @ReadOnly = true })
+
+        }
+                    }
+
+
                 </div>
                 <div>
                     <input type="submit" style="width:100px"  value="Lưu" />
@@ -142,12 +174,16 @@
             });
 
             function NumbericOnly(ctrl) {
-                $(ctrl).keypress(function (e) {
-                    //if the letter is not digit then display error and don't type anything
-                    if (e.which != 8 && e.which != 190 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                        //display error message
+                $(ctrl).keypress(function (key) {
+                    //getting key code of pressed key
+                    var keycode = (key.which) ? key.which : key.keyCode;
+                    //comparing pressed keycodes
+
+                    if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                        alert(" You can enter only characters 0 to 9 ");
                         return false;
                     }
+                    else return true;
                 });
 
             }
@@ -158,12 +194,16 @@
             }
             $(document).ready(function () {
                 formatNumberic();
-                $('input.numberic').keydown(function (e) {
-                    //if the letter is not digit then display error and don't type anything
-                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                        //display error message
+                $('input.numberic').keypress(function (key) {
+                    var keycode = (key.which) ? key.which : key.keyCode;
+                    //comparing pressed keycodes
+
+                    if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                        alert(" Hãy nhập ký tự số.");
                         return false;
                     }
+                    else return true;
+
                 });
                 $('input.numberic').keyup(function (event) {
                     // skip for arrow keys
@@ -172,10 +212,26 @@
                         return true;
                     }
                     var $this = $(this);
-                    var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
+                    var AmountWithCommas = $this.val();
+                    var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                    var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                    var intPart = arParts[0];
+                    var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
                     var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                    // the following line has been simplified. Revision history contains original.
-                    $this.val(num2);
+                    if (decPart.length > 2) {
+                        decPart = (decPart + '00').substr(0, 2);
+                    }
+                    if (arParts.length > 1)
+                    {
+                        $this.val(num2 + DecimalSeparator + decPart);
+                    } else {
+                        $this.val(num2);
+                    }
+                    
+
                 });
                 $('input.numberic').bind("paste", function (e) {
                     e.preventDefault();

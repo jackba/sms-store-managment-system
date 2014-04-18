@@ -71,6 +71,15 @@ td.inner
     height: 28px;
 }
 
+td.innerLast
+{
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    border-bottom: 1px solid #666;
+    padding: 3px;
+    height: 28px;
+}
+
 td.frozencol
 {
     border-right: 1px double #666;   
@@ -100,6 +109,17 @@ td.head
     font-weight: bold;
     text-align: center;
 }
+
+td.headLast
+{
+    border-top: 1px solid #666;
+    border-right: 1px solid #666;
+    background-color: #B4CFC3;
+    white-space: nowrap;    
+    font-weight: bold;
+    text-align: center;
+}
+
 .rightcol
 {
     border-right: 1px solid #666;
@@ -133,6 +153,7 @@ div.divhead
     border-right: 1px solid #666; /*border-bottom: 0px solid #666;*/
     border-bottom: 1px solid #666;
 }
+
 div.content
 {
     overflow: hidden;
@@ -221,8 +242,35 @@ div.divTitle{
 .alignNumberic{
     text-align:right;
 }
+
+.numberic{
+    text-align:right;
+}
 .alignText{
     text-align:left;
     text-wrap:normal;
 }
 
+div.left{
+    padding: 2px,2px,2px,2px !important;
+    border-color:white !important;
+    border-style:solid;
+    border-width:2px;
+    display: inline-block; 
+    background-color: lightblue; 
+    width: 20%; height: 30px;
+}
+
+div.right{
+    margin-left:1px;
+    border-color:white !important;
+    border-style:solid;
+    border-width:2px;
+    display: inline-block; 
+    background-color: lightgray; 
+    width: 78%; height: 30px;
+}
+
+.datePicker{
+    width:200px;
+}

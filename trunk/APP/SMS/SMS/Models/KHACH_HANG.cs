@@ -13,11 +13,12 @@ namespace SMS.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-
+    using PagedList;
     public class KhachHangModel
     {
         public KHACH_HANG KhachHang { get; set; }
         public KHU_VUC KhuVuc { get; set; }
+        public IPagedList<KhachHangDebitHistModel> KhachHangHists { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
     }
@@ -45,8 +46,9 @@ namespace SMS.Models
         [StringLength(200)]
         public string DIA_CHI { get; set; }
 
+        [Required]
         [Display(Name = "Số điện thoại")]
-        [StringLength(15)]
+        [StringLength(15, ErrorMessage = "Số CMND không hợp lệ", MinimumLength = 8)]
         public string SO_DIEN_THOAI { get; set; }
 
         [Display(Name = "Email")]
@@ -54,15 +56,16 @@ namespace SMS.Models
         [DataType(DataType.EmailAddress)]
         public string EMAIL { get; set; }
 
+        [Required]
         [Display(Name = "Khu vực")]
         public Nullable<int> MA_KHU_VUC { get; set; }
 
         [Display(Name = "Doanh số")]
-        [DisplayFormat(DataFormatString = "0,0.n2", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "0,0.n2", ApplyFormatInEditMode = true)]
         public decimal DOANH_SO { get; set; }
 
         [Display(Name = "Nợ gối đầu")]
-        [DisplayFormat(DataFormatString = "0,0.n2",  ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "0,0.n2",  ApplyFormatInEditMode = true)]
         public decimal NO_GOI_DAU { get; set; }
 
         public byte[] HINH_ANH { get; set; }
@@ -73,6 +76,8 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
 
         [Display(Name = "Ngày phát sinh nợ")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public Nullable<DateTime> NGAY_PHAT_SINH_NO { get; set; }
 
         [Display(Name = "Loại khách hàng")]
