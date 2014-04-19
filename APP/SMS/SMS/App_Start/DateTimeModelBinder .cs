@@ -28,12 +28,7 @@ namespace SMS.App_Start
                 {
                     try
                     {
-                        string s = value.AttemptedValue;
-                        if (!String.IsNullOrEmpty(s) && s.Length > 10)
-                        {
-                            s = s.Substring(0, 10);
-                        }
-                        date = DateTime.ParseExact(s, "MM/dd/yyyy", cultureinfo);
+                        date = DateTime.Parse(value.AttemptedValue);
                         return date;
                     }
                     catch
