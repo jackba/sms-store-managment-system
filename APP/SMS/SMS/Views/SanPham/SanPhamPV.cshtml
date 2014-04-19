@@ -16,12 +16,29 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%">
-                                @Html.ActionLink("Mã sản phẩm", "Index", new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter })
+                                @Ajax.ActionLink("Mã sản phẩm", "PagingContent",
+                                    new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter },
+                                    new AjaxOptions()
+                                    {
+                                        HttpMethod = "POST",
+                                        InsertionMode = InsertionMode.Replace,
+                                        UpdateTargetId = "mainDiv"
+                                    }
+                                )
 
                             </td>
                             <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên sản phẩm", "Index", new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter })
+                                @Ajax.ActionLink("Tên sản phẩm", "PagingContent",
+                                    new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter },
+                                    new AjaxOptions()
+                                    {
+                                        HttpMethod = "POST",
+                                        InsertionMode = InsertionMode.Replace,
+                                        UpdateTargetId = "mainDiv"
+                                    }
+                                 )
                             </td>
+
                         </tr>
                     </table>
                 </div>
@@ -220,6 +237,15 @@
         </tr>
     </table>
     <hr />
-    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) của @Model.PageCount
-    @Html.PagedListPager(Model, currentPageIndex => Url.Action("Index",
-    new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent", 
+        new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+ 
