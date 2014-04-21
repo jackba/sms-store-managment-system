@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = "Danh sách sản phẩm";
 }
-@Scripts.Render("~/bundles/jqueryval")
+
 <link href="../../Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/style.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/SanPham.css" rel="stylesheet" type="text/css" />
@@ -14,12 +14,46 @@
 @*<script src="~/Content/js/jquery-1.9.1.js"></script>*@
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
 <h2>@ViewBag.Title </h2>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
 <script>
     //<![CDATA[ 
+    /**AUTOCOMPLETE**/
+    $(document).ready(function () {
+        $("#CurrentFilter").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.value,
+                                    value: item.value,
+                                    id: item.id
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            },
+            select: function (event, ui) {
+                $('#CurrentFilter').val(ui.item.label);
+                return false;
+            },
+            minLength: 1
+
+        });
+        
+        
+
+    });
+
     $(window).load(function () {
-        //$('.headerSA').click(function () {
-        //    $('.contentSA').slideToggle('slow');
-        //});
+
         $(".headerSA").click(function () {
 
             $header = $(this);
@@ -27,12 +61,13 @@
             $content = $header.next();
             //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
             $content.slideToggle(500, function () {
-                //execute this after slideToggle is done
-                //change text of header based on visibility of content div
-                $header.text(function () {
-                    //change text based on condition
-                    return $content.is(":visible") ? "Hãy nhập điều kiện search bên dưới" : "Tìm kiếm nâng cao";
-                });
+                var isExpand = $content.is(":visible");
+                if (isExpand == true) {
+                    $header.removeClass('collapsed');
+                } else {
+                    $header.addClass('collapsed');
+                }
+
             });
 
         });
@@ -177,6 +212,33 @@
             }
             //Focus control added
             $(idFocus).focus();
+            //add autocomplete
+            if(option == 0){
+                $("#TenSanPham").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                            dataFilter: function (data) { return data; }, success:
+                                function (data) {
+                                    response($.map(data, function (item) {
+                                        return {
+                                            label: item.value,
+                                            value: item.value,
+                                            id: item.id
+                                        }
+                                    }))
+                                }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        });
+                    },
+                    select: function (event, ui) {
+                        $('#TenSanPham').val(ui.item.label);
+                        return false;
+                    },
+                    minLength: 1
+
+                });
+            }
         }
     }
 
@@ -185,6 +247,7 @@
     }
     //]]>  
 </script>
+}
 <hr style="width:100%" />
 <div style="float:right " >
   
@@ -207,7 +270,9 @@
 </div>
 
 <div  class="containerSA">
-    <div class="headerSA">Tìm kiếm nâng cao</div>
+    <div class="headerSA collapsible collapsed">
+        Tìm kiếm nâng cao
+    </div>
     <div class="contentSA">
         @Html.Partial("_PartialProductSA")
   

@@ -143,6 +143,7 @@
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\HangSanXuatController.cs" />
+    <Compile Include="Controllers\HoaDonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhoController.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
+    <Compile Include="Controllers\SmsMasterController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -172,6 +174,8 @@
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GET_HOA_DON_Result.cs" />
+    <Compile Include="Models\GET_SUM_HOA_DON_BY_CUS_ID_Result.cs" />
     <Compile Include="Models\HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -308,6 +312,8 @@
     <Content Include="Content\DonVi.css" />
     <Content Include="Content\HangSanXuat.css" />
     <Content Include="Content\images\add_new.png" />
+    <Content Include="Content\images\arrow_collapsed.png" />
+    <Content Include="Content\images\arrow_expanded.png" />
     <Content Include="Content\images\Credit-icon.png" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
     <Content Include="Content\images\customer.jpg" />
@@ -336,6 +342,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\SanPham.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\SmsMaster.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\themes\base\images\edit-icon.png" />
     <Content Include="Content\themes\base\images\edit_delete.png" />
@@ -551,6 +558,8 @@
     <Content Include="Views\SanPham\_PartialProductSA.cshtml" />
     <Content Include="Views\KhachHang\showDebitHist.cshtml" />
     <Content Include="Views\KhachHang\showOrderHist.cshtml" />
+    <Content Include="Views\HoaDon\ShowDetail.cshtml" />
+    <Content Include="Views\SmsMaster\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
