@@ -313,6 +313,7 @@
     <Content Include="Content\images\customer.jpg" />
     <Content Include="Content\images\Customer_Male_Light.png" />
     <Content Include="Content\images\dashboard-module.gif" />
+    <Content Include="Content\images\delete-20.png" />
     <Content Include="Content\images\delete.png" />
     <Content Include="Content\images\edit-icon.png" />
     <Content Include="Content\images\edit.png" />
@@ -321,6 +322,7 @@
     <Content Include="Content\images\industry.png" />
     <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
+    <Content Include="Content\images\next.png" />
     <Content Include="Content\images\provider.png" />
     <Content Include="Content\images\Retail-shop-icon.png" />
     <Content Include="Content\js\jquery-1.9.1.js" />
@@ -546,12 +548,9 @@
     <Content Include="Views\NguoiDung\Edit.cshtml" />
     <Content Include="Views\KhachHang\UpdateDebit.cshtml" />
     <Content Include="Views\SanPham\SanPhamPV.cshtml" />
-
     <Content Include="Views\SanPham\_PartialProductSA.cshtml" />
-
     <Content Include="Views\KhachHang\showDebitHist.cshtml" />
     <Content Include="Views\KhachHang\showOrderHist.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
