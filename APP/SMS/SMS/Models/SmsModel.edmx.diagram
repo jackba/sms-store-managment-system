@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="db0ff70e1f214b0a8f1519969007a9ad" Name="Diagram1">
+      <Diagram DiagramId="db0ff70e1f214b0a8f1519969007a9ad" Name="Diagram1" ZoomLevel="22">
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="48.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="36.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="36.5" IsExpanded="true" />
@@ -107,6 +107,7 @@
         <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__MA_HO__367C1819" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
