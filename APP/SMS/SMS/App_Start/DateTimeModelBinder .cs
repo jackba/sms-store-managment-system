@@ -10,11 +10,28 @@ namespace SMS.App_Start
         {
             var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
             System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
-            var date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-            return date;
+            var date = DateTime.Now;
+            if (!value.Culture.ToString().Equals("vi-VN"))
+            {
+                try
+                {
+                    date = DateTime.Parse(value.AttemptedValue);
+                    return date;
+                }
+                catch
+                {
+                    return DateTime.ParseExact(DateTime.Now.ToString("dd/MM/yyy"), "dd/MM/yyyy", cultureinfo);
+                }
+
+            }
+            else
+            {
+                date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
+                return date;
+            }
         }
     }
-
+    
     public class NullableDateTimeBinder : IModelBinder
     {
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
