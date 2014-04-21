@@ -19,6 +19,7 @@ namespace SMS.Models
         public KHACH_HANG KhachHang { get; set; }
         public KHU_VUC KhuVuc { get; set; }
         public IPagedList<KhachHangDebitHistModel> KhachHangHists { get; set; }
+        public IPagedList<GET_HOA_DON_Result> OrderHist { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
     }
