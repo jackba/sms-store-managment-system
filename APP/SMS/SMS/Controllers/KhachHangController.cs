@@ -117,7 +117,7 @@ namespace SMS.Controllers
         { 
             var ctx = new SmsContext();
             var suggestedUsers = from x in ctx.KHACH_HANG 
-                                 where x.TEN_KHACH_HANG.StartsWith(prefixText)
+                                 where (x.TEN_KHACH_HANG.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
                                  select new
                                  {
                                      id = x.MA_KHACH_HANG,  
@@ -346,12 +346,60 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
-        public ActionResult showOrderHist(int id)
+        public ActionResult showOrderHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page)
         {
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 ViewBag.Message = "Bạn không có quyền thay đổi công nợ.";
                 return RedirectToAction("Index");
+            }
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            KHACH_HANG khuVuc = ctx.KHACH_HANG.Find(id);
+            if (khuVuc.ACTIVE.Equals("A"))
+            {
+                var khuVucList = (from s in ctx.KHU_VUC
+                                  where s.ACTIVE == "A"
+                                  select s).ToList<KHU_VUC>();
+                ViewBag.khuVucList = khuVucList;
+                DateTime fD = String.IsNullOrEmpty(fromDate) ? DateTime.MinValue : DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime tD = String.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                var orderList = ctx.GET_HOA_DON(fD, tD, id);
+
+                ViewBag.IdSortParm = sortOrder == "date_desc" ? "date" : "date_desc";
+                IPagedList<GET_HOA_DON_Result> khachHangHists = null;
+                int pageSize = SystemConstant.ROWS;
+                int pageIndex = page == null ? 1 : (int)page;
+                ViewBag.CurrentPageIndex = pageIndex;
+                switch (sortOrder)
+                {
+                    case "date":
+                        khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                        break;
+                    case "date_desc":
+                        khachHangHists = orderList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                        break;
+                    default:
+                        khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                        break;
+
+                }
+                ViewBag.debitHist = khachHangHists;
+                KhachHangModel KhachHang = new KhachHangModel();
+                KhachHang.KhachHang = khuVuc;
+                KhachHang.OrderHist = khachHangHists;
+                var total = ctx.GET_SUM_HOA_DON_BY_CUS_ID(fD, tD, id).ToList().First();
+                ViewBag.toTal = total;
+                return View(KhachHang);
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
+                return View("../Home/Error"); ;
             }
             return View();
         }
@@ -409,6 +457,37 @@ namespace SMS.Controllers
             else
             {
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CancelHist(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.KHACH_HANG_DEBIT_HIST.Find(id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+                donvi.ACTIVE = "I";
+                donvi.UPDATE_AT = DateTime.Now;
+                donvi.CREATE_BY = (int)Session["UserId"];
+
+                var khachHang = ctx.KHACH_HANG.Find(donvi.MA_KHACH_HANG);
+                khachHang.NO_GOI_DAU = khachHang.NO_GOI_DAU + (decimal)donvi.PHAT_SINH;
+                donvi.UPDATE_AT = DateTime.Now;
+                donvi.CREATE_BY = (int)Session["UserId"];
+
+                ctx.SaveChanges();
+                return RedirectToAction("showDebitHist", new { id = donvi.MA_KHACH_HANG });
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
                 return View("../Home/Error"); ;
             }
         }
