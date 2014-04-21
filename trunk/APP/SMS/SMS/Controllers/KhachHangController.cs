@@ -14,24 +14,8 @@ namespace SMS.Controllers
     public class KhachHangController : Controller
     {
         [HttpGet]
-        public ActionResult Index(string searchString, string customerName, string customerKind, string customerArea,
-            string customerAmountFrom, string customerAmountTo, string customerDebitFrom,
-            string customerDebitTo, string ShowFlag, string sortOrder, string currentFilter, int? page)
+        public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
-            ViewBag.CusomerKind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
-            ViewBag.CustomerArea = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
-            ViewBag.ShowFlag = string.IsNullOrEmpty(ShowFlag) ? 0 : int.Parse(ShowFlag);
-
-            int kind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
-            int areaId = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
-            decimal amountFrom = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerAmountFrom)? "0": customerAmountFrom.Replace("'", ""), out amountFrom);
-            decimal amountTo = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerAmountTo)? "0": customerAmountTo.Replace("'", ""), out amountTo);
-            decimal debitFrom = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom)? "0": customerDebitFrom.Replace(",", ""), out debitFrom);
-            decimal debitTo = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom)? "0": customerDebitFrom.Replace(",", ""), out debitTo);
             var ctx = new SmsContext();
             if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
             {
@@ -58,14 +42,6 @@ namespace SMS.Controllers
                                   || KhachHang.MA_THE_KHACH_HANG.ToUpper().Contains(searchString.ToUpper())
                                   || KhachHang.SO_DIEN_THOAI.ToUpper().Contains(searchString.ToUpper())
                                   || kVuc.TEN_KHU_VUC.ToUpper().Contains(searchString.ToUpper()))
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerName) || KhachHang.TEN_KHACH_HANG.ToUpper().Contains(customerName.ToUpper()))
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerKind) || "0".Equals(customerKind) || KhachHang.KIND == kind)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerArea) || "0".Equals(customerArea) || KhachHang.MA_KHU_VUC == areaId)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountFrom) || KhachHang.DOANH_SO >= amountFrom)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountTo) || KhachHang.DOANH_SO <= amountTo)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountTo) || KhachHang.DOANH_SO <= amountTo)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerDebitFrom) || KhachHang.NO_GOI_DAU >= debitFrom)
-                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerDebitTo) || KhachHang.NO_GOI_DAU <= debitTo)
                                   )
                                   select new KhachHangModel
                                   {
@@ -103,27 +79,7 @@ namespace SMS.Controllers
                     khachHangs = theListContext.OrderBy(KhachHang => KhachHang.KhachHang.MA_KHACH_HANG).ToPagedList(pageIndex, pageSize);
                     break;
             }
-            var khuVucList = (from s in ctx.KHU_VUC
-                              where s.ACTIVE == "A"
-                              select s).ToList<KHU_VUC>();
-            ViewBag.khuVucList = khuVucList;
-            ViewBag.CustomerAutocomplete = khuVucList.ToArray();
             return View(khachHangs);
-        }
-
-
-        [HttpPost] 
-        public JsonResult Find(string prefixText) 
-        { 
-            var ctx = new SmsContext();
-            var suggestedUsers = from x in ctx.KHACH_HANG 
-                                 where x.TEN_KHACH_HANG.StartsWith(prefixText)
-                                 select new
-                                 {
-                                     id = x.MA_KHACH_HANG,  
-                                     value = x.TEN_KHACH_HANG}; 
-            var result = Json(suggestedUsers.Take(5).ToList()); 
-            return result; 
         }
 
         [HttpGet]
@@ -218,7 +174,7 @@ namespace SMS.Controllers
             if (!String.IsNullOrEmpty(a))
             {
                 returnDate = DateTime.ParseExact(a, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                ViewBag.returnDate = returnDate.ToString("dd/MM/yyyy");
+                ViewBag.returnDate = returnDate;
             }
             else
             {
