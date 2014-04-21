@@ -1,5 +1,231 @@
-﻿@{
-    ViewBag.Title = "showOrderHist";
+﻿@model SMS.Models.KhachHangModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lịch sử mua hàng";
+    List<SelectListItem> theList = new List<SelectListItem>();
+    SelectListItem item;
+    if (ViewBag.khuVucList != null)
+    {
+        foreach (var donvi in ViewBag.khuVucList)
+        {
+            item = new SelectListItem();
+            item.Value = donvi.MA_KHU_VUC + "";
+            item.Text = donvi.TEN_KHU_VUC;
+            theList.Add(item);
+        }
+    }
+
+
+    List<SelectListItem> kinds = new List<SelectListItem>();
+    SelectListItem kind;
+    kind = new SelectListItem();
+    kind.Value = "1";
+    kind.Text = "Khách hàng công ty , công trình";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "2";
+    kind.Text = "Khách hàng thân thiết";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "3";
+    kind.Text = "Khách hàng thường";
+    kinds.Add(kind);
+}
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@section Scripts {
+    <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datePicker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
 }
 
-<h2>showOrderHist</h2>
+<h2>Lịch sử mua hàng</h2>
+<hr style="width:100%" />
+@using (Html.BeginForm("showOrderHist", "KhachHang", FormMethod.Get, new { @name = "ShowDebitHist" }))
+{
+
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.HiddenFor(u => u.KhachHang.MA_KHACH_HANG)
+                @Html.HiddenFor(u => u.KhachHang.EMAIL)
+                @Html.HiddenFor(u => u.KhachHang.MA_KHU_VUC)
+                @Html.HiddenFor(u => u.KhachHang.KIND)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.MA_THE_KHACH_HANG)
+            </div>
+            <div class="right">
+                @Html.Label(Model.KhachHang.MA_THE_KHACH_HANG)
+                @Html.HiddenFor(u => u.KhachHang.MA_THE_KHACH_HANG)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.TEN_KHACH_HANG)
+            </div>
+            <div class="right">
+                @Html.Label(Model.KhachHang.TEN_KHACH_HANG)
+                @Html.HiddenFor(u => u.KhachHang.TEN_KHACH_HANG)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.DIA_CHI)
+
+            </div>
+            <div class="right">
+                @Html.Label(Model.KhachHang.DIA_CHI)
+                @Html.HiddenFor(u => u.KhachHang.DIA_CHI)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.SO_DIEN_THOAI)
+            </div>
+            <div class="right">
+                @Html.Label(Model.KhachHang.SO_DIEN_THOAI)
+                @Html.HiddenFor(u => u.KhachHang.SO_DIEN_THOAI)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.DOANH_SO)
+            </div>
+            <div class="right">
+                <label> @Model.KhachHang.DOANH_SO.ToString("0,0.00") </label>
+                @Html.HiddenFor(u => u.KhachHang.DOANH_SO)
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.NO_GOI_DAU)
+            </div>
+            <div class="right">
+                <label> @Model.KhachHang.NO_GOI_DAU.ToString("0,0.00") </label>
+                @Html.HiddenFor(u => u.KhachHang.NO_GOI_DAU, new { @id = "NoGoiDau" })
+
+            </div>
+            <div class="left">
+                @Html.LabelFor(u => u.KhachHang.NGAY_PHAT_SINH_NO)
+                @Html.HiddenFor(u => u.KhachHang.NGAY_PHAT_SINH_NO)
+            </div>
+            <div class="right">
+                @{
+        if (Model.KhachHang.NGAY_PHAT_SINH_NO != null)
+                        {
+            <label> @DateTime.Parse(Model.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy") </label>
+                        }
+                        else
+                        {
+            <label> -- </label>
+                        }
+                }
+
+            </div>
+            <div style="clear:both"></div>
+            <hr style="width:100%" />
+            <div style="float:right">
+                Ngày phát sinh: @Html.TextBox("fromDate", ViewBag.CurrentFilterFrom as string, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.CurrentFilterTo as string, new { @class = "datePicker" })
+                <input type="submit" value="Search" class="myButton" />
+                <input type="button" value="Export Excel" class="myButton" onclick="window.location.href='@Url.Action("ExportDebitHist", "KhachHang", Model.KhachHang.MA_KHACH_HANG)'" />
+            </div>
+            <div style="clear:both"></div>
+            <hr style="width:100%" />
+            <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+                <tr>
+                    <td class='inner colwidth head ' width="15%">
+                        @Html.ActionLink("Ngày bán", "showOrderHist", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Số hóa đơn
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Tổng tiền
+                    </td>
+                    <td class='inner colwidth head ' title="Nhân viên thực hiện" width="15%">
+                        Tổng chiếc khấu
+                    </td>
+                    <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
+                        Thực thu
+                    </td>
+                </tr>
+                @foreach (var dbHist in ViewBag.debitHist)
+                {
+                    <tr class='inner column-hscroll alignCenter'>
+                        <td class="inner colwidth">
+                            @DateTime.Parse(@dbHist.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
+                        </td>
+                        <td class="inner colwidth">
+                            <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module">
+                                @dbHist.SO_HOA_DON
+                            </a>
+                        </td>
+
+                        <td class="inner colwidth">
+                            @dbHist.AMOUNT.ToString("0,0.00")
+                        </td>
+
+                        <td class="inner colwidth">
+                            @dbHist.DISCOUNT.ToString("0,0.00")
+                        </td>
+
+                        <td class="innerLast colwidth">
+                            @dbHist.REAL_AMOUNT.ToString("0,0.00")
+                        </td>
+                        </tr>
+                     }
+
+                <tr class='inner column-hscroll alignCenter' style="background-color:lightgray">
+                    <td colspan="2" class="inner">
+                        <b>
+                            Tổng cộng
+                        </b>
+                    </td>
+                    <td class="inner colwidth">
+                        <b>
+                            @ViewBag.toTal.TOTAL_AMOUNT.ToString("0,0.00")
+                        </b>                       
+                    </td>
+                    <td class="inner colwidth">
+                        <b>
+                            @ViewBag.toTal.TOTAL_DISCOUNT.ToString("0,0.00")
+                        </b>                        
+                    </td>
+                    <td class="innerLast colwidth">
+                        <b>
+                            @ViewBag.toTal.TOTAL_REAL_AMOUNT.ToString("0,0.00")
+                        </b>                       
+                    </td>
+                </tr>
+               <tr>
+                    <td colspan=" 3">
+                        <div style="text-align:left; padding-top:3px;">
+                            @Html.Label(Model.OrderHist.Count.ToString() + ": lượt mua hàng")
+                        </div>
+                    </td>
+                    <td colspan=" 3">
+                        <div style="text-align: right;  padding-top: 3px; ">
+
+                            @Html.PagedListPager(Model.OrderHist, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                        </div>
+                    </td>
+                </tr>
+
+</table>
+</fieldset>
+    </div>
+}

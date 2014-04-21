@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Lịch sử trả nợ.";
+    ViewBag.Title = "Lịch sử phát sinh - thanh toán nợ";
     List<SelectListItem> theList = new List<SelectListItem>();
     SelectListItem item;
     if (ViewBag.khuVucList != null)
@@ -34,8 +34,10 @@
     kind.Text = "Khách hàng thường";
     kinds.Add(kind);
 }
-<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+
 @section Scripts {
     <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
     <script src="../../Content/js/jquery-1.9.1.js" type="text/javascript"></script>
@@ -49,18 +51,15 @@
                 yearRange: "-60:+0"
             });
         });
-    </script>
-<style type="text/css">
-    .required:after {
-        content: "*";
-        font-weight: bold;
-        color: red;
-    }
-</style>
-
+        </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
 }
-
-
 <h2>Lịch sử phát sinh - thanh toán nợ</h2>
 <hr style="width:100%" />
     @using (Html.BeginForm("showDebitHist", "KhachHang", FormMethod.Get, new { @name = "ShowDebitHist" }))
@@ -149,7 +148,7 @@
                 <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                     <tr>
                         <td class='inner colwidth head ' width="15%">
-                            @Html.ActionLink("Ngày phát sinh", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                            @Html.ActionLink("Ngày phát sinh", "showDebitHist", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
                         </td>
                         <td class='inner colwidth head ' width="15%">
                             Số tiền nợ trước
@@ -164,7 +163,7 @@
                             Nhân viên t/h
                         </td>
                         <td class='inner headLast' width="15%">
-                            Hủy
+                            Tác vụ
                         </td>
                     </tr>
 @foreach (var dbHist in ViewBag.debitHist)
@@ -195,20 +194,24 @@
         <td class="inner colwidth">
              @dbHist.NhanVienThucHien.TEN_NGUOI_DUNG 
         </td>
-        <td class="innerLast colwidth">
-            @{
-                if (@dbHist.KhachHangDebitHist.PHAT_SINH > 0)
-                {
-                    
-            <a href="@Url.Action("CancelHist", "KhachHang", new { id = @dbHist.KhachHangDebitHist.ID })" class="button-module">
-                <img width="18" height="18" alt="edit" src="~/Content/images/delete.png"></img>
-            </a>
-                }else
-                {
-                    
-                }
-            }
-        </td>
+            <td class="innerLast colwidth alignCenter">
+                @{
+    if (@dbHist.KhachHangDebitHist.PHAT_SINH > 0)
+    {
+
+        <a href="@Url.Action("CancelHist", "KhachHang", new { id = @dbHist.KhachHangDebitHist.ID })" class="button-module" onclick="return deleteSubmit()">
+            <img width="18" height="18" src="~/Content/images/delete.png" title="Click vào đây để xóa chứng từ" />
+        </a>
+    }
+    else
+    {
+        <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.KhachHangDebitHist.MA_HOA_DON })" class="button-module">
+            <img width="18" height="18" src="~/Content/images/listproduct.png" title="Click vào đây để xem chi tiếc hóa đơn"/>
+        </a>
+    }
+}
+            </td>
+
     </tr>
 }
                     <tr>
@@ -381,6 +384,17 @@
                 window.location.reload();
                 return false;
             }
+
+            function deleteSubmit() {
+                var r = confirm("Bạn muốn xóa chứng từ này?");
+                if (r == true) {
+                    document.forms[0].submit();
+                }
+                else {
+                    return false;
+                }
+            }
+
         </script>
 
     }
