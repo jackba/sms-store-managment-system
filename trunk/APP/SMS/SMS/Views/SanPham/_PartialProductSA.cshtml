@@ -6,11 +6,22 @@
             UpdateTargetId = "mainDiv"}))
     {
     @*@Html.ValidationSummary(true)*@
+
     <table id="conditionAdvanceTbl" border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td width="25%"> 
-                <div>
-                    <select id="addOption" onchange="RenderControls();" style="height:28px;">
+                
+            </td>
+            <td></td>
+        </tr>
+     
+        </table>
+    <hr />
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td width="80%">
+                <div style="vertical-align: middle">
+                    <select id="addOption" onchange="RenderControls();" style="height:30px;">
                         <option value="-1">Chọn hạng mục</option>
                         <option value="0">Tên sản phẩm</option>
                         <option value="1">Kích thước</option>
@@ -22,14 +33,15 @@
                         <option value="7">Chiết khấu Min-Max</option>
                         <option value="8">Cơ số Min-Max</option>
                     </select>
+                    <input type="submit" value="Thiết lập" style="height:30px;width:79px;" />
                 </div>
+                
             </td>
-            <td></td>
+            <td>
+                
+            </td>
         </tr>
-     
-        </table>
-        <p>
-            <input type="submit" value="Thiết lập" />
-        </p>
+    </table>
     }
+
 

@@ -285,7 +285,7 @@ div.tooltip span
     width:100%;
 }*/
 .containerSA .headerSA {
-    background-color:#d3d3d3;
+    background-color:#D5DDE2;
     padding: 2px;
     cursor: pointer;
     font-weight: bold;
@@ -293,5 +293,16 @@ div.tooltip span
 .containerSA .contentSA {
     display: none;
     padding : 5px;
+}
+
+div.collapsible {
+    border-width: 1px 0 0 0;
+    padding-left: 16px !important;
+    background: url(./images/arrow_expanded.png) no-repeat 0% 40%;
+    cursor: pointer;
+}
+
+div.collapsible.collapsed {
+    background-image: url(./images/arrow_collapsed.png);
 }
 /*end search advance (SA)*/

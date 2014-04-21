@@ -42,6 +42,21 @@ namespace SMS.Controllers
             return PartialView("SanPhamPV", listResult);
         }
 
+        [HttpPost]
+        public JsonResult FindSuggest(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                 where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                 select new
+                                 {
+                                     id = x.MA_SAN_PHAM,
+                                     value = x.TEN_SAN_PHAM
+                                 };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
         [HttpGet]
         public ActionResult AddNew()
         {
