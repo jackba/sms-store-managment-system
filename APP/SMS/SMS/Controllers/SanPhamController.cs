@@ -10,7 +10,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace SMS.Controllers
 {
-    
+
     [Authorize]
     [HandleError]
     public class SanPhamController : Controller
@@ -26,7 +26,7 @@ namespace SMS.Controllers
             return View(listResult);
         }
 
-         [HttpPost]
+        [HttpPost]
         public PartialViewResult PagingContent(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
             if (Session[SEARCH_ADVANCE] == null)
@@ -41,7 +41,7 @@ namespace SMS.Controllers
 
             return PartialView("SanPhamPV", listResult);
         }
-        
+
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -138,9 +138,9 @@ namespace SMS.Controllers
 
             Session[SEARCH_ADVANCE] = psa;
 
-            IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(null,psa,null);
+            IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(null, psa, null);
             return PartialView("SanPhamPV", listResult);
-       }
+        }
         [HttpPost]
         public ActionResult Edit(SAN_PHAM product)
         {
@@ -259,7 +259,7 @@ namespace SMS.Controllers
         }
 
         #region Common function
-      
+
 
         private void BindListDV(SmsContext ctx)
         {
@@ -351,7 +351,7 @@ namespace SMS.Controllers
                               }).Take(SystemConstant.MAX_ROWS);
 
 
-          
+
 
             IPagedList<SanPhamDisplay> DisplayContentLst = null;
 
@@ -381,7 +381,7 @@ namespace SMS.Controllers
         private IPagedList<SanPhamDisplay> LayDanhSachSanPham(string sortOrder, ProductSA psa, int? currentPageIndex)
         {
             int pageSize = SystemConstant.ROWS;
-          
+
             ViewBag.CurrentSort = sortOrder;
 
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
@@ -389,28 +389,28 @@ namespace SMS.Controllers
 
             var ctx = new SmsContext();
             var contentLst = (from s in ctx.SAN_PHAM
-                                where (s.ACTIVE == "A"
-                                && (String.IsNullOrEmpty(psa.TenSanPham)
-                                 || s.TEN_SAN_PHAM.ToUpper().Contains(psa.TenSanPham.ToUpper()))
-                                && (String.IsNullOrEmpty(psa.KichThuoc)
-                                 || s.KICH_THUOC.ToUpper().Contains(psa.KichThuoc.ToUpper()))
-                                && (String.IsNullOrEmpty(psa.TrongLuong)
-                                 || s.KICH_THUOC.ToUpper().Contains(psa.TrongLuong.ToUpper()))
-                                )
-                                join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
-                                join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
-                                join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
-                                from dv in dv_join.DefaultIfEmpty()
-                                join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
-                                from nsx in nsx_join.DefaultIfEmpty()
-                                select new SanPhamDisplay
-                                {
-                                    SanPham = s,
-                                    NguoiTao = u,
-                                    NguoiCapNhat = u1,
-                                    DonVi = dv,
-                                    NhaSanXuat = nsx
-                                }).Take(SystemConstant.MAX_ROWS);
+                              where (s.ACTIVE == "A"
+                              && (String.IsNullOrEmpty(psa.TenSanPham)
+                               || s.TEN_SAN_PHAM.ToUpper().Contains(psa.TenSanPham.ToUpper()))
+                              && (String.IsNullOrEmpty(psa.KichThuoc)
+                               || s.KICH_THUOC.ToUpper().Contains(psa.KichThuoc.ToUpper()))
+                              && (String.IsNullOrEmpty(psa.TrongLuong)
+                               || s.KICH_THUOC.ToUpper().Contains(psa.TrongLuong.ToUpper()))
+                              )
+                              join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
+                              join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+                              join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
+                              from dv in dv_join.DefaultIfEmpty()
+                              join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
+                              from nsx in nsx_join.DefaultIfEmpty()
+                              select new SanPhamDisplay
+                              {
+                                  SanPham = s,
+                                  NguoiTao = u,
+                                  NguoiCapNhat = u1,
+                                  DonVi = dv,
+                                  NhaSanXuat = nsx
+                              }).Take(SystemConstant.MAX_ROWS);
 
 
             IPagedList<SanPhamDisplay> DisplayContentLst = null;
@@ -439,7 +439,7 @@ namespace SMS.Controllers
             return DisplayContentLst;
         }
 
-        
+
         private object removeCommaInput(object value)
         {
             if (value != null && value.ToString() != null && value.ToString().Contains(",") == true)
