@@ -45,6 +45,7 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
             ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = theListContext.Count();
             switch (sortOrder)
             {
                 case "id":
