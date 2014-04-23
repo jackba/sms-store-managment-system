@@ -309,3 +309,17 @@ div.right{
 .datePicker{
     width:200px;
 }
+
+.required:after {
+    color: #e32;
+    content: ' (*)';
+    display:inline;
+}
+
+.alignint_numberic{
+    text-align:right;
+}
+
+.int_numberic{
+    text-align:right;
+}
