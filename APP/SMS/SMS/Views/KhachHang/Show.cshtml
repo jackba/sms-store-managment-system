@@ -1,0 +1,113 @@
+﻿@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Thông tin khách hàng";
+}
+
+<h2>Thông tin khách hàng</h2>
+<br />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <table width="100%">
+                <tr>
+                    <td class="center">
+                        Mã thẻ khách hàng    
+                    </td>
+                    <td class="right">
+                        @Model.MA_THE_KHACH_HANG
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Tên khách hàng
+                    </td>
+                    <td class="right">
+                        @Model.TEN_KHACH_HANG
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Số điện thoại
+                    </td>
+                    <td class="right">
+                        @Model.SO_DIEN_THOAI
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Email
+                    </td>
+                    <td class="right">
+                        @Model.EMAIL
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Địa chỉ
+                    </td>
+                    <td class="right">
+                        @Model.DIA_CHI
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Khu vực
+                    </td>
+                    <td class="right">
+                        @Model.KHU_VUC.TEN_KHU_VUC
+                    </td>
+                </tr>
+@{
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+    {
+                <tr>
+                    <td class="center">
+                        Doanh số
+                    </td>
+                    <td class="right">
+                        @Model.DOANH_SO.ToString("0,0.00")
+                    </td>
+                </tr>
+
+               
+                <tr>
+                    <td class="center">
+                        Công nợ
+                    </td>
+                    <td class="right">
+                        @Model.NO_GOI_DAU.ToString("0,0.00")
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Ngày phát sinh nợ
+                    </td>
+                    <td class="right">
+                        @{
+                            if (Model.NGAY_PHAT_SINH_NO != null)
+                            {
+                                            @DateTime.Parse(Model.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
+                            }
+                        }
+                    </td>
+                </tr>
+}
+}
+            </table>
+        </fieldset>
+    </div>
+    <script>
+        function reset() {
+            window.location.reload();
+            return false;
+        }
+    </script>
+
+
+}
