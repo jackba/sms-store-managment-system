@@ -7,6 +7,7 @@ using SMS.Models;
 using PagedList;
 using System.Globalization;
 using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
 
 namespace SMS.Controllers
 {
@@ -79,6 +80,7 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
             ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = theListContext.Count();
             switch (sortOrder)
             {
                 case "id":
@@ -319,6 +321,7 @@ namespace SMS.Controllers
                 int pageSize = SystemConstant.ROWS;
                 int pageIndex = page == null ? 1 : (int)page;
                 ViewBag.CurrentPageIndex = pageIndex;
+                ViewBag.Count = debitHist.Count();
                 switch (sortOrder)
                 {
                     case "date":
@@ -368,13 +371,14 @@ namespace SMS.Controllers
                 ViewBag.khuVucList = khuVucList;
                 DateTime fD = String.IsNullOrEmpty(fromDate) ? DateTime.MinValue : DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 DateTime tD = String.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                var orderList = ctx.GET_HOA_DON(fD, tD, id);
+                var orderList = ctx.GET_HOA_DON(fD, tD, id).ToList<GET_HOA_DON_Result>();
 
                 ViewBag.IdSortParm = sortOrder == "date_desc" ? "date" : "date_desc";
                 IPagedList<GET_HOA_DON_Result> khachHangHists = null;
                 int pageSize = SystemConstant.ROWS;
                 int pageIndex = page == null ? 1 : (int)page;
                 ViewBag.CurrentPageIndex = pageIndex;
+                ViewBag.Count = orderList.Count();
                 switch (sortOrder)
                 {
                     case "date":
@@ -388,6 +392,7 @@ namespace SMS.Controllers
                         break;
 
                 }
+               
                 ViewBag.debitHist = khachHangHists;
                 KhachHangModel KhachHang = new KhachHangModel();
                 KhachHang.KhachHang = khuVuc;
@@ -408,7 +413,7 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsMetadataManager"])
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsMetadataManager"] && !(bool)Session["IsAccounting"])
             {
                 return RedirectToAction("Index");
             }
@@ -439,6 +444,11 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"] && !(bool)Session["IsMetadataManager"])
+            {
+                ViewBag.Message = "Bạn không có quyền vào mục này.";
+                return RedirectToAction("Index");
+            }
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
@@ -464,6 +474,11 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult CancelHist(int id)
         {
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
+            {
+                ViewBag.Message = "Bạn không có quyền vào mục này.";
+                return RedirectToAction("Index");
+            }
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
@@ -528,6 +543,142 @@ namespace SMS.Controllers
                 return View();
             }
         }
+        [HttpGet]
+        public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page)
+        {
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
+            {
+                ViewBag.Message = "Bạn không có quyền vào mục này.";
+                return RedirectToAction("Index");
+            }
+            if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
+            {
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            var ctx = new SmsContext();
+            var khList = ctx.Database.SqlQuery<KHACH_HANG_RESULT>(" exec GET_KHACH_HANG_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<KHACH_HANG_RESULT>();
+            ViewBag.DateSortParam = sortOrder == "date_desc" ? "date" : "date_desc";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            ViewBag.DebitSortParm = sortOrder == "debit" ? "debit_desc" : "debit";
 
+            IPagedList<KHACH_HANG_RESULT> khachHangHists = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = khList.Count();
+            switch (sortOrder)
+            {
+                case "date":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "date_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "debit":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "debit_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+
+            }
+            ViewBag.debitHist = khachHangHists;
+            KhachHangModel khachHangModel = new KhachHangModel();
+            khachHangModel.WarningList = khachHangHists;
+            ViewBag.CurrentFilter = SearchString;
+            return View(khachHangModel);
+        }
+
+        [HttpPost]
+        public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page, bool? submit)
+        {
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
+            {
+                ViewBag.Message = "Bạn không có quyền vào mục này.";
+                return RedirectToAction("Index");
+            }
+            if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
+            {
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            var ctx = new SmsContext();
+            var khList = ctx.Database.SqlQuery<KHACH_HANG_RESULT>(" exec GET_KHACH_HANG_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<KHACH_HANG_RESULT>();
+            ViewBag.DateSortParam = sortOrder == "date_desc" ? "date" : "date_desc";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            ViewBag.DebitSortParm = sortOrder == "debit" ? "debit_desc" : "debit";
+
+            IPagedList<KHACH_HANG_RESULT> khachHangHists = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = khList.Count();
+            switch (sortOrder)
+            {
+                case "date":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "date_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "debit":
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "debit_desc":
+                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
+                    break;
+
+            }
+            ViewBag.debitHist = khachHangHists;
+            ViewBag.CurrentFilter = SearchString;
+            KhachHangModel khachHangModel = new KhachHangModel();
+            khachHangModel.WarningList = khachHangHists;
+            return View(khachHangModel);
+        }
+        [HttpGet]
+        public ActionResult Show(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.KHACH_HANG.Include("KHU_VUC").Single(kh => kh.MA_KHACH_HANG == id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+                return View(donvi);
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
+                return View("../Home/Error"); ;
+            }
+        }
     }
 }
