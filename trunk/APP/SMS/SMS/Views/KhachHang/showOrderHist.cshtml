@@ -213,14 +213,14 @@
                <tr>
                     <td colspan=" 3">
                         <div style="text-align:left; padding-top:3px;">
-                            @Html.Label(Model.OrderHist.Count.ToString() + ": lượt mua hàng")
+                            <label>@ViewBag.Count : lượt mua hàng </label>
                         </div>
                     </td>
                     <td colspan=" 3">
                         <div style="text-align: right;  padding-top: 3px; ">
 
-                            @Html.PagedListPager(Model.OrderHist, page => Url.Action("Index",
-                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                            @Html.PagedListPager(Model.OrderHist, page => Url.Action("showOrderHist",
+             new { id = Model.KhachHang.MA_KHACH_HANG, page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                         </div>
                     </td>
                 </tr>

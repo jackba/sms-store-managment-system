@@ -213,7 +213,10 @@
                                     @donvi.KhachHang.MA_KHACH_HANG
                                 </td>
                                 <td class='inner frozencol toprow alignText'>
-                                    @donvi.KhachHang.TEN_KHACH_HANG
+                                    <a href="@Url.Action("Show", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
+                                        @donvi.KhachHang.TEN_KHACH_HANG
+                                    </a>
+                                   
                                 </td>
                             </tr>
                         }
@@ -411,7 +414,7 @@
         <tr>
             <td>
                 <div style="text-align:left; padding-top:3px;">
-                    @Html.Label(Model.Count.ToString() + ": Khách hàng")
+                    <label>@ViewBag.Count : Khách hàng </label>
                 </div>
             </td>
             <td>
