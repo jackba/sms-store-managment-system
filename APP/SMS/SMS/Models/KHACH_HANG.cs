@@ -14,16 +14,34 @@ namespace SMS.Models
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using PagedList;
+
     public class KhachHangModel
     {
         public KHACH_HANG KhachHang { get; set; }
         public KHU_VUC KhuVuc { get; set; }
         public IPagedList<KhachHangDebitHistModel> KhachHangHists { get; set; }
         public IPagedList<GET_HOA_DON_Result> OrderHist { get; set; }
+        public IPagedList<KHACH_HANG_RESULT> WarningList { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
     }
-    
+
+    public partial class KHACH_HANG_RESULT
+    {
+        public int MA_KHACH_HANG  { get; set; }
+        public string TEN_KHACH_HANG { get; set; }
+		public string MA_THE_KHACH_HANG  { get; set; }
+		public string DIA_CHI  { get; set; }
+		public string SO_DIEN_THOAI  { get; set; }
+		public string EMAIL  { get; set; }
+		public int MA_KHU_VUC  { get; set; }
+        public double DOANH_SO { get; set; }
+		public double NO_GOI_DAU  { get; set; } 
+		public DateTime NGAY_PHAT_SINH_NO  { get; set; }
+		public int KIND  { get; set; }
+		public string TEN_KHU_VUC  { get; set; }
+		public string KIND_NAME { get; set; }
+    }
     public partial class KHACH_HANG
     {
         public KHACH_HANG()

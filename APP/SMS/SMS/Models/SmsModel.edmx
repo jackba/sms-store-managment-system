@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -140,7 +140,7 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
           <Property Name="NGAY_PHAT_SINH_NO" Type="date" />
-          <Property Name="KIND" Type="int" />
+          <Property Name="KIND" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="KHACH_HANG_DEBIT_HIST">
           <Key>
@@ -407,7 +407,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___CREAT__6C190EBB">
+        <Association Name="FK__CHI_TIET___CREAT__6B24EA82">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="CHI_TIET_TRA_HANG" Type="Self.CHI_TIET_TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -419,7 +419,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___CREAT__7A672E12">
+        <Association Name="FK__CHI_TIET___CREAT__797309D9">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="CHI_TIET_NHAP_KHO" Type="Self.CHI_TIET_NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -443,7 +443,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___MA_KH__04E4BC85">
+        <Association Name="FK__CHI_TIET___MA_KH__03F0984C">
           <End Role="KHO" Type="Self.KHO" Multiplicity="0..1" />
           <End Role="CHI_TIET_HOA_DON" Type="Self.CHI_TIET_HOA_DON" Multiplicity="*" />
           <ReferentialConstraint>
@@ -455,7 +455,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___MA_NH__787EE5A0">
+        <Association Name="FK__CHI_TIET___MA_NH__778AC167">
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="0..1" />
           <End Role="CHI_TIET_NHAP_KHO" Type="Self.CHI_TIET_NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -491,7 +491,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___MA_SA__6B24EA82">
+        <Association Name="FK__CHI_TIET___MA_SA__6A30C649">
           <End Role="SAN_PHAM" Type="Self.SAN_PHAM" Multiplicity="0..1" />
           <End Role="CHI_TIET_TRA_HANG" Type="Self.CHI_TIET_TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -503,7 +503,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___MA_SA__797309D9">
+        <Association Name="FK__CHI_TIET___MA_SA__787EE5A0">
           <End Role="SAN_PHAM" Type="Self.SAN_PHAM" Multiplicity="0..1" />
           <End Role="CHI_TIET_NHAP_KHO" Type="Self.CHI_TIET_NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -515,7 +515,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___MA_TR__6A30C649">
+        <Association Name="FK__CHI_TIET___MA_TR__693CA210">
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="0..1" />
           <End Role="CHI_TIET_TRA_HANG" Type="Self.CHI_TIET_TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -563,7 +563,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___UPDAT__6D0D32F4">
+        <Association Name="FK__CHI_TIET___UPDAT__6C190EBB">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="CHI_TIET_TRA_HANG" Type="Self.CHI_TIET_TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -575,7 +575,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHI_TIET___UPDAT__7B5B524B">
+        <Association Name="FK__CHI_TIET___UPDAT__7A672E12">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="CHI_TIET_NHAP_KHO" Type="Self.CHI_TIET_NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -731,7 +731,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHACH_HAN__CREAT__30C33EC3">
+        <Association Name="FK__KHACH_HAN__CREAT__1CBC4616">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
           <ReferentialConstraint>
@@ -743,7 +743,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHACH_HAN__MA_HO__367C1819">
+        <Association Name="FK__KHACH_HAN__MA_HO__2180FB33">
           <End Role="HOA_DON" Type="Self.HOA_DON" Multiplicity="0..1" />
           <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
           <ReferentialConstraint>
@@ -767,7 +767,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHACH_HAN__MA_KH__2EDAF651">
+        <Association Name="FK__KHACH_HAN__MA_KH__1AD3FDA4">
           <End Role="KHACH_HANG" Type="Self.KHACH_HANG" Multiplicity="0..1" />
           <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
           <ReferentialConstraint>
@@ -779,7 +779,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHACH_HAN__MA_NH__2FCF1A8A">
+        <Association Name="FK__KHACH_HAN__MA_NH__1BC821DD">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
           <ReferentialConstraint>
@@ -803,7 +803,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHACH_HAN__UPDAT__31B762FC">
+        <Association Name="FK__KHACH_HAN__UPDAT__1DB06A4F">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
           <ReferentialConstraint>
@@ -827,7 +827,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KHO__MA_NGUOI_DU__03F0984C">
+        <Association Name="FK__KHO__MA_NGUOI_DU__02FC7413">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KHO" Type="Self.KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -875,7 +875,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KIEM_KHO___CREAT__01142BA1">
+        <Association Name="FK__KIEM_KHO___CREAT__00200768">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KIEM_KHO_HISTORY" Type="Self.KIEM_KHO_HISTORY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -887,7 +887,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KIEM_KHO___MA_NH__00200768">
+        <Association Name="FK__KIEM_KHO___MA_NH__7F2BE32F">
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="0..1" />
           <End Role="KIEM_KHO_HISTORY" Type="Self.KIEM_KHO_HISTORY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -899,7 +899,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KIEM_KHO___UPDAT__02084FDA">
+        <Association Name="FK__KIEM_KHO___UPDAT__01142BA1">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="KIEM_KHO_HISTORY" Type="Self.KIEM_KHO_HISTORY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1007,7 +1007,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__CREATE__75A278F5">
+        <Association Name="FK__NHAP_KHO__CREATE__74AE54BC">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1019,7 +1019,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__MA_KHO__73BA3083">
+        <Association Name="FK__NHAP_KHO__MA_KHO__72C60C4A">
           <End Role="KHO" Type="Self.KHO" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1031,7 +1031,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__MA_NHA__72C60C4A">
+        <Association Name="FK__NHAP_KHO__MA_NHA__71D1E811">
           <End Role="NHA_CUNG_CAP" Type="Self.NHA_CUNG_CAP" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1043,7 +1043,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__MA_PHI__74AE54BC">
+        <Association Name="FK__NHAP_KHO__MA_PHI__73BA3083">
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1055,7 +1055,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__NHAN_V__71D1E811">
+        <Association Name="FK__NHAP_KHO__NHAN_V__70DDC3D8">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1067,7 +1067,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NHAP_KHO__UPDATE__76969D2E">
+        <Association Name="FK__NHAP_KHO__UPDATE__75A278F5">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="NHAP_KHO" Type="Self.NHAP_KHO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1199,7 +1199,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MASTE__CREAT__29221CFB">
+        <Association Name="FK__SMS_MASTE__CREAT__151B244E">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MASTER" Type="Self.SMS_MASTER" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1211,7 +1211,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MASTE__UPDAT__2A164134">
+        <Association Name="FK__SMS_MASTE__UPDAT__160F4887">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MASTER" Type="Self.SMS_MASTER" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1223,7 +1223,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG__CREATE__6754599E">
+        <Association Name="FK__TRA_HANG__CREATE__66603565">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1235,7 +1235,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG__MA_XUA__656C112C">
+        <Association Name="FK__TRA_HANG__MA_XUA__6477ECF3">
           <End Role="XUAT_KHO" Type="Self.XUAT_KHO" Multiplicity="0..1" />
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1247,7 +1247,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG__NHAN_V__66603565">
+        <Association Name="FK__TRA_HANG__NHAN_V__656C112C">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1259,7 +1259,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG__UPDATE__68487DD7">
+        <Association Name="FK__TRA_HANG__UPDATE__6754599E">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1343,11 +1343,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="GET_HOA_DON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
           <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GET_KHACH_HANG_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NAME" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="GET_SUM_HOA_DON_BY_CUS_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -1360,38 +1362,8 @@
         <Function Name="GET_TOTAL_DISCOUNT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="STMA_GET_MAX_DATE_KIEM_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="date" />
-        <EntityContainer Name="SmsModelStoreContainer">
+        <EntityContainer Name="SMSModelStoreContainer">
           <EntitySet Name="CHI_TIET_HOA_DON" EntityType="Self.CHI_TIET_HOA_DON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHI_TIET_NHAP_KHO" EntityType="Self.CHI_TIET_NHAP_KHO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHI_TIET_TRA_HANG" EntityType="Self.CHI_TIET_TRA_HANG" Schema="dbo" store:Type="Tables" />
@@ -1422,11 +1394,11 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_XUAT_KHO" EntitySet="CHI_TIET_XUAT_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___CREAT__6C190EBB" Association="Self.FK__CHI_TIET___CREAT__6C190EBB">
+          <AssociationSet Name="FK__CHI_TIET___CREAT__6B24EA82" Association="Self.FK__CHI_TIET___CREAT__6B24EA82">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_TRA_HANG" EntitySet="CHI_TIET_TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___CREAT__7A672E12" Association="Self.FK__CHI_TIET___CREAT__7A672E12">
+          <AssociationSet Name="FK__CHI_TIET___CREAT__797309D9" Association="Self.FK__CHI_TIET___CREAT__797309D9">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_NHAP_KHO" EntitySet="CHI_TIET_NHAP_KHO" />
           </AssociationSet>
@@ -1434,11 +1406,11 @@
             <End Role="HOA_DON" EntitySet="HOA_DON" />
             <End Role="CHI_TIET_HOA_DON" EntitySet="CHI_TIET_HOA_DON" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___MA_KH__04E4BC85" Association="Self.FK__CHI_TIET___MA_KH__04E4BC85">
+          <AssociationSet Name="FK__CHI_TIET___MA_KH__03F0984C" Association="Self.FK__CHI_TIET___MA_KH__03F0984C">
             <End Role="KHO" EntitySet="KHO" />
             <End Role="CHI_TIET_HOA_DON" EntitySet="CHI_TIET_HOA_DON" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___MA_NH__787EE5A0" Association="Self.FK__CHI_TIET___MA_NH__787EE5A0">
+          <AssociationSet Name="FK__CHI_TIET___MA_NH__778AC167" Association="Self.FK__CHI_TIET___MA_NH__778AC167">
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
             <End Role="CHI_TIET_NHAP_KHO" EntitySet="CHI_TIET_NHAP_KHO" />
           </AssociationSet>
@@ -1450,15 +1422,15 @@
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
             <End Role="CHI_TIET_XUAT_KHO" EntitySet="CHI_TIET_XUAT_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___MA_SA__6B24EA82" Association="Self.FK__CHI_TIET___MA_SA__6B24EA82">
+          <AssociationSet Name="FK__CHI_TIET___MA_SA__6A30C649" Association="Self.FK__CHI_TIET___MA_SA__6A30C649">
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
             <End Role="CHI_TIET_TRA_HANG" EntitySet="CHI_TIET_TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___MA_SA__797309D9" Association="Self.FK__CHI_TIET___MA_SA__797309D9">
+          <AssociationSet Name="FK__CHI_TIET___MA_SA__787EE5A0" Association="Self.FK__CHI_TIET___MA_SA__787EE5A0">
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
             <End Role="CHI_TIET_NHAP_KHO" EntitySet="CHI_TIET_NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___MA_TR__6A30C649" Association="Self.FK__CHI_TIET___MA_TR__6A30C649">
+          <AssociationSet Name="FK__CHI_TIET___MA_TR__693CA210" Association="Self.FK__CHI_TIET___MA_TR__693CA210">
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
             <End Role="CHI_TIET_TRA_HANG" EntitySet="CHI_TIET_TRA_HANG" />
           </AssociationSet>
@@ -1474,11 +1446,11 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_XUAT_KHO" EntitySet="CHI_TIET_XUAT_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___UPDAT__6D0D32F4" Association="Self.FK__CHI_TIET___UPDAT__6D0D32F4">
+          <AssociationSet Name="FK__CHI_TIET___UPDAT__6C190EBB" Association="Self.FK__CHI_TIET___UPDAT__6C190EBB">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_TRA_HANG" EntitySet="CHI_TIET_TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHI_TIET___UPDAT__7B5B524B" Association="Self.FK__CHI_TIET___UPDAT__7B5B524B">
+          <AssociationSet Name="FK__CHI_TIET___UPDAT__7A672E12" Association="Self.FK__CHI_TIET___UPDAT__7A672E12">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_NHAP_KHO" EntitySet="CHI_TIET_NHAP_KHO" />
           </AssociationSet>
@@ -1530,11 +1502,11 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__CREAT__30C33EC3" Association="Self.FK__KHACH_HAN__CREAT__30C33EC3">
+          <AssociationSet Name="FK__KHACH_HAN__CREAT__1CBC4616" Association="Self.FK__KHACH_HAN__CREAT__1CBC4616">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__MA_HO__367C1819" Association="Self.FK__KHACH_HAN__MA_HO__367C1819">
+          <AssociationSet Name="FK__KHACH_HAN__MA_HO__2180FB33" Association="Self.FK__KHACH_HAN__MA_HO__2180FB33">
             <End Role="HOA_DON" EntitySet="HOA_DON" />
             <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
@@ -1542,11 +1514,11 @@
             <End Role="KHU_VUC" EntitySet="KHU_VUC" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__MA_KH__2EDAF651" Association="Self.FK__KHACH_HAN__MA_KH__2EDAF651">
+          <AssociationSet Name="FK__KHACH_HAN__MA_KH__1AD3FDA4" Association="Self.FK__KHACH_HAN__MA_KH__1AD3FDA4">
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
             <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__MA_NH__2FCF1A8A" Association="Self.FK__KHACH_HAN__MA_NH__2FCF1A8A">
+          <AssociationSet Name="FK__KHACH_HAN__MA_NH__1BC821DD" Association="Self.FK__KHACH_HAN__MA_NH__1BC821DD">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
@@ -1554,7 +1526,7 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__UPDAT__31B762FC" Association="Self.FK__KHACH_HAN__UPDAT__31B762FC">
+          <AssociationSet Name="FK__KHACH_HAN__UPDAT__1DB06A4F" Association="Self.FK__KHACH_HAN__UPDAT__1DB06A4F">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
           </AssociationSet>
@@ -1562,7 +1534,7 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHO" EntitySet="KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHO__MA_NGUOI_DU__03F0984C" Association="Self.FK__KHO__MA_NGUOI_DU__03F0984C">
+          <AssociationSet Name="FK__KHO__MA_NGUOI_DU__02FC7413" Association="Self.FK__KHO__MA_NGUOI_DU__02FC7413">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHO" EntitySet="KHO" />
           </AssociationSet>
@@ -1578,15 +1550,15 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KHU_VUC" EntitySet="KHU_VUC" />
           </AssociationSet>
-          <AssociationSet Name="FK__KIEM_KHO___CREAT__01142BA1" Association="Self.FK__KIEM_KHO___CREAT__01142BA1">
+          <AssociationSet Name="FK__KIEM_KHO___CREAT__00200768" Association="Self.FK__KIEM_KHO___CREAT__00200768">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KIEM_KHO_HISTORY" EntitySet="KIEM_KHO_HISTORY" />
           </AssociationSet>
-          <AssociationSet Name="FK__KIEM_KHO___MA_NH__00200768" Association="Self.FK__KIEM_KHO___MA_NH__00200768">
+          <AssociationSet Name="FK__KIEM_KHO___MA_NH__7F2BE32F" Association="Self.FK__KIEM_KHO___MA_NH__7F2BE32F">
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
             <End Role="KIEM_KHO_HISTORY" EntitySet="KIEM_KHO_HISTORY" />
           </AssociationSet>
-          <AssociationSet Name="FK__KIEM_KHO___UPDAT__02084FDA" Association="Self.FK__KIEM_KHO___UPDAT__02084FDA">
+          <AssociationSet Name="FK__KIEM_KHO___UPDAT__01142BA1" Association="Self.FK__KIEM_KHO___UPDAT__01142BA1">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="KIEM_KHO_HISTORY" EntitySet="KIEM_KHO_HISTORY" />
           </AssociationSet>
@@ -1622,27 +1594,27 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="NHA_SAN_XUAT" EntitySet="NHA_SAN_XUAT" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__CREATE__75A278F5" Association="Self.FK__NHAP_KHO__CREATE__75A278F5">
+          <AssociationSet Name="FK__NHAP_KHO__CREATE__74AE54BC" Association="Self.FK__NHAP_KHO__CREATE__74AE54BC">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__MA_KHO__73BA3083" Association="Self.FK__NHAP_KHO__MA_KHO__73BA3083">
+          <AssociationSet Name="FK__NHAP_KHO__MA_KHO__72C60C4A" Association="Self.FK__NHAP_KHO__MA_KHO__72C60C4A">
             <End Role="KHO" EntitySet="KHO" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__MA_NHA__72C60C4A" Association="Self.FK__NHAP_KHO__MA_NHA__72C60C4A">
+          <AssociationSet Name="FK__NHAP_KHO__MA_NHA__71D1E811" Association="Self.FK__NHAP_KHO__MA_NHA__71D1E811">
             <End Role="NHA_CUNG_CAP" EntitySet="NHA_CUNG_CAP" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__MA_PHI__74AE54BC" Association="Self.FK__NHAP_KHO__MA_PHI__74AE54BC">
+          <AssociationSet Name="FK__NHAP_KHO__MA_PHI__73BA3083" Association="Self.FK__NHAP_KHO__MA_PHI__73BA3083">
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__NHAN_V__71D1E811" Association="Self.FK__NHAP_KHO__NHAN_V__71D1E811">
+          <AssociationSet Name="FK__NHAP_KHO__NHAN_V__70DDC3D8" Association="Self.FK__NHAP_KHO__NHAN_V__70DDC3D8">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
-          <AssociationSet Name="FK__NHAP_KHO__UPDATE__76969D2E" Association="Self.FK__NHAP_KHO__UPDATE__76969D2E">
+          <AssociationSet Name="FK__NHAP_KHO__UPDATE__75A278F5" Association="Self.FK__NHAP_KHO__UPDATE__75A278F5">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="NHAP_KHO" EntitySet="NHAP_KHO" />
           </AssociationSet>
@@ -1686,27 +1658,27 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MASTE__CREAT__29221CFB" Association="Self.FK__SMS_MASTE__CREAT__29221CFB">
+          <AssociationSet Name="FK__SMS_MASTE__CREAT__151B244E" Association="Self.FK__SMS_MASTE__CREAT__151B244E">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MASTE__UPDAT__2A164134" Association="Self.FK__SMS_MASTE__UPDAT__2A164134">
+          <AssociationSet Name="FK__SMS_MASTE__UPDAT__160F4887" Association="Self.FK__SMS_MASTE__UPDAT__160F4887">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG__CREATE__6754599E" Association="Self.FK__TRA_HANG__CREATE__6754599E">
+          <AssociationSet Name="FK__TRA_HANG__CREATE__66603565" Association="Self.FK__TRA_HANG__CREATE__66603565">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG__MA_XUA__656C112C" Association="Self.FK__TRA_HANG__MA_XUA__656C112C">
+          <AssociationSet Name="FK__TRA_HANG__MA_XUA__6477ECF3" Association="Self.FK__TRA_HANG__MA_XUA__6477ECF3">
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG__NHAN_V__66603565" Association="Self.FK__TRA_HANG__NHAN_V__66603565">
+          <AssociationSet Name="FK__TRA_HANG__NHAN_V__656C112C" Association="Self.FK__TRA_HANG__NHAN_V__656C112C">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG__UPDATE__68487DD7" Association="Self.FK__TRA_HANG__UPDATE__68487DD7">
+          <AssociationSet Name="FK__TRA_HANG__UPDATE__6754599E" Association="Self.FK__TRA_HANG__UPDATE__6754599E">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
@@ -1735,10 +1707,11 @@
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="SMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -1876,16 +1849,16 @@
           <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
           <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" />
+          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" />
           <NavigationProperty Name="CHI_TIET_HOA_DON" Relationship="Self.FK__CHI_TIET___MA_HO__4E88ABD4" FromRole="HOA_DON" ToRole="CHI_TIET_HOA_DON" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__HOA_DON__CREATE___4BAC3F29" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__HOA_DON__EDIT_AP__4AB81AF0" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="KHACH_HANG" Relationship="Self.FK__HOA_DON__MA_KHAC__48CFD27E" FromRole="HOA_DON" ToRole="KHACH_HANG" />
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__HOA_DON__MA_NHAN__49C3F6B7" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG3" Relationship="Self.FK__HOA_DON__UPDATE___4CA06362" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST" Relationship="Self.FK__KHACH_HAN__MA_HO__2180FB33" FromRole="HOA_DON" ToRole="KHACH_HANG_DEBIT_HIST" />
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__XUAT_KHO__MA_HOA__5629CD9C" FromRole="HOA_DON" ToRole="XUAT_KHO" />
-          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" />
-          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" />
-          <NavigationProperty Name="KHACH_HANG_DEBIT_HIST" Relationship="SmsModel.FK__KHACH_HAN__MA_HO__367C1819" FromRole="HOA_DON" ToRole="KHACH_HANG_DEBIT_HIST" />
         </EntityType>
         <EntityType Name="KHACH_HANG">
           <Key>
@@ -1907,7 +1880,7 @@
           <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="NGAY_PHAT_SINH_NO" Type="DateTime" Precision="0" />
-          <Property Name="KIND" Type="Int32" />
+          <Property Name="KIND" Type="Int32" Nullable="false" />
           <NavigationProperty Name="HOA_DON" Relationship="Self.FK__HOA_DON__MA_KHAC__48CFD27E" FromRole="KHACH_HANG" ToRole="HOA_DON" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__KHACH_HAN__CREAT__1B0907CE" FromRole="KHACH_HANG" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="KHU_VUC" Relationship="Self.FK__KHACH_HAN__MA_KH__1A14E395" FromRole="KHACH_HANG" ToRole="KHU_VUC" />
@@ -1931,12 +1904,12 @@
           <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
           <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="MA_HOA_DON" Type="Int32" />
+          <NavigationProperty Name="HOA_DON" Relationship="Self.FK__KHACH_HAN__MA_HO__2180FB33" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="HOA_DON" />
           <NavigationProperty Name="KHACH_HANG" Relationship="Self.FK__KHACH_HAN__MA_KH__1AD3FDA4" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="KHACH_HANG" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__KHACH_HAN__CREAT__1CBC4616" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__KHACH_HAN__MA_NH__1BC821DD" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__KHACH_HAN__UPDAT__1DB06A4F" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
-          <Property Name="MA_HOA_DON" Type="Int32" />
-          <NavigationProperty Name="HOA_DON" Relationship="SmsModel.FK__KHACH_HAN__MA_HO__367C1819" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="HOA_DON" />
         </EntityType>
         <EntityType Name="KHO">
           <Key>
@@ -2622,6 +2595,18 @@
             </Principal>
             <Dependent Role="HOA_DON">
               <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KHACH_HAN__MA_HO__2180FB33">
+          <End Role="HOA_DON" Type="Self.HOA_DON" Multiplicity="0..1" />
+          <End Role="KHACH_HANG_DEBIT_HIST" Type="Self.KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOA_DON">
+              <PropertyRef Name="MA_HOA_DON" />
+            </Principal>
+            <Dependent Role="KHACH_HANG_DEBIT_HIST">
+              <PropertyRef Name="MA_HOA_DON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3364,6 +3349,10 @@
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="HOA_DON" EntitySet="HOA_DON" />
           </AssociationSet>
+          <AssociationSet Name="FK__KHACH_HAN__MA_HO__2180FB33" Association="Self.FK__KHACH_HAN__MA_HO__2180FB33">
+            <End Role="HOA_DON" EntitySet="HOA_DON" />
+            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
+          </AssociationSet>
           <AssociationSet Name="FK__XUAT_KHO__MA_HOA__5629CD9C" Association="Self.FK__XUAT_KHO__MA_HOA__5629CD9C">
             <End Role="HOA_DON" EntitySet="HOA_DON" />
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
@@ -3564,63 +3553,20 @@
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
-          <AssociationSet Name="FK__KHACH_HAN__MA_HO__367C1819" Association="SmsModel.FK__KHACH_HAN__MA_HO__367C1819">
-            <End Role="HOA_DON" EntitySet="HOA_DON" />
-            <End Role="KHACH_HANG_DEBIT_HIST" EntitySet="KHACH_HANG_DEBIT_HIST" />
-          </AssociationSet>
-          <FunctionImport Name="GET_HOA_DON" ReturnType="Collection(SmsModel.GET_HOA_DON_Result)">
+          <FunctionImport Name="GET_HOA_DON" ReturnType="Collection(SMSModel.GET_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SmsModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
+          <FunctionImport Name="GET_KHACH_HANG_ALERT">
+            <Parameter Name="NAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SMSModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SmsModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SmsModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <Association Name="FK__KHACH_HAN__MA_HO__367C1819">
-          <End Type="SmsModel.HOA_DON" Role="HOA_DON" Multiplicity="0..1" />
-          <End Type="SmsModel.KHACH_HANG_DEBIT_HIST" Role="KHACH_HANG_DEBIT_HIST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HOA_DON">
-              <PropertyRef Name="MA_HOA_DON" />
-            </Principal>
-            <Dependent Role="KHACH_HANG_DEBIT_HIST">
-              <PropertyRef Name="MA_HOA_DON" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
@@ -3634,25 +3580,14 @@
           <Property Type="Double" Name="TOTAL_DISCOUNT" Nullable="false" />
           <Property Type="Double" Name="TOTAL_REAL_AMOUNT" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SmsModelStoreContainer" CdmEntityContainer="SmsContext">
+        <EntityContainerMapping StorageEntityContainer="SMSModelStoreContainer" CdmEntityContainer="SmsContext">
           <EntitySetMapping Name="CHI_TIET_HOA_DON">
-            <EntityTypeMapping TypeName="SmsModel.CHI_TIET_HOA_DON">
+            <EntityTypeMapping TypeName="SMSModel.CHI_TIET_HOA_DON">
               <MappingFragment StoreEntitySet="CHI_TIET_HOA_DON">
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
@@ -3670,7 +3605,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CHI_TIET_NHAP_KHO">
-            <EntityTypeMapping TypeName="SmsModel.CHI_TIET_NHAP_KHO">
+            <EntityTypeMapping TypeName="SMSModel.CHI_TIET_NHAP_KHO">
               <MappingFragment StoreEntitySet="CHI_TIET_NHAP_KHO">
                 <ScalarProperty Name="MA_NHAP_KHO" ColumnName="MA_NHAP_KHO" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
@@ -3686,7 +3621,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CHI_TIET_TRA_HANG">
-            <EntityTypeMapping TypeName="SmsModel.CHI_TIET_TRA_HANG">
+            <EntityTypeMapping TypeName="SMSModel.CHI_TIET_TRA_HANG">
               <MappingFragment StoreEntitySet="CHI_TIET_TRA_HANG">
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
@@ -3705,7 +3640,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CHI_TIET_XUAT_KHO">
-            <EntityTypeMapping TypeName="SmsModel.CHI_TIET_XUAT_KHO">
+            <EntityTypeMapping TypeName="SMSModel.CHI_TIET_XUAT_KHO">
               <MappingFragment StoreEntitySet="CHI_TIET_XUAT_KHO">
                 <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
@@ -3722,7 +3657,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CHUYEN_DOI_DON_VI_TINH">
-            <EntityTypeMapping TypeName="SmsModel.CHUYEN_DOI_DON_VI_TINH">
+            <EntityTypeMapping TypeName="SMSModel.CHUYEN_DOI_DON_VI_TINH">
               <MappingFragment StoreEntitySet="CHUYEN_DOI_DON_VI_TINH">
                 <ScalarProperty Name="MA_CHUYEN_DOI" ColumnName="MA_CHUYEN_DOI" />
                 <ScalarProperty Name="MA_SAN_PHAN" ColumnName="MA_SAN_PHAN" />
@@ -3737,7 +3672,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DON_VI_TINH">
-            <EntityTypeMapping TypeName="SmsModel.DON_VI_TINH">
+            <EntityTypeMapping TypeName="SMSModel.DON_VI_TINH">
               <MappingFragment StoreEntitySet="DON_VI_TINH">
                 <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
                 <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
@@ -3751,10 +3686,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="HOA_DON">
-            <EntityTypeMapping TypeName="SmsModel.HOA_DON">
+            <EntityTypeMapping TypeName="SMSModel.HOA_DON">
               <MappingFragment StoreEntitySet="HOA_DON">
-                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
-                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
@@ -3770,11 +3703,13 @@
                 <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
+                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHACH_HANG">
-            <EntityTypeMapping TypeName="SmsModel.KHACH_HANG">
+            <EntityTypeMapping TypeName="SMSModel.KHACH_HANG">
               <MappingFragment StoreEntitySet="KHACH_HANG">
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="MA_THE_KHACH_HANG" ColumnName="MA_THE_KHACH_HANG" />
@@ -3797,9 +3732,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHACH_HANG_DEBIT_HIST">
-            <EntityTypeMapping TypeName="SmsModel.KHACH_HANG_DEBIT_HIST">
+            <EntityTypeMapping TypeName="SMSModel.KHACH_HANG_DEBIT_HIST">
               <MappingFragment StoreEntitySet="KHACH_HANG_DEBIT_HIST">
-                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="NO_TRUOC" ColumnName="NO_TRUOC" />
@@ -3813,11 +3747,12 @@
                 <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHOes">
-            <EntityTypeMapping TypeName="SmsModel.KHO">
+            <EntityTypeMapping TypeName="SMSModel.KHO">
               <MappingFragment StoreEntitySet="KHO">
                 <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
                 <ScalarProperty Name="TEN_KHO" ColumnName="TEN_KHO" />
@@ -3834,7 +3769,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHU_VUC">
-            <EntityTypeMapping TypeName="SmsModel.KHU_VUC">
+            <EntityTypeMapping TypeName="SMSModel.KHU_VUC">
               <MappingFragment StoreEntitySet="KHU_VUC">
                 <ScalarProperty Name="MA_KHU_VUC" ColumnName="MA_KHU_VUC" />
                 <ScalarProperty Name="TEN_KHU_VUC" ColumnName="TEN_KHU_VUC" />
@@ -3848,7 +3783,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KIEM_KHO_HISTORY">
-            <EntityTypeMapping TypeName="SmsModel.KIEM_KHO_HISTORY">
+            <EntityTypeMapping TypeName="SMSModel.KIEM_KHO_HISTORY">
               <MappingFragment StoreEntitySet="KIEM_KHO_HISTORY">
                 <ScalarProperty Name="MA_KIEM_KHO" ColumnName="MA_KIEM_KHO" />
                 <ScalarProperty Name="NGAY_KIEM_KHO" ColumnName="NGAY_KIEM_KHO" />
@@ -3863,7 +3798,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NGUOI_DUNG">
-            <EntityTypeMapping TypeName="SmsModel.NGUOI_DUNG">
+            <EntityTypeMapping TypeName="SMSModel.NGUOI_DUNG">
               <MappingFragment StoreEntitySet="NGUOI_DUNG">
                 <ScalarProperty Name="MA_NGUOI_DUNG" ColumnName="MA_NGUOI_DUNG" />
                 <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
@@ -3887,7 +3822,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NHA_CUNG_CAP">
-            <EntityTypeMapping TypeName="SmsModel.NHA_CUNG_CAP">
+            <EntityTypeMapping TypeName="SMSModel.NHA_CUNG_CAP">
               <MappingFragment StoreEntitySet="NHA_CUNG_CAP">
                 <ScalarProperty Name="MA_NHA_CUNG_CAP" ColumnName="MA_NHA_CUNG_CAP" />
                 <ScalarProperty Name="TEN_NHA_CUNG_CAP" ColumnName="TEN_NHA_CUNG_CAP" />
@@ -3905,7 +3840,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NHA_SAN_XUAT">
-            <EntityTypeMapping TypeName="SmsModel.NHA_SAN_XUAT">
+            <EntityTypeMapping TypeName="SMSModel.NHA_SAN_XUAT">
               <MappingFragment StoreEntitySet="NHA_SAN_XUAT">
                 <ScalarProperty Name="MA_NHA_SAN_XUAT" ColumnName="MA_NHA_SAN_XUAT" />
                 <ScalarProperty Name="TEN_NHA_SAN_XUAT" ColumnName="TEN_NHA_SAN_XUAT" />
@@ -3919,7 +3854,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NHAP_KHO">
-            <EntityTypeMapping TypeName="SmsModel.NHAP_KHO">
+            <EntityTypeMapping TypeName="SMSModel.NHAP_KHO">
               <MappingFragment StoreEntitySet="NHAP_KHO">
                 <ScalarProperty Name="MA_NHAP_KHO" ColumnName="MA_NHAP_KHO" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
@@ -3939,7 +3874,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NHOM_NGUOI_DUNG">
-            <EntityTypeMapping TypeName="SmsModel.NHOM_NGUOI_DUNG">
+            <EntityTypeMapping TypeName="SMSModel.NHOM_NGUOI_DUNG">
               <MappingFragment StoreEntitySet="NHOM_NGUOI_DUNG">
                 <ScalarProperty Name="MA_NHOM" ColumnName="MA_NHOM" />
                 <ScalarProperty Name="TEN_NHOM" ColumnName="TEN_NHOM" />
@@ -3953,7 +3888,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PHAN_QUYEN">
-            <EntityTypeMapping TypeName="SmsModel.PHAN_QUYEN">
+            <EntityTypeMapping TypeName="SMSModel.PHAN_QUYEN">
               <MappingFragment StoreEntitySet="PHAN_QUYEN">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="MA_NGUOI_DUNG" ColumnName="MA_NGUOI_DUNG" />
@@ -3972,7 +3907,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SAN_PHAM">
-            <EntityTypeMapping TypeName="SmsModel.SAN_PHAM">
+            <EntityTypeMapping TypeName="SMSModel.SAN_PHAM">
               <MappingFragment StoreEntitySet="SAN_PHAM">
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
                 <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
@@ -3999,7 +3934,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SMS_MASTER">
-            <EntityTypeMapping TypeName="SmsModel.SMS_MASTER">
+            <EntityTypeMapping TypeName="SMSModel.SMS_MASTER">
               <MappingFragment StoreEntitySet="SMS_MASTER">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
@@ -4014,7 +3949,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRA_HANG">
-            <EntityTypeMapping TypeName="SmsModel.TRA_HANG">
+            <EntityTypeMapping TypeName="SMSModel.TRA_HANG">
               <MappingFragment StoreEntitySet="TRA_HANG">
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
@@ -4032,7 +3967,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="XUAT_KHO">
-            <EntityTypeMapping TypeName="SmsModel.XUAT_KHO">
+            <EntityTypeMapping TypeName="SMSModel.XUAT_KHO">
               <MappingFragment StoreEntitySet="XUAT_KHO">
                 <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
@@ -4051,9 +3986,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GET_HOA_DON" FunctionName="SmsModel.Store.GET_HOA_DON">
+          <FunctionImportMapping FunctionImportName="GET_HOA_DON" FunctionName="SMSModel.Store.GET_HOA_DON">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.GET_HOA_DON_Result">
+              <ComplexTypeMapping TypeName="SMSModel.GET_HOA_DON_Result">
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
@@ -4063,39 +3998,16 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GET_SUM_HOA_DON_BY_CUS_ID" FunctionName="SmsModel.Store.GET_SUM_HOA_DON_BY_CUS_ID">
+          <FunctionImportMapping FunctionImportName="GET_KHACH_HANG_ALERT" FunctionName="SMSModel.Store.GET_KHACH_HANG_ALERT" />
+          <FunctionImportMapping FunctionImportName="GET_SUM_HOA_DON_BY_CUS_ID" FunctionName="SMSModel.Store.GET_SUM_HOA_DON_BY_CUS_ID">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.GET_SUM_HOA_DON_BY_CUS_ID_Result">
+              <ComplexTypeMapping TypeName="SMSModel.GET_SUM_HOA_DON_BY_CUS_ID_Result">
                 <ScalarProperty Name="TOTAL_AMOUNT" ColumnName="TOTAL_AMOUNT" />
                 <ScalarProperty Name="TOTAL_DISCOUNT" ColumnName="TOTAL_DISCOUNT" />
                 <ScalarProperty Name="TOTAL_REAL_AMOUNT" ColumnName="TOTAL_REAL_AMOUNT" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SmsModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SmsModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SmsModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SmsModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SmsModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SmsModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SmsModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
