@@ -11,23 +11,50 @@ namespace SMS.App_Start
             var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
             System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
             var date = DateTime.Now;
-            if (!value.Culture.ToString().Equals("vi-VN"))
+            if (value.Culture.ToString().Equals("vi-VN"))
             {
                 try
                 {
-                    date = DateTime.Parse(value.AttemptedValue);
+                    return DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
+                }
+                catch
+                {
+                    return null;
+                }
+
+            }
+            else if (value.Culture.ToString().Equals("en-US"))
+            {
+                try
+                {
+                    date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
                     return date;
                 }
                 catch
                 {
-                    return DateTime.ParseExact(DateTime.Now.ToString("dd/MM/yyy"), "dd/MM/yyyy", cultureinfo);
+                    try
+                    {
+                        date = DateTime.ParseExact(value.AttemptedValue, "MM/dd/yyyy", cultureinfo);
+                        return date;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
 
             }
             else
             {
-                date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-                return date;
+                try
+                {
+                    date = DateTime.ParseExact(value.AttemptedValue, "yyyy/MM/dd", cultureinfo);
+                    return date;
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
     }
@@ -41,23 +68,50 @@ namespace SMS.App_Start
             {
                 System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
                 var  date = DateTime.Now;
-                if (!value.Culture.ToString().Equals("vi-VN"))
+                if (value.Culture.ToString().Equals("vi-VN"))
                 {
                     try
                     {
-                        date = DateTime.Parse(value.AttemptedValue);
+                        return DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);                       
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+
+                }
+                else if (value.Culture.ToString().Equals("en-US"))
+                {
+                    try
+                    {
+                        date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
                         return date;
                     }
                     catch
                     {
-                        return DateTime.ParseExact(DateTime.Now.ToString("dd/MM/yyy"), "dd/MM/yyyy", cultureinfo);                       
+                        try
+                        {
+                            date = DateTime.ParseExact(value.AttemptedValue, "MM/dd/yyyy", cultureinfo);
+                            return date;
+                        }
+                        catch
+                        {
+                            return null;
+                        }
                     }
-                    
+                   
                 }
                 else
                 {
-                    date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-                    return date;
+                    try
+                    {
+                        date = DateTime.ParseExact(value.AttemptedValue, "yyyy/MM/dd", cultureinfo);
+                        return date;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
             return null;
