@@ -9,6 +9,7 @@
 
 namespace SMS.Models
 {
+    using PagedList;
     using System;
     using System.Collections.Generic;
     
@@ -26,5 +27,121 @@ namespace SMS.Models
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
+    }
+
+    public partial class SP_GET_TON_KHO_ALERT
+    {
+        public int ID { get; set; }
+        public int MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double TON_KHO_1 { get; set; }
+        public double TON_KHO_2 { get; set; }
+        public double TON_KHO_3 { get; set; }
+        public double TON_KHO_4 { get; set; }
+        public double TON_KHO_5 { get; set; }
+        public double TON_KHO_6 { get; set; }
+        public double TON_KHO_7 { get; set; }
+        public double TON_KHO_8 { get; set; }
+        public double TON_KHO_9 { get; set; }
+        public double TON_KHO_10 { get; set; }
+        public double TON_KHO_11 { get; set; }
+        public double TON_KHO_12 { get; set; }
+        public double TON_KHO_13 { get; set; }
+        public double TON_KHO_14 { get; set; }
+        public double TON_KHO_15 { get; set; }
+        public double TON_KHO_16 { get; set; }
+        public double TON_KHO_17 { get; set; }
+        public double TON_KHO_18 { get; set; }
+        public double TON_KHO_19 { get; set; }
+        public double TON_KHO_20 { get; set; }
+        public double TON_KHO_21 { get; set; }
+        public double TON_KHO_22 { get; set; }
+        public double TON_KHO_23 { get; set; }
+        public double TON_KHO_24 { get; set; }
+        public double TON_KHO_25 { get; set; }
+        public double TON_KHO_26 { get; set; }
+        public double TON_KHO_27 { get; set; }
+        public double TON_KHO_28 { get; set; }
+        public double TON_KHO_29 { get; set; }
+        public double TON_KHO_30 { get; set; }
+        public double TON_KHO_31 { get; set; }
+        public double TON_KHO_32 { get; set; }
+        public double TON_KHO_33 { get; set; }
+        public double TON_KHO_34 { get; set; }
+        public double TON_KHO_35 { get; set; }
+        public double TON_KHO_36 { get; set; }
+        public double TON_KHO_37 { get; set; }
+        public double TON_KHO_38 { get; set; }
+        public double TON_KHO_39 { get; set; }
+        public double TON_KHO_40 { get; set; }
+        public double TON_KHO_41 { get; set; }
+        public double TON_KHO_42 { get; set; }
+        public double TON_KHO_43 { get; set; }
+        public double TON_KHO_44 { get; set; }
+        public double TON_KHO_45 { get; set; }
+        public double TON_KHO_46 { get; set; }
+        public double TON_KHO_47 { get; set; }
+        public double TON_KHO_48 { get; set; }
+        public double TON_KHO_49 { get; set; }
+        public double TON_KHO_50 { get; set; }
+        public double TON_KHO_51 { get; set; }
+        public double TON_KHO_52 { get; set; }
+        public double TON_KHO_53 { get; set; }
+        public double TON_KHO_54 { get; set; }
+        public double TON_KHO_55 { get; set; }
+        public double TON_KHO_56 { get; set; }
+        public double TON_KHO_57 { get; set; }
+        public double TON_KHO_58 { get; set; }
+        public double TON_KHO_59 { get; set; }
+        public double TON_KHO_60 { get; set; }
+        public double TON_KHO_61 { get; set; }
+        public double TON_KHO_62 { get; set; }
+        public double TON_KHO_63 { get; set; }
+        public double TON_KHO_64 { get; set; }
+        public double TON_KHO_65 { get; set; }
+        public double TON_KHO_66 { get; set; }
+        public double TON_KHO_67 { get; set; }
+        public double TON_KHO_68 { get; set; }
+        public double TON_KHO_69 { get; set; }
+        public double TON_KHO_70 { get; set; }
+        public double TON_KHO_71 { get; set; }
+        public double TON_KHO_72 { get; set; }
+        public double TON_KHO_73 { get; set; }
+        public double TON_KHO_74 { get; set; }
+        public double TON_KHO_75 { get; set; }
+        public double TON_KHO_76 { get; set; }
+        public double TON_KHO_77 { get; set; }
+        public double TON_KHO_78 { get; set; }
+        public double TON_KHO_79 { get; set; }
+        public double TON_KHO_80 { get; set; }
+        public double TON_KHO_81 { get; set; }
+        public double TON_KHO_82 { get; set; }
+        public double TON_KHO_83 { get; set; }
+        public double TON_KHO_84 { get; set; }
+        public double TON_KHO_85 { get; set; }
+        public double TON_KHO_86 { get; set; }
+        public double TON_KHO_87 { get; set; }
+        public double TON_KHO_88 { get; set; }
+        public double TON_KHO_89 { get; set; }
+        public double TON_KHO_90 { get; set; }
+        public double TON_KHO_91 { get; set; }
+        public double TON_KHO_92 { get; set; }
+        public double TON_KHO_93 { get; set; }
+        public double TON_KHO_94 { get; set; }
+        public double TON_KHO_95 { get; set; }
+        public double TON_KHO_96 { get; set; }
+        public double TON_KHO_97 { get; set; }
+        public double TON_KHO_98 { get; set; }
+        public double TON_KHO_99 { get; set; }
+        public double TON_KHO_100 { get; set; }
+
+        public double TOTAL { get; set; }
+
+        
+    }
+    public class GetTonKhoAlertModel
+    {
+        public IPagedList<SP_GET_TON_KHO_ALERT> WarningList { get; set; }
     }
 }
