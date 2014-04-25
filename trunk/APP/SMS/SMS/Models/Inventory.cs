@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,11 @@ namespace SMS.Models
         public int MA_SAN_PHAM { get; set; }
         public string TEN_SAN_PHAM { get; set; }
         public string TEN_DON_VI { get; set; }
-        public double TON_KHO { get; set; }
+        public double SO_LUONG_TON { get; set; }
+    }
+
+    public class GetInventoryModel
+    {
+        public IPagedList<Inventory> InventoryList { get; set; }
     }
 }

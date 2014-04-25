@@ -49,6 +49,9 @@ namespace SMS.Models
         public virtual DbSet<SMS_MASTER> SMS_MASTER { get; set; }
         public virtual DbSet<TRA_HANG> TRA_HANG { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
+        public virtual DbSet<V_NHAP_KHO> V_NHAP_KHO { get; set; }
+        public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
+        public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -75,7 +78,7 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GET_KHACH_HANG_ALERT", nAMEParameter);
         }
-
+    
         public virtual ObjectResult<GET_SUM_HOA_DON_BY_CUS_ID_Result> GET_SUM_HOA_DON_BY_CUS_ID(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
             var fROM_DATEParameter = fROM_DATE.HasValue ?
@@ -91,6 +94,33 @@ namespace SMS.Models
                 new ObjectParameter("MA_KHACH_HANG", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GET_SUM_HOA_DON_BY_CUS_ID_Result>("GET_SUM_HOA_DON_BY_CUS_ID", fROM_DATEParameter, tO_DATEParameter, mA_KHACH_HANGParameter);
+        }
+    
+        public virtual int SP_GET_INVENTORY(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter);
+        }
+    
+        public virtual int SP_GET_TON_KHO()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_TON_KHO");
+        }
+    
+        public virtual int SP_GET_TON_KHO_ALERT(string nAME)
+        {
+            var nAMEParameter = nAME != null ?
+                new ObjectParameter("NAME", nAME) :
+                new ObjectParameter("NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_TON_KHO_ALERT", nAMEParameter);
         }
     }
 }

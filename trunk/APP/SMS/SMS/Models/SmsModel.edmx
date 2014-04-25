@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -382,6 +382,48 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_NHAP_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_NHAP_KHO">
+          <Key>
+            <PropertyRef Name="MA_NHAP_KHO" />
+          </Key>
+          <Property Name="MA_NHAP_KHO" Type="int" Nullable="false" />
+          <Property Name="NGAY_NHAP" Type="date" />
+          <Property Name="MA_KHO" Type="int" />
+          <Property Name="LY_DO_NHAP" Type="smallint" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG" Type="float" />
+          <Property Name="GIA_VON" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_NHAP_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_NHAP_XUAT_KHO">
+          <Key>
+            <PropertyRef Name="SO_LUONG_NHAP" />
+            <PropertyRef Name="SO_LUONG_XUAT" />
+            <PropertyRef Name="SO_LUONG_TON" />
+          </Key>
+          <Property Name="MA_KHO" Type="int" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG_NHAP" Type="float" Nullable="false" />
+          <Property Name="SO_LUONG_XUAT" Type="float" Nullable="false" />
+          <Property Name="SO_LUONG_TON" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_XUAT_KHO">
+          <Key>
+            <PropertyRef Name="MA_XUAT_KHO" />
+          </Key>
+          <Property Name="MA_XUAT_KHO" Type="int" Nullable="false" />
+          <Property Name="NGAY_XUAT" Type="date" />
+          <Property Name="MA_KHO_XUAT" Type="int" />
+          <Property Name="LY_DO_XUAT" Type="smallint" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG" Type="float" />
+          <Property Name="GIA_XUAT" Type="float" />
         </EntityType>
         <Association Name="FK__CHI_TIET___CREAT__5070F446">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
@@ -1343,6 +1385,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="F_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
+        <Function Name="F_GET_TON_TOTAL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
         <Function Name="GET_HOA_DON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
@@ -1362,7 +1411,17 @@
         <Function Name="GET_TOTAL_DISCOUNT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
-        <Function Name="STMA_GET_MAX_DATE_KIEM_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="date" />
+        <Function Name="SP_GET_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_GET_TON_KHO_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="STMA_GET_MAX_DATE_KIEM_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="date">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SMSModelStoreContainer">
           <EntitySet Name="CHI_TIET_HOA_DON" EntityType="Self.CHI_TIET_HOA_DON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHI_TIET_NHAP_KHO" EntityType="Self.CHI_TIET_NHAP_KHO" Schema="dbo" store:Type="Tables" />
@@ -1386,6 +1445,37 @@
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_NHAP_KHO" EntityType="Self.V_NHAP_KHO" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_NHAP_KHO].[MA_NHAP_KHO] AS [MA_NHAP_KHO], 
+    [V_NHAP_KHO].[NGAY_NHAP] AS [NGAY_NHAP], 
+    [V_NHAP_KHO].[MA_KHO] AS [MA_KHO], 
+    [V_NHAP_KHO].[LY_DO_NHAP] AS [LY_DO_NHAP], 
+    [V_NHAP_KHO].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_NHAP_KHO].[SO_LUONG] AS [SO_LUONG], 
+    [V_NHAP_KHO].[GIA_VON] AS [GIA_VON]
+    FROM [dbo].[V_NHAP_KHO] AS [V_NHAP_KHO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_NHAP_XUAT_KHO" EntityType="Self.V_NHAP_XUAT_KHO" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_NHAP_XUAT_KHO].[MA_KHO] AS [MA_KHO], 
+    [V_NHAP_XUAT_KHO].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_NHAP_XUAT_KHO].[SO_LUONG_NHAP] AS [SO_LUONG_NHAP], 
+    [V_NHAP_XUAT_KHO].[SO_LUONG_XUAT] AS [SO_LUONG_XUAT], 
+    [V_NHAP_XUAT_KHO].[SO_LUONG_TON] AS [SO_LUONG_TON]
+    FROM [dbo].[V_NHAP_XUAT_KHO] AS [V_NHAP_XUAT_KHO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_XUAT_KHO" EntityType="Self.V_XUAT_KHO" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_XUAT_KHO].[MA_XUAT_KHO] AS [MA_XUAT_KHO], 
+    [V_XUAT_KHO].[NGAY_XUAT] AS [NGAY_XUAT], 
+    [V_XUAT_KHO].[MA_KHO_XUAT] AS [MA_KHO_XUAT], 
+    [V_XUAT_KHO].[LY_DO_XUAT] AS [LY_DO_XUAT], 
+    [V_XUAT_KHO].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_XUAT_KHO].[SO_LUONG] AS [SO_LUONG], 
+    [V_XUAT_KHO].[GIA_XUAT] AS [GIA_XUAT]
+    FROM [dbo].[V_XUAT_KHO] AS [V_XUAT_KHO]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__CHI_TIET___CREAT__5070F446" Association="Self.FK__CHI_TIET___CREAT__5070F446">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="CHI_TIET_HOA_DON" EntitySet="CHI_TIET_HOA_DON" />
@@ -1707,8 +1797,7 @@
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3559,12 +3648,23 @@
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GET_KHACH_HANG_ALERT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SMSModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="V_NHAP_KHO" EntityType="SMSModel.V_NHAP_KHO" />
+          <EntitySet Name="V_NHAP_XUAT_KHO" EntityType="SMSModel.V_NHAP_XUAT_KHO" />
+          <EntitySet Name="V_XUAT_KHO" EntityType="SMSModel.V_XUAT_KHO" />
+          <FunctionImport Name="SP_GET_INVENTORY">
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_TON_KHO" />
+          <FunctionImport Name="SP_GET_TON_KHO_ALERT">
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
@@ -3580,6 +3680,42 @@
           <Property Type="Double" Name="TOTAL_DISCOUNT" Nullable="false" />
           <Property Type="Double" Name="TOTAL_REAL_AMOUNT" Nullable="false" />
         </ComplexType>
+        <EntityType Name="V_NHAP_KHO">
+          <Key>
+            <PropertyRef Name="MA_NHAP_KHO" />
+          </Key>
+          <Property Name="MA_NHAP_KHO" Type="Int32" Nullable="false" />
+          <Property Name="NGAY_NHAP" Type="DateTime" Precision="0" />
+          <Property Name="MA_KHO" Type="Int32" />
+          <Property Name="LY_DO_NHAP" Type="Int16" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG" Type="Double" />
+          <Property Name="GIA_VON" Type="Double" />
+        </EntityType>
+        <EntityType Name="V_NHAP_XUAT_KHO">
+          <Key>
+            <PropertyRef Name="SO_LUONG_NHAP" />
+            <PropertyRef Name="SO_LUONG_XUAT" />
+            <PropertyRef Name="SO_LUONG_TON" />
+          </Key>
+          <Property Name="MA_KHO" Type="Int32" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG_NHAP" Type="Double" Nullable="false" />
+          <Property Name="SO_LUONG_XUAT" Type="Double" Nullable="false" />
+          <Property Name="SO_LUONG_TON" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="V_XUAT_KHO">
+          <Key>
+            <PropertyRef Name="MA_XUAT_KHO" />
+          </Key>
+          <Property Name="MA_XUAT_KHO" Type="Int32" Nullable="false" />
+          <Property Name="NGAY_XUAT" Type="DateTime" Precision="0" />
+          <Property Name="MA_KHO_XUAT" Type="Int32" />
+          <Property Name="LY_DO_XUAT" Type="Int16" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG" Type="Double" />
+          <Property Name="GIA_XUAT" Type="Double" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4008,6 +4144,46 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="V_NHAP_KHO">
+            <EntityTypeMapping TypeName="SMSModel.V_NHAP_KHO">
+              <MappingFragment StoreEntitySet="V_NHAP_KHO">
+                <ScalarProperty Name="GIA_VON" ColumnName="GIA_VON" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="LY_DO_NHAP" ColumnName="LY_DO_NHAP" />
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+                <ScalarProperty Name="NGAY_NHAP" ColumnName="NGAY_NHAP" />
+                <ScalarProperty Name="MA_NHAP_KHO" ColumnName="MA_NHAP_KHO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_NHAP_XUAT_KHO">
+            <EntityTypeMapping TypeName="SMSModel.V_NHAP_XUAT_KHO">
+              <MappingFragment StoreEntitySet="V_NHAP_XUAT_KHO">
+                <ScalarProperty Name="SO_LUONG_TON" ColumnName="SO_LUONG_TON" />
+                <ScalarProperty Name="SO_LUONG_XUAT" ColumnName="SO_LUONG_XUAT" />
+                <ScalarProperty Name="SO_LUONG_NHAP" ColumnName="SO_LUONG_NHAP" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_XUAT_KHO">
+            <EntityTypeMapping TypeName="SMSModel.V_XUAT_KHO">
+              <MappingFragment StoreEntitySet="V_XUAT_KHO">
+                <ScalarProperty Name="GIA_XUAT" ColumnName="GIA_XUAT" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="LY_DO_XUAT" ColumnName="LY_DO_XUAT" />
+                <ScalarProperty Name="MA_KHO_XUAT" ColumnName="MA_KHO_XUAT" />
+                <ScalarProperty Name="NGAY_XUAT" ColumnName="NGAY_XUAT" />
+                <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_INVENTORY" FunctionName="SMSModel.Store.SP_GET_INVENTORY" />
+          <FunctionImportMapping FunctionImportName="SP_GET_TON_KHO" FunctionName="SMSModel.Store.SP_GET_TON_KHO" />
+          <FunctionImportMapping FunctionImportName="SP_GET_TON_KHO_ALERT" FunctionName="SMSModel.Store.SP_GET_TON_KHO_ALERT" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
