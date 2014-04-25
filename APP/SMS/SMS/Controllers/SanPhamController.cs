@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using PagedList;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace SMS.Controllers
 {
@@ -466,6 +467,50 @@ namespace SMS.Controllers
         }
 
         #endregion
+
+        [HttpGet]
+        public ActionResult Warning(string SearchString, int? page, bool? flag)
+        {
+            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+            ViewBag.CurrentFilter = SearchString;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+
+            var ctx = new SmsContext();
+
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>();
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = tonkho.Count();
+            tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
+            ViewBag.KhoList = ListKho;
+            ViewBag.tonKho = tk;
+            GetTonKhoAlertModel model = new GetTonKhoAlertModel();
+            model.WarningList = tk;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Warning(string SearchString, int? page)
+        {
+            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+            ViewBag.CurrentFilter = SearchString;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+
+            var ctx = new SmsContext();
+
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>();
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = tonkho.Count();
+            tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
+            ViewBag.KhoList = ListKho;
+            ViewBag.tonKho = tk;
+            GetTonKhoAlertModel model = new GetTonKhoAlertModel();
+            model.WarningList = tk;
+            return View(model);
+        }
     }
 
 }

@@ -224,5 +224,20 @@ namespace SMS.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult FindSuggest(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.KHOes
+                                    where (x.TEN_KHO.Contains(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_KHO,
+                                        value = x.TEN_KHO
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
     }
 }

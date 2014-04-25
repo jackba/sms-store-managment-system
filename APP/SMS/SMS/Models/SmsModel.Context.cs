@@ -96,17 +96,13 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GET_SUM_HOA_DON_BY_CUS_ID_Result>("GET_SUM_HOA_DON_BY_CUS_ID", fROM_DATEParameter, tO_DATEParameter, mA_KHACH_HANGParameter);
         }
     
-        public virtual int SP_GET_INVENTORY(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM)
+        public virtual ObjectResult<SP_GET_INVENTORY_Result> SP_GET_INVENTORY(Nullable<int> mA_KHO)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
                 new ObjectParameter("MA_KHO", mA_KHO) :
                 new ObjectParameter("MA_KHO", typeof(int));
     
-            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
-                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
-                new ObjectParameter("MA_SAN_PHAM", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_Result>("SP_GET_INVENTORY", mA_KHOParameter);
         }
     
         public virtual int SP_GET_TON_KHO()

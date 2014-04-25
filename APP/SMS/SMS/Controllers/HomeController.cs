@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SMS.Models;
+using System.Data;
+using System.Data.SqlClient;
+using PagedList;
 
 namespace SMS.Controllers
 {
@@ -10,52 +14,79 @@ namespace SMS.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(string SearchString, int? page, bool? flag)
         {
-            ViewBag.Message = "SMS - Store Managemanet System";
+            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+            ViewBag.CurrentFilter = SearchString;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            
+            var ctx = new SmsContext();
 
-            return View();
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            string s = ctx.Database.Connection.ToString();
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>();
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = tonkho.Count();
+            tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
+            ViewBag.KhoList = ListKho;
+            ViewBag.tonKho = tk;
+            GetTonKhoAlertModel model = new GetTonKhoAlertModel();
+            model.WarningList = tk;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(string SearchString, int? page)
+        {
+            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+            ViewBag.CurrentFilter = SearchString;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+
+            var ctx = new SmsContext();
+
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            string s = ctx.Database.Connection.ToString();
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>();
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = tonkho.Count();
+            tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
+            ViewBag.KhoList = ListKho;
+            ViewBag.tonKho = tk;
+            GetTonKhoAlertModel model = new GetTonKhoAlertModel();
+            model.WarningList = tk;
+            return View(model);
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Quản lý kho";
-
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         public ActionResult BanHang()
         {
-            ViewBag.Message = "Bán Hàng";
-
             return View();
         }
 
         public ActionResult QuanLyKho()
         {
-            ViewBag.Message = "Quan Ly Kho";
-
             return View();
         }
 
         public ActionResult DanhMuc()
         {
-            ViewBag.Message = "Các hạng mục danh mục";
-
             return View();
         }
 
         public ActionResult QuanTri()
         {
-            ViewBag.Message = "Các hạng mục dành cho nhà quản trị.";
-
             return View();
         }
 

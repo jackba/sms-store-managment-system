@@ -1,4 +1,7 @@
-﻿@{
+﻿@model SMS.Models.GetTonKhoAlertModel
+@using PagedList.Mvc;
+
+@{
     ViewBag.Title = "CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC";
 }
 @section featured {
@@ -6,33 +9,162 @@
         <div class="content-wrapper">
             <hgroup class="title">
                 <h1>@ViewBag.Title.</h1>
-                <BR />
-                <h2>@ViewBag.Message</h2>
+                <br />
+                <h2> SMS - Store Managemanet System</h2>
             </hgroup>
         </div>
     </section>
 }
-<h3>
-    We suggest the following:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>
-            Getting Started</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards. <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn
-            more…</a> </li>
-    <li class="two">
-        <h5>
-            Add NuGet packages and jump-start your coding</h5>
-        NuGet makes it easy to install and update free libraries and tools. <a href="http://go.microsoft.com/fwlink/?LinkId=245153">
-            Learn more…</a> </li>
-    <li class="three">
-        <h5>
-            Find Web Hosting</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications. <a href="http://go.microsoft.com/fwlink/?LinkId=245157">
-            Learn more…</a> </li>
-</ol>
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<h3>Sản phẩm cần nhập hàng</h3>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+<br />
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+        $(document).ready(function () {
+            $("#SearchString").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#SearchString').val(ui.item.label);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+
+
+        });
+    </script>       
+ }
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @id = "index" }))
+{
+    <hr style="width:100%" />
+    <div style="float:right">
+        Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { id = "SearchString" })
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+        </div>
+    <div style="clear:both"></div>
+    <hr style="width:100%" />
+
+    <table width="100%">
+           <tr style="width:100%">
+               <td class='inner colwidth head ' width="20%"> Tên sản phẩm </td>
+               <td class='inner colwidth head ' width="15%"> Đơn vị </td>
+               @{
+               int i = 0;
+                foreach (var Kho in ViewBag.KhoList)
+                {
+                    i++;
+                    if (i <= 5)
+                    {
+                         <td class='inner colwidth head '>
+                                 @Kho.TEN_KHO
+                            </td>
+                    }
+                }
+            }
+               <td class='innerLast colwidth head '>
+                   Tổng cộng
+               </td>
+           </tr>
+            @{
+        foreach (var tonKho in ViewBag.tonKho)
+        {
+            <tr>
+                    <td class="inner colwidth"> @tonKho.TEN_SAN_PHAM </td>
+                    <td class="inner colwidth"> @tonKho.TEN_DON_VI   </td>
+                    @{
+                    int j = 0;
+                    foreach (var Kho in ViewBag.KhoList)
+                    {
+                        j++;
+                        if (j <= 5)
+                        {
+                            switch (j)
+                            {
+                                case 1:
+
+                                <td class="inner colwidth">
+                                        @tonKho.TON_KHO_1
+                                    </td>
+                                break;
+                                case 2:
+
+                                <td class="inner colwidth">
+                                        @tonKho.TON_KHO_2
+                                    </td>
+                                break;
+                                case 3:
+
+                                        <td class="inner colwidth">
+                                            @tonKho.TON_KHO_3
+                                        </td>
+                                break;
+                                case 4:
+
+                                    <td class="inner colwidth">
+                                            @tonKho.TON_KHO_4
+                                        </td>
+                                break;
+                                case 5:
+
+                                    <td class="inner colwidth">
+                                            @tonKho.TON_KHO_5
+                                        </td>
+                                break;
+                            }
+                        }
+                    }
+                }
+                    <td class="innerLast colwidth">
+                        @tonKho.TOTAL
+                    </td>
+                </tr>
+        }
+    }
+        </table>
+    <table width="100%">
+            <tr>
+                <td>
+                    <div style="text-align:left; padding-top:3px;">
+                        <label>@ViewBag.Count sản phầm </label>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: right;  padding-top: 3px; ">
+                        @Html.PagedListPager(Model.WarningList, page => Url.Action("Index",
+                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+}

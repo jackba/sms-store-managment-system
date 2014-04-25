@@ -1,0 +1,133 @@
+﻿@model SMS.Models.GetInventoryModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "KIỂM TRA TỒN KHO";
+}
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<h3>Kiểm tra tồn kho</h3>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+<br />
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+        $(document).ready(function () {
+            $("#ProductName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#ProductId').val("");
+                },
+                select: function (event, ui) {
+                    $('#ProductName').val(ui.item.label);
+                    $('#ProductId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+            $("#StoreName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Kho/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#StoreName').val(ui.item.label);
+                    $('#StoreId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 0
+
+            }).focus(function () {
+                $(this).autocomplete('search','');
+            });
+
+        });
+    </script>
+}
+@using (Html.BeginForm("Inventory", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
+{
+    <hr style="width:100%" />
+    <div style="float:right">
+        Kho: @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+             @Html.Hidden("StoreId", new { id = "StoreId" })
+             @Html.Hidden("ProductId", new { id = "ProductId" })
+        Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
+        <input type="submit" value="Tìm kiếm" class="myButton" />
+    </div>
+    <div style="clear:both"></div>
+    <hr style="width:100%" />
+
+    <table width="100%">
+        <tr style="width:100%">
+            <td class='inner colwidth head ' width="10%"> Mã sản phẩm </td>
+            <td class='inner colwidth head ' > Tên sản phẩm </td>
+            <td class='inner colwidth head ' > Đơn vị </td>
+            <td class='innerLast colwidth head '>  Tồn kho          </td>
+        </tr>
+        @foreach (var dbHist in Model.InventoryList)
+        {
+            <tr class="inner column-hscroll alignCenter">
+                <td class="inner colwidth">
+                    @dbHist.MA_SAN_PHAM
+                </td>
+                <td class="inner colwidth"> @dbHist.TEN_SAN_PHAM</td>
+                <td class="inner colwidth"> @dbHist.TEN_DON_VI</td>
+                <td class="innerLast colwidth">@dbHist.SO_LUONG_TON</td>
+            </tr>
+        }
+            </table>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count sản phầm </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                   @Html.PagedListPager(Model.InventoryList, page => Url.Action("Inventory",
+                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </div>
+            </td>
+        </tr>
+      
+    </table>
+
+}

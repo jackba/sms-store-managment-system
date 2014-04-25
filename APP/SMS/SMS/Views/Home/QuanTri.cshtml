@@ -1,31 +1,28 @@
-﻿@{
-    ViewBag.Title = "Quản trị";
-    ViewBag.Message = "";
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "QUẢN TRỊ";
 }
-<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <br />
     <h2>@ViewBag.Message</h2>
 </hgroup>
 <div class="grid_7">
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI NGƯỜI DÙNG</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>PHÂN QUYỀN NGƯỜI DÙNG</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>CẤP LẠI MẬT KHẨU</span>
-    </a>
     <a class="dashboard-module" href="@Url.Action("Index", "NguoiDung")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
         <span>DANH SÁCH NGƯỜI DÙNG</span>
     </a>
+
     <a class="dashboard-module" href="@Url.Action("Index","SmsMaster")">
         <img width="64" height="64" alt="edit" src="../../Content/images/settings-icon.jpg"></img>
         <span>SMS - MASTER</span>
@@ -34,36 +31,12 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/cus_warning.png"></img>
         <span>DANH SÁCH KHÁCH HÀNG - WARNING</span>
     </a>
-    <a class="dashboard-module" href="#">
+    <a class="dashboard-module" href="@Url.Action("Index", "NguoiDung")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH SẢN PHẦM</span>
+        <span>CẤP LẠI MẬT KHẨU</span>
     </a>
-    <a class="dashboard-module" href="#">
+    <a class="dashboard-module" href="@Url.Action("Index", "NguoiDung")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI SẢN PHẨM</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI KHÁCH HÀNG</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI ĐƠN VỊ TÍNH</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI NHÀ CUNG CẤP</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI HÃNG SẢN XUẤT</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>BÁO CÁO XUẤT KHO</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THẺ KHO</span>
+        <span>PHÂN QUYỀN NGƯỜI DÙNG</span>
     </a>
 </div>
