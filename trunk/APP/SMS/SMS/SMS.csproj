@@ -150,6 +150,7 @@
     <Compile Include="Controllers\KhuVucController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
+    <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SmsMasterController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
@@ -174,11 +175,16 @@
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GET_HOA_DON_Result.cs" />
-    <Compile Include="Models\GET_SUM_HOA_DON_BY_CUS_ID_Result.cs" />
+    <Compile Include="Models\GET_HOA_DON_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GET_SUM_HOA_DON_BY_CUS_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\KHACH_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -233,10 +239,19 @@
     <Compile Include="Models\SMS_MASTER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
+    <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_NHAP_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_XUAT_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\XUAT_KHO.cs">
@@ -314,10 +329,12 @@
     <Content Include="Content\images\add_new.png" />
     <Content Include="Content\images\arrow_collapsed.png" />
     <Content Include="Content\images\arrow_expanded.png" />
+    <Content Include="Content\images\Converter.jpg" />
     <Content Include="Content\images\Credit-icon.png" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
     <Content Include="Content\images\customer.jpg" />
     <Content Include="Content\images\Customer_Male_Light.png" />
+    <Content Include="Content\images\cus_warning.png" />
     <Content Include="Content\images\dashboard-module.gif" />
     <Content Include="Content\images\delete-20.png" />
     <Content Include="Content\images\delete.png" />
@@ -326,11 +343,14 @@
     <Content Include="Content\images\edit_delete.png" />
     <Content Include="Content\images\green_area.png" />
     <Content Include="Content\images\industry.png" />
+    <Content Include="Content\images\Invientory.jpg" />
     <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\next.png" />
     <Content Include="Content\images\provider.png" />
     <Content Include="Content\images\Retail-shop-icon.png" />
+    <Content Include="Content\images\settings-icon.jpg" />
+    <Content Include="Content\images\Warning.png" />
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\images\storage.png" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
@@ -560,6 +580,8 @@
     <Content Include="Views\KhachHang\showOrderHist.cshtml" />
     <Content Include="Views\HoaDon\ShowDetail.cshtml" />
     <Content Include="Views\SmsMaster\Index.cshtml" />
+    <Content Include="Views\SanPham\Warning.cshtml" />
+    <Content Include="Views\QuanLyKho\Inventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,7 +11,8 @@ using System.Data.SqlClient;
 
 namespace SMS.Controllers
 {
-
+    [Authorize]
+    [HandleError]
     public class KhachHangController : Controller
     {
         [HttpGet]

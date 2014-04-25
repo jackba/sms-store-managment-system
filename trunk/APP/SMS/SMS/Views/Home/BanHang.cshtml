@@ -1,69 +1,46 @@
-﻿@{
-    ViewBag.Title = "Bán hàng";
-    ViewBag.Message = "";
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "BÁN HÀNG";
 }
-<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
-
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <br />
     <h2>@ViewBag.Message</h2>
 </hgroup>
 <div class="grid_7">
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH ĐƠN VỊ TÍNH</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH KHU VỰC</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH NHÀ SẢN XUẤT</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH NHÀ CUNG CẤP</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+
+    <a class="dashboard-module" href="@Url.Action("Index", "KhachHang")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/customer.jpg"></img>
         <span>DANH SÁCH KHÁCH HÀNG</span>
     </a>
+
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>DANH SÁCH SẢN PHẨM</span>
+        <span>BÁN HÀNG</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>CHUYỂN ĐỔI ĐƠN VỊ TÍNH</span>
+        <span>THU TIỀN</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI SẢN PHẨM</span>
+        <span>DANH SÁCH HÓA ĐƠN</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI KHÁCH HÀNG</span>
+        <span>NHẬN TRẢ HÀNG</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI ĐƠN VỊ TÍNH</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI NHÀ CUNG CẤP</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI HÃNG SẢN XUẤT</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>BÁO CÁO XUẤT KHO</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THẺ KHO</span>
+        <span>TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
     </a>
 </div>

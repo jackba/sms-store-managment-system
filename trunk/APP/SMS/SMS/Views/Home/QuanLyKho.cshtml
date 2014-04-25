@@ -1,21 +1,34 @@
-﻿@{
-    ViewBag.Title = "Quản lý kho";
-    ViewBag.Message = "";
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "QUẢN LÝ KHO";
 }
-<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <br />
     <h2>@ViewBag.Message</h2>
 </hgroup>
 <div class="grid_7">
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+    <a class="dashboard-module" href="@Url.Action("Index", "Kho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/storage.png"></img>
         <span>DANH SÁCH KHO</span>
     </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+    <a class="dashboard-module" href="@Url.Action("Warning", "SanPham")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Warning.png"></img>
+        <span>SẢN PHẦM CẦN NHẬP HÀNG</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("Inventory", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Invientory.jpg"></img>
         <span>KIỂM TRA TỒN KHO</span>
     </a>
     <a class="dashboard-module" href="#">
@@ -24,27 +37,19 @@
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>NHẬP KHO - MUA HÀNG</span>
+        <span>NHẬP KHO</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>NHẬP CHUYỂN KHO</span>
+        <span>CHUYỂN KHO</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>NHẬP LẠI HÀNG TRẢ</span>
+        <span>NHẬP - CHUYỂN KHO</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>XUẤT BÁN HÀNG</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>XUẤT CHUYỂN KHO</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>XUẤT HỦY</span>
+        <span>NHẬP - TRẢ HÀNG</span>
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
@@ -61,13 +66,5 @@
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
         <span>BÁO CÁO XUẤT KHO</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THẺ KHO</span>
-    </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>THÊM MỚI KHO</span>
     </a>
 </div>

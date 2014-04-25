@@ -1,15 +1,27 @@
 ﻿@model SMS.Models.NGUOI_DUNG
 
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
 }
 
+
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
 </hgroup>
 
 <section id="loginForm">
-<h2>Use a local account to log in.</h2>
+<h2>Đăng nhập hệ thống</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
