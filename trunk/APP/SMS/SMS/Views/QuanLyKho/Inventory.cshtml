@@ -99,7 +99,8 @@
             <td class='inner colwidth head ' width="10%"> Mã sản phẩm </td>
             <td class='inner colwidth head ' > Tên sản phẩm </td>
             <td class='inner colwidth head ' > Đơn vị </td>
-            <td class='innerLast colwidth head '>  Tồn kho          </td>
+            <td class='inner colwidth head '>  Tồn kho          </td>
+            <td class='innerLast colwidth head '>  Giá trị </td>
         </tr>
         @foreach (var dbHist in Model.InventoryList)
         {
@@ -109,10 +110,19 @@
                 </td>
                 <td class="inner colwidth"> @dbHist.TEN_SAN_PHAM</td>
                 <td class="inner colwidth"> @dbHist.TEN_DON_VI</td>
-                <td class="innerLast colwidth">@dbHist.SO_LUONG_TON</td>
+                <td class="inner colwidth">@dbHist.SO_LUONG_TON.ToString("0,0.00")</td>
+                <td class="innerLast colwidth">@dbHist.VALUE.ToString("0,0.00")</td>
             </tr>
         }
-            </table>
+        <tr class="inner column-hscroll alignCenter">
+            <td class="inner colwidth"  style="background-color:lightgray" colspan="4">
+                Tổng giá trị hàng tồn tính theo giá hiện hành (đơn giá 1)
+            </td>
+            <td class="innerLast colwidth" style="background-color:lightgray">
+                @Model.VALUE.ToString("0,0.00")
+            </td>
+        </tr>
+    </table>
     <table width="100%">
         <tr>
             <td>

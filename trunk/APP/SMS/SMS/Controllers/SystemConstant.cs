@@ -7,7 +7,7 @@ namespace SMS.Controllers
 {
     public class SystemConstant
     {
-        public static int ROWS = 20;
+        public static int ROWS = 10;
         public static int MAX_ROWS = 999;
     }
 }
