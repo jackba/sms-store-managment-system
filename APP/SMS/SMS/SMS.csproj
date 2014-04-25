@@ -326,6 +326,7 @@
     <Content Include="Content\css\sunny\jquery-ui-1.10.3.custom.min.css" />
     <Content Include="Content\DonVi.css" />
     <Content Include="Content\HangSanXuat.css" />
+    <Content Include="Content\Home.css" />
     <Content Include="Content\images\add_new.png" />
     <Content Include="Content\images\arrow_collapsed.png" />
     <Content Include="Content\images\arrow_expanded.png" />
@@ -582,6 +583,8 @@
     <Content Include="Views\SmsMaster\Index.cshtml" />
     <Content Include="Views\SanPham\Warning.cshtml" />
     <Content Include="Views\QuanLyKho\Inventory.cshtml" />
+    <Content Include="Views\KhachHang\Show.cshtml" />
+    <Content Include="Views\KhachHang\Warning.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

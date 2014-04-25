@@ -45,6 +45,11 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First() ;
+            model.VALUE = total.VALUE;
             return View(model);
         }
 
@@ -72,6 +77,11 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
+            model.VALUE = total.VALUE;
             return View(model);
         }
 
