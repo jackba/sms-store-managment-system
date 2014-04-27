@@ -20,20 +20,37 @@ namespace SMS.Controllers
             return View();
         }
 
-        public ActionResult ImportRepoterDetail(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName,DateTime? fromDate, DateTime?toDate ,int? page, bool? flag)
+        public ActionResult ImportRepoterDetail(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName,DateTime? fromDate, DateTime?toDate ,int? page)
         {
             var ctx = new SmsContext();
             if (kind == null){
                 kind = -1;
             }
+            ViewBag.InputKind = kind;
+            if (string.IsNullOrEmpty(StoreName))
+            {
+                StoreId = 0;
+            }
+            if (string.IsNullOrEmpty(ProductName))
+            {
+                ProductId = 0;
+            }
+
             if (fromDate == null)
             {
                 fromDate = SystemConstant.MIN_DATE;
+            }else
+            {
+                ViewBag.FromDate = DateTime.Parse(fromDate.ToString()).ToString("dd/MM/yyyy");
             }
 
             if (toDate == null)
             {
                 toDate = SystemConstant.MAX_DATE;
+            }
+            else
+            {
+                ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
             var tonkho = ctx.Database.SqlQuery<SP_IMPORT_REPORTER_DETAIL_Result>("exec SP_IMPORT_REPORTER_DETAIL @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
@@ -65,6 +82,72 @@ namespace SMS.Controllers
             return View(model);
         }
         
+        [HttpPost]
+        public ActionResult ImportRepoterDetail(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? page, bool? flag)
+        {
+            var ctx = new SmsContext();
+            if (string.IsNullOrEmpty(StoreName))
+            {
+                StoreId = 0;
+            }
+            if (string.IsNullOrEmpty(ProductName))
+            {
+                ProductId = 0;
+            }
+
+            if (kind == null)
+            {
+                kind = -1;
+            }
+            ViewBag.InputKind = kind;
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            else
+            {
+                ViewBag.FromDate = DateTime.Parse(fromDate.ToString()).ToString("dd/MM/yyyy");
+            }
+
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            else
+            {
+                ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
+            }
+            var tonkho = ctx.Database.SqlQuery<SP_IMPORT_REPORTER_DETAIL_Result>("exec SP_IMPORT_REPORTER_DETAIL @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+                new SqlParameter("KIND", Convert.ToInt32(kind)),
+                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
+                new SqlParameter("FROM_DATE", fromDate),
+                new SqlParameter("TO_DATE", toDate)
+                ).ToList<SP_IMPORT_REPORTER_DETAIL_Result>().Take(SystemConstant.MAX_ROWS);
+
+            ViewBag.Count = tonkho.Count();
+            IPagedList<SP_IMPORT_REPORTER_DETAIL_Result> tk = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            tk = tonkho.ToPagedList(pageIndex, pageSize);
+            ViewBag.StoreName = StoreName;
+            ViewBag.ProductName = ProductName;
+            ImportReportDetail model = new ImportReportDetail();
+            model.ResultList = tk;
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+                new SqlParameter("KIND", Convert.ToInt32(kind)),
+                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
+                new SqlParameter("FROM_DATE", fromDate),
+                new SqlParameter("TO_DATE", toDate)
+                ).ToList<InventoryTotal>().First();
+            model.VALUE = (double)total.VALUE;
+            return View(model);
+        }
+        
+
 
         [HttpGet]
         public ActionResult Inventory(int? StoreId, int? ProductId, string StoreName, string ProductName, int? page, bool? flag)
