@@ -161,7 +161,7 @@ namespace SMS.Controllers
                     {
                         IsValid = true;
                         Session["UserId"] = 1;
-                        Session["IsAdmin"] = true;
+                        Session["IsAdmin"] = false;
                         Session["IsAccounting"] = true;
                         Session["IsSaler"] = true;
                         Session["IsMetadataManager"] = true;

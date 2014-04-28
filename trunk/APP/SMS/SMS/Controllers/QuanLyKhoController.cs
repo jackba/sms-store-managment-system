@@ -20,6 +20,11 @@ namespace SMS.Controllers
             return View();
         }
 
+        public ActionResult ImportRepoter(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? page)
+        {
+            return View();
+        }
+
         public ActionResult ImportRepoterDetail(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName,DateTime? fromDate, DateTime?toDate ,int? page)
         {
             var ctx = new SmsContext();
