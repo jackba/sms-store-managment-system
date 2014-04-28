@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "Báo giá khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/BaoGiaSanPham.css" rel="stylesheet" />
+
+<h2>Báo giá khách hàng</h2>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+
+<script>
+
+    /**AUTOCOMPLETE**/
+    $(document).ready(function () {
+        $("#TenSanPham").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    lable : item.name,                                   
+                                    value: item.name,
+                                    id: item.id,
+                                    price: item.price,
+                                    discount:item.discount
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            },
+            select: function (event, ui) {
+                CalcRealPrice(ui.item.price, ui.item.discount);
+                addCommaNumberic('#GiaThuc');
+                $('#MaSanPham').val(ui.item.id);
+                $('#TenSanPham').val(ui.item.label);
+                $('#GiaBan').val(ui.item.price);
+                addCommaNumberic('#GiaBan');
+                $('#ChietKhau').val(ui.item.discount);
+                addCommaNumberic('#ChietKhau');
+                return false;
+            },
+            minLength: 1
+
+        });
+    });
+
+function addCommaNumberic(ctrlID) {
+    $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+}
+function saveCurrentType() {
+    var selected = $("input[type='radio']:checked");
+    if (selected.length > 0) {
+        $('#currTypeCustomer').val(selected.val());
+    }
+}
+function changeTypeCustomer(value) {
+    var title = "Xác nhận chuyển loại khách hàng"
+    var content = "Thao tác này có thể xóa hết dữ liệu hiện tại trên danh sách.<br/> Bạn hãy cân nhắc kỹ thao tác này nhé.<br/> Bạn chấp nhận thay đổi loại khách hàng không?";
+    var action = 1;
+    $('#Type' + value).click(fnOpenNormalDialog(title,content, action));
+}
+
+function fnOpenNormalDialog(title, content, action) {
+    if ($("table.tableContentScroll tr").length == 0) {
+        return;
+    }
+
+    $("#dialogConfirm").html(content);
+
+    // Define the Dialog and its properties.
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        modal: true,
+        title: title,
+        height: 200,
+        width: 550,
+        buttons: {
+            "Đồng ý": function () {
+                $(this).dialog('close');
+                callback(action,true);
+            },
+            "Không": function () {
+                $(this).dialog('close');
+                callback(action,false);
+            }
+        }
+    });
+}
+
+
+function callback(action, valueReturn) {
+    switch(action)
+    {
+        case 1:
+            if (valueReturn) {
+                $("table.tableContentScroll tr").remove();
+                //$("#checkAll").removeAttr("checked");
+            } else {
+                $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
+            }
+            break;
+        case 2:
+            if (valueReturn) {
+                prependNewRowToTable();
+            } else {
+                $('#tableSearch #TenSanPham').select();
+            }
+            break;
+        default:
+            break;
+    }
+   
+}
+
+$('.noTab').keydown(function (e) {
+    if (e.which === 9) {
+        e.preventDefault();
+    }
+})
+
+
+function addRecord() {
+    if ($('#tableSearch #MaSanPham').val() != '') {
+        if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
+            var title = "Xác nhận"
+            var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Bạn muốn thêm nó nữa hay không? ";
+            var action = 2;
+            $('#addRecord').click(fnOpenNormalDialog(title, content, action));
+        } else {
+            prependNewRowToTable();
+        }
+    }
+}
+function prependNewRowToTable() {
+    var newRow = '';
+    newRow += ' <tr class="rowHeight" id=\'' + $('#tableSearch #MaSanPham').val() + '\'> ';
+    newRow += '<td style="width:20px;"> ';
+    newRow += '  <div class="myCheckBox">';
+    newRow += '  <img src="/Content/images/delete-20.png" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
+    newRow += '   </div>';
+    newRow += ' </td> ';
+    newRow += ' <td  class="colProductNm textLeft"> ';
+    newRow += ' <div  class="colProductNm tooltip truncate">';
+    newRow += $('#tableSearch #TenSanPham').val();
+    newRow += ' <span>' + $('#tableSearch #TenSanPham').val() +'</span>';
+    newRow += '  <input id="MaSanPham" type="hidden" value="' + $('#tableSearch #MaSanPham').val() + '" />';
+    newRow += '   </div>';
+    newRow += ' </td> ';
+    newRow += ' <td class="colPrice textRight"> ';
+    newRow += $('#tableSearch #GiaBan').val();
+    newRow += ' </td> ';
+    newRow += '  <td  class="colDiscount textRight"> ';
+    newRow += $('#tableSearch #ChietKhau').val();
+    newRow += ' </td>  ';
+    newRow += '  <td class="colRealPrice textRight"> ';
+    newRow += $('#tableSearch #GiaThuc').val();
+    newRow += ' </td> ';
+    newRow += '  </tr> ';
+    $('#tableContent').prepend(newRow);
+    //reset value
+    $('#tableSearch #TenSanPham').val('')
+    $('#tableSearch #MaSanPham').val('')
+    $('#tableSearch #GiaBan').val('')
+    $('#tableSearch #ChietKhau').val('')
+    $('#tableSearch #GiaThuc').val('')
+}
+function CalcRealPrice(price, discount) {
+    if (price == 0 || discount == 0) {
+        $('#tableSearch #GiaThuc').val(price);
+    } else {
+        $('#tableSearch #GiaThuc').val(price - ((price * discount) / 100));
+    }
+    
+}
+function deleteRow(rowId) {
+    $('#' + rowId).remove();
+}
+
+function printList(elem) {
+    var divClone = $(elem).clone(true,true);
+    divClone.find('#tableSearch').remove();
+    divClone.find("table.tableHeader th:first-child").remove();
+    //divClone.find("table.tableHeader th:last-child").remove();
+    divClone.find("table.tableContentScroll td:first-child").remove();
+
+    Popup(divClone.html());
+}
+
+
+//Creates a new window and populates it with your content
+function Popup(data) {
+    //Create your new window
+    var w = window.open('', 'Báo giá khách hàng', 'height=550,width=650');
+    w.document.write('<html><head><title>Báo giá khách hàng</title>');
+    //Include your stylesheet (optional)
+    w.document.write('<link href="/Content/BaoGiaSanPham.css" rel="stylesheet">');
+    w.document.write('</head><body>');
+    //Write your content
+    w.document.write(data);
+    w.document.write('</body></html>');
+    w.print();
+    w.close();
+
+    return true;
+}
+</script>
+}
+<hr />
+<div>
+    <span><strong style="font-size:17px;">> Lựa chọn loại khách hàng : </strong> </span>
+    <br />
+    <div style="margin-left: 45px;">
+        <input type="radio" name="groupcustomer" id="Type1" checked="checked" value="1" 
+               onmousedown="saveCurrentType();" onchange="    changeTypeCustomer(1);">
+        <strong style="font-size:15px;"> Khách hàng công ty , công trình</strong>
+    <br />
+    <input type="radio" name="groupcustomer" id="Type2" value="2" 
+           onmousedown="saveCurrentType();" onchange="changeTypeCustomer(2);">
+        <strong style="font-size:15px;"> Khách hàng thân thiết</strong>
+    <br />
+    <input type="radio" name="groupcustomer" id="Type3" value="3"
+            onmousedown="saveCurrentType();" onchange="changeTypeCustomer(3);">
+        <strong style="font-size:15px;"> Khách hàng thường</strong>
+</div>
+    <div id="dialogConfirm">       
+    </div>
+    <input type="hidden" id="currTypeCustomer" />
+</div>
+<div class="mainContainer">
+    <table class="tableHeader">     
+        <tbody>
+            <tr >
+                <th style="width:30px;">
+            
+                </th>
+                <th style="width: 320px;">
+                    Tên sản phẩm
+                 
+                </th>
+                <th style="width: 290px;">
+                    Giá bán
+                </th>
+                <th style="width: 140px;">
+                    Chiết khấu (%)
+                </th>
+                <th style="width: 290px;">
+                    Giá thực
+                </th>
+                <th style="width: 20px;">
+                </th>
+            </tr>
+            
+        </tbody>
+    </table>
+    <div>
+        <table id="tableSearch" class="tableSearch">
+            <tr>
+                <td style="width: 20px; padding: 0.5em 0em 0em 0em !important; ">
+                    <div class="myCheckBox">
+                        <img src="/Content/images/plus.png" onclick="addRecord();">
+                        </div>
+                </td>
+                <td style="width: 320px;">
+                    <input type="hidden" id="MaSanPham" />
+                    <input type="text" id="TenSanPham" style="width: 240px; margin-left: 2px; " />
+                </td>
+                <td style="width: 290px;">
+                    <input class="noTab" type="text" id="GiaBan"
+                           style="width: 213px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)"
+                           readonly />
+                </td>
+                <td style="width: 140px;">
+                    <input class="noTab" type="text" id="ChietKhau"
+                           style="width: 102px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)" "
+                           readonly />                   
+                </td>
+                <td style="width: 290px;">
+                    <input class="noTab" type="text" id="GiaThuc"
+                           style="width: 215px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)"
+                           readonly />
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="mainContentScroll">
+        <table id="tableContent" class="tableContentScroll">          
+            <tbody >                          
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<hr />
+<div>
+    <input type="button" style="width:100px" value="In danh sách" onclick="printList('div.mainContainer');" />
+    <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
+</div>
+

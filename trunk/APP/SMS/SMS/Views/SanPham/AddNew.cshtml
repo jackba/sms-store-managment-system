@@ -9,11 +9,22 @@
 <script >
     function NumbericOnly(ctrl) {
         $(ctrl).keypress(function (e) {
+            /*
             //if the letter is not digit then display error and don't type anything
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 //display error message
                 return false;
             }
+            */
+            //getting key code of pressed key
+            var keycode = (e.which) ? e.which : e.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert(" Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
         });
 
     }
@@ -24,17 +35,48 @@
     }
     $(document).ready(function () {
         formatNumberic();
+        $('input.numberic').keypress(function (key) {
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert(" Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
+
+        });
         $('input.numberic').keyup(function (event) {
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) {
                 //event.preventDefault();
                 return true;
             }
+            /*
             var $this = $(this);
             var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
             var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
             // the following line has been simplified. Revision history contains original.
             $this.val(num2);
+            */
+            var $this = $(this);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
             });
         $('input.numberic').bind("paste", function (e) {
             e.preventDefault();
@@ -96,8 +138,6 @@
                     <div class="required">
                         @Html.LabelFor(u => u.TEN_SAN_PHAM)
                         @Html.TextBoxFor(u => u.TEN_SAN_PHAM)
-                        @*@Html.HiddenFor(u => u.MA_SAN_PHAM, new {@id ="MaSanPhamID" })*@
-                   
                     </div>
                 </td>
 
@@ -115,7 +155,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CAN_NANG)
-                        <input id="CAN_NANG" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CAN_NANG" maxlength="10" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                          @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID"})
                     </div>
                 </td>
@@ -155,7 +195,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_1)
-                        <input id="GIA_BAN_1" value="@ViewBag.GiaBan1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="GIA_BAN_1" maxlength="10" value="@ViewBag.GiaBan1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.GIA_BAN_1, new { @id = "GiaBan1ID" })
                      </div>
                 </td>
@@ -163,14 +203,14 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_2)
-                        <input id="GIA_BAN_2" value="@ViewBag.GiaBan2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="GIA_BAN_2" maxlength="10" value="@ViewBag.GiaBan2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.GIA_BAN_2, new { @id = "GiaBan2ID" })
                     </div>
                 </td>
                 <td>
                     <div>
                         @Html.LabelFor(u => u.GIA_BAN_3)
-                        <input id="GIA_BAN_3" value="@ViewBag.GiaBan3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="GIA_BAN_3" maxlength="10" value="@ViewBag.GiaBan3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.GIA_BAN_3, new { @id = "GiaBan3ID" })
                     </div>
                 </td>
@@ -181,7 +221,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_1)
-                        <input id="CHIET_KHAU_1" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CHIET_KHAU_1" maxlength="2" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CHIEC_KHAU_1, new { @id = "ChietKhau1ID" })
                     </div>
                 </td>
@@ -189,7 +229,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_2)
-                        <input id="CHIET_KHAU_2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CHIET_KHAU_2" maxlength="2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2ID" })
 
                     </div>
@@ -197,7 +237,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CHIEC_KHAU_3)
-                        <input id="CHIET_KHAU_3" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CHIET_KHAU_3" maxlength="2" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CHIEC_KHAU_3, new { @id = "ChietKhau3ID" })
                     </div>
                 </td>
@@ -207,7 +247,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CO_SO_TOI_THIEU)
-                        <input id="CO_SO_TOI_THIEU" value="@ViewBag.CoSoMin" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CO_SO_TOI_THIEU" maxlength="10" value="@ViewBag.CoSoMin" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CO_SO_TOI_THIEU, new { @id = "CoSoMinID" })
                     </div>
                 </td>
@@ -215,7 +255,7 @@
                 <td>
                     <div>
                         @Html.LabelFor(u => u.CO_SO_TOI_DA)
-                        <input id="CO_SO_TOI_DA" value="@ViewBag.CoSoMax" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                        <input id="CO_SO_TOI_DA" maxlength="12" value="@ViewBag.CoSoMax" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
                         @Html.HiddenFor(u => u.CO_SO_TOI_DA, new { @id = "CoSoMaxID" })
 
                     </div>
@@ -229,7 +269,7 @@
             <hr />
             <input type="submit"  style="width:100px" onclick="submitForm();" value="Lưu" />
             <span> </span>
-            <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+            <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
         </div>
       
     </div>

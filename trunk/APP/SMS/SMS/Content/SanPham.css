@@ -305,4 +305,13 @@ div.collapsible {
 div.collapsible.collapsed {
     background-image: url(./images/arrow_collapsed.png);
 }
+table.advanceClass input{
+   width: 210px !important;
+}
+table.advanceClass img{
+ cursor:pointer !important; 
+ vertical-align: middle !important;
+ width:20px;
+ height:20px;
+}
 /*end search advance (SA)*/
