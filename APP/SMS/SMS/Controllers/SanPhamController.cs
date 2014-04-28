@@ -27,6 +27,12 @@ namespace SMS.Controllers
             return View(listResult);
         }
 
+        [HttpGet]
+        public ActionResult ListPriceProducts()
+        {          
+            return View();
+        }
+
         [HttpPost]
         public PartialViewResult PagingContent(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
@@ -54,6 +60,25 @@ namespace SMS.Controllers
                                      id = x.MA_SAN_PHAM,
                                      value = x.TEN_SAN_PHAM
                                  };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult FindSuggestByTypeCustomer(string prefixText, string typeCustomer)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        name = x.TEN_SAN_PHAM,
+                                        price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0: 
+                                                    (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
+                                        discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
+                                                    (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
+                                    };
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
         }
@@ -108,9 +133,13 @@ namespace SMS.Controllers
             {
                 psa.KichThuoc = collection.Get("KichThuoc");
             }
-            if (collection.AllKeys.Contains("TrongLuong"))
+            if (collection.AllKeys.Contains("TrongLuongFrom"))
             {
-                psa.TrongLuong = collection.Get("TrongLuong");
+                psa.TrongLuongFrom = collection.Get("TrongLuongFrom");
+            }
+            if (collection.AllKeys.Contains("TrongLuongTo"))
+            {
+                psa.TrongLuongTo = collection.Get("TrongLuongTo");
             }
             if (collection.AllKeys.Contains("DonViTinh"))
             {
@@ -403,15 +432,59 @@ namespace SMS.Controllers
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
 
+            double weightFrom = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongFrom) ? "0" : psa.TrongLuongFrom.Replace("'", ""), out weightFrom);
+            double weightTo = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongTo) ? "0" : psa.TrongLuongTo.Replace("'", ""), out weightTo);
+            double priceFrom = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.GiaBanFrom) ? "0" : psa.GiaBanFrom.Replace("'", ""), out priceFrom);
+            double priceTo = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.GiaBanTo) ? "0" : psa.GiaBanTo.Replace("'", ""), out priceTo);
+            double discountFrom = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauFrom) ? "0" : psa.ChietKhauFrom.Replace("'", ""), out discountFrom);
+            double discountTo = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauTo) ? "0" : psa.ChietKhauTo.Replace("'", ""), out discountTo);
+            double amoutFrom = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.CoSoFrom) ? "0" : psa.CoSoFrom.Replace("'", ""), out amoutFrom);
+            double amountTo = 0;
+            double.TryParse(string.IsNullOrEmpty(psa.CoSoTo) ? "0" : psa.CoSoTo.Replace("'", ""), out amountTo);
+
             var ctx = new SmsContext();
             var contentLst = (from s in ctx.SAN_PHAM
                               where (s.ACTIVE == "A"
-                              && (String.IsNullOrEmpty(psa.TenSanPham)
-                               || s.TEN_SAN_PHAM.ToUpper().Contains(psa.TenSanPham.ToUpper()))
-                              && (String.IsNullOrEmpty(psa.KichThuoc)
-                               || s.KICH_THUOC.ToUpper().Contains(psa.KichThuoc.ToUpper()))
-                              && (String.IsNullOrEmpty(psa.TrongLuong)
-                               || s.KICH_THUOC.ToUpper().Contains(psa.TrongLuong.ToUpper()))
+                                && (String.IsNullOrEmpty(psa.TenSanPham)
+                                || s.TEN_SAN_PHAM.ToUpper().Contains(psa.TenSanPham.ToUpper()))
+                                && (String.IsNullOrEmpty(psa.KichThuoc)
+                                || s.KICH_THUOC.ToUpper().Contains(psa.KichThuoc.ToUpper()))
+                               
+                                && (String.IsNullOrEmpty(psa.TrongLuongFrom)
+                                || s.CAN_NANG >= weightFrom)
+                                && (String.IsNullOrEmpty(psa.TrongLuongTo)
+                                || s.CAN_NANG <= weightTo)
+                               
+                                && (String.IsNullOrEmpty(psa.DonViTinh)
+                                || s.DON_VI_TINH.TEN_DON_VI.ToUpper().Contains(psa.DonViTinh.ToUpper()))
+                               
+                                && (String.IsNullOrEmpty(psa.NhaSanXuat)
+                                || s.NHA_SAN_XUAT.TEN_NHA_SAN_XUAT.ToUpper().Contains(psa.NhaSanXuat.ToUpper()))
+                               
+                                && (String.IsNullOrEmpty(psa.DacTa)
+                                || s.DAC_TA.ToUpper().Contains(psa.DacTa.ToUpper()))
+
+                                && (String.IsNullOrEmpty(psa.GiaBanFrom)
+                                || s.GIA_BAN_1 >= priceFrom || s.GIA_BAN_2 >= priceFrom || s.GIA_BAN_3 >= priceFrom)
+                                && (String.IsNullOrEmpty(psa.GiaBanTo)
+                                || s.GIA_BAN_1 <= priceTo || s.GIA_BAN_2 <= priceTo || s.GIA_BAN_3 <= priceTo)
+
+                                && (String.IsNullOrEmpty(psa.ChietKhauFrom)
+                                || s.CHIEC_KHAU_1 >= discountFrom || s.CHIEC_KHAU_2 >= discountFrom || s.CHIEC_KHAU_3 >= discountFrom)
+                                && (String.IsNullOrEmpty(psa.ChietKhauTo)
+                                || s.CHIEC_KHAU_1 <= discountTo || s.CHIEC_KHAU_2 <= discountTo || s.CHIEC_KHAU_3 <= discountTo)
+
+                                && (String.IsNullOrEmpty(psa.CoSoFrom)
+                                || s.CO_SO_TOI_THIEU >= amoutFrom)
+                                && (String.IsNullOrEmpty(psa.CoSoTo)
+                                || s.CO_SO_TOI_DA <= amountTo)
                               )
                               join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                               join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG

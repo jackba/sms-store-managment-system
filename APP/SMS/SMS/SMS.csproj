@@ -309,6 +309,7 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\css\sunny\images\animated-overlay.gif" />
@@ -365,7 +366,6 @@
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\images\storage.png" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
-    <Content Include="Content\js\jquery-ui-1.10.3.custom.min.js" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />
@@ -591,6 +591,7 @@
     <Content Include="Views\KhachHang\showOrderHist.cshtml" />
     <Content Include="Views\HoaDon\ShowDetail.cshtml" />
     <Content Include="Views\SmsMaster\Index.cshtml" />
+    <Content Include="Views\SanPham\ListPriceProducts.cshtml" />
     <Content Include="Views\SanPham\Warning.cshtml" />
     <Content Include="Views\QuanLyKho\Inventory.cshtml" />
     <Content Include="Views\KhachHang\Show.cshtml" />
