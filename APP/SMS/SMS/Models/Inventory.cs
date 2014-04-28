@@ -23,4 +23,54 @@ namespace SMS.Models
         public IPagedList<Inventory> InventoryList { get; set; }
         public double VALUE { get; set; }
     }
+
+    public class SpImportRepoter
+    {
+        public int MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double SO_LUONG { get; set; }
+        public double GIA_VON { get; set; }
+        public double VALUE { get; set; }
+    }
+
+    public class SpImportRepoterModel
+    {
+        public IPagedList<SpImportRepoter> ResultList { get; set; }
+        public double VALUE { get; set; }
+    }
+
+    public class ExportRepot
+    {
+        public int MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double SO_LUONG { get; set; }
+        public double GIA_XUAT { get; set; }
+        public double VALUE { get; set; }
+    }
+
+    public class ExportRepotModel
+    {
+        public IPagedList<ExportRepot> ResultList { get; set; }
+        public double VALUE { get; set; }
+    }
+
+    public class ExportReportDetail
+    {
+        public Nullable<System.DateTime> NGAY_XUAT { get; set; }
+        public Nullable<int> MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double SO_LUONG { get; set; }
+        public double GIA_XUAT { get; set; }
+        public double VALUE { get; set; }
+    }
+
+
+    public class ExportReportDetailModel
+    {
+        public IPagedList<ExportReportDetail> ResultList { get; set; }
+        public double VALUE { get; set; }
+    }
 }

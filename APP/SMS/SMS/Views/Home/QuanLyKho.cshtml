@@ -57,7 +57,7 @@
     </a>
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
-        <span>BÁO CÁO NHẬP XUẤT TỒN</span>
+        <span>BÁO CÁO NHẬP XUẤT TỒN - FIFO</span>
     </a>
     <a class="dashboard-module" href="@Url.Action("ImportRepoter", "QuanLyKho")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Enter.png"></img>
@@ -67,8 +67,12 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/Detail.png"></img>
         <span>BÁO CÁO NHẬP KHO - CHI TIẾT</span>
     </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+    <a class="dashboard-module" href="@Url.Action("ExportReport", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Export.jpg"></img>
         <span>BÁO CÁO XUẤT KHO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ExportReportDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/export_icon.jpg"></img>
+        <span>BÁO CÁO XUẤT KHO - CHI TIẾT</span>
     </a>
 </div>

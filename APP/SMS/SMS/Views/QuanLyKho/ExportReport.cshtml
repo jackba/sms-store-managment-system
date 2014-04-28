@@ -1,8 +1,8 @@
-﻿@model SMS.Models.SpImportRepoterModel
+﻿@model SMS.Models.ExportRepotModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "BÁO CÁO NHẬP KHO";
+    ViewBag.Title = "BÁO CÁO XUẤT KHO";
 }
 @{
     List<SelectListItem> kinds = new List<SelectListItem>();
@@ -12,7 +12,7 @@
     ckind = new SelectListItem();
 
     ckind.Value = "-1";
-    ckind.Text = "----------- Chọn loại nhập kho ----------";
+    ckind.Text = "----------- Chọn loại xuất kho ----------";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -21,7 +21,7 @@
         ckind.Selected = true;
     }
     ckind.Value = "0";
-    ckind.Text = "Nhập mua hàng";
+    ckind.Text = "Xuất bán hàng";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -30,7 +30,7 @@
         ckind.Selected = true;
     }
     ckind.Value = "1";
-    ckind.Text = "Nhập lại hàng trả";
+    ckind.Text = "Xuất hủy";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -39,7 +39,7 @@
         ckind.Selected = true;
     }
     ckind.Value = "2";
-    ckind.Text = "Kiểm kho";
+    ckind.Text = "Xuất dùng nội bộ";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -48,13 +48,13 @@
         ckind.Selected = true;
     }
     ckind.Value = "3";
-    ckind.Text = "Nhập chuyển kho";
+    ckind.Text = "Xuất chuyển kho";
     kinds.Add(ckind);
 }
 <hgroup class="title">
     <h2>@ViewBag.Message</h2>
 </hgroup>
-<h3>Báo cáo nhập kho</h3>
+<h3>Báo cáo xuất kho</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -145,11 +145,11 @@
     </style>
 
 }
-@using (Html.BeginForm("ImportRepoterDetail", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("ExportReport", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
 {
     <hr style="width:100%" />
     <div style="float:left">
-        Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
+        Loại &nbspxuất : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
         <br />
         Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
         @Html.Hidden("StoreId", new { id = "StoreId" })
@@ -169,7 +169,7 @@
             <tr style="width:100%">
                 <td class='inner colwidth head '> Tên sản phẩm </td>
                 <td class='inner colwidth head '> Đơn vị </td>
-                <td class='inner colwidth head '>  Số lượng nhập  </td>
+                <td class='inner colwidth head '>  Số lượng xuất  </td>
                 <td class='inner colwidth head '>  Đơn giá </td>
                 <td class='innerLast colwidth head '>  Thành tiền </td>
             </tr>
@@ -186,7 +186,7 @@
                         @dbHist.SO_LUONG.ToString("0,0.00")
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.GIA_VON.ToString("0,0.00")
+                        @dbHist.GIA_XUAT.ToString("0,0.00")
                     </td>
                     <td class="innerLast colwidth">
                         @dbHist.VALUE.ToString("0,0.00")
@@ -207,7 +207,7 @@
                 </td>
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
-                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ImportRepoterDetail",
+                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ExportReport",
                          new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                     </div>
                 </td>

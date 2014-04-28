@@ -17,6 +17,7 @@ namespace SMS.Models
     
     public partial class SmsContext : DbContext
     {
+
         public SmsContext()
             : base("name=SmsContext")
         {
