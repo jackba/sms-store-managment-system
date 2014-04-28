@@ -25,6 +25,7 @@ namespace SMS.Controllers
             int pageIndex = page == null ? 1 : (int)page;
             
             var ctx = new SmsContext();
+            ctx.Database.CommandTimeout = 300;
            // var watch = Stopwatch.StartNew();
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
             string s = ctx.Database.Connection.ToString();
@@ -51,7 +52,7 @@ namespace SMS.Controllers
             int pageIndex = page == null ? 1 : (int)page;
 
             var ctx = new SmsContext();
-
+            ctx.Database.CommandTimeout = 300;
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
             string s = ctx.Database.Connection.ToString();
             var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>().Take(SystemConstant.MAX_ROWS); ;

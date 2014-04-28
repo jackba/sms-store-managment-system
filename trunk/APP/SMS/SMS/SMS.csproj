@@ -350,6 +350,8 @@
     <Content Include="Content\images\edit.png" />
     <Content Include="Content\images\edit_delete.png" />
     <Content Include="Content\images\Enter.png" />
+    <Content Include="Content\images\Export.jpg" />
+    <Content Include="Content\images\export_icon.jpg" />
     <Content Include="Content\images\green_area.png" />
     <Content Include="Content\images\industry.png" />
     <Content Include="Content\images\Invientory.jpg" />
@@ -594,6 +596,9 @@
     <Content Include="Views\KhachHang\Show.cshtml" />
     <Content Include="Views\KhachHang\Warning.cshtml" />
     <Content Include="Views\QuanLyKho\ImportRepoterDetail.cshtml" />
+    <Content Include="Views\QuanLyKho\ImportRepoter.cshtml" />
+    <Content Include="Views\QuanLyKho\ExportReport.cshtml" />
+    <Content Include="Views\QuanLyKho\ExportReportDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
