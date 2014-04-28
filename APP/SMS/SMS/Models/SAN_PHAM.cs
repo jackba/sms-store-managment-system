@@ -27,7 +27,8 @@ namespace SMS.Models
     {
         public string TenSanPham { get; set; }
         public string KichThuoc { get; set; }
-        public string TrongLuong { get; set; }
+        public string TrongLuongFrom { get; set; }
+        public string TrongLuongTo { get; set; }
         public string DonViTinh { get; set; }
         public string NhaSanXuat { get; set; }
         public string DacTa { get; set; }

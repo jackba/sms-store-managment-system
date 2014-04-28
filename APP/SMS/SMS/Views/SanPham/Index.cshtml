@@ -105,6 +105,8 @@
         var headerCtrl = null
         var isFromTo = null;
         var idFocus = '#';
+        var extraValue = " ";
+        var numberField = "class=\"numberic\" onkeydown=\"NumbericOnly(this);\"";
 
         var option = parseInt($('#addOption').val());
         if (option > -1) {
@@ -114,6 +116,7 @@
                         idCtrl = 'TenSanPham';
                         headerCtrl = 'Tên Sản Phẩm';
                         isFromTo = false;
+                        
                     } else {
                         idFocus += 'TenSanPham';
                     }
@@ -131,9 +134,10 @@
                     if (!$("#R_TrongLuong").length) {
                         idCtrl = 'TrongLuong';
                         headerCtrl = 'Trọng lượng';
-                        isFromTo = false;
+                        isFromTo = true;
+                        extraValue = " maxlength=\"10\" " + numberField;
                     } else {
-                        idFocus += 'TrongLuong';
+                        idFocus += 'TrongLuongFrom';
                     }
                     break;
                 case 3:
@@ -168,6 +172,7 @@
                         idCtrl = 'GiaBan';
                         headerCtrl = 'Giá bán';
                         isFromTo = true;
+                        extraValue = " maxlength=\"10\" " + numberField;
                     } else {
                         idFocus += 'GiaBanFrom';
                     }
@@ -177,6 +182,7 @@
                         idCtrl = 'ChietKhau';
                         headerCtrl = 'Chiết khấu';
                         isFromTo = true;
+                        extraValue = " maxlength=\"2\" " + numberField;
                     } else {
                         idFocus += 'ChietKhauFrom';
                     }
@@ -186,65 +192,147 @@
                         idCtrl = 'CoSo';
                         headerCtrl = 'Cơ số';
                         isFromTo = true;
+                        extraValue = " maxlength=\"10\" " + numberField;
                     } else {
                         idFocus += 'CoSoFrom';
                     }
                     break;
             }
-           
-            if (idCtrl != null && headerCtrl != null && isFromTo != null) {
-                var result = '';
-                result += '<tr id="R_' + idCtrl + '" >';
-                result += '<td style="text-align: center;">' + headerCtrl + '</td>';
-                idFocus = '#';
-                if (isFromTo == false) {
-                    result += '<td><div><input type="text" id="' + idCtrl + '" name="' + idCtrl + '" value="">';
-                    result += '<img src="/Content/images/delete-20.png" style="cursor:pointer; vertical-align: middle;" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');" alt="Xóa" width="20" height="20"> </div></td>';
-                    idFocus += idCtrl;
-                } else {
-                    result += '<td> <div><input type="text"  id="' + idCtrl + 'From" name="' + idCtrl + 'To" value="">  ~  ';
-                    result += '<input type="text"  id="' + idCtrl + 'To" name="' + idCtrl + 'To" value="">';
-                    result += '<img src="/Content/images/delete-20.png" style="cursor:pointer; vertical-align: middle;" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');" alt="Xóa" width="20" height="20"></div></td>';
-                    idFocus += idCtrl + 'From';
-                }
-                result += '</tr>';
-                $('#conditionAdvanceTbl').append(result);
-            }
-            //Focus control added
-            $(idFocus).focus();
+            // add new row in table         
+            AppendNewRowToTable(idCtrl, headerCtrl, isFromTo, idFocus, extraValue);
             //add autocomplete
-            if(option == 0){
-                $("#TenSanPham").autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
-                            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                            dataFilter: function (data) { return data; }, success:
-                                function (data) {
-                                    response($.map(data, function (item) {
-                                        return {
-                                            label: item.value,
-                                            value: item.value,
-                                            id: item.id
-                                        }
-                                    }))
-                                }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                        });
-                    },
-                    select: function (event, ui) {
-                        $('#TenSanPham').val(ui.item.label);
-                        return false;
-                    },
-                    minLength: 1
+            AddAutoComplete(option);
+        }
+    }
 
-                });
+    function AppendNewRowToTable(idCtrl, headerCtrl, isFromTo, idFocus, extraValue) {
+        if (idCtrl != null && headerCtrl != null && isFromTo != null) {
+            var result = '';
+            result += '<tr id="R_' + idCtrl + '" >';
+            result += '<td style="text-align: center;">' + headerCtrl + '</td>';
+            idFocus = '#';
+            if (isFromTo == false) {
+                result += '<td><div><input type="text" ' + idCtrl + '" name="' + idCtrl + '" ' + extraValue + ' value="">';
+                result += '<img src="/Content/images/delete-20.png" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');"> </div></td>';
+                idFocus += idCtrl;
+            } else {
+                result += '<td> <div><input type="text"  id="' + idCtrl + 'From" name="' + idCtrl + 'From" ' + extraValue + ' value="">  ~  ';
+                result += '<input type="text"  id="' + idCtrl + 'To" name="' + idCtrl + 'To" ' + extraValue + ' value="">';
+                result += '<img src="/Content/images/delete-20.png" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');"></div></td>';
+                idFocus += idCtrl + 'From';
             }
+            result += '</tr>';
+            $('#conditionAdvanceTbl').append(result);
+        }
+        //Focus control added
+        $(idFocus).focus();
+    }
+
+    function AddAutoComplete(option) {
+        if (option == 0) {
+            $("#TenSanPham").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#TenSanPham').val(ui.item.label);
+                    return false;
+                },
+                minLength: 1
+
+            });
         }
     }
 
     function RemoveConditionSearch(rowId){
         $('#' + rowId).remove();
     }
+
+    function NumbericOnly(ctrl) {
+        $(ctrl).keypress(function (e) {
+
+            //getting key code of pressed key
+            var keycode = (e.which) ? e.which : e.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert("Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
+        });
+
+    }
+    function formatNumberic() {
+        $('input.numberic').each(function () {
+            $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+        });
+    }
+    $(document).ready(function () {
+        formatNumberic();
+        $('input.numberic').keypress(function (key) {
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert(" Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
+
+        });
+        $('input.numberic').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                //event.preventDefault();
+                return true;
+            }
+
+            var $this = $(this);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
+        });
+        $('input.numberic').bind("paste", function (e) {
+            e.preventDefault();
+        });
+    });
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    }
+
+
     //]]>  
 </script>
 }
@@ -261,6 +349,8 @@
             {
                  <input type="button" value="Thêm Mới" class="myButton" 
                         onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
+                <input type="button" value="    Báo giá  " class="myButton"
+                 onclick="location.href='@Url.Action("ListPriceProducts", "SanPham")'" />
             }
 }
         </p>
