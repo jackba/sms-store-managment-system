@@ -73,4 +73,19 @@ namespace SMS.Models
         public IPagedList<ExportReportDetail> ResultList { get; set; }
         public double VALUE { get; set; }
     }
+
+    public class ImEx
+    {
+        public Nullable<System.DateTime> NGAY_NHAP_XUAT { get; set; }
+        public Nullable<int> MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double SO_LUONG_NHAP { get; set; }
+        public double SO_LUONG_XUAT { get; set; }
+    }
+
+    public class ImExModel
+    {
+        public IPagedList<ImEx> ResultList { get; set; }
+    }
 }

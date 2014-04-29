@@ -353,12 +353,15 @@
     <Content Include="Content\images\Enter.png" />
     <Content Include="Content\images\Export.jpg" />
     <Content Include="Content\images\export_icon.jpg" />
+    <Content Include="Content\images\FIFO114ds.png" />
     <Content Include="Content\images\green_area.png" />
+    <Content Include="Content\images\import-export-icon.png" />
     <Content Include="Content\images\industry.png" />
     <Content Include="Content\images\Invientory.jpg" />
     <Content Include="Content\images\listproduct.png" />
     <Content Include="Content\images\Measure_units.png" />
     <Content Include="Content\images\next.png" />
+    <Content Include="Content\images\plus.png" />
     <Content Include="Content\images\provider.png" />
     <Content Include="Content\images\Retail-shop-icon.png" />
     <Content Include="Content\images\settings-icon.jpg" />
@@ -600,6 +603,7 @@
     <Content Include="Views\QuanLyKho\ImportRepoter.cshtml" />
     <Content Include="Views\QuanLyKho\ExportReport.cshtml" />
     <Content Include="Views\QuanLyKho\ExportReportDetail.cshtml" />
+    <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
