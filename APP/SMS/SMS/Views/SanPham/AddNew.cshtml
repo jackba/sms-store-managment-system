@@ -7,6 +7,7 @@
 <link href="~/Content/SanPham.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
 <script >
+    /*start format numberic for textbox */
     function NumbericOnly(ctrl) {
         $(ctrl).keypress(function (e) {
             /*
@@ -89,13 +90,9 @@
         }
         return convertString;
     }
+    /*end format numberic for textbox */
 
-    function reset() {
-        $("form :input").each(function () {
-            $(this).text('');
-        });
-        formatNumberic();
-    }
+    /*submit form to regist details of product*/
     function submitForm() {
         $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));
         $("#GiaBan1ID").val(removeCommas($("#GIA_BAN_1").val()));
@@ -115,6 +112,7 @@
         
         $("form:first").submit();
     }
+    /*remove comma from value input*/
     function removeCommas(str) {
         if (str != null && str != '') {
             return (str.replace(/,/g, ''));

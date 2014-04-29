@@ -369,6 +369,7 @@
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\images\storage.png" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
+    <Content Include="Content\js\jquery-ui-1.10.3.custom.min.js" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />

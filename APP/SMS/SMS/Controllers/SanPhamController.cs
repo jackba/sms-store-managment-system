@@ -401,7 +401,7 @@ namespace SMS.Controllers
             IPagedList<SanPhamDisplay> DisplayContentLst = null;
 
             int pageIndex = (currentPageIndex ?? 1);
-
+            ViewBag.Count = contentLst.Count();
             switch (sortOrder)
             {
                 case "id_desc":
@@ -505,7 +505,7 @@ namespace SMS.Controllers
             IPagedList<SanPhamDisplay> DisplayContentLst = null;
 
             int pageIndex = (currentPageIndex ?? 1);
-
+            ViewBag.Count = contentLst.Count();
             switch (sortOrder)
             {
                 case "id_desc":

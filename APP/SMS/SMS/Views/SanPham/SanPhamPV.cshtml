@@ -237,8 +237,8 @@
         </tr>
     </table>
     <hr />
-
-    @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent", 
+<div style="margin-top: -20px;">
+    @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent",
         new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()
@@ -248,4 +248,6 @@
             UpdateTargetId = "mainDiv"
         }
     ))
- 
+    <span style="float: right; margin-top: -50px;">Tổng cộng : @ViewBag.Count sản phẩm.</span>
+</div>
+
