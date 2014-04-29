@@ -53,7 +53,7 @@
     });
 
     $(window).load(function () {
-
+        /*auto hidden area search advance*/
         $(".headerSA").click(function () {
 
             $header = $(this);
@@ -78,7 +78,7 @@
     $(document).ready(function () {
         renderFormatTable();
     });
-
+    /*format row odd/even & field numberic*/
     function renderFormatTable() {
         $('td.alignNumberic').each(function () {
             $(this).html($(this).html().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
@@ -89,7 +89,7 @@
         $("#innercontent tr:odd").css("background-color", "#f3f7f5");
         $("#innercontent tr:even").css("background-color", "#fff");
     }
-
+    /**/
     function confirmDelete() {
         var r = confirm("Bạn muốn xóa đơn sản phẩm này không?");
         if (r == true) {
@@ -98,7 +98,7 @@
             return false;
         }
     }
-
+    /*start search advance*/
     function RenderControls() {
         
         var idCtrl = null;
@@ -106,7 +106,7 @@
         var isFromTo = null;
         var idFocus = '#';
         var extraValue = " ";
-        var numberField = "class=\"numberic\" onkeydown=\"NumbericOnly(this);\"";
+        var numberField = " style=\"text-align: right;\" class=\"numberic\" onkeydown=\"NumbericOnly(this);\" onkeyup=\"FormatNumberic_KeyUp(this);\" ";
 
         var option = parseInt($('#addOption').val());
         if (option > -1) {
@@ -212,7 +212,7 @@
             result += '<td style="text-align: center;">' + headerCtrl + '</td>';
             idFocus = '#';
             if (isFromTo == false) {
-                result += '<td><div><input type="text" ' + idCtrl + '" name="' + idCtrl + '" ' + extraValue + ' value="">';
+                result += '<td><div><input type="text" id="' + idCtrl + '" name="' + idCtrl + '" ' + extraValue + ' value="">';
                 result += '<img src="/Content/images/delete-20.png" onclick="RemoveConditionSearch(\'R_' + idCtrl + '\');"> </div></td>';
                 idFocus += idCtrl;
             } else {
@@ -260,7 +260,8 @@
     function RemoveConditionSearch(rowId){
         $('#' + rowId).remove();
     }
-
+    /*end search advance*/
+    /*start format numberic*/
     function NumbericOnly(ctrl) {
         $(ctrl).keypress(function (e) {
 
@@ -300,30 +301,51 @@
                 //event.preventDefault();
                 return true;
             }
+            FormatNumberic_KeyUp($(this));
+           // var $this = $(this);
+           //var AmountWithCommas = $this.val();
+            //var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            //var arParts = String(AmountWithCommas).split(DecimalSeparator);
 
-            var $this = $(this);
-            var AmountWithCommas = $this.val();
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+            //var intPart = arParts[0];
+            //var decPart = (arParts.length > 1 ? arParts[1] : '');
 
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
-            }
-            if (arParts.length > 1) {
-                $this.val(num2 + DecimalSeparator + decPart);
-            } else {
-                $this.val(num2);
-            }
+            //var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            //var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            //if (decPart.length > 2) {
+            //    decPart = (decPart + '00').substr(0, 2);
+            //}
+            //if (arParts.length > 1) {
+            //    $this.val(num2 + DecimalSeparator + decPart);
+            //} else {
+            //    $this.val(num2);
+            //}
         });
         $('input.numberic').bind("paste", function (e) {
             e.preventDefault();
         });
     });
+
+    function FormatNumberic_KeyUp(obj) {
+        var $this = $('#' + obj.id);
+        var AmountWithCommas = $this.val();
+        var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+        var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+        var intPart = arParts[0];
+        var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+        var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+        var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+        if (decPart.length > 2) {
+            decPart = (decPart + '00').substr(0, 2);
+        }
+        if (arParts.length > 1) {
+            $this.val(num2 + DecimalSeparator + decPart);
+        } else {
+            $this.val(num2);
+        }
+    }
 
     function RemoveRougeChar(convertString) {
         if (convertString.substring(0, 1) == ",") {
@@ -331,7 +353,7 @@
         }
         return convertString;
     }
-
+    /*end format numberic*/
 
     //]]>  
 </script>
@@ -347,10 +369,11 @@
 @{
             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
             {
-                 <input type="button" value="Thêm Mới" class="myButton" 
+                 <input type="button"  value="Thêm Mới" class="myButton" 
                         onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
                 <input type="button" value="    Báo giá  " class="myButton"
                  onclick="location.href='@Url.Action("ListPriceProducts", "SanPham")'" />
+   
             }
 }
         </p>
@@ -598,14 +621,17 @@
         </tr>
     </table>
     <hr />
-
-    @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent", 
-        new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), 
+    <div style="margin-top: -20px;">
+        @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent",
+        new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
-        new AjaxOptions() {
+        new AjaxOptions()
+        {
             HttpMethod = "POST",
             InsertionMode = InsertionMode.Replace,
             UpdateTargetId = "mainDiv"
         }
-    )) 
+        ))
+        <span style="float: right; margin-top: -50px;">Tổng cộng : @ViewBag.Count sản phẩm.</span>
+    </div>
 </div>
