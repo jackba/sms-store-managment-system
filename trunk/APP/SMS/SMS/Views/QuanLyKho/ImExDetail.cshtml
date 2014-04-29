@@ -1,60 +1,14 @@
-﻿@model SMS.Models.ExportReportDetailModel
+﻿@model SMS.Models.ImExModel
 @using PagedList.Mvc;
 
 @{
     ViewBag.Title = "BÁO CÁO XUẤT KHO CHI TIẾT";
 }
-@{
-    List<SelectListItem> kinds = new List<SelectListItem>();
-    SelectListItem ckind;
 
-
-    ckind = new SelectListItem();
-
-    ckind.Value = "-1";
-    ckind.Text = "----------- Chọn loại xuất kho ----------";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 0)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "0";
-    ckind.Text = "Xuất bán hàng";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 1)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "1";
-    ckind.Text = "Xuất hủy";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 2)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "2";
-    ckind.Text = "Xuất dùng nội bộ";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 3)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "3";
-    ckind.Text = "Xuất chuyển kho";
-    kinds.Add(ckind);
-}
 <hgroup class="title">
     <h2>@ViewBag.Message</h2>
 </hgroup>
-<h3>Báo cáo xuất kho chi tiết</h3>
+<h3>Báo cáo nhập - xuất kho chi tiết</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -145,8 +99,6 @@
 {
     <hr style="width:100%" />
     <div style="float:left">
-        Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        <br />
         Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
         @Html.Hidden("StoreId", new { id = "StoreId" })
         <br />
@@ -166,27 +118,26 @@
                 <td class='inner colwidth head '> Tên sản phẩm </td>
                 <td class='inner colwidth head '> Đơn vị </td>
                 <td class='inner colwidth head '>  Số lượng nhập  </td>
-                <td class='inner colwidth head '>  Đơn giá </td>
-                <td class='innerLast colwidth head '>  Thành tiền </td>
+                <td class='innerLast colwidth head '>  Số lượng xuất </td>
             </tr>
             @{
     DateTime ImportDate = DateTime.Now;
     if (Model.ResultList.Count() >= 1)
     {
-        ImportDate = (DateTime)Model.ResultList[0].NGAY_XUAT;
+        ImportDate = (DateTime)Model.ResultList[0].NGAY_NHAP_XUAT;
 
         <tr>
-            <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+            <td class="innerLast colwidth" colspan="4" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
         </tr>
     }
             }
             @foreach (var dbHist in Model.ResultList)
             {
-                if (ImportDate != (DateTime)dbHist.NGAY_XUAT)
+                if (ImportDate != (DateTime)dbHist.NGAY_NHAP_XUAT)
                 {
-                    ImportDate = (DateTime)dbHist.NGAY_XUAT;
+                    ImportDate = (DateTime)dbHist.NGAY_NHAP_XUAT;
                     <tr>
-                        <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                        <td class="innerLast colwidth" colspan="4" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                     </tr>
                 }
                 <tr class="inner column-hscroll alignCenter">
@@ -197,32 +148,25 @@
                         @dbHist.TEN_DON_VI
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.SO_LUONG.ToString("0,0.00")
-                    </td>
-                    <td class="inner colwidth">
-                        @dbHist.GIA_XUAT.ToString("0,0.00")
+                        @dbHist.SO_LUONG_NHAP.ToString("0,0.00")
                     </td>
                     <td class="innerLast colwidth">
-                        @dbHist.VALUE.ToString("0,0.00")
+                        @dbHist.SO_LUONG_XUAT.ToString("0,0.00")
                     </td>
                 </tr>
             }
-            <tr class="inner column-hscroll alignCenter">
-                <td class="innerLast colwidth" colspan="4" style="background-color:lightgray"> Tổng cộng </td>
-                <td class="innerLast colwidth" style="background-color:lightgray">@Model.VALUE.ToString("0,0.00")</td>
-            </tr>
         </table>
 
         <table width="100%">
             <tr>
                 <td>
                     <div style="text-align:left; padding-top:3px;">
-                        <label>@ViewBag.Count</label>
+                        <label>@ViewBag.Count dòng dữ liệu</label>
                     </div>
                 </td>
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
-                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ExportReportDetail",
+                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ImExDetail",
                          new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                     </div>
                 </td>
