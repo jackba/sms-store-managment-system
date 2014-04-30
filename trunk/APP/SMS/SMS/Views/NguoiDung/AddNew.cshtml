@@ -1,10 +1,9 @@
 ﻿@model SMS.Models.NGUOI_DUNG
 
 @{
-    ViewBag.Title = "AddNew";
+    ViewBag.Title = "Thêm mới người dùng";
 }
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
     <script src="../../Content/js/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
@@ -14,130 +13,135 @@
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-60:+0"});
+                yearRange: "-60:+0"
+            });
         });
+
+        function loadImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    $('#img_prev').attr('src', e.target.result);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
     <style type="text/css">
-        .required:after
-        {
+        .required:after {
             content: "*";
             font-weight: bold;
-            color: red; 
+            color: red;
         }
     </style>
 }
-<h2>Thêm Người Dùng</h2>
+@using (Html.BeginForm("AddNew", "NguoiDung", FormMethod.Post, new { enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.TEN_NGUOI_DUNG)
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.TEN_NGUOI_DUNG)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.NGAY_SINH)
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.NGAY_SINH, "{0:d}", new { @class = "datePicker" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.SO_CHUNG_MINH)
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.SO_CHUNG_MINH)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.DIA_CHI)
+            </div>
+            <div class="required">
+                @Html.TextAreaFor(u => u.DIA_CHI)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.SO_DIEN_THOAI)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.SO_DIEN_THOAI)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.MA_KHO)
+            </div>
+            <div>
+                @Html.DropDownListFor(u => u.MA_KHO, new SelectList(ViewBag.Kho, "MA_KHO", "TEN_KHO"), "-Chọn mã kho-", new { style = "padding:5px;font-size:1.2em" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.USER_NAME)
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.USER_NAME)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.MAT_KHAU)
+            </div>
+            <div class="required">
+                @Html.PasswordFor(u => u.MAT_KHAU)
+            </div>
+            <div>
+                @Html.LabelFor(u => u.NGAY_VAO_LAM)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.NGAY_VAO_LAM, "{0:d}", new { @class = "datePicker" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.MA_NHOM_NGUOI_DUNG)
+            </div>
+            <div>
+                @Html.DropDownListFor(u => u.MA_NHOM_NGUOI_DUNG, new SelectList(ViewBag.NhomNguoiDung, "MA_NHOM", "TEN_NHOM"), "-Chọn mã nhóm-", new { style = "padding:5px;font-size:1.2em" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.HINH_ANH)
+            </div>
+            <div>
+                <img id="img_prev" width="150" height="150" src="#" alt="Your photo" /><br />
+                <input type="file" id="file" name="file" onchange="loadImage(this);" />
+            </div>
+            <div>
+                @Html.LabelFor(u => u.GHI_CHU)
+            </div>
+            <div>
+                @Html.TextAreaFor(u => u.GHI_CHU)
+            </div>
 
-@using (Html.BeginForm()) {
-    //@Html.ValidationSummary(true)
+            <div>
+                <input type="submit" style="width:100px" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+            </div>
+        </fieldset>
+    </div>
+    <script>
+        function reset() {
+            document.getElementById("TEN_NGUOI_DUNG").val("");
+            document.getElementById("NGAY_SINH").val("");
+            document.getElementById("SO_CHUNG_MINH").val("");
+            document.getElementById("DIA_CHI").val("");
+            document.getElementById("SO_DIEN_THOAI").val("");
+            document.getElementById("MA_KHO").val("");
+            document.getElementById("USER_NAME").val("");
+            document.getElementById("MAT_KHAU").val("");
+            document.getElementById("NGAY_VAO_LAM").val("");
+            document.getElementById("MA_NHOM_NGUOI_DUNG").val("");
+            document.getElementById("HINH_ANH").val("");
+            document.getElementById("GHI_CHU").val("");
 
-    <fieldset>
-        <legend>NGUOI_DUNG</legend>
+            return false;
+        }
+    </script>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TEN_NGUOI_DUNG)
-        </div>
-        <div class="editor-field required">
-            @Html.EditorFor(model => model.TEN_NGUOI_DUNG)
-            @Html.ValidationMessageFor(model => model.TEN_NGUOI_DUNG)
-        </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.NGAY_SINH)
-        </div>
-
-        <div class="editor-field required">
-            @Html.TextBoxFor(model => model.NGAY_SINH, "{0:d}", new { @class = "datePicker" })
-            @Html.ValidationMessageFor(model => model.NGAY_SINH)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SO_CHUNG_MINH)
-        </div>
-        <div class="editor-field required">
-            @Html.EditorFor(model => model.SO_CHUNG_MINH)
-            @Html.ValidationMessageFor(model => model.SO_CHUNG_MINH)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DIA_CHI)
-        </div>
-        <div class="editor-field required">
-            @Html.EditorFor(model => model.DIA_CHI)
-            @Html.ValidationMessageFor(model => model.DIA_CHI)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SO_DIEN_THOAI)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SO_DIEN_THOAI)
-            @Html.ValidationMessageFor(model => model.SO_DIEN_THOAI)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MA_KHO)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m => m.MA_KHO, new SelectList(ViewBag.Kho, "MA_KHO", "TEN_KHO"), "-Chọn mã kho-", new { style = "padding:5px;font-size:1.2em" })
-            @Html.ValidationMessageFor(model => model.MA_KHO)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.USER_NAME)
-        </div>
-        <div class="editor-field required">
-            @Html.EditorFor(model => model.USER_NAME)
-            @Html.ValidationMessageFor(model => model.USER_NAME)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MAT_KHAU)
-        </div>
-        <div class="editor-field required">
-            @Html.EditorFor(model => model.MAT_KHAU, new {value = ViewBag.SelPass})
-            @Html.ValidationMessageFor(model => model.MAT_KHAU)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.NGAY_VAO_LAM)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.NGAY_VAO_LAM, "{0:d}", new { @class = "datePicker" })
-            @Html.ValidationMessageFor(model => model.NGAY_VAO_LAM)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.GHI_CHU)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.GHI_CHU)
-            @Html.ValidationMessageFor(model => model.GHI_CHU)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MA_NHOM_NGUOI_DUNG)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m => m.MA_NHOM_NGUOI_DUNG, new SelectList(ViewBag.NhomNguoiDung, "MA_NHOM", "TEN_NHOM"), "-Chọn mã nhóm-", new { style = "padding:5px;font-size:1.2em" })
-            @Html.ValidationMessageFor(model => model.MA_NHOM_NGUOI_DUNG)
-        </div>
-<!--
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ACTIVE)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(m => m.ACTIVE, new SelectList(new List<SelectListItem> { new SelectListItem {Text = "Active", Value = "A"},
-                                                                                           new SelectListItem {Text = "InActive", Value = "I"} }, "Value", "Text"), "-Active/InActive-", new { style = "padding:5px;font-size:1.2em" })
-            @Html.ValidationMessageFor(model => model.ACTIVE)
-        </div>
--->
-        <p>
-            <input type="submit" value="Lưu" />
-        </p>
-    </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

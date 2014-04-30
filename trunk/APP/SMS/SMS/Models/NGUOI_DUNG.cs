@@ -12,6 +12,15 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
+
+    public class NguoiDungObj
+    {
+        public NGUOI_DUNG NguoiDung { get; set; }
+        public NGUOI_DUNG NguoiTao { get; set; }
+        public NGUOI_DUNG NguoiCapNhat { get; set; }
+    }
+
     public partial class NGUOI_DUNG
     {
         public NGUOI_DUNG()
