@@ -1,62 +1,197 @@
-﻿@model IEnumerable<SMS.Models.NGUOI_DUNG>
-@{
-    ViewBag.Title = "Index - Nguoi Dung";
-}
-<link href="../../Content/css/grid.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-.crud_btn:hover {
-    background: none;
-}
-</style>
-<h2>Người Dùng</h2>
-<table class="bordered">
-    <thead>
+﻿@model PagedList.IPagedList<SMS.Models.NguoiDungObj>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/NguoiDung.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
 
-    <tr>
-        <th>Sửa</th>
-        <th>Xóa</th>
-        <th>#</th>        
-        <th>Họ tên</th>
-        <th>Ngày sinh</th>
-        <th>Số CMND</th>
-        <th>Địa chỉ</th>
-        <th>Điện thoại</th>
-        <th>Mã kho</th>
-        <th>Username</th>
-<!--
-        <th>Mật khẩu</th>
--->
-        <th>Ngày vào làm</th>
-        <th>Mã nhóm</th>
-        <th>Ghi chú</th>
-    </tr>
-    </thead>
-    @foreach (var user in Model)
+@{
+    ViewBag.Title = "Danh mục người dùng";
+}
+
+<h2>@ViewBag.Title </h2>
+
+<hr style="width:100%" />
+
+
+@using (Html.BeginForm("Index", "NguoiDung", FormMethod.Get))
+{
+    <div style="float:right">
+        <p>
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Tìm kiếm" class="myButton" />
+            @{
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
     {
+        <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew","NguoiDung")'" />
+    }
+            }
+        </p>
+
+    </div>
+    <div style="clear:both"></div>
+    <hr style="width:100%" />
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+        <tr>
+            <td class='tablefrozencolumn' width="15%">
+                <div id='divroot' class='root'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
+                        <tr>
+                            <td class='inner colwidth head ' width="40%">
+                                @Html.ActionLink("Mã người dùng", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                            </td>
+                            <td class='inner colwidth head'>
+                                @Html.ActionLink("Tên người dùng", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='divfrozen' class='frozen'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                        @foreach (var nguoidung in Model)
+                        {
+                            <tr>
+                                <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
+                                    @nguoidung.NguoiDung.MA_NGUOI_DUNG
+                                </td>
+                                <td class='inner frozencol toprow alignText'>
+                                    @nguoidung.NguoiDung.TEN_NGUOI_DUNG
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+            <td class='tablecontent'>
+                <div id='headscroll' class='divhead'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
+                        <tr>
+                            <td class='inner column-hscroll head'>
+                                Ngày sinh
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Số CMND
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Địa chỉ
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Số điện thoại
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Kho
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Username
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Mật khẩu
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Ngày vào làm
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Nhóm người dùng
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Active
+                            </td>
+                            <td class='inner column-hscroll head'>
+                                Ghi chú
+                            </td>
+                            @{
+    if ((bool)Session["IsAdmin"] == true)
+    {
+        <td class='inner head' style="width:90px;">Người tạo</td>
+                                <td class='inner  head' style="width:90px;">Ngày tạo</td>
+                                <td class='inner  head' style="width:110px;">Người cập nhật</td>
+                                <td class='inner  head' style="width:110px;">Ngày cập nhật</td>
+    }
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+    {
+        <td class='inner head' style="width:50px;">Sửa</td>
+                                <td class='inner head' style="width:50px;">Xóa</td>
+    }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                        @foreach (var nguoidung in Model)
+                        {
+                            <tr>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.NGAY_SINH</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_CHUNG_MINH</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.DIA_CHI</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_DIEN_THOAI</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.MA_KHO</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.USER_NAME</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.MAT_KHAU</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.NGAY_VAO_LAM</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.MA_NHOM_NGUOI_DUNG</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.ACTIVE</td>
+                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.GHI_CHU</td>
+                                @{
+                            if ((bool)Session["IsAdmin"] == true)
+                            {
+                                <td class='inner  alignCenter' style="width:90px;"> @nguoidung.NguoiTao.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:90px;"> @Html.Label(DateTime.Parse(@nguoidung.NguoiDung.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:110px;"> @nguoidung.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:110px;"> @Html.Label(DateTime.Parse(@nguoidung.NguoiDung.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("Edit", "NguoiDung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module">
+                                        <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                    </a>
+                                </td>
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("Delete", "NguoiDung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module" onclick="return deleteSubmit()">
+                                            <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                        </a>
+                                    </td>
+                            }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
+                    <div>
+                    </div>
+                </div>
+            </td>
+        </tr>
         <tr>
             <td>
-                <a class="crud_btn" href="@Url.Action("Edit", "NguoiDung", new { id = user.MA_NGUOI_DUNG })"><img alt="" src="../../Content/images/edit.png" /></a>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count : Người dùng </label>
+                </div>
             </td>
             <td>
-                <a class="crud_btn" href="@Url.Action("Delete", "NguoiDung", new { id = user.MA_NGUOI_DUNG })"><img alt="" src="../../Content/images/delete.png" /></a>
+                <div style="text-align:right; padding-top:3px;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </div>
             </td>
-            <td>@user.MA_NGUOI_DUNG</td>        
-            <td>@user.TEN_NGUOI_DUNG</td>
-            <td>@Html.DisplayFor(modelItem => user.NGAY_SINH)</td>
-            <td>@user.SO_CHUNG_MINH</td>
-            <td>@user.DIA_CHI</td>
-            <td>@user.SO_DIEN_THOAI</td>
-            <td>@user.MA_KHO</td>
-            <td>@user.USER_NAME</td>
-<!--
-            <td>@Html.DisplayFor(modelItem => user.MAT_KHAU)</td>
--->
-            <td>@Html.DisplayFor(modelItem => user.NGAY_VAO_LAM)</td>
-            <td>@user.MA_NHOM_NGUOI_DUNG</td>
-            <td>@user.GHI_CHU</td>
         </tr>
+    </table>
+}
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn xóa người dùng này!");
+        if (r == true) {
+            document.forms[0].submit();
+        }
+        else {
+            return false;
+        }
     }
-</table>
-<div>
-    <a class="crud_btn" href="@Url.Action("AddNew", "NguoiDung")"><img src="../../Content/images/add_new.png" />Thêm</a>
-</div>
+</script>

@@ -73,9 +73,23 @@ namespace SMS.Controllers
         [HttpPost]
         public void LogOff()
         {
-            FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
             
+            Session.Abandon();
+            Session.Clear();
+            Session.RemoveAll();
+            FormsAuthentication.SignOut();
+
+            Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
+
+            //HttpCookie cookie1 = new HttpCookie(FormsAuthentication.FormsCookieName, "");
+            //cookie1.Expires = DateTime.Now.AddYears(-1);
+            //Response.Cookies.Add(cookie1);
+
+            //HttpCookie cookie2 = new HttpCookie("ASP.NET_SessionId", "");
+            //cookie2.Expires = DateTime.Now.AddYears(-1);
+            //Response.Cookies.Add(cookie2);
+
+            FormsAuthentication.RedirectToLoginPage();
             //return RedirectToAction("Index", "Home");
         }
 

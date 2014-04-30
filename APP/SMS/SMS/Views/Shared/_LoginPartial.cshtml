@@ -1,16 +1,66 @@
-﻿@if (Request.IsAuthenticated) {
+﻿    <link href="~/Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <style type="text/css">
+        #dialog-form lable, #password, #newPassword, #confirmPassword {
+            display: block;
+        }
+
+            #dialog-form #password.text, #newPassword.text, #confirmPassword.text {
+                margin-bottom: 12px;
+                width: 80%;
+                padding: .4em;
+            }
+
+        #dialog-form #fsPassword {
+            padding: 0;
+            border: 0;
+            margin-top: 25px;
+        }
+
+        #dialog-form .validateTips {
+            border: 1px solid transparent;
+            padding: 0.3em;
+        }
+
+        .ui-dialog .ui-state-error {
+            padding: .3em;
+        }
+    </style>
+    <script src="~/Content/js/jquery-1.9.1.js"></script>
+    <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#changePass").click(function(){
+                alert("Change password is under contruction.");
+            });
+        });
+    </script>
+@if (Request.IsAuthenticated) {
     <text>
         Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
             @Html.AntiForgeryToken()
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
+        |
+        <a href="javascript:void(null)" id="changePass">Change password</a>
     </text>
 } else {
-     if (Request.IsAuthenticated)
-     {
     <ul>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
-     }
 }
+<div id="dialog-form" title="Change user's password" style="display:none">
+    <p class="validateTips">All form fields are required.</p>
+    <form>
+        <fieldset id="fsPassword">
+            <label for="password">Old Password</label>
+            <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+
+            <label for="newPassword">New Password</label>
+            <input type="password" name="newPassword" id="newPassword" value="" class="text ui-widget-content ui-corner-all">
+
+            <label for="confirmPassword">Confirm New Password</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" value="" class="text ui-widget-content ui-corner-all">
+        </fieldset>
+    </form>
+</div>

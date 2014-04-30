@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel;
 using SMS.Models;
+using PagedList;
+using System.IO;
 
 namespace SMS.Controllers
 {
@@ -11,28 +14,59 @@ namespace SMS.Controllers
     [HandleError]
     public class NguoiDungController : Controller
     {
-        SmsContext ctx = new SmsContext();
         //
-        // GET: /NguoiDung/
-        public ActionResult Index()
+        // GET: /DonVi/
+        [HttpGet]
+        public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
-            List<NGUOI_DUNG> lsNguoiDung = ctx.NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
+            var ctx = new SmsContext();
+            if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.IdSortParm = sortOrder == "id_desc" ? "id" : "id_desc";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            var theListContext = (from u in ctx.NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on u.CREATE_BY equals u1.MA_NGUOI_DUNG
+                                  join u2 in ctx.NGUOI_DUNG on u.UPDATE_BY equals u2.MA_NGUOI_DUNG
+                                  where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || u.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper()) || u.GHI_CHU.ToUpper().Contains(searchString.ToUpper())))
+                                  select new NguoiDungObj
+                                  {
+                                      NguoiDung = u,
+                                      NguoiTao = u1,
+                                      NguoiCapNhat = u2
+                                  }).Take(SystemConstant.MAX_ROWS);
+            ViewBag.CurrentFilter = searchString;
 
-            return View(lsNguoiDung);
-        }
-
-        private void BindKho()
-        {
-            //List<KHO> city = ctx.KHOes.Where(a => a.ACTIVE == "A").ToList();
-            List<KHO> kho = ctx.KHOes.Where(m => m.ACTIVE.Equals("A")).ToList();
-            ViewBag.Kho = kho;
-        }
-
-        private void BindNhomNguoiDung()
-        {
-            //List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(a => a.ACTIVE == "A").ToList();
-            List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
-            ViewBag.NhomNguoiDung = nhomNguoiDung;
+            IPagedList<NguoiDungObj> nguoiDungs = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = theListContext.Count();
+            switch (sortOrder)
+            {
+                case "id":
+                    nguoiDungs = theListContext.OrderBy(nd => nd.NguoiDung.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "id_desc":
+                    nguoiDungs = theListContext.OrderByDescending(nd => nd.NguoiDung.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    nguoiDungs = theListContext.OrderBy(nd => nd.NguoiDung.TEN_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    nguoiDungs = theListContext.OrderByDescending(nd => nd.NguoiDung.TEN_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    nguoiDungs = theListContext.OrderBy(nd => nd.NguoiDung.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
+                    break;
+            }
+            return View(nguoiDungs);
         }
 
         [HttpGet]
@@ -44,54 +78,20 @@ namespace SMS.Controllers
             //Ma Nhom
             BindNhomNguoiDung();
 
-            //var objNguoiDung = new NGUOI_DUNG();
-            //return View(objNguoiDung);
             return View();
         }
 
-        [HttpPost]
-        public ActionResult AddNew(NGUOI_DUNG nguoidung)
-        {
-            //Validation Form
-            if (string.IsNullOrEmpty(nguoidung.TEN_NGUOI_DUNG))
-                ModelState.AddModelError("TEN_NGUOI_DUNG", "Vui lòng nhập tên của bạn");
-
-
-
-            if (ModelState.IsValid)
-            {
-                //Active
-                nguoidung.ACTIVE = "A";
-
-                //Created By
-                nguoidung.CREATE_BY = Convert.ToInt32(Session["UserId"]);
-                nguoidung.CREATE_AT = DateTime.Now;
-
-                ctx.NGUOI_DUNG.Add(nguoidung);
-                ctx.SaveChanges();
-
-                return Redirect("Index");
-            }
-            else
-            {
-                ViewBag.SelPass = nguoidung.MAT_KHAU;
-                BindKho();
-                BindNhomNguoiDung();
-                return View();
-            }
-        }
-
         [HttpGet]
-        public ActionResult Edit(int id = -1)
+        public ActionResult Edit(int id)
         {
-            var nguoidung = ctx.NGUOI_DUNG.SingleOrDefault(n => n.MA_NGUOI_DUNG == id);
-
-            if (nguoidung == null)
+            if (id <= 0)
             {
-                //TODO: return error message
-                return View("Index");
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                return View("../Home/Error"); ;
             }
-            else
+            var ctx = new SmsContext();
+            NGUOI_DUNG nguoidung = ctx.NGUOI_DUNG.Find(id);
+            if (nguoidung.ACTIVE.Equals("A"))
             {
                 //Ma Kho
                 BindKho();
@@ -99,63 +99,146 @@ namespace SMS.Controllers
                 //Ma Nhom
                 BindNhomNguoiDung();
 
+                ViewBag.nguoiDung = nguoidung;
                 return View(nguoidung);
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                return View("../Home/Error"); ;
+            }
+
+        }
+        
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var nguoidung = ctx.NGUOI_DUNG.Find(id);
+            if (nguoidung.ACTIVE.Equals("A"))
+            {
+                nguoidung.ACTIVE = "I";
+                nguoidung.UPDATE_AT = DateTime.Now;
+                nguoidung.CREATE_BY = (int)Session["UserId"];
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                return View("../Home/Error"); ;
             }
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, NGUOI_DUNG nguoidung)
+        public ActionResult Edit(SMS.Models.NGUOI_DUNG nguoiDung)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = new SmsContext();
+                var nguoidung = db.NGUOI_DUNG.Find((int)nguoiDung.MA_NGUOI_DUNG);
+                nguoidung.TEN_NGUOI_DUNG = nguoiDung.TEN_NGUOI_DUNG;
+                nguoidung.NGAY_SINH = nguoiDung.NGAY_SINH;
+                nguoidung.SO_CHUNG_MINH = nguoiDung.SO_CHUNG_MINH;
+                nguoidung.DIA_CHI = nguoiDung.DIA_CHI;
+                nguoidung.SO_DIEN_THOAI = nguoiDung.SO_DIEN_THOAI;
+                nguoidung.MA_KHO = nguoiDung.MA_KHO;
+                nguoidung.USER_NAME = nguoiDung.USER_NAME;
+                nguoidung.MAT_KHAU = nguoiDung.MAT_KHAU;
+                nguoidung.NGAY_VAO_LAM = nguoiDung.NGAY_VAO_LAM;
+
+                if (Request.Files[0].InputStream.Length != 0)
+                {
+                    Stream fileStream = Request.Files[0].InputStream;
+                    byte[] bytes = new byte[fileStream.Length];
+                    fileStream.Read(bytes, 0, bytes.Length);
+                    nguoidung.HINH_ANH = bytes;
+                }
+                nguoidung.MA_NHOM_NGUOI_DUNG = nguoiDung.MA_NHOM_NGUOI_DUNG;
+                nguoidung.GHI_CHU = nguoiDung.GHI_CHU;
+                nguoidung.ACTIVE = "A";
+                nguoidung.UPDATE_AT = DateTime.Now;
+                nguoidung.UPDATE_BY = (int)Session["UserId"];
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNew(SMS.Models.NGUOI_DUNG nguoiDung)
         {
             //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                var dbNguoiDung = ctx.NGUOI_DUNG.SingleOrDefault(n => n.MA_NGUOI_DUNG == id);
+                var db = new SmsContext();
+                var nguoidung = db.NGUOI_DUNG.Create();
+                nguoidung.TEN_NGUOI_DUNG = nguoiDung.TEN_NGUOI_DUNG;
+                nguoidung.NGAY_SINH = nguoiDung.NGAY_SINH;
+                nguoidung.SO_CHUNG_MINH = nguoiDung.SO_CHUNG_MINH;
+                nguoidung.DIA_CHI = nguoiDung.DIA_CHI;
+                nguoidung.SO_DIEN_THOAI = nguoiDung.SO_DIEN_THOAI;
+                nguoidung.MA_KHO = nguoiDung.MA_KHO;
+                nguoidung.USER_NAME = nguoiDung.USER_NAME;
+                nguoidung.MAT_KHAU = nguoiDung.MAT_KHAU;
+                nguoidung.NGAY_VAO_LAM = nguoiDung.NGAY_VAO_LAM;
 
-                dbNguoiDung.TEN_NGUOI_DUNG = nguoidung.TEN_NGUOI_DUNG;
-                dbNguoiDung.NGAY_SINH = nguoidung.NGAY_SINH;
-                dbNguoiDung.SO_CHUNG_MINH = nguoidung.SO_CHUNG_MINH;
-                dbNguoiDung.DIA_CHI = nguoidung.DIA_CHI;
-                dbNguoiDung.SO_DIEN_THOAI = nguoidung.SO_DIEN_THOAI;
-                dbNguoiDung.MA_KHO = nguoidung.MA_KHO;
-                dbNguoiDung.USER_NAME = nguoidung.USER_NAME;
-                dbNguoiDung.MAT_KHAU = nguoidung.MAT_KHAU;
-                dbNguoiDung.NGAY_VAO_LAM = nguoidung.NGAY_VAO_LAM;
-                dbNguoiDung.GHI_CHU = nguoidung.GHI_CHU;
-                dbNguoiDung.MA_NHOM_NGUOI_DUNG = nguoidung.MA_NHOM_NGUOI_DUNG;
-
-                //Updated By
-                nguoidung.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                if (Request.Files[0].InputStream.Length != 0)
+                {
+                    Stream fileStream = Request.Files[0].InputStream;
+                    byte[] bytes = new byte[fileStream.Length];
+                    fileStream.Read(bytes, 0, bytes.Length);
+                    nguoidung.HINH_ANH = bytes;
+                }
+                nguoidung.MA_NHOM_NGUOI_DUNG = nguoiDung.MA_NHOM_NGUOI_DUNG;
+                nguoidung.GHI_CHU = nguoiDung.GHI_CHU;
+                nguoidung.ACTIVE = "A";
                 nguoidung.UPDATE_AT = DateTime.Now;
-
-                ctx.SaveChanges();
-
-                //return Redirect("Index");
-                return RedirectToAction("Index");
+                nguoidung.CREATE_AT = DateTime.Now;
+                nguoidung.UPDATE_BY = (int)Session["UserId"];
+                nguoidung.CREATE_BY = (int)Session["UserId"];
+                db.NGUOI_DUNG.Add(nguoidung);
+                db.SaveChanges();
+                return Redirect("Index");
             }
-            else
-            {
-                ViewBag.SelPass = nguoidung.MAT_KHAU;
-                BindKho();
-                BindNhomNguoiDung();
-                return View();
-            }
+            return View();
         }
 
         [HttpGet]
-        public ActionResult Delete(int id)
+        public FileContentResult GetImage(int id)
         {
-            var dbNguoiDung = ctx.NGUOI_DUNG.Find(id);
+            using (var ctx = new SmsContext())
+            {
+                var nd = ctx.NGUOI_DUNG.FirstOrDefault(p => p.MA_NGUOI_DUNG == id);
 
-            if (dbNguoiDung == null)
-            {
-                ViewBag.Message = "Không thể xóa người dùng này";
-                return View("Error");
+                if (nd != null && nd.HINH_ANH != null)
+                {
+                    return File(nd.HINH_ANH, "image/png");
+                }
             }
-            else
+            return null;
+        }
+
+        private void BindKho()
+        {
+            using (var ctx = new SmsContext())
             {
-                dbNguoiDung.ACTIVE = "I";
-                ctx.SaveChanges();
-                return RedirectToAction("Index");
+                List<KHO> kho = ctx.KHOes.Where(m => m.ACTIVE.Equals("A")).ToList();
+                ViewBag.Kho = kho;
+            }
+        }
+
+        private void BindNhomNguoiDung()
+        {
+            using (var ctx = new SmsContext())
+            {
+                List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
+                ViewBag.NhomNguoiDung = nhomNguoiDung;
             }
         }
     }

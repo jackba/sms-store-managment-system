@@ -95,6 +95,5 @@ namespace SMS.Controllers
         {
             return View();
         }
-
     }
 }

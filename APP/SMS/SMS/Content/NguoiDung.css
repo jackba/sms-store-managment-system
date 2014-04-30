@@ -1,4 +1,4 @@
-﻿
+
 table 
 {
     margin-top:0em !important;
@@ -44,6 +44,13 @@ div.horizontal-scroll
     border: solid 1px #666;
     margin-top:-7px;
 }
+div.horizontal-noScroll
+{
+    height: 24px;
+    overflow: hidden;
+    border: solid 1px #FFFAF0;
+    margin-top:-7px;
+}
 div.horizontal-scroll div
 {
     width: 3500px;
@@ -74,6 +81,7 @@ td.inner
 td.frozencol
 {
     border-right: 1px double #666;   
+    height: auto;
 }
 td.col1
 {
