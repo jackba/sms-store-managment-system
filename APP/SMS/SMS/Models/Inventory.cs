@@ -88,4 +88,24 @@ namespace SMS.Models
     {
         public IPagedList<ImEx> ResultList { get; set; }
     }
+
+    public class Fifo
+    {
+        public Nullable<int> ID { get; set; }
+        public Nullable<int> MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double SO_LUONG_NHAP { get; set; }
+        public double SO_LUONG_XUAT { get; set; }
+        public double GIA_VON_HANG_BAN { get; set; }
+        public double SO_LUONG_TON { get; set; }
+        public double GIA_VON_HANG_TON { get; set; }
+    }
+
+    public class FifoModel
+    {
+        public IPagedList<Fifo> ResultList { get; set; }
+        public double GIA_VON_HANG_BAN_TOTAL { get; set; }
+        public double GIA_TRI_HANG_TON_TOTAL { get; set; }        
+    }
 }

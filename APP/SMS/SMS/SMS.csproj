@@ -605,6 +605,7 @@
     <Content Include="Views\QuanLyKho\ExportReport.cshtml" />
     <Content Include="Views\QuanLyKho\ExportReportDetail.cshtml" />
     <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
+    <Content Include="Views\QuanLyKho\FifoReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
