@@ -14,8 +14,12 @@
 
 <script>
 
-    /**AUTOCOMPLETE**/
+   
     $(document).ready(function () {
+        /*disabled export excel*/
+        $('#exportExcel').attr("disabled", "disabled");
+        $('#exportExcel').css("background-color", "#ECECEC");
+        /**AUTOCOMPLETE**/
         $("#TenSanPham").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -64,7 +68,7 @@ function changeTypeCustomer(value) {
     var title = "Xác nhận chuyển loại khách hàng"
     var content = "Thao tác này có thể xóa hết dữ liệu hiện tại trên danh sách.<br/> Bạn hãy cân nhắc kỹ thao tác này nhé.<br/> Bạn chấp nhận thay đổi loại khách hàng không?";
     var action = 1;
-    $('#Type' + value).click(fnOpenNormalDialog(title,content, action));
+    $('#Type' + value).click(fnOpenNormalDialog(title, content, action));
 }
 
 function fnOpenNormalDialog(title, content, action) {
@@ -73,94 +77,103 @@ function fnOpenNormalDialog(title, content, action) {
     }
 
     $("#dialogConfirm").html(content);
-
-    // Define the Dialog and its properties.
-    $("#dialogConfirm").dialog({
-        resizable: false,
-        modal: true,
-        title: title,
-        height: 200,
-        width: 550,
-        buttons: {
-            "Đồng ý": function () {
-                $(this).dialog('close');
-                callback(action,true);
-            },
-            "Không": function () {
-                $(this).dialog('close');
-                callback(action,false);
-            }
-        }
-    });
-}
-
-
-function callback(action, valueReturn) {
     switch(action)
     {
-        case 1:
-            if (valueReturn) {
-                $("table.tableContentScroll tr").remove();
-                //$("#checkAll").removeAttr("checked");
-            } else {
-                $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
-            }
+        case 1:  // change type customer
+            $("#dialogConfirm").dialog({
+                resizable: false,
+                modal: true,
+                title: title,
+                height: 200,
+                width: 550,
+                buttons: {
+                    "Đồng ý": function () {
+                        $(this).dialog('close');
+                        callback(true);
+                    },
+                    "Không": function () {
+                        $(this).dialog('close');
+                        callback(false);
+                    }
+                }
+            });
             break;
-        case 2:
-            if (valueReturn) {
-                prependNewRowToTable();
-            } else {
-                $('#tableSearch #TenSanPham').select();
-            }
-            break;
+        case 2: // duplicate product item
+            $("#dialogConfirm").dialog({
+                resizable: false,
+                modal: true,
+                title: title,
+                height: 200,
+                width: 550,
+                buttons: {
+                    "Đóng": function () {
+                        $(this).dialog('close');
+                        $('#tableSearch #TenSanPham').select();
+                    }
+                }
+            });
+            break
         default:
             break;
     }
-   
 }
 
-$('.noTab').keydown(function (e) {
-    if (e.which === 9) {
-        e.preventDefault();
-    }
-})
 
+function callback(valueReturn) {
+    if (valueReturn) {
+        $("table.tableContentScroll tr").remove();
+        $('#exportExcel').attr("disabled", "disabled");
+        $('#exportExcel').css("background-color", "#ECECEC");
+    } else {
+        $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
+    }
+}
+    
 
 function addRecord() {
     if ($('#tableSearch #MaSanPham').val() != '') {
         if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
             var title = "Xác nhận"
-            var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Bạn muốn thêm nó nữa hay không? ";
+            var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
             var action = 2;
             $('#addRecord').click(fnOpenNormalDialog(title, content, action));
         } else {
             prependNewRowToTable();
+            $('#exportExcel').removeAttr("disabled", "disabled");
+            $('#exportExcel').css("background-color", "");
         }
     }
+
 }
 function prependNewRowToTable() {
+    var MaSP = $('#tableSearch #MaSanPham').val();
+    var TenSP = $('#tableSearch #TenSanPham').val();
     var newRow = '';
-    newRow += ' <tr class="rowHeight" id=\'' + $('#tableSearch #MaSanPham').val() + '\'> ';
+    newRow += ' <tr class="rowHeight" id=\'' + MaSP + '\'> ';
     newRow += '<td style="width:20px;"> ';
     newRow += '  <div class="myCheckBox">';
-    newRow += '  <img src="/Content/images/delete-20.png" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
+    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td  class="colProductNm textLeft"> ';
     newRow += ' <div  class="colProductNm tooltip truncate">';
-    newRow += $('#tableSearch #TenSanPham').val();
-    newRow += ' <span>' + $('#tableSearch #TenSanPham').val() +'</span>';
-    newRow += '  <input id="MaSanPham" type="hidden" value="' + $('#tableSearch #MaSanPham').val() + '" />';
+    newRow += TenSP;
+    newRow += '  <span>' + TenSP + '</span>';
+    newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
+    newRow += '  <input name="TenSanPham_' + MaSP + '" type="hidden" value="' + TenSP + '" />';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td class="colPrice textRight"> ';
     newRow += $('#tableSearch #GiaBan').val();
+    newRow += '  <input name="GiaBan_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaBan').val() + '" />';
     newRow += ' </td> ';
     newRow += '  <td  class="colDiscount textRight"> ';
     newRow += $('#tableSearch #ChietKhau').val();
+    newRow += '  <input name="ChietKhau_' + MaSP + '" type="hidden" value="' + $('#tableSearch #ChietKhau').val() + '" />';
     newRow += ' </td>  ';
     newRow += '  <td class="colRealPrice textRight"> ';
     newRow += $('#tableSearch #GiaThuc').val();
+    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
     newRow += ' </td> ';
     newRow += '  </tr> ';
     $('#tableContent').prepend(newRow);
@@ -179,37 +192,152 @@ function CalcRealPrice(price, discount) {
     }
     
 }
+function UpdateRealPrice() {
+    var price = removeCommas($('#GiaBan').val());
+    var discount = removeCommas($('#ChietKhau').val());
+    if (null == price ){
+        price = 0;
+        $('#GiaBan').val('0');
+    }
+    if (null == discount) {
+        discount = 0;
+        $('#ChietKhau').val('0');
+    }
+    CalcRealPrice(price, discount);
+    addCommaNumberic('#GiaThuc');
+}
+
+/*remove comma from value input*/
+function removeCommas(str) {
+    if (str != null && str != '') {
+        return (str.replace(/,/g, ''));
+    } else {
+        return null;
+    }
+
+}
 function deleteRow(rowId) {
     $('#' + rowId).remove();
+    if ($("table.tableContentScroll tr").length == 0) {
+        $('#exportExcel').attr("disabled", "disabled");
+        $('#exportExcel').css("background-color", "#ECECEC");
+    } else {
+        $('#exportExcel').removeAttr("disabled", "disabled");
+        $('#exportExcel').css("background-color", "");
+        
+    }
 }
 
-function printList(elem) {
-    var divClone = $(elem).clone(true,true);
-    divClone.find('#tableSearch').remove();
-    divClone.find("table.tableHeader th:first-child").remove();
-    //divClone.find("table.tableHeader th:last-child").remove();
-    divClone.find("table.tableContentScroll td:first-child").remove();
+function exportExcel() {
 
-    Popup(divClone.html());
+    var listProductNo = '';
+    var indx = 0;
+    $('#tableContent tr').each(function () {
+        listProductNo +=  this.id
+        if (indx < ($('#tableContent tr').length -1)) {
+            listProductNo += ','
+        }
+        indx += 1; 
+    })
+
+    $('#ListProductID').val(listProductNo);
+    $('#formContent').submit();
+  
 }
 
+/*start format numberic*/
+function NumbericOnly(ctrl) {
+    $(ctrl).keypress(function (e) {
 
-//Creates a new window and populates it with your content
-function Popup(data) {
-    //Create your new window
-    var w = window.open('', 'Báo giá khách hàng', 'height=550,width=650');
-    w.document.write('<html><head><title>Báo giá khách hàng</title>');
-    //Include your stylesheet (optional)
-    w.document.write('<link href="/Content/BaoGiaSanPham.css" rel="stylesheet">');
-    w.document.write('</head><body>');
-    //Write your content
-    w.document.write(data);
-    w.document.write('</body></html>');
-    w.print();
-    w.close();
+        //getting key code of pressed key
+        var keycode = (e.which) ? e.which : e.keyCode;
+        //comparing pressed keycodes
 
-    return true;
+        if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+            //alert("Hãy nhập ký tự số.");
+            return false;
+        }
+        else return true;
+    });
+
 }
+function formatNumberic() {
+    $('input.numberic').each(function () {
+        $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+    });
+}
+$(document).ready(function () {
+    formatNumberic();
+    $('input.numberic').keypress(function (key) {
+        var keycode = (key.which) ? key.which : key.keyCode;
+        //comparing pressed keycodes
+
+        if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+            //alert(" Hãy nhập ký tự số.");
+            return false;
+        }
+        else return true;
+
+    });
+    $('input.numberic').keyup(function (event) {
+        // skip for arrow keys
+        if (event.which >= 37 && event.which <= 40) {
+            //event.preventDefault();
+            return true;
+        }
+        FormatNumberic_KeyUp($(this));
+        // var $this = $(this);
+        //var AmountWithCommas = $this.val();
+        //var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+        //var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+        //var intPart = arParts[0];
+        //var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+        //var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+        //var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+        //if (decPart.length > 2) {
+        //    decPart = (decPart + '00').substr(0, 2);
+        //}
+        //if (arParts.length > 1) {
+        //    $this.val(num2 + DecimalSeparator + decPart);
+        //} else {
+        //    $this.val(num2);
+        //}
+    });
+    $('input.numberic').bind("paste", function (e) {
+        e.preventDefault();
+    });
+});
+
+function FormatNumberic_KeyUp(obj) {
+    var $this = $('#' + obj.id);
+    var AmountWithCommas = $this.val();
+    var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+    var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+    var intPart = arParts[0];
+    var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+    if (decPart.length > 2) {
+        decPart = (decPart + '00').substr(0, 2);
+    }
+    if (arParts.length > 1) {
+        $this.val(num2 + DecimalSeparator + decPart);
+    } else {
+        $this.val(num2);
+    }
+}
+
+function RemoveRougeChar(convertString) {
+    if (convertString.substring(0, 1) == ",") {
+        return convertString.substring(1, convertString.length)
+    }
+    return convertString;
+}
+/*end format numberic*/
 </script>
 }
 <hr />
@@ -237,23 +365,26 @@ function Popup(data) {
     <table class="tableHeader">     
         <tbody>
             <tr >
-                <th style="width:30px;">
-            
+                <th style="width: 23px; padding: 0.5em 0em 0em 0em !important; ">
+                    <div class="myCheckBox">
+                        <img src="/Content/images/delete-20.png" style="display:none;">
+                        </div>
                 </th>
-                <th style="width: 320px;">
-                    Tên sản phẩm
-                 
+                <th class="colProductNmHeader">
+                    <div class="colProductNmHeader">
+                        Tên sản phẩm
+                    </div>
                 </th>
-                <th style="width: 290px;">
+                <th class="colPriceHeader">
                     Giá bán
                 </th>
-                <th style="width: 140px;">
+                <th class="colDiscountHeader">
                     Chiết khấu (%)
                 </th>
-                <th style="width: 290px;">
+                <th class="colRealPriceHeader">
                     Giá thực
                 </th>
-                <th style="width: 20px;">
+                <th id="columnScroll" style="width: 16px;">
                 </th>
             </tr>
             
@@ -264,7 +395,7 @@ function Popup(data) {
             <tr>
                 <td style="width: 20px; padding: 0.5em 0em 0em 0em !important; ">
                     <div class="myCheckBox">
-                        <img src="/Content/images/plus.png" onclick="addRecord();">
+                        <img src="/Content/images/plus.png" style="cursor: pointer;" onclick="addRecord();">
                         </div>
                 </td>
                 <td style="width: 320px;">
@@ -272,35 +403,39 @@ function Popup(data) {
                     <input type="text" id="TenSanPham" style="width: 240px; margin-left: 2px; " />
                 </td>
                 <td style="width: 290px;">
-                    <input class="noTab" type="text" id="GiaBan"
-                           style="width: 213px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)"
-                           readonly />
+                    <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
+                           class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
+                           style="width: 213px; margin-left: -24px; text-align:right; "/>
                 </td>
                 <td style="width: 140px;">
-                    <input class="noTab" type="text" id="ChietKhau"
-                           style="width: 102px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)" "
-                           readonly />                   
+                    <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
+                           class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
+                           style="width: 102px; margin-left: -24px; text-align:right; " />                   
                 </td>
                 <td style="width: 290px;">
-                    <input class="noTab" type="text" id="GiaThuc"
-                           style="width: 215px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)"
-                           readonly />
+                    <input type="text" id="GiaThuc" maxlength="10"
+                           style="width: 215px; margin-left: -24px; text-align:right; background: rgb(252, 252, 252)" readonly/>
                 </td>
             </tr>
 
         </table>
     </div>
-    <div class="mainContentScroll">
-        <table id="tableContent" class="tableContentScroll">          
-            <tbody >                          
-            </tbody>
-        </table>
-    </div>
-
+    @using (Html.BeginForm("ExportExcel", "SanPham", FormMethod.Post,
+        new { @id = "formContent", enctype = "multipart/form-data" }))
+        
+    {
+        <div class="mainContentScroll">
+            <table id="tableContent" class="tableContentScroll">          
+                <tbody >                          
+                </tbody>
+            </table>
+        </div>
+    <input type="hidden" id="ListProductID" name="ListProductID" value="" />
+    }
 </div>
 <hr />
 <div>
-    <input type="button" style="width:100px" value="In danh sách" onclick="printList('div.mainContainer');" />
+    <input type="button"id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />
     <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
 </div>
 
