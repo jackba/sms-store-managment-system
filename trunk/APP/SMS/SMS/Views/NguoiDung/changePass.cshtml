@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Thay đổi mật khẩu";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style type="text/css">
+        #contact {
+        }
+
+        #contact #fieldset {
+            border: 1px solid #EEEEEE;
+            padding: 20px;
+            border-radius: 3px;
+        }
+
+        #contact #legend {
+            border: 1px solid #EEEEEE;
+            color: #617797;
+            margin-bottom: 0 !important;
+            padding: 7px 10px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        #contact label {
+            display: inline-block;
+            float: left;
+            font-size: 1.2em;
+            height: 26px;
+            line-height: 26px;
+            width: 165px;
+            margin: 6.5px;
+        }
+
+        #contact #oldpass #newpass #confirmpass {
+            background: none repeat scroll 0 0 #F5F5F5;
+            border: 1px solid #CCCCCC;
+            color: #666666;
+            font: 1em "Dosis";
+            margin: 5px 0;
+            padding: 5px;
+            width: 320px;
+            border-radius: 3px;
+        }
+
+        #contact .button {
+            border-radius: 3px;
+            margin: 5px 20px 10px 80px;
+        }
+
+        #contact #oldpass:focus #newpass:focus #confirmpass:focus {
+            border: 1px solid #eee;
+            color: #444;
+            background: #fff;
+        }
+
+        #contact .error {
+            border: 1px solid #973d3d;
+            background: #f0bebe;
+            color: #a35959;
+        }
+
+        #contact .error:focus {
+            border: 1px solid #eee;
+            color: #a35959;
+        }
+
+        .errormsg {
+            color: #f78d1d;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thay đổi mật khẩu</title>
+</head>
+<body>
+    <div id="contact">
+        @using (Html.BeginForm("changePass", "NguoiDung", FormMethod.Post, new { autocomplete = "off" }))
+        {
+            <fieldset id="fieldset">
+                <legend id="legend">Please complete the following form</legend>
+                <p><span class="errormsg">@ViewData["errormsg"]</span></p>
+
+                <input type="hidden" name="username" value="@User.Identity.Name" />
+
+                <script type="text/javascript">
+                    $(function () {
+                        var oldpass = $('#oldpass');
+                        var newpass = $('#newpass');
+                        var confirmpass = $('#confirmpass');
+                        var allFields = $([]).add(oldpass).add(newpass).add(confirmpass);
+                        var code = @ViewData["errorcode"];
+
+                        switch (code) {
+                            case 1:
+                                oldpass.addClass('error');
+                                break;
+                            case 2:
+                                newpass.addClass('error');
+                                break;
+                            case 3:
+                                confirmpass.addClass('error');
+                                break;
+                            case 4:
+                                newpass.addClass('error');
+                                confirmpass.addClass('error');
+                                break;
+                            default:
+                                allFields.removeClass('error');
+                        }
+                    })
+                </script>
+
+                <label for="oldpass"><span class="required">*</span> Mật khẩu củ</label>
+                <input type="password" name="oldpass" id="oldpass" class="txt" />
+
+                <br />
+                <label for="newpass"><span class="required">*</span> Mật khẩu mới</label>
+                <input type="password" name="newpass" id="newpass" class="txt" />
+
+                <br />
+                <label for="confirmpass"><span class="required">*</span> Mật khẩu xác nhận</label>
+                <input type="password" name="confirmpass" id="confirmpass" class="txt" />
+
+                <button type="submit" id="send" class="button">Đồng ý</button>
+            </fieldset>
+        }
+    </div>
+</body>
+</html>
