@@ -34,7 +34,7 @@ namespace SMS.Controllers
             var theListContext = (from u in ctx.NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on u.CREATE_BY equals u1.MA_NGUOI_DUNG
                                   join u2 in ctx.NGUOI_DUNG on u.UPDATE_BY equals u2.MA_NGUOI_DUNG
-                                  where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || u.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper()) || u.GHI_CHU.ToUpper().Contains(searchString.ToUpper())))
+                                  where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || u.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper()) || u.USER_NAME.ToUpper().Contains(searchString.ToUpper())))
                                   select new NguoiDungObj
                                   {
                                       NguoiDung = u,
