@@ -224,6 +224,79 @@ namespace SMS.Controllers
             return null;
         }
 
+        [HttpGet]
+        public ActionResult changePass()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult changePass(FormCollection form)
+        {
+            String username = form["username"];
+            String oldpass = form["oldpass"];
+            String newpass = form["newpass"];
+            String confirmpass = form["confirmpass"];
+
+            using (var ctx = new SmsContext())
+            {
+                ViewData["errorcode"] = "99";
+
+                NGUOI_DUNG nd = ctx.NGUOI_DUNG.FirstOrDefault(n => n.USER_NAME == username);
+                if (nd != null)
+                {
+                    if (!String.IsNullOrEmpty(oldpass))
+                    {
+                        if (oldpass.Equals(nd.MAT_KHAU))
+                        {
+                            if (!String.IsNullOrEmpty(newpass))
+                            {
+                                if (!String.IsNullOrEmpty(confirmpass))
+                                {
+                                    if (newpass.Equals(confirmpass))
+                                    {
+                                        nd.MAT_KHAU = newpass;
+                                        ctx.SaveChanges();
+                                        ViewData["errormsg"] = "Thay đổi mật khẩu thành công!";
+                                    }
+                                    else
+                                    {
+                                        ViewData["errormsg"] = "Mật khẩu mới & xác nhận không khớp.";
+                                        ViewData["errorcode"] = "4";
+                                    }
+                                }
+                                else
+                                {
+                                    ViewData["errormsg"] = "Vui lòng nhập mật khẩu xác nhận.";
+                                    ViewData["errorcode"] = "3";
+                                }
+                            }
+                            else
+                            {
+                                ViewData["errormsg"] = "Vui lòng nhập mật khẩu mới.";
+                                ViewData["errorcode"] = "2";
+                            }
+                        }
+                        else
+                        {
+                            ViewData["errormsg"] = "Mật khẩu hiện tại không đúng.";
+                            ViewData["errorcode"] = "1";
+                        }
+                    }
+                    else
+                    {
+                        ViewData["errormsg"] = "Vui lòng nhập mật khẩu hiện tại.";
+                        ViewData["errorcode"] = "1";
+                    }
+                }
+                else
+                {
+                    ViewData["errormsg"] = "Người dùng không tồn tại.";
+                }
+            }
+            return View();
+        }
+
         private void BindKho()
         {
             using (var ctx = new SmsContext())
