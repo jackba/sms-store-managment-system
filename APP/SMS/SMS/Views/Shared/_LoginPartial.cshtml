@@ -1,66 +1,217 @@
-﻿    <link href="~/Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-    <style type="text/css">
-        #dialog-form lable, #password, #newPassword, #confirmPassword {
-            display: block;
-        }
+﻿<script src="~/Content/jquery-1.4.3.min.js"></script>
+<script src="~/Content/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="~/Content/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 
-            #dialog-form #password.text, #newPassword.text, #confirmPassword.text {
-                margin-bottom: 12px;
-                width: 80%;
-                padding: .4em;
+<link href="~/Content/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("a#changePass").fancybox();
+
+        $("#contact").submit(function () {
+            return false;
+        });
+
+        $("#send").on("click", function () {
+            var oldpassVal = $("#oldpass").val();
+            var newpassVal = $("#newpass").val();
+            var confirmpassVal = $("#confirmpass").val();
+            var allFields = $([]).add($("#oldpass")).add($("#newpass")).add($("#confirmpass"));
+            var tips = $(".errormsg");
+
+            if (!oldpassVal) {
+                $("#oldpass").addClass("error");
+                tips.text("Vui lòng nhập mật khẩu hiện tại.");
             }
 
-        #dialog-form #fsPassword {
-            padding: 0;
-            border: 0;
-            margin-top: 25px;
-        }
+            if (!newpassVal) {
+                $("#newpass").addClass("error");
+                tips.text("Vui lòng nhập mật khẩu mới.");
+            }
 
-        #dialog-form .validateTips {
-            border: 1px solid transparent;
-            padding: 0.3em;
-        }
+            if (!confirmpassVal) {
+                $("#confirmpass").addClass("error");
+                tips.text("Vui lòng nhập mật khẩu xác nhận.");
+            }
 
-        .ui-dialog .ui-state-error {
-            padding: .3em;
-        }
-    </style>
-    <script src="~/Content/js/jquery-1.9.1.js"></script>
-    <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#changePass").click(function(){
-                alert("Change password is under contruction.");
-            });
+            if (newpassVal && confirmpassVal) {
+                if (newpassVal != confirmpassVal) {
+                    $("#newpass").addClass("error");
+                    $("#confirmpass").addClass("error");
+                    tips.text("Mật khẩu mới và xác nhận không khớp.");
+                }
+            }
+
+            //All informations are correct
+            if (oldpassVal && newpassVal && confirmpassVal) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Account/changePassword',
+                    data: $("#contact").serialize(),
+                    success: function (data) {
+                        allFields.removeClass("error");
+
+                        switch (data) {
+                            case "1":
+                                break;
+                            case "2":
+                                break;
+                            case "3":
+                                break;
+                            default:
+
+                        }
+
+                        if (data == "true") {
+
+                            $("#contact").fadeOut("fast", function () {
+                                $(this).before("<p><strong>Success! Mật khẩu đã được thay đổi, thanks!</strong></p>");
+                                setTimeout("$.fancybox.close()", 2000);
+                            });
+                        }
+                    }
+                });
+            }
         });
-    </script>
-@if (Request.IsAuthenticated) {
+    });
+</script>
+<style type="text/css">
+    #contact {
+    }
+
+        #contact fieldset {
+            border: 1px solid #EEEEEE;
+            padding: 20px;
+            border-radius: 3px;
+        }
+
+        #contact legend {
+            border: 1px solid #EEEEEE;
+            color: #617797;
+            margin-bottom: 0 !important;
+            padding: 7px 10px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        #contact label {
+            display: inline-block;
+            float: left;
+            font-size: 1em;
+            height: 26px;
+            line-height: 26px;
+            width: 155px;
+        }
+
+        #contact input {
+            background: none repeat scroll 0 0 #F5F5F5;
+            border: 1px solid #CCCCCC;
+            color: #666666;
+            font: 1em "Dosis";
+            margin: 5px 0;
+            padding: 5px;
+            width: 360px;
+            border-radius: 3px;
+        }
+
+        #contact .button {
+            border-radius: 3px;
+            margin: 5px 20px 10px 155px;
+        }
+
+        #contact input:focus {
+            border: 1px solid #eee;
+            color: #444;
+            background: #fff;
+        }
+
+        #contact .error {
+            border: 1px solid #973d3d;
+            background: #f0bebe;
+            color: #a35959;
+        }
+
+            #contact .error:focus {
+                border: 1px solid #eee;
+                color: #a35959;
+            }
+
+    .button {
+        background-color: #222;
+        background-image: -webkit-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+        background-image: -moz-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+        background-image: -ms-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+        background-image: -o-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+        background-image: linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+        border: 1px solid #111;
+        color: #c6c6c6;
+        cursor: pointer;
+        display: inline-block;
+        font: bold 14px/10px 'Dosis';
+        margin: 20px;
+        padding: 16px 20px;
+        position: relative;
+        text-decoration: none;
+        text-shadow: 0 -1px 1px hsla(0,0%,0%,.8);
+        vertical-align: top;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+        .button:hover, .button:focus {
+            background-color: #242424;
+            color: #f6f6f6;
+        }
+
+        .button:active {
+            background-color: #202020;
+            color: #b6b6b6;
+            padding: 16px 20px;
+        }
+
+    .errormsg {
+        color: #f78d1d;
+    }
+</style>
+
+@if (Request.IsAuthenticated)
+{
     <text>
         Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
             @Html.AntiForgeryToken()
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
-        |
-        <a href="javascript:void(null)" id="changePass">Change password</a>
+        | <a href="#inline" id="changePass">Change password</a>
     </text>
-} else {
+}
+else
+{
     <ul>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
-<div id="dialog-form" title="Change user's password" style="display:none">
-    <p class="validateTips">All form fields are required.</p>
-    <form>
-        <fieldset id="fsPassword">
-            <label for="password">Old Password</label>
-            <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+<div style="display:none">
+    <div id="inline" title="Thay đổi mật khẩu">
+        <form id="contact" name="contact" action="#" method="post">
+            <fieldset>
+                <legend>Vui lòng nhập các thông tin bên dưới</legend>
+                <p><span class="errormsg"></span></p>
+                <label for="oldpass"><span class="required">*</span> Mật khẩu cũ</label>
+                <input name="oldpass" type="password" id="oldpass" class="txt" />
 
-            <label for="newPassword">New Password</label>
-            <input type="password" name="newPassword" id="newPassword" value="" class="text ui-widget-content ui-corner-all">
+                <br />
+                <label for="newpass"><span class="required">*</span> Mật khẩu mới</label>
+                <input name="newpass" id="newpass" type="password" class="txt" />
 
-            <label for="confirmPassword">Confirm New Password</label>
-            <input type="password" name="confirmPassword" id="confirmPassword" value="" class="text ui-widget-content ui-corner-all">
-        </fieldset>
-    </form>
+                <br />
+                <label for="confirmpass"><span class="required">*</span> Xác nhận mật khẩu</label>
+                <input name="confirmpass" id="confirmpass" type="password" class="txt" />
+
+                <button id="send" class="button">Đồng ý</button>
+            </fieldset>
+        </form>
+    </div>
 </div>

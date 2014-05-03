@@ -1,0 +1,77 @@
+﻿@model SMS.Models.PHAN_QUYEN
+
+@{
+    ViewBag.Title = "Thêm mới phân quyền";
+}
+@section Scripts {
+    
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+}
+@using (Html.BeginForm("AddNew", "PhanQuyen", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.MA_NGUOI_DUNG)
+            </div>
+            <div class="required">
+                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG, new SelectList(ViewBag.ListNguoiDung, "MA_NGUOI_DUNG", "TEN_NGUOI_DUNG"), "-Chọn người dùng-", new { style = "padding:5px;font-size:1.2em" })
+            </div>
+            <br/>
+            <div>
+                @Html.LabelFor(u => u.QUYEN_ADMIN)
+            </div>
+            <div>
+                @Html.CheckBoxFor(u => u.QUYEN_ADMIN, new { id = "admin_chk" })
+            </div>
+            <br />
+            <div>
+                @Html.LabelFor(u => u.QUYEN_DANH_MUC_SAN_PHAM)
+            </div>
+            <div>
+                @Html.CheckBoxFor(u => u.QUYEN_DANH_MUC_SAN_PHAM, new { id = "sanpham_chk" })
+            </div>
+            <br />
+            <div>
+                @Html.LabelFor(u => u.QUYEN_BAN_HANG)
+            </div>
+            <div>
+                @Html.CheckBoxFor(u => u.QUYEN_BAN_HANG, new { id = "banhang_chk" })
+            </div>
+            <br />
+            <div>
+                @Html.LabelFor(u => u.QUYEN_THAU_NGAN)
+            </div>
+            <div>
+                @Html.CheckBoxFor(u => u.QUYEN_THAU_NGAN, new { id = "thaungan_chk" })
+            </div>
+            <br />
+            <div>
+                @Html.LabelFor(u => u.QUYEN_QUAN_LY_KHO)
+            </div>
+            <div>
+                @Html.CheckBoxFor(u => u.QUYEN_QUAN_LY_KHO, new { id = "qlkho_chk" })
+            </div>
+            <br />
+            <div>
+                @Html.LabelFor(u => u.MA_NHOM_NGUOI_DUNG)
+            </div>
+            <div>
+                @Html.DropDownListFor(u => u.MA_NHOM_NGUOI_DUNG, new SelectList(ViewBag.NhomNguoiDung, "MA_NHOM", "TEN_NHOM"), "-Chọn mã nhóm-", new { style = "padding:5px;font-size:1.2em" })
+            </div>
+            <br />
+            <div>
+                <input type="submit" style="width:100px" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+            </div>
+        </fieldset>
+    </div>
+}

@@ -185,6 +185,65 @@ namespace SMS.Controllers
             }
 
             return IsValid;
-        } 
+        }
+
+        [HttpPost]
+        public String changePassword(String uname, String oldpass, String newpass, String confirmpass)
+        {
+            String msg = null;
+            try
+            {
+                using (var ctx = new SmsContext())
+                {
+                    NGUOI_DUNG user = ctx.NGUOI_DUNG.FirstOrDefault(u => u.USER_NAME == uname);
+                    if (user != null)
+                    {
+                        //Check old password
+                        if (oldpass.Equals(user.MAT_KHAU))
+                        {
+                            if (!String.IsNullOrEmpty(newpass))
+                            {
+                                if (!String.IsNullOrEmpty(confirmpass))
+                                {
+                                    //Check new & confirm password
+                                    if (newpass.Equals(confirmpass))
+                                    {
+                                        user.MAT_KHAU = newpass;
+                                        ctx.SaveChanges();
+                                        msg = "3";
+                                    }
+                                    else
+                                    {
+                                        msg = "2";//confirmp's not same
+                                    }
+                                }
+                                else
+                                {
+                                    msg = "6";//confirmp's empty
+                                }
+                            }
+                            else
+                            {
+                                msg = "5";//newp's empty
+                            }
+                        }
+                        else
+                        {
+                            msg = "1";//oldp's incorrect
+                        }
+                    }
+                    else
+                    {
+                        msg = "4";//username's invalid
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                msg = "99";//other errors
+            }
+            return msg;
+            
+        }
     }
 }
