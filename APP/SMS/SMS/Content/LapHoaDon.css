@@ -1,0 +1,290 @@
+﻿
+div.mainContainer {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    width: 870px;
+    height: 500px;
+    overflow: hidden;
+    border: 1px solid black;
+}
+
+div.mainContentScroll {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    width: 871px;
+    height: 442px;
+    overflow: auto;
+}
+
+.tableHeader {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    background: #C96;
+    border-left: 1px solid #EB8;
+    border-right: 1px solid #B74;
+    border-top: 1px solid #EB8;
+    /*font-weight: normal;*/
+    /*padding: 4px 3px;*/
+    width: 870px;
+    height: 20px;
+    
+}
+.tableContentScroll {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    width: 853px;
+}
+
+table.tableSearch{
+    margin-top: -6px;
+    margin-bottom: -7px;
+}
+
+table.tableSearch td{
+   padding: 0em 1em 0em 0em !important;
+}
+
+table.tableHeader th {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    background: #C96;
+    border-left: 1px solid #EB8;
+    border-right: 1px solid #EB8;
+    border-top: 1px solid #EB8;
+    /*font-weight: normal;
+    padding: 4px 3px;*/
+    text-align: center !important;
+}
+table.tableContentScroll tr {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+table.tableContentScroll td{
+    border: 1px solid #EB8;
+   padding: 0em 0em 0em 0em !important;
+  
+}
+table.tableSearch input[type="text"] {
+   width:225px !important;
+}
+input[type="radio"] {
+    width: 32px !important;
+}
+.colDelete {
+    margin-left: 2px;
+}
+.myAction {
+    margin-left: 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.btnAddRecord {
+    margin-left: -12px;
+    height: 29px;
+    width: 65px !important;
+    background-color:  #A0ADF1 !important;
+}
+.btnPrintList {
+    height: 29px;
+    width: 65px !important;
+    background-color: #A0ADF1 !important;
+}
+.rowHeight {
+    height: 29px;
+}
+table.tableContentScroll tr:nth-child(even) {
+    background: #E2F7FF;
+}
+
+table.tableContentScroll tr:nth-child(odd) {
+    background: #FFF;
+}
+
+.textRight{
+    text-align:right;
+}
+.textLeft{
+    text-align:left
+}
+.colProductNm{
+    width: 251px;
+    padding-left: 2px !important;
+}
+
+.colPrice{
+    width:230px;
+}
+.colDiscount{
+    width:117px;
+}
+.colRealPrice{
+    width:231px;
+}
+
+.colProductNmHeader{
+    width: 253px;
+}
+
+.colPriceHeader{
+    width:230px;
+}
+.colDiscountHeader{
+    width:117px;
+}
+.colRealPriceHeader{
+    width:231px;
+}
+.hiddenColScroll{
+    border-right: 1px solid #FFF;
+    border-top: 1px solid #FFF;
+    background-color: #FFF !important;
+}
+/*start css tooltip*/
+/*div.tooltip {
+    outline: none;
+}
+div.tooltip strong {
+    line-height: 30px;
+}
+div.tooltip:hover {
+    text-decoration: none;
+}
+div.tooltip span {
+    z-index: 10;
+    display: none;
+    padding: 14px 20px;
+    margin-top: -30px;
+    margin-left: 28px;
+    width: 240px;
+    line-height: 16px;
+}
+div.tooltip:hover span {
+    display: inline;
+    position: absolute;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #fffAF0;
+}
+.callout {
+    z-index: 20;
+    position: absolute;
+    top: 30px;
+    border: 0;
+    left: -12px;
+}
+    
+/*CSS3 extras*/
+/*div.tooltip span {
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}*/
+/*end css tooltip*/
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*start details product*/
+li.ui-menu-item:hover{
+
+}
+
+.relationProduct {
+    outline: none;
+}
+.relationProduct strong {
+    line-height: 30px;
+}
+.tooltip:hover {
+    text-decoration: none;
+}
+div.relationProduct span {
+    z-index: 10;
+    display: none;
+    padding: 14px 20px;
+    margin-top: -30px;
+    margin-left: 28px;
+    width: 240px;
+    line-height: 16px;
+}
+div.relationProduct:hover span {
+    display: inline;
+    position: absolute;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #fffAF0;
+}
+.callout {
+    z-index: 20;
+    position: absolute;
+    top: 30px;
+    border: 0;
+    left: -12px;
+}
+    
+/*CSS3 extras*/
+div.relationProduct span {
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+div.relationProductShow div {
+    display: inline;
+    position: absolute;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #C5EAF3;
+
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}
+div.relationProductHide {
+    display: none;
+}
+/*end details product*/
+
+div.titleSanPham{
+    margin-bottom: -18px;
+    font-size:16px;
+}
+div.titleGiaBan{
+    margin-bottom: -18px;
+    font-size:16px;
+}
+div.titleChietKhau{
+    margin-bottom: -18px;
+    font-size:16px;
+}
+select.Combobox {
+    height: 30px;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.alignCenter{
+    text-align:center;
+}
+.alignNumberic{
+    text-align:right;
+}
+.alignText{
+    text-align:left;
+    text-wrap:normal;
+}

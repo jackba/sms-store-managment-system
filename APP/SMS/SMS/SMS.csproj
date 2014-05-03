@@ -151,6 +151,7 @@
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
+    <Compile Include="Controllers\BanHangController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SmsMasterController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
@@ -309,6 +310,7 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
@@ -531,6 +533,7 @@
     <Content Include="Views\QuanLyKho\ExportReportDetail.cshtml" />
     <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
     <Content Include="Views\QuanLyKho\FifoReport.cshtml" />
+    <Content Include="Views\BanHang\LapHoaDon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
