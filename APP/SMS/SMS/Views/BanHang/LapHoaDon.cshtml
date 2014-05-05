@@ -25,8 +25,7 @@
             yearRange: "-60:+0"
         });
         // hide relation product
-        $('#relationProduct').removeClass('relationProductShow');
-        $('#relationProduct').addClass('relationProductHide');
+        hideRelationProduct();
 
         //set default value
         $('#typeCustomers').attr("disabled", "disabled");
@@ -64,9 +63,13 @@
                 return false;
             },
             focus: function (event, ui) {
+              
                 setRelationProduct(ui.item);
                 $('#relationProduct').removeClass('relationProductHide');
                 $('#relationProduct').addClass('relationProductShow');
+            },
+            close: function () {
+                hideRelationProduct();
             },
             minLength: 1
 
@@ -77,8 +80,39 @@
                 $('#relationProduct').addClass('relationProductHide');
             }
         });;
-    });
 
+        //format numberic start 
+        formatNumberic();
+        $('input.numberic').keypress(function (key) {
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert(" Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
+
+        });
+        $('input.numberic').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                //event.preventDefault();
+                return true;
+            }
+            FormatNumberic_KeyUp($(this));
+
+        });
+        $('input.numberic').bind("paste", function (e) {
+            e.preventDefault();
+        });
+        //format numberic end
+    });
+function hideRelationProduct(){
+            // hide relation product
+    $('#relationProduct').removeClass('relationProductShow');
+    $('#relationProduct').addClass('relationProductHide');
+}
 function addCommaNumberic(ctrlID) {
     $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
 }
@@ -340,32 +374,6 @@ function formatNumberic() {
         $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
     });
 }
-$(document).ready(function () {
-    formatNumberic();
-    $('input.numberic').keypress(function (key) {
-        var keycode = (key.which) ? key.which : key.keyCode;
-        //comparing pressed keycodes
-
-        if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
-            //alert(" Hãy nhập ký tự số.");
-            return false;
-        }
-        else return true;
-
-    });
-    $('input.numberic').keyup(function (event) {
-        // skip for arrow keys
-        if (event.which >= 37 && event.which <= 40) {
-            //event.preventDefault();
-            return true;
-        }
-        FormatNumberic_KeyUp($(this));
-       
-    });
-    $('input.numberic').bind("paste", function (e) {
-        e.preventDefault();
-    });
-});
 
 function FormatNumberic_KeyUp(obj) {
     var $this = $('#' + obj.id);
