@@ -72,6 +72,7 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var suggestedProducts = from x in ctx.SAN_PHAM
+                                    join u in ctx.DON_VI_TINH on x.MA_DON_VI equals u.MA_DON_VI
                                     where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
                                     select new
                                     {
@@ -81,6 +82,23 @@ namespace SMS.Controllers
                                                     (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult FindSuggestConvert(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    join u in ctx.DON_VI_TINH on x.MA_DON_VI equals u.MA_DON_VI
+                                    where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        value = x.TEN_SAN_PHAM,
+                                        unitName = u.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
@@ -637,6 +655,85 @@ namespace SMS.Controllers
             model.WarningList = tk;
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult ConvertUnitOfProducts(int? productId, int? page, string productName)
+        {
+            var ctx = new SmsContext();
+            var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH
+                                  join sp in ctx.SAN_PHAM on cd.MA_SAN_PHAN equals sp.MA_SAN_PHAM
+                                  join dv1 in ctx.DON_VI_TINH on sp.MA_DON_VI equals dv1.MA_DON_VI
+                                  join dv2 in ctx.DON_VI_TINH on cd.MA_DON_VI_VAO equals dv2.MA_DON_VI
+                                  join u in ctx.NGUOI_DUNG on cd.CREATE_BY equals u.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on cd.UPDATE_BY equals u1.MA_NGUOI_DUNG
+                                  where
+                                  (cd.ACTIVE == "A"
+                                  && (string.IsNullOrEmpty(productName) || sp.TEN_SAN_PHAM.ToLower().Contains(productName.Trim().ToLower()))
+                                  && (string.IsNullOrEmpty(productName) || productId == null || productId == 0 || cd.MA_SAN_PHAN == productId))
+                                  select new ChuyenDoiDonViTinhModel
+                                  {
+                                      ChuyenDoiDonVi = cd,
+                                      SanPham = sp, 
+                                      DonViCuoi = dv1, 
+                                      DonViVao = dv2, 
+                                      NguoiCapNhat = u1, 
+                                      NguoiTao = u
+                                  }).ToList<ChuyenDoiDonViTinhModel>();
+            IPagedList<ChuyenDoiDonViTinhModel> khachHangs = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = theListContext.Count();
+            khachHangs = theListContext.ToPagedList(pageIndex, pageSize);
+            ViewBag.ProductName = productName;
+            return View(khachHangs);
+        }
+
+        [HttpPost]
+        public ActionResult ConvertUnitOfProducts(int? productId, int? page, string productName, bool? flag)
+        {
+            var ctx = new SmsContext();
+            var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH
+                                  join sp in ctx.SAN_PHAM on cd.MA_SAN_PHAN equals sp.MA_SAN_PHAM
+                                  join dv1 in ctx.DON_VI_TINH on sp.MA_DON_VI equals dv1.MA_DON_VI
+                                  join dv2 in ctx.DON_VI_TINH on cd.MA_DON_VI_VAO equals dv2.MA_DON_VI
+                                  join u in ctx.NGUOI_DUNG on cd.CREATE_BY equals u.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on cd.UPDATE_BY equals u1.MA_NGUOI_DUNG
+                                  where
+                                  (cd.ACTIVE == "A"
+                                  && (string.IsNullOrEmpty(productName) || sp.TEN_SAN_PHAM.ToLower().Contains(productName.Trim().ToLower()))
+                                  && (string.IsNullOrEmpty(productName) || productId == null || productId == 0 || cd.MA_SAN_PHAN == productId))
+                                  select new ChuyenDoiDonViTinhModel
+                                  {
+                                      ChuyenDoiDonVi = cd,
+                                      SanPham = sp,
+                                      DonViCuoi = dv1,
+                                      DonViVao = dv2,
+                                      NguoiCapNhat = u1,
+                                      NguoiTao = u
+                                  }).ToList<ChuyenDoiDonViTinhModel>();
+            IPagedList<ChuyenDoiDonViTinhModel> khachHangs = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = page == null ? 1 : (int)page;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = theListContext.Count();
+            ViewBag.ProductName = productName;
+            khachHangs = theListContext.ToPagedList(pageIndex, pageSize);
+            return View(khachHangs);
+        }
+
+        [HttpGet]
+        public ActionResult AddNewConvertUnitOfProducts()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult EditConvertUnitOfProducts(int id)
+        {
+            return View();
+        }
+
     }
 
 }

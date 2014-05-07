@@ -19,12 +19,12 @@ table.root
 table.content
 {
     table-layout: fixed;
-    width: 1890px;
+    width: 1000px;
 }
 table.head
 {
     table-layout: fixed;
-    width: 1890px;
+    width: 1000px;
 }
 table.frozen
 {

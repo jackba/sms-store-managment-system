@@ -826,7 +826,5 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
-
     }
 }
