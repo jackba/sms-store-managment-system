@@ -1,0 +1,139 @@
+﻿@model SMS.Models.CHUYEN_DOI_DON_VI_TINH
+
+@{
+    ViewBag.Title = "THÊM MỚI DANH CHUYỂN ĐỖI ĐƠN VỊ";
+}
+@{
+    ViewBag.Title = "CHUYỂN ĐỖI ĐƠN VỊ TÍNH";
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+        $(document).ready(function () {
+            $("#InputUnitName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/DonVi/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id,
+                                        unitName: item.unitName
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+
+                    $('#InputUnitId').val("");
+                },
+                select: function (event, ui) {
+                    $('#InputUnitName').val(ui.item.label);
+                    $('#InputUnitId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+            $("#ProductName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggestConvert", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id, 
+                                        unitName: item.unitName
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                   
+                    $('#ProductId').val("");
+                },
+                select: function (event, ui) {
+                    $('#ProductName').val(ui.item.label);
+                    $('#ProductId').val(ui.item.id);
+                    $('#UnitName').val(ui.item.unitName);
+                    return false;
+                },
+                minLength: 1
+
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+}
+<h3>
+    Thêm mới chuyển đổi đơn vị
+</h3>
+
+<hr style="width:100%"/>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.MA_SAN_PHAN)
+            </div>
+            <div>
+               @Html.HiddenFor(u => u.MA_SAN_PHAN, new { id = "ProductId" })
+               @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.MA_DON_VI_VAO)
+            </div>
+            <div>
+                @Html.HiddenFor(u => u.MA_DON_VI_VAO, new { id = "InputUnitId" })
+                @Html.TextBox("InputUnitName", ViewBag.InputUnitName as string, new { id = "InputUnitName" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.HE_SO)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.HE_SO)
+            </div>
+            <div>
+               <label>Đơn vị cuối</label>
+            </div>
+            <div>
+                @Html.TextBox("UnitName", ViewBag.UnitName as string, new { id = "UnitName", @ReadOnly = "true" })
+            </div>
+            <div>
+                <input type="submit" style="width:100px" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Quay lại" />
+            </div>
+        </fieldset>
+    </div>
+    <script>
+        function reset() {
+            var name = document.getElementById("TenDonVi");
+            var note = document.getElementById("GhiChu");
+            name.value = "";
+            note.value = "";
+            return false;
+        }
+    </script>
+
+
+}

@@ -15,6 +15,21 @@ namespace SMS.Controllers
     {
         //
         // GET: /DonVi/
+        [HttpPost]
+        public JsonResult FindSuggest(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.DON_VI_TINH
+                                    where (x.TEN_DON_VI.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_DON_VI,
+                                        value = x.TEN_DON_VI
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
