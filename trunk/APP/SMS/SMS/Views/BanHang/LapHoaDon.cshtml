@@ -24,9 +24,9 @@
             changeYear: true,
             yearRange: "-60:+0"
         });
-        // hide relation product
+        // hide 
         hideRelationProduct();
-
+        hideRelationCustomer();
         //set default value
         $('#typeCustomers').attr("disabled", "disabled");
         //initial combobox store
@@ -56,16 +56,16 @@
                 });
             },
             select: function (event, ui) {
-                $('#relationProduct').removeClass('relationProductShow');
-                $('#relationProduct').addClass('relationProductHide');
-
                 setFixedField(ui.item);
+                $('#relationProduct').removeClass('relationProductShow');
+                $('#relationProduct').addClass('HideElement');
+
                 return false;
             },
             focus: function (event, ui) {
               
                 setRelationProduct(ui.item);
-                $('#relationProduct').removeClass('relationProductHide');
+                $('#relationProduct').removeClass('HideElement');
                 $('#relationProduct').addClass('relationProductShow');
             },
             close: function () {
@@ -77,7 +77,7 @@
             if (e.which === 13 || e.which === 27) {
                 $(".ui-menu-item").hide();
                 $('#relationProduct').removeClass('relationProductShow');
-                $('#relationProduct').addClass('relationProductHide');
+                $('#relationProduct').addClass('HideElement');
             }
         });;
 
@@ -109,9 +109,15 @@
         //format numberic end
     });
 function hideRelationProduct(){
-            // hide relation product
+    // hide relation product
     $('#relationProduct').removeClass('relationProductShow');
-    $('#relationProduct').addClass('relationProductHide');
+    $('#relationProduct').addClass('HideElement');
+  
+}
+function hideRelationCustomer() {
+    // hide relation customer
+    $('#relationCustomer').removeClass('relationCustomerShow');
+    $('#relationCustomer').addClass('HideElement');
 }
 function addCommaNumberic(ctrlID) {
     $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
@@ -127,12 +133,62 @@ function changeTypeCustomer(value) {
     if (selected.length > 0) {
         if(selected.val() == '1'){
             $('#typeCustomers').attr("disabled", "disabled");
+
+           
+            $('#TenKhachHang').autocomplete("destroy");
+            $('#TenKhachHang').removeData('autocomplete');
+           
         } else {
             $('#typeCustomers').removeAttr("disabled", "disabled");
+            addAutoComplete2Customer();
         }
         
     }
 }
+function addAutoComplete2Customer(){
+    /**AUTOCOMPLETE**/
+        $("#TenKhachHang").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/KhachHang/FindDetailCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $('#typeCustomers').val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    lable : item.name,                                   
+                                    value: item.name,
+                                    id: item.id,
+                                    cardNo: item.cardNo,
+                                    address: item.address,
+                                    fone: item.fone,
+                                    email: item.mail
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            },
+            select: function (event, ui) {
+
+                setRelationCustomer(ui.item);
+                $('#relationCustomer').removeClass('relationCustomerShow');
+                $('#relationCustomer').addClass('HideElement');
+               
+                return false;
+            },
+            focus: function (event, ui) {              
+                setRelationCustomer(ui.item);
+                $('#relationCustomer').removeClass('HideElement');
+                $('#relationCustomer').addClass('relationCustomerShow');
+            },
+            close: function () {
+                hideRelationCustomer();
+            },
+            minLength: 1
+
+        })
+}
+
 function setFixedField(item) {
     CalcRealPrice(item.price, item.discount);
     addCommaNumberic('#GiaThuc');
@@ -154,6 +210,19 @@ function setRelationProduct(item) {
     $('#S_GiaThuc').html($('#GiaThuc').val());
     //TODO :
 }
+function setRelationCustomer(item) {
+
+    $('#S_MaKhachHang').html(item.id);
+    $('#S_TenKhachHang').html(item.label);
+    $('#S_MaTheKhachHang').html(item.cardNo);
+    $('#S_DiaChi').html(item.address);
+    $('#S_SoDienThoai').html(item.fone);
+    $('#S_Email').html(item.email);
+
+    $('#MaKhachHang').val(item.id);
+    $('#TenKhachHang').val(item.label);
+    $('#DiaChi').html(item.address);
+}
 function createStore() {
     var result = '';
     $.ajax({
@@ -167,7 +236,7 @@ function createStore() {
                     var opt = "<option value=" + item.value + ">" + item.name + "</option>"
                     $(opt).appendTo('#typeStore');
                 });
-                }, 
+            }, 
         error: 
             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
     });
@@ -413,128 +482,178 @@ function RemoveRougeChar(convertString) {
     <div style="margin-left: 45px;">
         <input type="radio" name="groupcustomer" id="Type1" checked="checked" value="1" onchange="changeTypeCustomer();">
         <span style="font-size:15px;"> Khách hàng vãng lai</span>
-   
-
+        <br />
         <input type="radio" name="groupcustomer" id="Type2" value="2" onchange="changeTypeCustomer();">
         <span style="font-size:15px;"> Khách hàng trong danh mục</span>
 
-    <select id="typeCustomers"  class="Combobox">
+    <select id="typeCustomers"  class="ComboboxCustomer">
         <option value="1"> Khách hàng công ty , công trình</option>
         <option value="2"> Khách hàng thân thiết</option>
         <option value="2"> Khách hàng thường</option>
     </select>
-   
+   <div id="customerArea">
+       <table id="tableCustomer" class="tableBasic" >
+           <tr>
+               <td id="colMaKH" style="display:none;">
+                   <div>
+                       <input type="hidden" id="MaKhachHang" />
+                   </div>
+               </td>
+               <td>
+                   <div class="titleItem">Tên khách hàng </div>
+                   <br />
+                   <div >
+                       <input type="text" id="TenKhachHang" class="colCustomerName" />
+                   </div>
+                   
+               </td>
+               <td>
+                   <div id="relationCustomer">
+                       <div>
+                           <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
+                           <br />
+                           <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
+                           <br />
+                           <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
+                           <br />
+                           <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
+                           <br />
+                           <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
+                           <br />
+                           <span><strong>- Email : </strong> </span><span id="S_Email"></span>
+
+                       </div>
+                   </div>
+               </td>
+           </tr>
+
+       </table>
+   </div>
 </div>
+
+
 <div>
-    <span style="font-size:16px;">> Chọn kho hàng : </span>
-    <select id="typeStore" class="Combobox">      
-    </select>
-</div>
-    <div>
-        <table id="tableSearch" class="tableSearch">
-            <tr>
-                <td >
-                    <input type="hidden" id="MaSanPham" />
-                    <div class="titleSanPham">Tên sản phẩm </div>
-                    <br />
+    <table id="tableSearch" class="tableSearch tableBasic">
+        <tr>
+            <td>
+                <input type="hidden" id="MaSanPham" />
+                <div class="titleItem">Tên sản phẩm </div>
+                <br />
+                <div>
+                    <input type="text" id="TenSanPham" style="margin-left: 2px; " />
+                </div>
+            </td>
+            <td>
+                <div class="titleItem">Giá bán</div>
+                <br />
+                <div>
+                    <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
+                            class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
+                </div>
+                <div id="relationProduct">
                     <div>
-                        <input type="text" id="TenSanPham" style="margin-left: 2px; " />
+                        <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
+                        <br />
+                        <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
+                        <br />
+                        <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
+                        <br />
+                        <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
+                        <br />
+                        <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
+                        <br />
+                        <span><strong>- Số lượng: </strong> </span>
+                        <br />
+                        <span><strong>  + Cửa hàng 1: </strong> </span><span> 10 </span>
+                        <br />
+                        <span><strong>  + Cửa hàng 2: </strong> </span><span> 12 </span>
+                        <br />
+                        <span><strong>  + Cửa hàng 3: </strong> </span><span> 14 </span>
                     </div>
-</td>
-                <td >
-                    <div class="titleGiaBan">Giá bán</div>
+                </div>
+            </td>
+            <td>
+                <div class="titleItem">Chiết khấu</div>
+                <br />
+                <div>
+                    <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
+                            class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
+                            style="text-align: right; width: 110px !important;" />
+                </div>
+            </td>
+            <td>
+                <div class="titleItem">Giá sau chiết khấu </div>
+                <br />
+                <div>
+                    <input type="text" id="GiaThuc" maxlength="10"
+                            style=" text-align:right;background: rgb(252, 252, 252);" readonly />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <span style="font-size:16px;">Kho hàng : </span>
                     <br />
-                    <div>
-                        <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
-                        class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
-                        />
-                    </div>
-                    <div id="relationProduct">
-                        <div>
-                            <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
-                            <br />
-                            <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
-                            <br />
-                            <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
-                            <br />
-                            <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
-                            <br />
-                            <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
-                            <br />
-                            <span><strong>- Số lượng: </strong> </span>
-                            <br />
-                            <span><strong>  + Cửa hàng 1: </strong> </span><span> 10 </span>
-                            <br />
-                            <span><strong>  + Cửa hàng 2: </strong> </span><span> 12 </span>
-                            <br />
-                            <span><strong>  + Cửa hàng 3: </strong> </span><span> 14 </span>
-                        </div>
-                    </div>
-                </td>
-                <td >
-                    <div class="titleChietKhau">Chiết khấu</div>
+                    <select id="typeStore" class="Combobox"></select>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <span style="font-size:16px;">Đơn vị tính: </span>
                     <br />
-                    <div>
-                        <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
-                               class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
-                               style="text-align: right; width: 110px !important;" />
-                    </div>
-                </td>
-                <td>
-                    <div class="titleGiaBan">Giá sau chiết khấu </div>
-                    <br />
-                    <div>
-                        <input type="text" id="GiaThuc" maxlength="10"
-                               style=" text-align:right;background: rgb(252, 252, 252);" readonly />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="titleGiaBan">Số lượng</div>
-                    <br />
-                    <div>
-                        <input type="text" id="SoLuong" maxlength="5"
-                                class="alignNumberic" />
-                    </div>
-                </td>
-                <td>
-                    <div class="titleGiaBan">Ngày bán</div>
-                    <br />
-                    <div>
-                        <input type="text" id="NgayBan" maxlength="10"
-                               class="datePicker alignCenter " />
-                    </div>
-                </td>
-                <td colspan="2">
-                    <div class="titleGiaBan">Ngày giao hàng</div>
-                    <br />
-                    <div>
-                        <input type="text" id="NgayGiao" maxlength="10"
-                               class="datePicker alignCenter" />
-                    </div>
-                </td>
-               
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <div class="titleGiaBan">Địa chỉ giao hàng</div>
-                    <br />
-                    <div>
-                        <textarea id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
-                    </div>
-                </td>
-            </tr>
-</table>
-        <div class="myAction">
-            <input type="button" id="addRecord" onclick="addRecord();" value="Thêm sản phẩm"/>
-        </div>
+                    <select id="typeDonViTinh" class="Combobox"></select>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="titleItem">Số lượng</div>
+                <br />
+                <div>
+                    <input type="text" id="SoLuong" maxlength="5"
+                            class="alignNumberic" />
+                </div>
+            </td>
+            <td>
+                <div class="titleItem">Ngày bán</div>
+                <br />
+                <div>
+                    <input type="text" id="NgayBan" maxlength="10"
+                            class="datePicker alignCenter " />
+                </div>
+            </td>
+            <td colspan="2">
+                <div class="titleItem">Ngày giao hàng</div>
+                <br />
+                <div>
+                    <input type="text" id="NgayGiao" maxlength="10"
+                            class="datePicker alignCenter" />
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="titleItem">Địa chỉ giao hàng</div>
+                <br />
+                <div>
+                    <textarea id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="myAction">
+        <input type="button" id="addRecord" onclick="addRecord();" value="Thêm sản phẩm"/>
     </div>
+</div>
 
 
 
-    <div id="dialogConfirm"></div>
-    <input type="hidden" id="currTypeCustomer" />
+<div id="dialogConfirm"></div>
+<input type="hidden" id="currTypeCustomer" />
 </div>
 <div class="mainContainer">
     <table class="tableHeader">     
