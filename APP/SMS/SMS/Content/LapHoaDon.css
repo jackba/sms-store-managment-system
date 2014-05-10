@@ -44,7 +44,7 @@ table.tableSearch{
     margin-bottom: -7px;
 }
 
-table.tableSearch td{
+table.tableBasic td{
    padding: 0em 1em 0em 0em !important;
 }
 
@@ -195,10 +195,6 @@ div.tooltip:hover span {
     white-space: nowrap;
 }
 /*start details product*/
-li.ui-menu-item:hover{
-
-}
-
 .relationProduct {
     outline: none;
 }
@@ -256,27 +252,80 @@ div.relationProductShow div {
     -webkit-box-shadow: 5px 5px 8px #CCC;
     box-shadow: 5px 5px 8px #CCC;
 }
-div.relationProductHide {
-    display: none;
-}
 /*end details product*/
 
-div.titleSanPham{
+/*start details customer*/
+.relationCustomer {
+    outline: none;
+}
+.relationCustomer strong {
+    line-height: 30px;
+}
+
+div.relationCustomer span {
+    z-index: 10;
+    display: none;
+    padding: 14px 20px;
+    margin-top: -30px;
+    margin-left: 28px;
+    width: 240px;
+    line-height: 16px;
+}
+div.relationCustomer:hover span {
+    display: inline;
+    position: absolute;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #fffAF0;
+}
+
+    
+/*CSS3 extras*/
+div.relationCustomer span {
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+div.relationCustomerShow div {
+    display: inline;
+    position: absolute;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #C5EAF3;
+
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: 5px 5px 8px #CCC;
+    -webkit-box-shadow: 5px 5px 8px #CCC;
+    box-shadow: 5px 5px 8px #CCC;
+}
+/*end details customer*/
+
+div.HideElement {
+    display: none;
+}
+div.titleItem{
     margin-bottom: -18px;
     font-size:16px;
 }
-div.titleGiaBan{
-    margin-bottom: -18px;
-    font-size:16px;
-}
-div.titleChietKhau{
-    margin-bottom: -18px;
-    font-size:16px;
+select.ComboboxCustomer {
+    height: 30px;
+    font-size: 15px;
+    margin-bottom: 10px;
+    width: 255px;
+  
 }
 select.Combobox {
     height: 30px;
     font-size: 15px;
     margin-bottom: 10px;
+    width: 225px;
+    float: right;
 }
 .alignCenter{
     text-align:center;
@@ -287,4 +336,13 @@ select.Combobox {
 .alignText{
     text-align:left;
     text-wrap:normal;
+}
+
+.colCustomerNo{
+   width: 225px !important;
+   margin-left: 2px; 
+}
+.colCustomerName{
+   width: 280px !important;
+   margin-left: 2px; 
 }

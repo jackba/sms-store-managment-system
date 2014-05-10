@@ -44,6 +44,7 @@ namespace SMS.Controllers
         public JsonResult FindStore()
         {
             var ctx = new SmsContext();
+            
             var store = from x in ctx.KHOes
                                     where (x.ACTIVE.Equals("A"))
                                     select new

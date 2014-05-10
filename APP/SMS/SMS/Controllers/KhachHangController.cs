@@ -128,7 +128,30 @@ namespace SMS.Controllers
             var result = Json(suggestedUsers.Take(5).ToList()); 
             return result; 
         }
-
+        /*Tattt add 2014/05/10 start*/
+        [HttpPost]
+        public JsonResult FindDetailCustomer(string prefixText,string typeCustomer)
+        {
+            var ctx = new SmsContext();
+            int kind = 0 ; 
+            int.TryParse(typeCustomer, out kind);
+            var suggestedUsers = from x in ctx.KHACH_HANG
+                                 where (x.TEN_KHACH_HANG.StartsWith(prefixText)
+                                        && x.KIND == kind
+                                        && x.ACTIVE.Equals("A"))
+                                 select new
+                                 {
+                                     id = x.MA_KHACH_HANG,
+                                     name = x.TEN_KHACH_HANG,
+                                     cardNo = x.MA_THE_KHACH_HANG,
+                                     address = x.DIA_CHI,
+                                     fone = x.SO_DIEN_THOAI,
+                                     mail = x.EMAIL
+                                 };
+            var result = Json(suggestedUsers.Take(5).ToList());
+            return result;
+        }
+        /*Tattt add 2014/05/10 end*/
         [HttpGet]
         public ActionResult AddNew()
         {
