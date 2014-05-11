@@ -77,7 +77,7 @@ namespace SMS.Controllers
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
-                                        name = x.TEN_SAN_PHAM,
+                                        name = x.TEN_SAN_PHAM,                                
                                         price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0: 
                                                     (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
@@ -623,7 +623,9 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             ctx.Database.CommandTimeout = 300;
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
-            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>().Take(SystemConstant.MAX_ROWS); ;
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", 
+                new SqlParameter("NAME", string.IsNullOrEmpty(SearchString)
+                    ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>().Take(SystemConstant.MAX_ROWS); ;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.Count = tonkho.Count();
             tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);

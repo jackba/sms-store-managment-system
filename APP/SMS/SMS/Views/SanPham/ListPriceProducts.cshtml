@@ -15,46 +15,48 @@
 <script>
 
    
-    $(document).ready(function () {
-        /*disabled export excel*/
-        $('#exportExcel').attr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "#ECECEC");
-        /**AUTOCOMPLETE**/
-        $("#TenSanPham").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
-                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; }, success:
-                        function (data) {
-                            response($.map(data, function (item) {
-                                return {
-                                    lable : item.name,                                   
-                                    value: item.name,
-                                    id: item.id,
-                                    price: item.price,
-                                    discount:item.discount
-                                }
-                            }))
-                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                });
-            },
-            select: function (event, ui) {
-                CalcRealPrice(ui.item.price, ui.item.discount);
-                addCommaNumberic('#GiaThuc');
-                $('#MaSanPham').val(ui.item.id);
-                $('#TenSanPham').val(ui.item.label);
-                $('#GiaBan').val(ui.item.price);
-                addCommaNumberic('#GiaBan');
-                $('#ChietKhau').val(ui.item.discount);
-                addCommaNumberic('#ChietKhau');
-                return false;
-            },
-            minLength: 1
+$(document).ready(function () {
+    initalPage();
+});
+function initalPage() {
+    /*disabled export excel*/
+    $('#exportExcel').attr("disabled", "disabled");
+    $('#exportExcel').css("background-color", "#ECECEC");
+    /**AUTOCOMPLETE**/
+    $("#TenSanPham").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                dataFilter: function (data) { return data; }, success:
+                    function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                lable: item.name,
+                                value: item.name,
+                                id: item.id,
+                                price: item.price,
+                                discount: item.discount
+                            }
+                        }))
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+        },
+        select: function (event, ui) {
+            CalcRealPrice(ui.item.price, ui.item.discount);
+            addCommaNumberic('#GiaThuc');
+            $('#MaSanPham').val(ui.item.id);
+            $('#TenSanPham').val(ui.item.label);
+            $('#GiaBan').val(ui.item.price);
+            addCommaNumberic('#GiaBan');
+            $('#ChietKhau').val(ui.item.discount);
+            addCommaNumberic('#ChietKhau');
+            return false;
+        },
+        minLength: 1
 
-        });
     });
-
+}
 function addCommaNumberic(ctrlID) {
     $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
 }
@@ -250,7 +252,11 @@ function exportExcel() {
     $('#formContent').submit();
   
 }
-
+function reset() {
+    initalPage();
+    $("table.tableContentScroll tr").remove();
+    $("input[name='groupcustomer'][value='" + 1 + "']").attr('checked', 'checked');
+}
 /*start format numberic*/
 function NumbericOnly(ctrl) {
     $(ctrl).keypress(function (e) {
@@ -425,6 +431,7 @@ function RemoveRougeChar(convertString) {
 <hr />
 <div>
     <input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />
+    <input type="button" id="reset" style="width:135px" value="Tạo mới báo giá" onclick="reset();" />
     <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
 </div>
 
