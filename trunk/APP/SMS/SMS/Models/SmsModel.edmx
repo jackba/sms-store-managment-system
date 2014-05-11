@@ -1309,7 +1309,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___CREAT__6166761E">
+        <Association Name="FK__TRA_HANG___CREAT__51300E55">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1321,7 +1321,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___CREAT__690797E6">
+        <Association Name="FK__TRA_HANG___CREAT__58D1301D">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1333,7 +1333,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___MA_NH__5E8A0973">
+        <Association Name="FK__TRA_HANG___MA_NH__4E53A1AA">
           <End Role="NHA_CUNG_CAP" Type="Self.NHA_CUNG_CAP" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1345,7 +1345,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___MA_PH__5F7E2DAC">
+        <Association Name="FK__TRA_HANG___MA_PH__4F47C5E3">
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1357,7 +1357,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___MA_PH__671F4F74">
+        <Association Name="FK__TRA_HANG___MA_PH__56E8E7AB">
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1369,7 +1369,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___MA_SA__681373AD">
+        <Association Name="FK__TRA_HANG___MA_SA__57DD0BE4">
           <End Role="SAN_PHAM" Type="Self.SAN_PHAM" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1381,7 +1381,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___NGUOI__607251E5">
+        <Association Name="FK__TRA_HANG___NGUOI__503BEA1C">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1393,7 +1393,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___UPDAT__625A9A57">
+        <Association Name="FK__TRA_HANG___UPDAT__5224328E">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1405,7 +1405,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TRA_HANG___UPDAT__69FBBC1F">
+        <Association Name="FK__TRA_HANG___UPDAT__59C55456">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1624,6 +1624,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         </Function>
         <Function Name="SP_GET_TON_KHO_ALL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_TON_KHO_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="INPUT_ID" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_GET_VALUE_OF_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
@@ -2007,39 +2010,39 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___CREAT__6166761E" Association="Self.FK__TRA_HANG___CREAT__6166761E">
+          <AssociationSet Name="FK__TRA_HANG___CREAT__51300E55" Association="Self.FK__TRA_HANG___CREAT__51300E55">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___CREAT__690797E6" Association="Self.FK__TRA_HANG___CREAT__690797E6">
+          <AssociationSet Name="FK__TRA_HANG___CREAT__58D1301D" Association="Self.FK__TRA_HANG___CREAT__58D1301D">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___MA_NH__5E8A0973" Association="Self.FK__TRA_HANG___MA_NH__5E8A0973">
+          <AssociationSet Name="FK__TRA_HANG___MA_NH__4E53A1AA" Association="Self.FK__TRA_HANG___MA_NH__4E53A1AA">
             <End Role="NHA_CUNG_CAP" EntitySet="NHA_CUNG_CAP" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___MA_PH__5F7E2DAC" Association="Self.FK__TRA_HANG___MA_PH__5F7E2DAC">
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__4F47C5E3" Association="Self.FK__TRA_HANG___MA_PH__4F47C5E3">
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___MA_PH__671F4F74" Association="Self.FK__TRA_HANG___MA_PH__671F4F74">
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__56E8E7AB" Association="Self.FK__TRA_HANG___MA_PH__56E8E7AB">
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
             <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___MA_SA__681373AD" Association="Self.FK__TRA_HANG___MA_SA__681373AD">
+          <AssociationSet Name="FK__TRA_HANG___MA_SA__57DD0BE4" Association="Self.FK__TRA_HANG___MA_SA__57DD0BE4">
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
             <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___NGUOI__607251E5" Association="Self.FK__TRA_HANG___NGUOI__607251E5">
+          <AssociationSet Name="FK__TRA_HANG___NGUOI__503BEA1C" Association="Self.FK__TRA_HANG___NGUOI__503BEA1C">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___UPDAT__625A9A57" Association="Self.FK__TRA_HANG___UPDAT__625A9A57">
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__5224328E" Association="Self.FK__TRA_HANG___UPDAT__5224328E">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
           </AssociationSet>
-          <AssociationSet Name="FK__TRA_HANG___UPDAT__69FBBC1F" Association="Self.FK__TRA_HANG___UPDAT__69FBBC1F">
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__59C55456" Association="Self.FK__TRA_HANG___UPDAT__59C55456">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
           </AssociationSet>
@@ -4108,6 +4111,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_TON_KHO_BY_ID">
+            <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -4934,6 +4940,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <FunctionImportMapping FunctionImportName="SP_GET_TON_KHO_ALL" FunctionName="SMSModel.Store.SP_GET_TON_KHO_ALL" />
           <FunctionImportMapping FunctionImportName="SP_IMPORT_REPORTER_SUM" FunctionName="SMSModel.Store.SP_IMPORT_REPORTER_SUM" />
           <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SMSModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
+          <FunctionImportMapping FunctionImportName="SP_GET_TON_KHO_BY_ID" FunctionName="SMSModel.Store.SP_GET_TON_KHO_BY_ID" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

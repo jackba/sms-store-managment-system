@@ -372,5 +372,14 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual int SP_GET_TON_KHO_BY_ID(Nullable<int> iNPUT_ID)
+        {
+            var iNPUT_IDParameter = iNPUT_ID.HasValue ?
+                new ObjectParameter("INPUT_ID", iNPUT_ID) :
+                new ObjectParameter("INPUT_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_TON_KHO_BY_ID", iNPUT_IDParameter);
+        }
     }
 }
