@@ -110,6 +110,18 @@
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false" />
         <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false" />
         <AssociationConnector Association="SMSModel.FK__TRA_HANG__MA_XUA__656C112C" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SMSModel.TRA_HANG_NCC" Width="1.5" PointX="18" PointY="54.375" />
+        <EntityTypeShape EntityType="SMSModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="20.25" PointY="47.75" />
+        <EntityTypeShape EntityType="SMSModel.V_NHAP_XUAT_DETAIL" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___CREAT__6166761E" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___CREAT__690797E6" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___NGUOI__607251E5" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___UPDAT__625A9A57" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___UPDAT__69FBBC1F" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_NH__5E8A0973" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_SA__681373AD" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_PH__5F7E2DAC" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_PH__671F4F74" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

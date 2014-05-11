@@ -12,34 +12,30 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TRA_HANG
+    public partial class TRA_HANG_NCC
     {
-        public TRA_HANG()
+        public TRA_HANG_NCC()
         {
-            this.CHI_TIET_TRA_HANG = new HashSet<CHI_TIET_TRA_HANG>();
-            this.NHAP_KHO = new HashSet<NHAP_KHO>();
-            this.TRA_HANG_NCC = new HashSet<TRA_HANG_NCC>();
+            this.TRA_HANG_NCC_CHI_TIET = new HashSet<TRA_HANG_NCC_CHI_TIET>();
         }
     
-        public int MA_TRA_HANG { get; set; }
-        public Nullable<int> MA_XUAT_KHO { get; set; }
-        public string TEN_KHACH_HANG { get; set; }
-        public Nullable<System.DateTime> NGAY_TRA { get; set; }
-        public Nullable<int> NHAN_VIEN_NHAN { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> MA_NHA_CUNG_CAP { get; set; }
+        public Nullable<int> MA_PHIEU_TRA { get; set; }
+        public Nullable<System.DateTime> NGAY_LAP_PHIEU { get; set; }
+        public Nullable<int> NGUOI_LAP_PHIEU { get; set; }
         public string GHI_CHU { get; set; }
-        public Nullable<short> STATUS { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
     
-        public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
-        public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
-        public virtual XUAT_KHO XUAT_KHO { get; set; }
-        public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
+        public virtual NHA_CUNG_CAP NHA_CUNG_CAP { get; set; }
+        public virtual TRA_HANG TRA_HANG { get; set; }
+        public virtual ICollection<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace SMS.Models
     
     public partial class SmsContext : DbContext
     {
-
         public SmsContext()
             : base("name=SmsContext")
         {
@@ -53,6 +52,9 @@ namespace SMS.Models
         public virtual DbSet<V_NHAP_KHO> V_NHAP_KHO { get; set; }
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+        public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
+        public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
+        public virtual DbSet<V_NHAP_XUAT_DETAIL> V_NHAP_XUAT_DETAIL { get; set; }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -197,6 +199,178 @@ namespace SMS.Models
                 new ObjectParameter("TO_DATE", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_IMPORT_REPORTER_DETAIL_Result>("SP_IMPORT_REPORTER_DETAIL", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual ObjectResult<SP_EXPORT_REPORT_Result> SP_EXPORT_REPORT(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_EXPORT_REPORT_Result>("SP_EXPORT_REPORT", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual ObjectResult<SP_EXPORT_REPORT_DETAIL_Result> SP_EXPORT_REPORT_DETAIL(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_EXPORT_REPORT_DETAIL_Result>("SP_EXPORT_REPORT_DETAIL", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<double>> SP_EXPORT_REPORT_SUM(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_EXPORT_REPORT_SUM", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_DON_VI_TINH_Result> SP_GET_DON_VI_TINH(Nullable<int> mA_SAN_PHAM)
+        {
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_DON_VI_TINH_Result>("SP_GET_DON_VI_TINH", mA_SAN_PHAMParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_NHAP_XUAT_Result> SP_GET_NHAP_XUAT(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_NHAP_XUAT_Result>("SP_GET_NHAP_XUAT", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual int SP_GET_TON_KHO_ALL(string nAME)
+        {
+            var nAMEParameter = nAME != null ?
+                new ObjectParameter("NAME", nAME) :
+                new ObjectParameter("NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_TON_KHO_ALL", nAMEParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<double>> SP_IMPORT_REPORTER_SUM(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_IMPORT_REPORTER_SUM", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual int STMA_GET_GIA_TRI_HANG_BAN_TON(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, ObjectParameter gIA_VON_HANG_BAN_TOTAL, ObjectParameter gIA_TRI_HANG_TON_TOTAL)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
     }
 }

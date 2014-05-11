@@ -76,36 +76,33 @@ namespace SMS.Models
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
             this.XUAT_KHO2 = new HashSet<XUAT_KHO>();
+            this.TRA_HANG_NCC = new HashSet<TRA_HANG_NCC>();
+            this.TRA_HANG_NCC_CHI_TIET = new HashSet<TRA_HANG_NCC_CHI_TIET>();
+            this.TRA_HANG_NCC1 = new HashSet<TRA_HANG_NCC>();
+            this.TRA_HANG_NCC2 = new HashSet<TRA_HANG_NCC>();
+            this.TRA_HANG_NCC_CHI_TIET1 = new HashSet<TRA_HANG_NCC_CHI_TIET>();
         }
     
         public int MA_NGUOI_DUNG { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập tên của bạn")]
         [Display(Name = "Họ và tên")]
         public string TEN_NGUOI_DUNG { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập ngày sinh")]
         [Display(Name = "Ngày sinh")]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public System.DateTime NGAY_SINH { get; set; }
-
-        
         [Display(Name = "Số CMND")]
         [StringLength(10, ErrorMessage = "Số CMND không hợp lệ", MinimumLength = 9)]
         public string SO_CHUNG_MINH { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]
         [Display(Name = "Địa chỉ")]
         [MaxLength(200)]
         public string DIA_CHI { get; set; }
-
         [Display(Name = "Số điện thoại")]
         public string SO_DIEN_THOAI { get; set; }
-
         [Display(Name = "Mã kho")]
         public Nullable<int> MA_KHO { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập User Name")]
         [Display(Name = "User Name")]
         [RegularExpression(@"(\S)+", ErrorMessage = "Không được dùng khoảng trắng")]
@@ -115,15 +112,12 @@ namespace SMS.Models
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         [Display(Name = "Mật khẩu")]
         public string MAT_KHAU { get; set; }
-
         [Display(Name = "Ngày vào làm")]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> NGAY_VAO_LAM { get; set; }
-
         [Display(Name = "Hình ảnh")]
         public byte[] HINH_ANH { get; set; }
-
         [Display(Name = "Ghi chú")]
         public string GHI_CHU { get; set; }
         [Display(Name = "Mã nhóm")]
@@ -190,5 +184,10 @@ namespace SMS.Models
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO2 { get; set; }
+        public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
+        public virtual ICollection<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
+        public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC1 { get; set; }
+        public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC2 { get; set; }
+        public virtual ICollection<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET1 { get; set; }
     }
 }
