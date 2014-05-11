@@ -131,9 +131,6 @@
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="WebMatrix.WebData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v2.0\Assemblies\WebMatrix.WebData.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -241,21 +238,13 @@
     <Compile Include="Models\SMS_MASTER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SP_EXPORT_REPORT_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs" />
+    <Compile Include="Models\SP_EXPORT_REPORT_Result.cs" />
+    <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs" />
     <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs" />
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -265,18 +254,12 @@
     <Compile Include="Models\TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TRA_HANG_NCC.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\TRA_HANG_NCC.cs" />
+    <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs" />
     <Compile Include="Models\V_NHAP_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_NHAP_XUAT_DETAIL.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\V_NHAP_XUAT_DETAIL.cs" />
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -332,6 +315,15 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+
+    <Content Include="Content\images\bill.png" />
+    <Content Include="Content\images\buycart.png" />
+    <Content Include="Content\images\charge.png" />
+    <Content Include="Content\images\customer.png" />
+    <Content Include="Content\images\provider_back.png" />
+    <Content Include="Content\images\refund.png" />
+    <Content Include="Content\images\role.png" />
+
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
@@ -340,6 +332,7 @@
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
+
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
@@ -372,7 +365,6 @@
     <Content Include="Content\images\Converter.jpg" />
     <Content Include="Content\images\Credit-icon.png" />
     <Content Include="Content\images\Crystal_Clear_write.gif" />
-    <Content Include="Content\images\customer.jpg" />
     <Content Include="Content\images\Customer_Male_Light.png" />
     <Content Include="Content\images\cus_warning.png" />
     <Content Include="Content\images\dashboard-module.gif" />
@@ -565,6 +557,7 @@
     <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
     <Content Include="Views\QuanLyKho\FifoReport.cshtml" />
     <Content Include="Views\BanHang\LapHoaDon.cshtml" />
+    <Content Include="Views\NguoiDung\changePass.cshtml" />
     <Content Include="Views\PhanQuyen\AddNew.cshtml" />
     <Content Include="Views\PhanQuyen\Edit.cshtml" />
     <Content Include="Views\PhanQuyen\Index.cshtml" />

@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Web.UI;
 using System.Text;
+using System.Data.Entity.Core.Objects;
 
 namespace SMS.Controllers
 {
@@ -74,6 +75,28 @@ namespace SMS.Controllers
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
         }
+
+        [HttpPost]
+        public JsonResult FindDonViTinhByMaSP(string maSP)
+        {
+            var ctx = new SmsContext();
+            ObjectResult<SP_GET_DON_VI_TINH_Result> resultDonViTinh = ctx.SP_GET_DON_VI_TINH(int.Parse(maSP));
+            var result = Json(resultDonViTinh.Take(5).ToList());
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult CheckingProductInAllStore(string maSP)
+        {
+            var ctx = new SmsContext();
+            int productNo = Convert.ToInt32(maSP);
+            var tonkho = ctx.Database.SqlQuery<CheckingStoreModel>("exec SP_GET_TON_KHO_BY_ID @INPUT_ID ", 
+                new SqlParameter("INPUT_ID", productNo)).ToList<CheckingStoreModel>().Take(SystemConstant.MAX_ROWS);
+
+            var result = Json(tonkho.ToList());
+            return result;
+        }
+
 
         [HttpPost]
         public ActionResult ExportExcel(FormCollection collection)
