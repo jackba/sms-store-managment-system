@@ -17,8 +17,8 @@ namespace SMS.Models
         public HOA_DON()
         {
             this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
-            this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.KHACH_HANG_DEBIT_HIST = new HashSet<KHACH_HANG_DEBIT_HIST>();
+            this.XUAT_KHO = new HashSet<XUAT_KHO>();
         }
     
         public int MA_HOA_DON { get; set; }
@@ -45,7 +45,7 @@ namespace SMS.Models
         public virtual KHACH_HANG KHACH_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG3 { get; set; }
-        public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
+        public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
     }
 }

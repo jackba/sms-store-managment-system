@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -364,6 +364,37 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="TRA_HANG_NCC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_NHA_CUNG_CAP" Type="int" />
+          <Property Name="MA_PHIEU_TRA" Type="int" />
+          <Property Name="NGAY_LAP_PHIEU" Type="date" />
+          <Property Name="NGUOI_LAP_PHIEU" Type="int" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CREATE_BY" Type="int" />
+          <Property Name="UPDATE_BY" Type="int" />
+          <Property Name="CREATE_AT" Type="date" />
+          <Property Name="UPDATE_AT" Type="date" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="TRA_HANG_NCC_CHI_TIET">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_PHIEU_TRA_NCC" Type="int" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG" Type="float" />
+          <Property Name="DON_GIA" Type="float" />
+          <Property Name="CREATE_BY" Type="int" />
+          <Property Name="UPDATE_BY" Type="int" />
+          <Property Name="CREATE_AT" Type="date" />
+          <Property Name="UPDATE_AT" Type="date" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="XUAT_KHO">
           <Key>
             <PropertyRef Name="MA_XUAT_KHO" />
@@ -396,6 +427,19 @@ warning 6002: The table/view 'SMS.dbo.V_NHAP_KHO' does not have a primary key de
           <Property Name="MA_SAN_PHAM" Type="int" />
           <Property Name="SO_LUONG" Type="float" />
           <Property Name="GIA_VON" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_NHAP_XUAT_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_NHAP_XUAT_DETAIL">
+          <Key>
+            <PropertyRef Name="SO_LUONG_NHAP" />
+            <PropertyRef Name="SO_LUONG_XUAT" />
+          </Key>
+          <Property Name="MA_KHO" Type="int" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="NGAY_NHAP_XUAT" Type="date" />
+          <Property Name="SO_LUONG_NHAP" Type="float" Nullable="false" />
+          <Property Name="SO_LUONG_XUAT" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SMS.dbo.V_NHAP_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1265,6 +1309,114 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__TRA_HANG___CREAT__6166761E">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___CREAT__690797E6">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_NH__5E8A0973">
+          <End Role="NHA_CUNG_CAP" Type="Self.NHA_CUNG_CAP" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHA_CUNG_CAP">
+              <PropertyRef Name="MA_NHA_CUNG_CAP" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="MA_NHA_CUNG_CAP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_PH__5F7E2DAC">
+          <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRA_HANG">
+              <PropertyRef Name="MA_TRA_HANG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="MA_PHIEU_TRA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_PH__671F4F74">
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRA_HANG_NCC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="MA_PHIEU_TRA_NCC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_SA__681373AD">
+          <End Role="SAN_PHAM" Type="Self.SAN_PHAM" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAN_PHAM">
+              <PropertyRef Name="MA_SAN_PHAM" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="MA_SAN_PHAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___NGUOI__607251E5">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="NGUOI_LAP_PHIEU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___UPDAT__625A9A57">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___UPDAT__69FBBC1F">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__TRA_HANG__CREATE__6754599E">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG" Type="Self.TRA_HANG" Multiplicity="*" />
@@ -1385,6 +1537,14 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="F_GET_EXPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
+        <Function Name="F_GET_IMPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
         <Function Name="F_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
@@ -1419,13 +1579,50 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <Function Name="GET_TOTAL_DISCOUNT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_EXPORT_REPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KIND" Type="int" Mode="In" />
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_EXPORT_REPORT_DETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KIND" Type="int" Mode="In" />
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_EXPORT_REPORT_SUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KIND" Type="int" Mode="In" />
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_DON_VI_TINH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_GET_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="SP_GET_NHAP_XUAT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
         <Function Name="SP_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GET_TON_KHO_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_TON_KHO_ALL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NAME" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SP_GET_VALUE_OF_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -1447,6 +1644,20 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_IMPORT_REPORTER_SUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KIND" Type="int" Mode="In" />
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="STMA_GET_GIA_TRI_HANG_BAN_TON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Type="float" Mode="InOut" />
+          <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Type="float" Mode="InOut" />
         </Function>
         <Function Name="STMA_GET_MAX_DATE_KIEM_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="date">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
@@ -1473,6 +1684,8 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySet Name="SAN_PHAM" EntityType="Self.SAN_PHAM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="V_NHAP_KHO" EntityType="Self.V_NHAP_KHO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1484,6 +1697,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
     [V_NHAP_KHO].[SO_LUONG] AS [SO_LUONG], 
     [V_NHAP_KHO].[GIA_VON] AS [GIA_VON]
     FROM [dbo].[V_NHAP_KHO] AS [V_NHAP_KHO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_NHAP_XUAT_DETAIL" EntityType="Self.V_NHAP_XUAT_DETAIL" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_NHAP_XUAT_DETAIL].[MA_KHO] AS [MA_KHO], 
+    [V_NHAP_XUAT_DETAIL].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_NHAP_XUAT_DETAIL].[NGAY_NHAP_XUAT] AS [NGAY_NHAP_XUAT], 
+    [V_NHAP_XUAT_DETAIL].[SO_LUONG_NHAP] AS [SO_LUONG_NHAP], 
+    [V_NHAP_XUAT_DETAIL].[SO_LUONG_XUAT] AS [SO_LUONG_XUAT]
+    FROM [dbo].[V_NHAP_XUAT_DETAIL] AS [V_NHAP_XUAT_DETAIL]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_NHAP_XUAT_KHO" EntityType="Self.V_NHAP_XUAT_KHO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1785,6 +2007,42 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___CREAT__6166761E" Association="Self.FK__TRA_HANG___CREAT__6166761E">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___CREAT__690797E6" Association="Self.FK__TRA_HANG___CREAT__690797E6">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_NH__5E8A0973" Association="Self.FK__TRA_HANG___MA_NH__5E8A0973">
+            <End Role="NHA_CUNG_CAP" EntitySet="NHA_CUNG_CAP" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__5F7E2DAC" Association="Self.FK__TRA_HANG___MA_PH__5F7E2DAC">
+            <End Role="TRA_HANG" EntitySet="TRA_HANG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__671F4F74" Association="Self.FK__TRA_HANG___MA_PH__671F4F74">
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_SA__681373AD" Association="Self.FK__TRA_HANG___MA_SA__681373AD">
+            <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___NGUOI__607251E5" Association="Self.FK__TRA_HANG___NGUOI__607251E5">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__625A9A57" Association="Self.FK__TRA_HANG___UPDAT__625A9A57">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__69FBBC1F" Association="Self.FK__TRA_HANG___UPDAT__69FBBC1F">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
           <AssociationSet Name="FK__TRA_HANG__CREATE__6754599E" Association="Self.FK__TRA_HANG__CREATE__6754599E">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
@@ -1826,8 +2084,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2164,6 +2421,11 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__XUAT_KHO__CREATE__59FA5E80" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO1" Relationship="Self.FK__XUAT_KHO__MA_NHA__59063A47" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO2" Relationship="Self.FK__XUAT_KHO__UPDATE__5AEE82B9" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
+          <NavigationProperty Name="TRA_HANG_NCC" Relationship="SMSModel.FK__TRA_HANG___CREAT__6166761E" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC" />
+          <NavigationProperty Name="TRA_HANG_NCC_CHI_TIET" Relationship="SMSModel.FK__TRA_HANG___CREAT__690797E6" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC_CHI_TIET" />
+          <NavigationProperty Name="TRA_HANG_NCC1" Relationship="SMSModel.FK__TRA_HANG___NGUOI__607251E5" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC" />
+          <NavigationProperty Name="TRA_HANG_NCC2" Relationship="SMSModel.FK__TRA_HANG___UPDAT__625A9A57" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC" />
+          <NavigationProperty Name="TRA_HANG_NCC_CHI_TIET1" Relationship="SMSModel.FK__TRA_HANG___UPDAT__69FBBC1F" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC_CHI_TIET" />
         </EntityType>
         <EntityType Name="NHA_CUNG_CAP">
           <Key>
@@ -2184,6 +2446,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__NHA_CUNG___CREAT__20C1E124" FromRole="NHA_CUNG_CAP" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__NHA_CUNG___UPDAT__21B6055D" FromRole="NHA_CUNG_CAP" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHAP_KHO" Relationship="Self.FK__NHAP_KHO__MA_NHA__72C60C4A" FromRole="NHA_CUNG_CAP" ToRole="NHAP_KHO" />
+          <NavigationProperty Name="TRA_HANG_NCC" Relationship="SMSModel.FK__TRA_HANG___MA_NH__5E8A0973" FromRole="NHA_CUNG_CAP" ToRole="TRA_HANG_NCC" />
         </EntityType>
         <EntityType Name="NHA_SAN_XUAT">
           <Key>
@@ -2302,6 +2565,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__SAN_PHAM__CREATE__3B75D760" FromRole="SAN_PHAM" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__SAN_PHAM__UPDATE__3C69FB99" FromRole="SAN_PHAM" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHA_SAN_XUAT" Relationship="Self.FK__SAN_PHAM__MA_NHA__3A81B327" FromRole="SAN_PHAM" ToRole="NHA_SAN_XUAT" />
+          <NavigationProperty Name="TRA_HANG_NCC_CHI_TIET" Relationship="SMSModel.FK__TRA_HANG___MA_SA__681373AD" FromRole="SAN_PHAM" ToRole="TRA_HANG_NCC_CHI_TIET" />
         </EntityType>
         <EntityType Name="SMS_MASTER">
           <Key>
@@ -2341,6 +2605,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__TRA_HANG__UPDATE__68487DD7" FromRole="TRA_HANG" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHAP_KHO" Relationship="Self.FK__NHAP_KHO__MA_PHI__74AE54BC" FromRole="TRA_HANG" ToRole="NHAP_KHO" />
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__TRA_HANG__MA_XUA__656C112C" FromRole="TRA_HANG" ToRole="XUAT_KHO" />
+          <NavigationProperty Name="TRA_HANG_NCC" Relationship="SMSModel.FK__TRA_HANG___MA_PH__5F7E2DAC" FromRole="TRA_HANG" ToRole="TRA_HANG_NCC" />
         </EntityType>
         <EntityType Name="XUAT_KHO">
           <Key>
@@ -3717,7 +3982,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GET_KHACH_HANG_ALERT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SMSModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -3731,7 +3996,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO" />
           <FunctionImport Name="SP_GET_TON_KHO_ALERT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_VALUE_OF_INVENTORY" ReturnType="Collection(Double)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -3752,6 +4017,96 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="TRA_HANG_NCC" EntityType="SMSModel.TRA_HANG_NCC" />
+          <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="SMSModel.TRA_HANG_NCC_CHI_TIET" />
+          <EntitySet Name="V_NHAP_XUAT_DETAIL" EntityType="SMSModel.V_NHAP_XUAT_DETAIL" />
+          <AssociationSet Name="FK__TRA_HANG___CREAT__6166761E" Association="SMSModel.FK__TRA_HANG___CREAT__6166761E">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___CREAT__690797E6" Association="SMSModel.FK__TRA_HANG___CREAT__690797E6">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___NGUOI__607251E5" Association="SMSModel.FK__TRA_HANG___NGUOI__607251E5">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__625A9A57" Association="SMSModel.FK__TRA_HANG___UPDAT__625A9A57">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___UPDAT__69FBBC1F" Association="SMSModel.FK__TRA_HANG___UPDAT__69FBBC1F">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_NH__5E8A0973" Association="SMSModel.FK__TRA_HANG___MA_NH__5E8A0973">
+            <End Role="NHA_CUNG_CAP" EntitySet="NHA_CUNG_CAP" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_SA__681373AD" Association="SMSModel.FK__TRA_HANG___MA_SA__681373AD">
+            <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__5F7E2DAC" Association="SMSModel.FK__TRA_HANG___MA_PH__5F7E2DAC">
+            <End Role="TRA_HANG" EntitySet="TRA_HANG" />
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TRA_HANG___MA_PH__671F4F74" Association="SMSModel.FK__TRA_HANG___MA_PH__671F4F74">
+            <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
+            <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
+          </AssociationSet>
+          <FunctionImport Name="SP_EXPORT_REPORT" ReturnType="Collection(SMSModel.SP_EXPORT_REPORT_Result)">
+            <Parameter Name="KIND" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_EXPORT_REPORT_DETAIL" ReturnType="Collection(SMSModel.SP_EXPORT_REPORT_DETAIL_Result)">
+            <Parameter Name="KIND" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_EXPORT_REPORT_SUM" ReturnType="Collection(Double)">
+            <Parameter Name="KIND" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_DON_VI_TINH" ReturnType="Collection(SMSModel.SP_GET_DON_VI_TINH_Result)">
+          <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_NHAP_XUAT" ReturnType="Collection(SMSModel.SP_GET_NHAP_XUAT_Result)">
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_TON_KHO_ALL">
+          <Parameter Name="NAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_IMPORT_REPORTER_SUM" ReturnType="Collection(Double)">
+            <Parameter Name="KIND" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="STMA_GET_GIA_TRI_HANG_BAN_TON">
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
+            <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
@@ -3789,6 +4144,197 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
           <Property Type="Double" Name="VALUE" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="TRA_HANG_NCC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_NHA_CUNG_CAP" Type="Int32" />
+          <Property Name="MA_PHIEU_TRA" Type="Int32" />
+          <Property Name="NGAY_LAP_PHIEU" Type="DateTime" Precision="0" />
+          <Property Name="NGUOI_LAP_PHIEU" Type="Int32" />
+          <Property Name="GHI_CHU" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CREATE_BY" Type="Int32" />
+          <Property Name="UPDATE_BY" Type="Int32" />
+          <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="NGUOI_DUNG" Relationship="SMSModel.FK__TRA_HANG___CREAT__6166761E" FromRole="TRA_HANG_NCC" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__TRA_HANG___NGUOI__607251E5" FromRole="TRA_HANG_NCC" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG2" Relationship="SMSModel.FK__TRA_HANG___UPDAT__625A9A57" FromRole="TRA_HANG_NCC" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NHA_CUNG_CAP" Relationship="SMSModel.FK__TRA_HANG___MA_NH__5E8A0973" FromRole="TRA_HANG_NCC" ToRole="NHA_CUNG_CAP" />
+          <NavigationProperty Name="TRA_HANG" Relationship="SMSModel.FK__TRA_HANG___MA_PH__5F7E2DAC" FromRole="TRA_HANG_NCC" ToRole="TRA_HANG" />
+          <NavigationProperty Name="TRA_HANG_NCC_CHI_TIET" Relationship="SMSModel.FK__TRA_HANG___MA_PH__671F4F74" FromRole="TRA_HANG_NCC" ToRole="TRA_HANG_NCC_CHI_TIET" />
+        </EntityType>
+        <EntityType Name="TRA_HANG_NCC_CHI_TIET">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_PHIEU_TRA_NCC" Type="Int32" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG" Type="Double" />
+          <Property Name="DON_GIA" Type="Double" />
+          <Property Name="CREATE_BY" Type="Int32" />
+          <Property Name="UPDATE_BY" Type="Int32" />
+          <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="NGUOI_DUNG" Relationship="SMSModel.FK__TRA_HANG___CREAT__690797E6" FromRole="TRA_HANG_NCC_CHI_TIET" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG1" Relationship="SMSModel.FK__TRA_HANG___UPDAT__69FBBC1F" FromRole="TRA_HANG_NCC_CHI_TIET" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="SAN_PHAM" Relationship="SMSModel.FK__TRA_HANG___MA_SA__681373AD" FromRole="TRA_HANG_NCC_CHI_TIET" ToRole="SAN_PHAM" />
+          <NavigationProperty Name="TRA_HANG_NCC" Relationship="SMSModel.FK__TRA_HANG___MA_PH__671F4F74" FromRole="TRA_HANG_NCC_CHI_TIET" ToRole="TRA_HANG_NCC" />
+        </EntityType>
+        <EntityType Name="V_NHAP_XUAT_DETAIL">
+          <Key>
+            <PropertyRef Name="SO_LUONG_NHAP" />
+            <PropertyRef Name="SO_LUONG_XUAT" />
+          </Key>
+          <Property Name="MA_KHO" Type="Int32" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="NGAY_NHAP_XUAT" Type="DateTime" Precision="0" />
+          <Property Name="SO_LUONG_NHAP" Type="Double" Nullable="false" />
+          <Property Name="SO_LUONG_XUAT" Type="Double" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__TRA_HANG___CREAT__6166761E">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___CREAT__690797E6">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC_CHI_TIET" Role="TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___NGUOI__607251E5">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="NGUOI_LAP_PHIEU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___UPDAT__625A9A57">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___UPDAT__69FBBC1F">
+          <End Type="SMSModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC_CHI_TIET" Role="TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_NH__5E8A0973">
+          <End Type="SMSModel.NHA_CUNG_CAP" Role="NHA_CUNG_CAP" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHA_CUNG_CAP">
+              <PropertyRef Name="MA_NHA_CUNG_CAP" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="MA_NHA_CUNG_CAP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_SA__681373AD">
+          <End Type="SMSModel.SAN_PHAM" Role="SAN_PHAM" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC_CHI_TIET" Role="TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAN_PHAM">
+              <PropertyRef Name="MA_SAN_PHAM" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="MA_SAN_PHAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_PH__5F7E2DAC">
+          <End Type="SMSModel.TRA_HANG" Role="TRA_HANG" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRA_HANG">
+              <PropertyRef Name="MA_TRA_HANG" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC">
+              <PropertyRef Name="MA_PHIEU_TRA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TRA_HANG___MA_PH__671F4F74">
+          <End Type="SMSModel.TRA_HANG_NCC" Role="TRA_HANG_NCC" Multiplicity="0..1" />
+          <End Type="SMSModel.TRA_HANG_NCC_CHI_TIET" Role="TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRA_HANG_NCC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TRA_HANG_NCC_CHI_TIET">
+              <PropertyRef Name="MA_PHIEU_TRA_NCC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_EXPORT_REPORT_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="SO_LUONG" Nullable="false" />
+          <Property Type="Double" Name="GIA_XUAT" Nullable="true" />
+          <Property Type="Double" Name="VALUE" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_EXPORT_REPORT_DETAIL_Result">
+          <Property Type="DateTime" Name="NGAY_XUAT" Nullable="true" />
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="SO_LUONG" Nullable="false" />
+          <Property Type="Double" Name="GIA_XUAT" Nullable="true" />
+          <Property Type="Double" Name="VALUE" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_DON_VI_TINH_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="HE_SO" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_NHAP_XUAT_Result">
+          <Property Type="DateTime" Name="NGAY_NHAP_XUAT" Nullable="true" />
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="SO_LUONG_NHAP" Nullable="false" />
+          <Property Type="Double" Name="SO_LUONG_XUAT" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4293,6 +4839,101 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="TRA_HANG_NCC">
+            <EntityTypeMapping TypeName="SMSModel.TRA_HANG_NCC">
+              <MappingFragment StoreEntitySet="TRA_HANG_NCC">
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <ScalarProperty Name="NGUOI_LAP_PHIEU" ColumnName="NGUOI_LAP_PHIEU" />
+                <ScalarProperty Name="NGAY_LAP_PHIEU" ColumnName="NGAY_LAP_PHIEU" />
+                <ScalarProperty Name="MA_PHIEU_TRA" ColumnName="MA_PHIEU_TRA" />
+                <ScalarProperty Name="MA_NHA_CUNG_CAP" ColumnName="MA_NHA_CUNG_CAP" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRA_HANG_NCC_CHI_TIET">
+            <EntityTypeMapping TypeName="SMSModel.TRA_HANG_NCC_CHI_TIET">
+              <MappingFragment StoreEntitySet="TRA_HANG_NCC_CHI_TIET">
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="DON_GIA" ColumnName="DON_GIA" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="MA_PHIEU_TRA_NCC" ColumnName="MA_PHIEU_TRA_NCC" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_NHAP_XUAT_DETAIL">
+            <EntityTypeMapping TypeName="SMSModel.V_NHAP_XUAT_DETAIL">
+              <MappingFragment StoreEntitySet="V_NHAP_XUAT_DETAIL">
+                <ScalarProperty Name="SO_LUONG_XUAT" ColumnName="SO_LUONG_XUAT" />
+                <ScalarProperty Name="SO_LUONG_NHAP" ColumnName="SO_LUONG_NHAP" />
+                <ScalarProperty Name="NGAY_NHAP_XUAT" ColumnName="NGAY_NHAP_XUAT" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_EXPORT_REPORT" FunctionName="SMSModel.Store.SP_EXPORT_REPORT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SMSModel.SP_EXPORT_REPORT_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="GIA_XUAT" ColumnName="GIA_XUAT" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_EXPORT_REPORT_DETAIL" FunctionName="SMSModel.Store.SP_EXPORT_REPORT_DETAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SMSModel.SP_EXPORT_REPORT_DETAIL_Result">
+                <ScalarProperty Name="NGAY_XUAT" ColumnName="NGAY_XUAT" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="GIA_XUAT" ColumnName="GIA_XUAT" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_EXPORT_REPORT_SUM" FunctionName="SMSModel.Store.SP_EXPORT_REPORT_SUM" />
+          <FunctionImportMapping FunctionImportName="SP_GET_DON_VI_TINH" FunctionName="SMSModel.Store.SP_GET_DON_VI_TINH">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SMSModel.SP_GET_DON_VI_TINH_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_NHAP_XUAT" FunctionName="SMSModel.Store.SP_GET_NHAP_XUAT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SMSModel.SP_GET_NHAP_XUAT_Result">
+                <ScalarProperty Name="NGAY_NHAP_XUAT" ColumnName="NGAY_NHAP_XUAT" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="SO_LUONG_NHAP" ColumnName="SO_LUONG_NHAP" />
+                <ScalarProperty Name="SO_LUONG_XUAT" ColumnName="SO_LUONG_XUAT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_TON_KHO_ALL" FunctionName="SMSModel.Store.SP_GET_TON_KHO_ALL" />
+          <FunctionImportMapping FunctionImportName="SP_IMPORT_REPORTER_SUM" FunctionName="SMSModel.Store.SP_IMPORT_REPORTER_SUM" />
+          <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SMSModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
