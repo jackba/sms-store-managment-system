@@ -332,6 +332,14 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\images\bill.png" />
+    <Content Include="Content\images\buycart.png" />
+    <Content Include="Content\images\charge.png" />
+    <Content Include="Content\images\customer.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\provider_back.png" />
+    <Content Include="Content\images\refund.png" />
+    <Content Include="Content\images\role.png" />
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
@@ -401,6 +409,7 @@
     <Content Include="Content\NguoiDung.css" />
     <Content Include="Content\NhaCungCap.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\PhanQuyen.css" />
     <Content Include="Content\SanPham.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SmsMaster.css" />
@@ -559,6 +568,9 @@
     <Content Include="Views\PhanQuyen\AddNew.cshtml" />
     <Content Include="Views\PhanQuyen\Edit.cshtml" />
     <Content Include="Views\PhanQuyen\Index.cshtml" />
+    <Content Include="Views\SanPham\AddNewConvertUnitOfProducts.cshtml" />
+    <Content Include="Views\SanPham\ConvertUnitOfProducts.cshtml" />
+    <Content Include="Views\SanPham\EditConvertUnitOfProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
