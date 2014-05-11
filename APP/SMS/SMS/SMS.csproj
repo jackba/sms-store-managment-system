@@ -150,6 +150,7 @@
     <Compile Include="Controllers\KhuVucController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
+    <Compile Include="Controllers\PhanQuyenController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\BanHangController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
@@ -240,7 +241,19 @@
     <Compile Include="Models\SMS_MASTER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_EXPORT_REPORT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">
@@ -252,7 +265,16 @@
     <Compile Include="Models\TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TRA_HANG_NCC.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_NHAP_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_NHAP_XUAT_DETAIL.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
@@ -534,6 +556,9 @@
     <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
     <Content Include="Views\QuanLyKho\FifoReport.cshtml" />
     <Content Include="Views\BanHang\LapHoaDon.cshtml" />
+    <Content Include="Views\PhanQuyen\AddNew.cshtml" />
+    <Content Include="Views\PhanQuyen\Edit.cshtml" />
+    <Content Include="Views\PhanQuyen\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
