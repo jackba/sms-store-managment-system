@@ -130,14 +130,12 @@ namespace SMS.Controllers
         }
         /*Tattt add 2014/05/10 start*/
         [HttpPost]
-        public JsonResult FindDetailCustomer(string prefixText,string typeCustomer)
+        public JsonResult FindDetailCustomer(string prefixText)
         {
             var ctx = new SmsContext();
-            int kind = 0 ; 
-            int.TryParse(typeCustomer, out kind);
+
             var suggestedUsers = from x in ctx.KHACH_HANG
                                  where (x.TEN_KHACH_HANG.StartsWith(prefixText)
-                                        && x.KIND == kind
                                         && x.ACTIVE.Equals("A"))
                                  select new
                                  {
@@ -146,7 +144,8 @@ namespace SMS.Controllers
                                      cardNo = x.MA_THE_KHACH_HANG,
                                      address = x.DIA_CHI,
                                      fone = x.SO_DIEN_THOAI,
-                                     mail = x.EMAIL
+                                     mail = x.EMAIL,
+                                     kind = x.KIND
                                  };
             var result = Json(suggestedUsers.Take(5).ToList());
             return result;

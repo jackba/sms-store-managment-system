@@ -22,7 +22,10 @@ namespace SMS.Controllers
     {
         [HttpGet]
         public ActionResult LapHoaDon()
-        {          
+        {
+            var ctx = new SmsContext();
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            ViewBag.KhoList = ListKho;
             return View();
         }
 
@@ -89,10 +92,11 @@ namespace SMS.Controllers
         public JsonResult CheckingProductInAllStore(string maSP)
         {
             var ctx = new SmsContext();
+
             int productNo = Convert.ToInt32(maSP);
             var tonkho = ctx.Database.SqlQuery<CheckingStoreModel>("exec SP_GET_TON_KHO_BY_ID @INPUT_ID ", 
                 new SqlParameter("INPUT_ID", productNo)).ToList<CheckingStoreModel>().Take(SystemConstant.MAX_ROWS);
-
+            
             var result = Json(tonkho.ToList());
             return result;
         }

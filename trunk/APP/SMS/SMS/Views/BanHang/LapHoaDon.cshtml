@@ -28,8 +28,7 @@
         // hide 
         hideRelationProduct();
         hideRelationCustomer();
-        //set default value
-        $('#typeCustomers').attr("disabled", "disabled");
+
         //initial combobox store
         $('#typeStore').html(createStore());
         /*disabled export excel*/
@@ -37,10 +36,57 @@
         $('#exportExcel').css("background-color", "#ECECEC");
 
         /**AUTOCOMPLETE**/
+        // Customer name
+        $("#TenKhachHang").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/KhachHang/FindDetailCustomer", data: "{ 'prefixText': '" + request.term + "' }",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    lable: item.name,
+                                    value: item.name,
+                                    id: item.id,
+                                    cardNo: item.cardNo,
+                                    address: item.address,
+                                    fone: item.fone,
+                                    email: item.mail,
+                                    kind : item.kind
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                $('#kindCustomer').val('0');
+            },
+            select: function (event, ui) {
+                $('#kindCustomer').val(ui.item.kind);
+                $("#typeCustomers").val(ui.item.kind);
+
+                setRelationCustomer(ui.item, true);
+                $('#relationCustomer').removeClass('relationCustomerShow');
+                $('#relationCustomer').addClass('HideElement');
+
+                return false;
+            },
+            focus: function (event, ui) {
+                setRelationCustomer(ui.item);
+
+                $('#relationCustomer').removeClass('HideElement');
+                $('#relationCustomer').addClass('relationCustomerShow');
+            },
+            close: function () {
+                hideRelationCustomer();
+            },
+            minLength: 1
+
+        })
+        // Product name
         $("#TenSanPham").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
+                    url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     dataFilter: function (data) { return data; }, success:
                         function (data) {
@@ -56,6 +102,7 @@
                             }))
                         }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
+
             },
             select: function (event, ui) {
                 setFixedField(ui.item);
@@ -124,75 +171,17 @@ function hideRelationCustomer() {
     $('#relationCustomer').removeClass('relationCustomerShow');
     $('#relationCustomer').addClass('HideElement');
 }
-function addCommaNumberic(ctrlID) {
-    $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
-}
-function saveCurrentType() {
-    var selected = $("input[type='radio']:checked");
-    if (selected.length > 0) {
-        $('#currTypeCustomer').val(selected.val());
+function addCommaNumberic(ctrlID, isSpanTag) {
+    if (isSpanTag == true) {
+        $(ctrlID).html($(ctrlID).html().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+    } else {
+        $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
     }
+    
 }
-function changeTypeCustomer(value) {
-    var selected = $("input[type='radio']:checked");
-    if (selected.length > 0) {
-        if(selected.val() == '1'){
-            $('#typeCustomers').attr("disabled", "disabled");
 
-           
-            $('#TenKhachHang').autocomplete("destroy");
-            $('#TenKhachHang').removeData('autocomplete');
-           
-        } else {
-            $('#typeCustomers').removeAttr("disabled", "disabled");
-            addAutoComplete2Customer();
-        }
-        
-    }
-}
-function addAutoComplete2Customer(){
-    /**AUTOCOMPLETE**/
-        $("#TenKhachHang").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/KhachHang/FindDetailCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $('#typeCustomers').val() + "'}",
-                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; }, success:
-                        function (data) {
-                            response($.map(data, function (item) {
-                                return {
-                                    lable : item.name,                                   
-                                    value: item.name,
-                                    id: item.id,
-                                    cardNo: item.cardNo,
-                                    address: item.address,
-                                    fone: item.fone,
-                                    email: item.mail
-                                }
-                            }))
-                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                });
-            },
-            select: function (event, ui) {
-
-                setRelationCustomer(ui.item);
-                $('#relationCustomer').removeClass('relationCustomerShow');
-                $('#relationCustomer').addClass('HideElement');
-               
-                return false;
-            },
-            focus: function (event, ui) {              
-                setRelationCustomer(ui.item);
- 
-                $('#relationCustomer').removeClass('HideElement');
-                $('#relationCustomer').addClass('relationCustomerShow');
-            },
-            close: function () {
-                hideRelationCustomer();
-            },
-            minLength: 1
-
-        })
+function changeTypeCustomer() {
+    $('#kindCustomer').val($('#typeCustomers').val());
 }
 
 function setFixedField(item) {
@@ -205,18 +194,30 @@ function setFixedField(item) {
     $('#ChietKhau').val(item.discount);
     addCommaNumberic('#ChietKhau');
 }
-function setRelationProduct(item) {
-
-    setFixedField(item);
-
+function setRelationProduct(item, isSelected) {
     $('#S_MaSanPham').html(item.id);
     $('#S_TenSanPham').html(item.label);
-    $('#S_GiaBan').html($('#GiaBan').val());
-    $('#S_ChietKhau').html($('#ChietKhau').val());
-    $('#S_GiaThuc').html($('#GiaThuc').val());
+    if (isSelected == true) {
+        setFixedField(item);
+        $('#S_GiaBan').html($('#GiaBan').val());
+        $('#S_ChietKhau').html($('#ChietKhau').val());
+        $('#S_GiaThuc').html($('#GiaThuc').val());
+    } else {
+        $('#S_GiaBan').html(item.price);
+        addCommaNumberic('#S_GiaBan', true);
+        $('#S_ChietKhau').html(item.discount);
+        addCommaNumberic('#GiaBan',true);
+        var priceReal = CalcRealPrice(item.price, item.discount, true);
+        $('#S_GiaThuc').html(priceReal);
+        addCommaNumberic('#S_GiaThuc', true);
+    }
+    
+
+   
+   
     //TODO :
 }
-function setRelationCustomer(item) {
+function setRelationCustomer(item, isSelected) {
 
     $('#S_MaKhachHang').html(item.id);
     $('#S_TenKhachHang').html(item.label);
@@ -224,10 +225,12 @@ function setRelationCustomer(item) {
     $('#S_DiaChi').html(item.address);
     $('#S_SoDienThoai').html(item.fone);
     $('#S_Email').html(item.email);
+    if (isSelected == true) {
+        $('#MaKhachHang').val(item.id);
+        $('#TenKhachHang').val(item.label);
+        $('#DiaChi').html(item.address);
+    }
 
-    $('#MaKhachHang').val(item.id);
-    $('#TenKhachHang').val(item.label);
-    $('#DiaChi').html(item.address);
 }
 function setStoreInformation(item) {
     var result = '';
@@ -237,11 +240,13 @@ function setStoreInformation(item) {
         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
         success:
             function (data) {
-                var buffer = '<br />';
-                //$.each(data, function (i, item) {
-                //    buffer += '<span><strong>  + ' + 'Kho 1' + ' : </strong> </span><span>' + item.TON_KHO_1 + ' </span>';
-                //    $('#toolTipRelationProduct').append(buffer);
-                //});
+                $.each(data, function (i, item) {
+                    $('#store_1').html(item.TON_KHO_1);
+                    $('#store_2').html(item.TON_KHO_2);
+                    $('#store_3').html(item.TON_KHO_3);
+                    $('#store_4').html(item.TON_KHO_4);
+                    $('#store_5').html(item.TON_KHO_5);
+                });
             },
         error:
             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -397,13 +402,18 @@ function prependNewRowToTable() {
     $('#tableSearch #ChietKhau').val('')
     $('#tableSearch #GiaThuc').val('')
 }
-function CalcRealPrice(price, discount) {
+function CalcRealPrice(price, discount, isReturn) {
+    var result = '';
     if (price == 0 || discount == 0) {
-        $('#tableSearch #GiaThuc').val(price);
+        result = price;
     } else {
-        $('#tableSearch #GiaThuc').val(roundToTwo(price - ((price * discount) / 100)));
+        result = roundToTwo(price - ((price * discount) / 100));
     }
-    
+    if (isReturn == true) {
+        return result;
+    } else {
+        $('#tableSearch #GiaThuc').val(result);
+    }
 }
 function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
@@ -517,61 +527,59 @@ function RemoveRougeChar(convertString) {
 </script>
 }
 <hr />
-<div>
-    <span style="font-size:16px;">> Loại khách hàng : </span>
-    <br />
+<div id="customerArea">
+    <table id="tableCustomer" class="tableSearch tableBasic">
+        <tr>
+            <td>
+                <div class="titleItem">Tên khách hàng </div>
+                <br />
+                <div>
+                    <input type="text" id="TenKhachHang" style="margin-left: 2px;"/>
+                    <input type="hidden" id="MaKhachHang"  />
+                    <input type="hidden" id="kindCustomer" />
+                </div>
+                
+            </td>
+            <td>
+                <div>
+                    <span style="font-size:16px;">Loại nghiệp vụ : </span>
+                    <br />
 
-    <div style="margin-left: 45px;">
-        <input type="radio" name="groupcustomer" id="Type1" checked="checked" value="1" onchange="changeTypeCustomer();">
-        <span style="font-size:15px;"> Khách hàng vãng lai</span>
-        <br />
-        <input type="radio" name="groupcustomer" id="Type2" value="2" onchange="changeTypeCustomer();">
-        <span style="font-size:15px;"> Khách hàng trong danh mục</span>
+                    <div>
+                        <select id="typeCustomers" class="ComboboxCustomer" onchange="changeTypeCustomer();">
+                            <option value="0"> VL - 00 </option>
+                            <option value="1"> L1 - 01 </option>
+                            <option value="2"> L2 - 02 </option>
+                            <option value="3"> L3 - 03 </option>
+                        </select>
 
-    <select id="typeCustomers"  class="ComboboxCustomer">
-        <option value="1"> Khách hàng công ty , công trình</option>
-        <option value="2"> Khách hàng thân thiết</option>
-        <option value="2"> Khách hàng thường</option>
-    </select>
-   <div id="customerArea">
-       <table id="tableCustomer" class="tableBasic" >
-           <tr>
-               <td id="colMaKH" style="display:none;">
-                   <div>
-                       <input type="hidden" id="MaKhachHang" />
-                   </div>
-               </td>
-               <td>
-                   <div class="titleItem">Tên khách hàng </div>
-                   <br />
-                   <div >
-                       <input type="text" id="TenKhachHang" class="colCustomerName" />
-                   </div>
-                   
-               </td>
-               <td>
-                   <div id="relationCustomer">
-                       <div>
-                           <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
-                           <br />
-                           <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
-                           <br />
-                           <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
-                           <br />
-                           <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
-                           <br />
-                           <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
-                           <br />
-                           <span><strong>- Email : </strong> </span><span id="S_Email"></span>
+                    </div>
+                    <!--relationCustomer-->
+                    <div id="relationCustomer">
+                        <div>
+                            <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
+                            <br />
+                            <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
+                            <br />
+                            <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
+                            <br />
+                            <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
+                            <br />
+                            <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
+                            <br />
+                            <span><strong>- Email : </strong> </span><span id="S_Email"></span>
 
-                       </div>
-                   </div>
-               </td>
-           </tr>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
 
-       </table>
-   </div>
-</div>
+    </table>
+
+
 
 
 <div>
@@ -605,12 +613,40 @@ function RemoveRougeChar(convertString) {
                         <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
                         <br />
                         <span><strong>- Số lượng: </strong> </span>
-                        <br />
-                        <span><strong>  + Cửa hàng 1: </strong> </span><span> 10 </span>
-                        <br />
-                        <span><strong>  + Cửa hàng 2: </strong> </span><span> 12 </span>
-                        <br />
-                        <span><strong>  + Cửa hàng 3: </strong> </span><span> 14 </span>
+                        @{
+                            int j = 0;
+                    foreach (var Kho in ViewBag.KhoList)
+                    {
+                        j++;
+                        if (j <= 5)
+                        {
+                            switch (j)
+                            {
+                                case 1:
+                                    <br />
+                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
+                                    break;
+                               case 2:
+                                    <br />
+                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
+                                    break;
+                               case 3:
+                                    <br />
+                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
+                                    break;
+                               case 4:
+                                    <br />
+                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
+                                    break;
+                               case 5:
+                                    <br />
+                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
+                                    break;
+                            }
+                        }
+                    }
+}
+
                     </div>
                 </div>
             </td>
@@ -647,18 +683,18 @@ function RemoveRougeChar(convertString) {
                     <select id="typeDonViTinh" class="Combobox"></select>
                 </div>
             </td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
             <td>
                 <div class="titleItem">Số lượng</div>
                 <br />
                 <div>
-                    <input type="text" id="SoLuong" maxlength="5"
-                            class="alignNumberic" />
+                    <input type="text" id="SoLuong" maxlength="5" style="width: 110px !important;"
+                           class="alignNumberic" />
                 </div>
             </td>
+            <td></td>
+        </tr>
+        <tr>
+
             <td>
                 <div class="titleItem">Ngày bán</div>
                 <br />
@@ -675,7 +711,7 @@ function RemoveRougeChar(convertString) {
                             class="datePicker alignCenter" />
                 </div>
             </td>
-
+            <td></td>
         </tr>
         <tr>
             <td colspan="3">
