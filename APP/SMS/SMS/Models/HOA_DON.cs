@@ -38,6 +38,7 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
         public Nullable<double> SO_TIEN_KHACH_TRA { get; set; }
         public Nullable<double> SO_TIEN_NO_GOI_DAU { get; set; }
+        public Nullable<int> MA_NHAN_VIEN_THU_TIEN { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
@@ -45,6 +46,7 @@ namespace SMS.Models
         public virtual KHACH_HANG KHACH_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG3 { get; set; }
+        public virtual NGUOI_DUNG NGUOI_DUNG4 { get; set; }
         public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
     }
