@@ -274,16 +274,17 @@ div.titleItem{
 select.ComboboxCustomer {
     height: 30px;
     font-size: 15px;
-    margin-bottom: 10px;
-    width: 255px;
-  
+    margin-bottom: 7px;
+    width: 238px;
+    margin-top: 7px;
 }
 select.Combobox {
     height: 30px;
     font-size: 15px;
-    margin-bottom: 10px;
-    width: 225px;
-    float: right;
+    width: 238px;   
+    margin-bottom: 3px;
+    margin-top: 7px;
+
 }
 .alignCenter{
     text-align:center;
