@@ -7,10 +7,11 @@ using SMS.Models;
 using System.Data.SqlClient;
 using PagedList;
 using System.Data;
-
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [CustomActionFilter]
     public class QuanLyKhoController : Controller
     {
         //

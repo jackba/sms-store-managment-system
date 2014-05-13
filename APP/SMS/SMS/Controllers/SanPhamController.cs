@@ -11,12 +11,14 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Web.UI;
 using System.Text;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
 
     [Authorize]
     [HandleError]
+    [CustomActionFilter]
     public class SanPhamController : Controller
     {
         public const string SEARCH_ADVANCE = "SearchAdvanceCondition";

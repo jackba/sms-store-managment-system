@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SMS.Models;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [CustomActionFilter]
     public class SaleReportController : Controller
     {
         //
