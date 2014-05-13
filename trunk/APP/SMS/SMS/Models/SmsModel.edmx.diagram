@@ -4,126 +4,128 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c58b2a42d9fa4fb0b5ae74bda045a64c" Name="Diagram1" ZoomLevel="32">
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="54.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="42.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="42.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_XUAT_KHO" Width="1.5" PointX="5.25" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHUYEN_DOI_DON_VI_TINH" Width="1.5" PointX="7.5" PointY="48" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.DON_VI_TINH" Width="1.5" PointX="5.25" PointY="55.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.HOA_DON" Width="1.5" PointX="5.25" PointY="47.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHACH_HANG" Width="1.5" PointX="10.5" PointY="59.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHACH_HANG_DEBIT_HIST" Width="1.5" PointX="12.75" PointY="48.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHO" Width="1.5" PointX="5.25" PointY="72.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHU_VUC" Width="1.5" PointX="5.25" PointY="78" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KIEM_KHO_HISTORY" Width="1.5" PointX="17.25" PointY="48.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NGUOI_DUNG" Width="1.5" PointX="3" PointY="36.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHA_CUNG_CAP" Width="1.5" PointX="5.25" PointY="81.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHA_SAN_XUAT" Width="1.5" PointX="5.25" PointY="86.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHAP_KHO" Width="1.5" PointX="15" PointY="58.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHOM_NGUOI_DUNG" Width="1.5" PointX="0.75" PointY="43" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.PHAN_QUYEN" Width="1.5" PointX="8.25" PointY="36.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.SAN_PHAM" Width="1.5" PointX="7.5" PointY="60.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.SMS_MASTER" Width="1.5" PointX="5.25" PointY="95.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG" Width="1.5" PointX="12.75" PointY="42.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC" Width="1.5" PointX="18" PointY="57.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="12.75" PointY="54.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.XUAT_KHO" Width="1.5" PointX="10.5" PointY="52.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_HOA_DON" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_NHAP_KHO" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_NHAP_XUAT_DETAIL" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_NHAP_XUAT_KHO" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_XUAT_KHO" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__5070F446" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_HO__4E88ABD4" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_KH__04E4BC85" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__4F7CD00D" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__5165187F" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__7A672E12" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_NH__787EE5A0" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__797309D9" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__7B5B524B" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__6C190EBB" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__6B24EA82" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_TR__6A30C649" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__6D0D32F4" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__5EBF139D" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_SA__5DCAEF64" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_XU__5CD6CB2B" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHI_TIET___UPDAT__5FB337D6" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHUYEN_DO__CREAT__4316F928" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHUYEN_DO__MA_DO__4222D4EF" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHUYEN_DO__MA_SA__412EB0B6" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__CHUYEN_DO__UPDAT__440B1D61" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__DON_VI_TI__CREAT__33D4B598" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__DON_VI_TI__UPDAT__34C8D9D1" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SAN_PHAM__MA_DON__398D8EEE" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__CREATE___4BAC3F29" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__EDIT_AP__4AB81AF0" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__MA_KHAC__48CFD27E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__MA_NHAN__49C3F6B7" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__MA_NHAN__662B2B3B" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__HOA_DON__UPDATE___4CA06362" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__MA_HO__367C1819" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_HOA__5629CD9C" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__CREAT__1B0907CE" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__MA_KH__1A14E395" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__MA_KH__2EDAF651" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__UPDAT__1BFD2C07" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__CREAT__30C33EC3" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__MA_NH__2FCF1A8A" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHACH_HAN__UPDAT__31B762FC" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHO__CREATE_BY__0EA330E9" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHO__MA_NGUOI_DU__03F0984C" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHO__UPDATE_BY__0F975522" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NGUOI_DUN__MA_KH__08EA5793" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__MA_KHO__73BA3083" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_KHO__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_KHO__5812160E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHU_VUC__CREATE___145C0A3F" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KHU_VUC__UPDATE___15502E78" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KIEM_KHO___CREAT__01142BA1" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KIEM_KHO___MA_NH__00200768" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__KIEM_KHO___UPDAT__02084FDA" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NGUOI_DUN__CREAT__0AD2A005" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NGUOI_DUN__MA_NH__09DE7BCC" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NGUOI_DUN__UPDAT__0BC6C43E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHA_CUNG___CREAT__20C1E124" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHA_CUNG___UPDAT__21B6055D" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHA_SAN_X__CREAT__2E1BDC42" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHA_SAN_X__UPDAT__2F10007B" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__CREATE__75A278F5" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__NHAN_V__71D1E811" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__UPDATE__76969D2E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHOM_NGUO__CREAT__0CBAE877" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHOM_NGUO__UPDAT__0DAF0CB0" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__CREAT__286302EC" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__UPDAT__29572725" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SAN_PHAM__CREATE__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SAN_PHAM__UPDATE__3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SMS_MASTE__CREAT__29221CFB" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SMS_MASTE__UPDAT__2A164134" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___CREAT__51300E55" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___CREAT__58D1301D" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___NGUOI__503BEA1C" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___UPDAT__5224328E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___UPDAT__59C55456" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG__CREATE__6754599E" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG__NHAN_V__66603565" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG__UPDATE__68487DD7" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__CREATE__59FA5E80" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_NHA__59063A47" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__UPDATE__5AEE82B9" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__MA_NHA__72C60C4A" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_NH__4E53A1AA" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__SAN_PHAM__MA_NHA__3A81B327" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__NHAP_KHO__MA_PHI__74AE54BC" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_SA__57DD0BE4" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__4F47C5E3" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__656C112C" ManuallyRouted="false" />
-        <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__56E8E7AB" ManuallyRouted="false" />
+      <Diagram DiagramId="d2c8523289cb47aebafdac53dc035bbc" Name="Diagram1">
+        <EntityTypeShape EntityType="SMSModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="54.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="42.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.CHI_TIET_XUAT_KHO" Width="1.5" PointX="5.25" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.CHUYEN_DOI_DON_VI_TINH" Width="1.5" PointX="7.5" PointY="48" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.CONTROLLER_PERMISSION" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.DON_VI_TINH" Width="1.5" PointX="5.25" PointY="55.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.HOA_DON" Width="1.5" PointX="5.25" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.KHACH_HANG" Width="1.5" PointX="10.5" PointY="59.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.KHACH_HANG_DEBIT_HIST" Width="1.5" PointX="12.75" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.KHO" Width="1.5" PointX="5.25" PointY="72.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.KHU_VUC" Width="1.5" PointX="5.25" PointY="78" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.KIEM_KHO_HISTORY" Width="1.5" PointX="17.25" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.NGUOI_DUNG" Width="1.5" PointX="3" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.NHA_CUNG_CAP" Width="1.5" PointX="5.25" PointY="81.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.NHA_SAN_XUAT" Width="1.5" PointX="5.25" PointY="86.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.NHAP_KHO" Width="1.5" PointX="15" PointY="58.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.NHOM_NGUOI_DUNG" Width="1.5" PointX="0.75" PointY="43" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.PHAN_QUYEN" Width="1.5" PointX="8.25" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.SAN_PHAM" Width="1.5" PointX="7.5" PointY="60.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.SMS_MASTER" Width="1.5" PointX="5.25" PointY="95.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.TRA_HANG" Width="1.5" PointX="12.75" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.TRA_HANG_NCC" Width="1.5" PointX="18" PointY="57.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="12.75" PointY="54.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.XUAT_KHO" Width="1.5" PointX="10.5" PointY="52.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.V_HOA_DON" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.V_NHAP_KHO" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.V_NHAP_XUAT_DETAIL" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.V_NHAP_XUAT_KHO" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.V_XUAT_KHO" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_HO__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_KH__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_SA__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_NH__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_SA__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__7A672E12" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_SA__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_TR__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___CREAT__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_SA__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___MA_XU__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHI_TIET___UPDAT__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__CREAT__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__MA_DO__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__MA_SA__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__CHUYEN_DO__UPDAT__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__DON_VI_TI__CREAT__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__DON_VI_TI__UPDAT__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SAN_PHAM__MA_DON__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__CREATE___4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__EDIT_AP__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__MA_KHAC__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__MA_NHAN__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__MA_NHAN__671F4F74" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__HOA_DON__UPDATE___4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_HO__2180FB33" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_HOA__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__CREAT__1B0907CE" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_KH__1A14E395" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_KH__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__UPDAT__1BFD2C07" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__CREAT__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__MA_NH__1BC821DD" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHACH_HAN__UPDAT__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHO__CREATE_BY__0EA330E9" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHO__MA_NGUOI_DU__02FC7413" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHO__UPDATE_BY__0F975522" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__MA_KH__08EA5793" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__MA_KHO__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_KHO__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_KHO__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHU_VUC__CREATE___145C0A3F" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KHU_VUC__UPDATE___15502E78" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KIEM_KHO___CREAT__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KIEM_KHO___MA_NH__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__KIEM_KHO___UPDAT__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__CREAT__0AD2A005" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__MA_NH__09DE7BCC" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NGUOI_DUN__UPDAT__0BC6C43E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHA_CUNG___CREAT__20C1E124" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHA_CUNG___UPDAT__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHA_SAN_X__CREAT__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHA_SAN_X__UPDAT__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__CREATE__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__NHAN_V__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__UPDATE__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHOM_NGUO__CREAT__0CBAE877" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHOM_NGUO__UPDAT__0DAF0CB0" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__CREAT__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__UPDAT__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SAN_PHAM__CREATE__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SAN_PHAM__UPDATE__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SMS_MASTE__CREAT__151B244E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SMS_MASTE__UPDAT__160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___CREAT__5224328E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___CREAT__5E8A0973" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___NGUOI__51300E55" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___UPDAT__531856C7" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___UPDAT__5F7E2DAC" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG__CREATE__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG__NHAN_V__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG__UPDATE__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__CREATE__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__MA_NHA__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__XUAT_KHO__UPDATE__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__MA_NHA__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_NH__4F47C5E3" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SAN_PHAM__MA_NHA__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__NHAP_KHO__MA_PHI__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NG__267ABA7A" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__PHAN_QUYE__MA_NH__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_SA__5D95E53A" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_PH__503BEA1C" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG__MA_XUA__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__TRA_HANG___MA_PH__5CA1C101" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SMSModel.V_IMPORT_DETAIL" Width="1.5" PointX="7.3746761788496169" PointY="3.799237908701989" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
