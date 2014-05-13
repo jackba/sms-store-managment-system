@@ -142,6 +142,7 @@
     <Compile Include="Controllers\HangSanXuatController.cs" />
     <Compile Include="Controllers\HoaDonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhoController.cs" />
     <Compile Include="Controllers\KhuVucController.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Controllers\PhanQuyenController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\BanHangController.cs" />
+    <Compile Include="Controllers\SaleReportController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SmsMasterController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
@@ -171,6 +173,9 @@
     <Compile Include="Models\CHUYEN_DOI_DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CONTROLLER_PERMISSION.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -183,6 +188,7 @@
     <Compile Include="Models\HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Import.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\KHACH_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
@@ -238,13 +244,33 @@
     <Compile Include="Models\SMS_MASTER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs" />
-    <Compile Include="Models\SP_EXPORT_REPORT_Result.cs" />
-    <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs" />
+    <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_EXPORT_REPORT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_HOA_DON_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_IMPORT_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_IMPORT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_INVENTORY_BY_STORE_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs" />
+    <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -254,12 +280,24 @@
     <Compile Include="Models\TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TRA_HANG_NCC.cs" />
-    <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs" />
+    <Compile Include="Models\TRA_HANG_NCC.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_HOA_DON.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_IMPORT_DETAIL.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_NHAP_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_NHAP_XUAT_DETAIL.cs" />
+    <Compile Include="Models\V_NHAP_XUAT_DETAIL.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -315,7 +353,6 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
-
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
@@ -323,7 +360,6 @@
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
-
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
@@ -332,7 +368,6 @@
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
-
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
@@ -564,6 +599,8 @@
     <Content Include="Views\SanPham\AddNewConvertUnitOfProducts.cshtml" />
     <Content Include="Views\SanPham\ConvertUnitOfProducts.cshtml" />
     <Content Include="Views\SanPham\EditConvertUnitOfProducts.cshtml" />
+    <Content Include="Views\SaleReport\SaleReport.cshtml" />
+    <Content Include="Views\Import\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
