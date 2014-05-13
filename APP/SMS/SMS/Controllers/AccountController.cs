@@ -23,7 +23,9 @@ namespace SMS.Controllers
         public ActionResult LogIn()
         {
             if (Request.IsAuthenticated)
+            {
                 return RedirectToAction("Index", "Home");
+            }
             else
                 return View();
         }
@@ -65,7 +67,7 @@ namespace SMS.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Login details are wrong.");
+                ModelState.AddModelError("", "Nhập sai user name hoặc mật khẩu");
             }
             return View(userr);
         }
@@ -161,17 +163,18 @@ namespace SMS.Controllers
 
         private bool IsValid(string username, string password)
         {
-            //var crypto = new SimpleCrypto.PBKDF2();
-
+            var crypto = new SimpleCrypto.PBKDF2();
             bool IsValid = false;
             using (var ctx = new SmsContext())
             {
                 var user = ctx.NGUOI_DUNG.FirstOrDefault(u => u.USER_NAME == username);
-
+                var pass = crypto.Compute(password);
+                var salt = crypto.Salt;
+                var temp = "100000.G5YXRmTMYyl+RvHPPTcpfNLKdRnIOJNAjYMq+ognhyNpcQ==";
                 if (user != null)
                 {
                     //if (user.MAT_KHAU == crypto.Compute(password, user.PasswordSalt))
-                    if (user.MAT_KHAU.Equals(password))
+                    if (user.MAT_KHAU == password)
                     {
                         IsValid = true;
                         Session["UserId"] = 1;
