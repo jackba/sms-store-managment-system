@@ -1,14 +1,15 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 @{
-    ViewBag.Title = "Error";
+    ViewBag.Title = "Lỗi";
 }
-<h2>
-    Sorry, an error occurred while processing your request.
-    <br />
-    Error :
+<h2 style="color:red">
+    Đã có lỗi phát sinh trong quá trình xứ lý. Vui lòng liên hệ admin.
+  <br />
 </h2>
-<p>
-     <!-- Place message want to show here -->
-     ViewBag.Message
-     @Model.Exception.Message
+<p >
+    <!-- Place message want to show here -->
+    <h3 style="color:red">
+        @ViewBag.Message
+        @Model.Exception.Message
+    </h3>
 </p>

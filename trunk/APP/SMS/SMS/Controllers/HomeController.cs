@@ -8,11 +8,13 @@ using System.Data;
 using System.Data.SqlClient;
 using PagedList;
 using System.Diagnostics;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
+    [CustomActionFilter]
     public class HomeController : Controller
     {
         [HttpGet]
