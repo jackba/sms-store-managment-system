@@ -12,12 +12,14 @@ using System.IO;
 using System.Web.UI;
 using System.Text;
 using System.Data.Entity.Core.Objects;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
 
     [Authorize]
     [HandleError]
+    [CustomActionFilter]
     public class BanHangController : Controller
     {
         [HttpGet]

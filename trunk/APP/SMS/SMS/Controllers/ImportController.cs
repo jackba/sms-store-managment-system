@@ -5,9 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [CustomActionFilter]
     public class ImportController : Controller
     {
         //

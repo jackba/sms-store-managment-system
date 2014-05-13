@@ -6,11 +6,13 @@ using System.Web.Mvc;
 using SMS.Models;
 using System.Web.Security;
 using System.Data.Entity.Validation;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
+    [CustomActionFilter]
     public class AccountController : Controller
     {
         public ActionResult Index()

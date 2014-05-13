@@ -7,11 +7,13 @@ using System.ComponentModel;
 using SMS.Models;
 using PagedList;
 using System.IO;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
+    [CustomActionFilter]
     public class NguoiDungController : Controller
     {
         //
