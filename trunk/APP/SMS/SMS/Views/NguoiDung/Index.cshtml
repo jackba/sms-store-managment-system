@@ -11,6 +11,10 @@
 }
 
 <h2>@ViewBag.Title </h2>
+<br />
+<h2>
+    @ViewBag.Message
+</h2>
 
 <hr style="width:100%" />
 
@@ -104,6 +108,7 @@
     }
     if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
     {
+         <td class='inner head' style="width:50px;" title="Reset lại mật khâu trùng với user name">Reset</td>
         <td class='inner head' style="width:50px;">Sửa</td>
                                 <td class='inner head' style="width:50px;">Xóa</td>
     }
@@ -120,10 +125,28 @@
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_CHUNG_MINH</td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.DIA_CHI</td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_DIEN_THOAI</td>
-                                <td class='inner column-hscroll alignCenter'> @nguoidung.Kho.TEN_KHO</td>
+                                <td class='inner column-hscroll alignCenter'> 
+                                    @{
+                                        var lable = "";
+                            if (nguoidung.Kho != null)
+                            {
+                                lable = nguoidung.Kho.TEN_KHO;
+                            }
+                                    }
+                                @lable
+                                </td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.USER_NAME</td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.NGAY_VAO_LAM</td>
-                                <td class='inner column-hscroll alignCenter'> @nguoidung.NhomNguoiDung.TEN_NHOM</td>
+                                <td class='inner column-hscroll alignCenter'>
+                                @{
+                            var groupName = "";
+                            if (nguoidung.NhomNguoiDung != null)
+                            {
+                                groupName = nguoidung.NhomNguoiDung.TEN_NHOM;
+                            }
+                                }
+                                
+                                 @groupName </td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.GHI_CHU</td>
                                 @{
                             if ((bool)Session["IsAdmin"] == true)
@@ -133,17 +156,33 @@
                                     <td class='inner  alignCenter' style="width:110px;"> @nguoidung.NguoiCapNhat.TEN_NGUOI_DUNG </td>
                                     <td class='inner  alignCenter' style="width:110px;"> @Html.Label(DateTime.Parse(@nguoidung.NguoiDung.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
                             }
-                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            if ((bool)Session["IsAdmin"] == true)
                             {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    @{
+                                            if ((int)nguoidung.NguoiDung.MA_NGUOI_DUNG != (int)Session["UserId"])
+                                            {
+                                                <a onclick="return setStoreInformation(@nguoidung.NguoiDung.MA_NGUOI_DUNG)" class="button-module">
+                                                    <img width="16;" height="16;" alt="edit" src="~/Content/images/Converter.jpg"></img>
+                                                </a>
+                                            }
+                                    }
+                                    
+                                </td>
                                 <td class='inner alignCenter' style="width:50px;">
                                     <a href="@Url.Action("Edit", "NguoiDung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module">
                                         <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
                                     </a>
                                 </td>
                                     <td class='inner alignCenter' style="width:50px;">
-                                        <a href="@Url.Action("Delete", "NguoiDung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module" onclick="return deleteSubmit()">
-                                            <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                                        </a>
+                                        @{
+                                            if ((int)nguoidung.NguoiDung.MA_NGUOI_DUNG != (int)Session["UserId"])
+                                            {
+                                                <a href="@Url.Action("Delete", "NguoiDung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module" onclick="return deleteSubmit()">
+                                                    <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                                </a>
+                                            }
+                                        }
                                     </td>
                             }
                                 }
@@ -183,6 +222,29 @@
             document.forms[0].submit();
         }
         else {
+            return false;
+        }
+    }
+
+
+    function setStoreInformation(value) {
+        var r = confirm("Bạn muốn cấp lại mật khẩu người dùng này!");
+        if (r == true) {
+            var result = '';
+            $.ajax({
+                url: "/NguoiDung/ResetPassword",
+                data: "{'id' : '" + value + "'}",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success:
+                    function (data) {
+                        $.each(data, function (i, item) {
+                            alert(item);
+                        });
+                    },
+                error:
+                    function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+        }else {
             return false;
         }
     }
