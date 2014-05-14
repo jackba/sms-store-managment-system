@@ -93,10 +93,7 @@
                 @Html.TextBoxFor(u => u.USER_NAME)
             </div>
             <div>
-                @Html.LabelFor(u => u.MAT_KHAU)
-            </div>
-            <div class="required">
-                @Html.PasswordFor(u => u.MAT_KHAU)
+                @Html.HiddenFor(u => u.MAT_KHAU)
             </div>
             <div>
                 @Html.LabelFor(u => u.NGAY_VAO_LAM)

@@ -1711,6 +1711,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
+        <Function Name="SP_GET_ROLE_OF_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USER_ID" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GET_TON_KHO_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NAME" Type="nvarchar" Mode="In" />
@@ -4507,6 +4510,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_ROLE_OF_USER" ReturnType="Collection(SmsModel.SP_GET_ROLE_OF_USER_Result)">
+            <Parameter Name="USER_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -4617,6 +4623,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
           <Property Type="Double" Name="VALUE" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_ROLE_OF_USER_Result">
+          <Property Type="Boolean" Name="IS_ADMIN" Nullable="true" />
+          <Property Type="Boolean" Name="IS_METADATA_MANAGER" Nullable="true" />
+          <Property Type="Boolean" Name="IS_SALER" Nullable="true" />
+          <Property Type="Boolean" Name="IS_ACCOUNTING" Nullable="true" />
+          <Property Type="Boolean" Name="IS_STORE_MANAGER" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5333,6 +5346,17 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_IMPORT_REPORTER_SUM" FunctionName="SmsModel.Store.SP_IMPORT_REPORTER_SUM" />
           <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SmsModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
+          <FunctionImportMapping FunctionImportName="SP_GET_ROLE_OF_USER" FunctionName="SmsModel.Store.SP_GET_ROLE_OF_USER">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_ROLE_OF_USER_Result">
+                <ScalarProperty Name="IS_ADMIN" ColumnName="IS_ADMIN" />
+                <ScalarProperty Name="IS_METADATA_MANAGER" ColumnName="IS_METADATA_MANAGER" />
+                <ScalarProperty Name="IS_SALER" ColumnName="IS_SALER" />
+                <ScalarProperty Name="IS_ACCOUNTING" ColumnName="IS_ACCOUNTING" />
+                <ScalarProperty Name="IS_STORE_MANAGER" ColumnName="IS_STORE_MANAGER" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

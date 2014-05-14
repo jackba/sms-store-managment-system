@@ -16,6 +16,8 @@ namespace SMS.Models
 
     public class NguoiDungObj
     {
+        public KHO Kho { get; set; }
+        public NHOM_NGUOI_DUNG NhomNguoiDung { get; set; }
         public NGUOI_DUNG NguoiDung { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
