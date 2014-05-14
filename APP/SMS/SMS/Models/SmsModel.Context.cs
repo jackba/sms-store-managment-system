@@ -53,11 +53,11 @@ namespace SMS.Models
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual DbSet<V_HOA_DON> V_HOA_DON { get; set; }
+        public virtual DbSet<V_IMPORT_DETAIL> V_IMPORT_DETAIL { get; set; }
         public virtual DbSet<V_NHAP_KHO> V_NHAP_KHO { get; set; }
         public virtual DbSet<V_NHAP_XUAT_DETAIL> V_NHAP_XUAT_DETAIL { get; set; }
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
-        public virtual DbSet<V_IMPORT_DETAIL> V_IMPORT_DETAIL { get; set; }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -217,6 +217,44 @@ namespace SMS.Models
                 new ObjectParameter("MA_NV_THU_TIEN", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_HOA_DON_Result>("SP_GET_HOA_DON", fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_BAN_HANGParameter, mA_NV_THU_TIENParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_IMPORT_Result> SP_GET_IMPORT(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAP, Nullable<int> lY_DO_NHAP, Nullable<int> mA_KHO, Nullable<int> mA_NHA_CC)
+        {
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            var mA_NHAN_VIEN_NHAPParameter = mA_NHAN_VIEN_NHAP.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN_NHAP", mA_NHAN_VIEN_NHAP) :
+                new ObjectParameter("MA_NHAN_VIEN_NHAP", typeof(int));
+    
+            var lY_DO_NHAPParameter = lY_DO_NHAP.HasValue ?
+                new ObjectParameter("LY_DO_NHAP", lY_DO_NHAP) :
+                new ObjectParameter("LY_DO_NHAP", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_NHA_CCParameter = mA_NHA_CC.HasValue ?
+                new ObjectParameter("MA_NHA_CC", mA_NHA_CC) :
+                new ObjectParameter("MA_NHA_CC", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_Result>("SP_GET_IMPORT", fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHAPParameter, lY_DO_NHAPParameter, mA_KHOParameter, mA_NHA_CCParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_IMPORT_DETAIL_BY_ID_Result> SP_GET_IMPORT_DETAIL_BY_ID(Nullable<int> iMPORT_ID)
+        {
+            var iMPORT_IDParameter = iMPORT_ID.HasValue ?
+                new ObjectParameter("IMPORT_ID", iMPORT_ID) :
+                new ObjectParameter("IMPORT_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_DETAIL_BY_ID_Result>("SP_GET_IMPORT_DETAIL_BY_ID", iMPORT_IDParameter);
         }
     
         public virtual ObjectResult<SP_GET_INVENTORY_Result> SP_GET_INVENTORY(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
@@ -417,44 +455,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<SP_GET_IMPORT_Result> SP_GET_IMPORT(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAP, Nullable<int> lY_DO_NHAP, Nullable<int> mA_KHO, Nullable<int> mA_NHA_CC)
-        {
-            var fROM_DATEParameter = fROM_DATE.HasValue ?
-                new ObjectParameter("FROM_DATE", fROM_DATE) :
-                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
-    
-            var tO_DATEParameter = tO_DATE.HasValue ?
-                new ObjectParameter("TO_DATE", tO_DATE) :
-                new ObjectParameter("TO_DATE", typeof(System.DateTime));
-    
-            var mA_NHAN_VIEN_NHAPParameter = mA_NHAN_VIEN_NHAP.HasValue ?
-                new ObjectParameter("MA_NHAN_VIEN_NHAP", mA_NHAN_VIEN_NHAP) :
-                new ObjectParameter("MA_NHAN_VIEN_NHAP", typeof(int));
-    
-            var lY_DO_NHAPParameter = lY_DO_NHAP.HasValue ?
-                new ObjectParameter("LY_DO_NHAP", lY_DO_NHAP) :
-                new ObjectParameter("LY_DO_NHAP", typeof(int));
-    
-            var mA_KHOParameter = mA_KHO.HasValue ?
-                new ObjectParameter("MA_KHO", mA_KHO) :
-                new ObjectParameter("MA_KHO", typeof(int));
-    
-            var mA_NHA_CCParameter = mA_NHA_CC.HasValue ?
-                new ObjectParameter("MA_NHA_CC", mA_NHA_CC) :
-                new ObjectParameter("MA_NHA_CC", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_Result>("SP_GET_IMPORT", fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHAPParameter, lY_DO_NHAPParameter, mA_KHOParameter, mA_NHA_CCParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_IMPORT_DETAIL_BY_ID_Result> SP_GET_IMPORT_DETAIL_BY_ID(Nullable<int> iMPORT_ID)
-        {
-            var iMPORT_IDParameter = iMPORT_ID.HasValue ?
-                new ObjectParameter("IMPORT_ID", iMPORT_ID) :
-                new ObjectParameter("IMPORT_ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_DETAIL_BY_ID_Result>("SP_GET_IMPORT_DETAIL_BY_ID", iMPORT_IDParameter);
         }
     }
 }
