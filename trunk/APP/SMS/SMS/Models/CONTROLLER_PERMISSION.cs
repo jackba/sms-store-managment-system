@@ -17,8 +17,12 @@ namespace SMS.Models
         public int ID { get; set; }
         public string CONTROLLER_NAME { get; set; }
         public string ACTION_NAME { get; set; }
-        public Nullable<short> PERMISSION_LEVEL { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+        public Nullable<bool> IS_ADMIN { get; set; }
+        public Nullable<bool> IS_ACCOUNTING { get; set; }
+        public Nullable<bool> IS_METEDATA_MANAGER { get; set; }
+        public Nullable<bool> IS_STORE_MANAGER { get; set; }
+        public Nullable<bool> IS_SALER { get; set; }
     }
 }
