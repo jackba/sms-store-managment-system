@@ -34,11 +34,17 @@ namespace SMS.Controllers
             ViewBag.IdSortParm = sortOrder == "id_desc" ? "id" : "id_desc";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
             var theListContext = (from u in ctx.NGUOI_DUNG
+                                  join k in ctx.KHOes on u.MA_KHO equals k.MA_KHO into kh
+                                  from kho in kh.DefaultIfEmpty()
+                                  join g in ctx.NHOM_NGUOI_DUNG on u.MA_NHOM_NGUOI_DUNG equals g.MA_NHOM into gr
+                                  from gro in gr.DefaultIfEmpty()
                                   join u1 in ctx.NGUOI_DUNG on u.CREATE_BY equals u1.MA_NGUOI_DUNG
                                   join u2 in ctx.NGUOI_DUNG on u.UPDATE_BY equals u2.MA_NGUOI_DUNG
                                   where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || u.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper()) || u.USER_NAME.ToUpper().Contains(searchString.ToUpper())))
                                   select new NguoiDungObj
                                   {
+                                      Kho = kho, 
+                                      NhomNguoiDung = gro,
                                       NguoiDung = u,
                                       NguoiTao = u1,
                                       NguoiCapNhat = u2
@@ -168,6 +174,19 @@ namespace SMS.Controllers
                 nguoidung.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            var ctx = new SmsContext();
+            NGUOI_DUNG nguoidung1 = ctx.NGUOI_DUNG.Find((int)nguoiDung.MA_NGUOI_DUNG);
+            if (nguoidung1.ACTIVE.Equals("A"))
+            {
+                //Ma Kho
+                BindKho();
+
+                //Ma Nhom
+                BindNhomNguoiDung();
+
+                ViewBag.nguoiDung = nguoidung1;
+                return View(nguoidung1);
             }
             return View();
         }

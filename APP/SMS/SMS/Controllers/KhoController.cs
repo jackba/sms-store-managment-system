@@ -11,13 +11,13 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class KhoController : Controller
     {
         //
         // GET: /Kho/
 
         [HttpGet]
+        [CustomActionFilter]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
             var ctx = new SmsContext();
@@ -83,6 +83,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        [CustomActionFilter]
         public ActionResult Index(string searchString)
         {
             var ctx = new SmsContext();
@@ -105,6 +106,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult AddNew()
         {
             KHO model = new KHO();
@@ -117,6 +119,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        [CustomActionFilter]
         public ActionResult AddNew(SMS.Models.KHO kho)
         {
             if (ModelState.IsValid)
@@ -146,6 +149,7 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
+        [CustomActionFilter]
         public ActionResult Edit(int id)
         {
             if (id <= 0)
@@ -173,6 +177,7 @@ namespace SMS.Controllers
 
 
         [HttpPost]
+        [CustomActionFilter]
         public ActionResult Edit(SMS.Models.KHO kho)
         {
             if (ModelState.IsValid)
@@ -201,6 +206,7 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
+        [CustomActionFilter]
         public ActionResult Delete(int id)
         {
             if (id <= 0)

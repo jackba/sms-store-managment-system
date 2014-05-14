@@ -41,30 +41,6 @@ namespace SMS.Controllers
             if (IsValid(userr.USER_NAME, userr.MAT_KHAU))
             {
                 FormsAuthentication.SetAuthCookie(userr.USER_NAME, false);
-
-                using (var ctx = new SmsContext())
-                {
-                    var user_role = (from n in ctx.NGUOI_DUNG
-		                            join q in ctx.PHAN_QUYEN on n.MA_NGUOI_DUNG equals q.MA_NGUOI_DUNG
-                                    where n.USER_NAME == userr.USER_NAME
-		                            select new { n.MA_NGUOI_DUNG, 
-                                                 q.QUYEN_ADMIN, 
-                                                 q.QUYEN_THAU_NGAN, 
-                                                 q.QUYEN_DANH_MUC_SAN_PHAM,
-                                                 q.QUYEN_QUAN_LY_KHO }).ToList();
-                    
-                    if (user_role != null && user_role.Count > 0)
-                    {
-                        //Store Session
-                        Session["UserId"] = user_role[0].MA_NGUOI_DUNG;
-                        Session["IsAdmin"] = user_role[0].QUYEN_ADMIN;
-                        Session["IsAccount"] = user_role[0].QUYEN_THAU_NGAN;
-                        Session["IsMetadataManager"] = user_role[0].QUYEN_DANH_MUC_SAN_PHAM;
-                        Session["IsStoreManager"] = user_role[0].QUYEN_QUAN_LY_KHO;
-                    }
-
-                }
-
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -77,7 +53,7 @@ namespace SMS.Controllers
         [HttpPost]
         public void LogOff()
         {
-            
+
             Session.Abandon();
             Session.Clear();
             Session.RemoveAll();
@@ -169,22 +145,22 @@ namespace SMS.Controllers
             bool IsValid = false;
             using (var ctx = new SmsContext())
             {
-                var user = ctx.NGUOI_DUNG.FirstOrDefault(u => u.USER_NAME == username);
-                var pass = crypto.Compute(password);
-                var salt = crypto.Salt;
-                var temp = "100000.G5YXRmTMYyl+RvHPPTcpfNLKdRnIOJNAjYMq+ognhyNpcQ==";
+                var user = ctx.NGUOI_DUNG.FirstOrDefault(u => u.USER_NAME == username && u.ACTIVE == "A");
                 if (user != null)
                 {
-                    //if (user.MAT_KHAU == crypto.Compute(password, user.PasswordSalt))
-                    if (user.MAT_KHAU == password)
+                    if (user.MAT_KHAU == crypto.Compute(password, user.SALT))
                     {
                         IsValid = true;
-                        Session["UserId"] = 1;
-                        Session["IsAdmin"] = false;
-                        Session["IsAccounting"] = true;
-                        Session["IsSaler"] = true;
-                        Session["IsMetadataManager"] = true;
-                        Session["IsStoreManager"] = true;
+                        var usRole = ctx.SP_GET_ROLE_OF_USER(Convert.ToInt32(user.MA_NGUOI_DUNG)).FirstOrDefault<SP_GET_ROLE_OF_USER_Result>();
+                        if (usRole != null)
+                        {
+                            Session["UserId"] = (int)user.MA_NGUOI_DUNG;
+                            Session["IsAdmin"] = usRole.IS_ADMIN != null ? (bool)usRole.IS_ADMIN : false;
+                            Session["IsAccounting"] = usRole.IS_ACCOUNTING != null ? (bool)usRole.IS_ACCOUNTING : false;
+                            Session["IsSaler"] = usRole.IS_SALER != null ? (bool)usRole.IS_SALER : false;
+                            Session["IsMetadataManager"] = usRole.IS_METADATA_MANAGER != null ? (bool)usRole.IS_METADATA_MANAGER : false;
+                            Session["IsStoreManager"] = usRole.IS_STORE_MANAGER != null ? (bool)usRole.IS_STORE_MANAGER : false;
+                        }
                     }
                 }
             }
@@ -248,7 +224,7 @@ namespace SMS.Controllers
                 msg = "99";//other errors
             }
             return msg;
-            
+
         }
     }
 }

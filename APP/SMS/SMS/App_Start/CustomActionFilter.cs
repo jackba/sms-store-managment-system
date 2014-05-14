@@ -17,39 +17,33 @@ namespace SMS.App_Start
                 string currentController = filterContext.HttpContext.Request.RequestContext.RouteData.GetRequiredString("controller");
                 string action = filterContext.HttpContext.Request.RequestContext.RouteData.GetRequiredString("action");
                 var ctx = new SmsContext();
-                int level = 0;
-                bool IsMetadataManager = (bool)filterContext.HttpContext.Session["IsMetadataManager"];
-                bool IsSaler = (bool)filterContext.HttpContext.Session["IsSaler"];
-                bool IsStoreManager = (bool)filterContext.HttpContext.Session["IsStoreManager"];
-                bool IsAdmin = (bool)filterContext.HttpContext.Session["IsAdmin"];
-                bool IsAccounting = (bool)filterContext.HttpContext.Session["IsAccounting"];
-                if (IsAdmin)
+                bool IsMetadataManager = filterContext.HttpContext.Session["IsMetadataManager"] == null ? false :(bool)filterContext.HttpContext.Session["IsMetadataManager"];
+                bool IsSaler = filterContext.HttpContext.Session["IsSaler"] == null ? false : (bool)filterContext.HttpContext.Session["IsSaler"];
+                bool IsStoreManager =  filterContext.HttpContext.Session["IsStoreManager"] == null ? false :(bool)filterContext.HttpContext.Session["IsStoreManager"];
+                bool IsAdmin = filterContext.HttpContext.Session["IsAdmin"] == null ? false : (bool)filterContext.HttpContext.Session["IsAdmin"];
+                bool IsAccounting = filterContext.HttpContext.Session["IsAccounting"] == null ? false : (bool)filterContext.HttpContext.Session["IsAccounting"];
+                if (!IsAdmin)
                 {
-                    level = 31;
-                }
-                else if (IsAccounting)
-                {
-                    level = 15;
-                }
-                else if (IsStoreManager)
-                {
-                    level = 7;
-                }
-                else if (IsSaler)
-                {
-                    level = 3;
-                }else if(IsMetadataManager)
-                {
-                    level = 1;
-                }
-                var permission = ctx.CONTROLLER_PERMISSION.FirstOrDefault(u => u.CONTROLLER_NAME == currentController && u.ACTION_NAME == action && u.ACTIVE == "A");
-                if (permission != null && (int)permission.PERMISSION_LEVEL <= level)
-                {
+                    var permission = ctx.CONTROLLER_PERMISSION.FirstOrDefault(u => u.CONTROLLER_NAME == currentController
+                        && u.ACTION_NAME == action
+                        && u.ACTIVE == "A"
+                        && (
+                               (IsAdmin && u.IS_ADMIN == IsAdmin) ||
+                               (IsAccounting && u.IS_ACCOUNTING == IsAccounting) ||
+                               (IsStoreManager && u.IS_STORE_MANAGER == IsStoreManager) ||
+                               (IsAccounting && u.IS_ACCOUNTING == IsAccounting) ||
+                               (IsMetadataManager && u.IS_METEDATA_MANAGER == IsMetadataManager)
+                            )
+                        );
+                    if (permission == null)
+                    {
+                        throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này");
+                    }
+                    else
+                    {
 
-                }else
-                {
-                    throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này");
-                }                
+                    }
+                }
             }
         }
 
