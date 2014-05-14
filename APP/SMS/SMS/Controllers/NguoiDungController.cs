@@ -8,6 +8,9 @@ using SMS.Models;
 using PagedList;
 using System.IO;
 using SMS.App_Start;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Web.Script.Serialization;
 
 namespace SMS.Controllers
 {
@@ -333,6 +336,54 @@ namespace SMS.Controllers
             {
                 List<NHOM_NGUOI_DUNG> nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(m => m.ACTIVE.Equals("A")).ToList();
                 ViewBag.NhomNguoiDung = nhomNguoiDung;
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult ResetPassword(int id)
+        {
+            object yourOjbect = null;
+            string data = "";
+            if (id == (int)Session["UserId"])
+            {
+                data = "{ \"Message \" : \"Không được cập nhật lại mật khẩu chính mình.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                return Json(yourOjbect);
+            }
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
+
+                //Deserializing it into an object that will contain each of the keys and their values
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                return Json(yourOjbect);
+            }
+            var ctx = new SmsContext();
+            var nguoidung = ctx.NGUOI_DUNG.Find(id);
+            var crypto = new SimpleCrypto.PBKDF2();
+            if (nguoidung.ACTIVE.Equals("A"))
+            {
+                nguoidung.MAT_KHAU = crypto.Compute(nguoidung.USER_NAME);
+                nguoidung.SALT = crypto.Salt;
+                nguoidung.UPDATE_AT = DateTime.Now;
+                nguoidung.CREATE_BY = (int)Session["UserId"];
+                ctx.SaveChanges();
+                //return Json("{\"Message \":\" Cập nhật thành công.\"}");
+
+                data = "{ \"Message \" : \"Cập nhật thành công.\"}";
+
+                //Deserializing it into an object that will contain each of the keys and their values
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                return Json(yourOjbect);
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                return Json(yourOjbect);
             }
         }
     }

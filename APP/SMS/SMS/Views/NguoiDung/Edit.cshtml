@@ -60,7 +60,7 @@
                 @Html.LabelFor(u => u.NGAY_SINH)
             </div>
             <div class="required">
-                @Html.TextBoxFor(u => u.NGAY_SINH, "{0:d}", new { @class = "datePicker" })
+                @Html.TextBoxFor(u => u.NGAY_SINH, "{0:dd/MM/yyyy}", new { @class = "datePicker" })
             </div>
             <div>
                 @Html.LabelFor(u => u.SO_CHUNG_MINH)
@@ -87,10 +87,7 @@
                 @Html.DropDownListFor(u => u.MA_KHO, new SelectList(ViewBag.Kho, "MA_KHO", "TEN_KHO"), "-Chọn mã kho-", new { style = "padding:5px;font-size:1.2em" })
             </div>
             <div>
-                @Html.LabelFor(u => u.USER_NAME)
-            </div>
-            <div class="required">
-                @Html.TextBoxFor(u => u.USER_NAME)
+                @Html.HiddenFor(u => u.USER_NAME)
             </div>
             <div>
                 @Html.HiddenFor(u => u.MAT_KHAU)
@@ -99,7 +96,7 @@
                 @Html.LabelFor(u => u.NGAY_VAO_LAM)
             </div>
             <div>
-                @Html.TextBoxFor(u => u.NGAY_VAO_LAM, "{0:d}", new { @class = "datePicker" })
+                @Html.TextBoxFor(u => u.NGAY_VAO_LAM, "{0:dd/MM/yyyy}", new { @class = "datePicker" })
             </div>
             <div>
                 @Html.LabelFor(u => u.MA_NHOM_NGUOI_DUNG)

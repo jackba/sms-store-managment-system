@@ -10,6 +10,13 @@ namespace SMS.App_Start
 {
     public class CustomActionFilter : ActionFilterAttribute, IActionFilter
     {
+        static IDictionary<string, int> Slugs = new Dictionary<string, int>
+          {
+            {"this-is-a-slug", 100}, 
+            {"another-slug", 101}, 
+            {"and-another", 102}
+          };
+
         void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext.HttpContext.Request.IsAuthenticated)
@@ -41,7 +48,6 @@ namespace SMS.App_Start
                     }
                     else
                     {
-
                     }
                 }
             }
