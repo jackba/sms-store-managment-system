@@ -293,3 +293,23 @@ td.right
     width:78%;
     height: 30px;
 }
+
+
+td.center1
+{
+    border: 1px solid #666;
+    font-size:15px;
+    background-color:lightblue;
+    width:40%;
+    padding: 3px;
+    height: 30px;
+}
+
+td.right1
+{
+    border: 1px solid #666;
+    background-color:whitesmoke;
+    padding: 3px;
+    width:45%;
+    height: 30px;
+}

@@ -30,6 +30,7 @@ namespace SMS.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.IdSortParm = sortOrder == "id_desc" ? "id" : "id_desc";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            var list = ctx.SP_GET_ALL_ROLE().Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             var theListContext = (from u in ctx.PHAN_QUYEN
                                   join u1 in ctx.NGUOI_DUNG on u.CREATE_BY equals u1.MA_NGUOI_DUNG
                                   join u2 in ctx.NGUOI_DUNG on u.UPDATE_BY equals u2.MA_NGUOI_DUNG
@@ -159,24 +160,45 @@ namespace SMS.Controllers
             if (ModelState.IsValid)
             {
                 var db = new SmsContext();
-                var phanquyen = db.PHAN_QUYEN.Create();
+                
+                var oldPermission = db.PHAN_QUYEN.FirstOrDefault(u => u.MA_NGUOI_DUNG == phanQuyen.MA_NGUOI_DUNG 
+                    && u.ACTIVE == "A");
+                if (oldPermission != null)
+                {
+                    oldPermission.QUYEN_ADMIN = phanQuyen.QUYEN_ADMIN;
+                    oldPermission.QUYEN_DANH_MUC_SAN_PHAM = phanQuyen.QUYEN_DANH_MUC_SAN_PHAM;
+                    oldPermission.QUYEN_BAN_HANG = phanQuyen.QUYEN_BAN_HANG;
+                    oldPermission.QUYEN_THAU_NGAN = phanQuyen.QUYEN_THAU_NGAN;
+                    oldPermission.QUYEN_QUAN_LY_KHO = phanQuyen.QUYEN_QUAN_LY_KHO;
+                    oldPermission.MA_NHOM_NGUOI_DUNG = phanQuyen.MA_NHOM_NGUOI_DUNG;
+                    oldPermission.ACTIVE = "A";
+                    oldPermission.UPDATE_AT = DateTime.Now;
+                    oldPermission.CREATE_AT = DateTime.Now;
+                    oldPermission.UPDATE_BY = (int)Session["UserId"];
+                    oldPermission.CREATE_BY = (int)Session["UserId"];
+                    db.SaveChanges();
+                    return Redirect("Index");
+                }else
+                {
+                    var phanquyen = db.PHAN_QUYEN.Create();
+                    phanquyen.MA_NGUOI_DUNG = phanQuyen.MA_NGUOI_DUNG;
+                    phanquyen.QUYEN_ADMIN = phanQuyen.QUYEN_ADMIN;
+                    phanquyen.QUYEN_DANH_MUC_SAN_PHAM = phanQuyen.QUYEN_DANH_MUC_SAN_PHAM;
+                    phanquyen.QUYEN_BAN_HANG = phanQuyen.QUYEN_BAN_HANG;
+                    phanquyen.QUYEN_THAU_NGAN = phanQuyen.QUYEN_THAU_NGAN;
+                    phanquyen.QUYEN_QUAN_LY_KHO = phanQuyen.QUYEN_QUAN_LY_KHO;
+                    phanquyen.MA_NHOM_NGUOI_DUNG = phanQuyen.MA_NHOM_NGUOI_DUNG;
 
-                phanquyen.MA_NGUOI_DUNG = phanQuyen.MA_NGUOI_DUNG;
-                phanquyen.QUYEN_ADMIN = phanQuyen.QUYEN_ADMIN;
-                phanquyen.QUYEN_DANH_MUC_SAN_PHAM = phanQuyen.QUYEN_DANH_MUC_SAN_PHAM;
-                phanquyen.QUYEN_BAN_HANG = phanQuyen.QUYEN_BAN_HANG;
-                phanquyen.QUYEN_THAU_NGAN = phanQuyen.QUYEN_THAU_NGAN;
-                phanquyen.QUYEN_QUAN_LY_KHO = phanQuyen.QUYEN_QUAN_LY_KHO;
-                phanquyen.MA_NHOM_NGUOI_DUNG = phanQuyen.MA_NHOM_NGUOI_DUNG;
-
-                phanquyen.ACTIVE = "A";
-                phanquyen.UPDATE_AT = DateTime.Now;
-                phanquyen.CREATE_AT = DateTime.Now;
-                phanquyen.UPDATE_BY = (int)Session["UserId"];
-                phanquyen.CREATE_BY = (int)Session["UserId"];
-                db.PHAN_QUYEN.Add(phanquyen);
-                db.SaveChanges();
-                return Redirect("Index");
+                    phanquyen.ACTIVE = "A";
+                    phanquyen.UPDATE_AT = DateTime.Now;
+                    phanquyen.CREATE_AT = DateTime.Now;
+                    phanquyen.UPDATE_BY = (int)Session["UserId"];
+                    phanquyen.CREATE_BY = (int)Session["UserId"];
+                    db.PHAN_QUYEN.Add(phanquyen);
+                    db.SaveChanges();
+                    return Redirect("Index");
+                }
+                
             }
             return View();
         }

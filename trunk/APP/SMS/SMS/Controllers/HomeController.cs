@@ -52,7 +52,6 @@ namespace SMS.Controllers
             ViewBag.CurrentFilter = SearchString;
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
-
             var ctx = new SmsContext();
             ctx.Database.CommandTimeout = 300;
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
@@ -94,6 +93,16 @@ namespace SMS.Controllers
         }
 
         public ActionResult QuanTri()
+        {
+            return View();
+        }
+
+        public ActionResult Error()
+        {
+            return View();
+        }
+
+        public ActionResult NguoiDung()
         {
             return View();
         }

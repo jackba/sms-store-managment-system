@@ -124,6 +124,11 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            if (id == (int)Session["UserId"])
+            {
+                ViewBag.Message = "Bạn không thể xóa chính mình ra khỏi hệ thống.";
+                return View("../Home/Error"); ;
+            }
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
@@ -159,8 +164,6 @@ namespace SMS.Controllers
                 nguoidung.DIA_CHI = nguoiDung.DIA_CHI;
                 nguoidung.SO_DIEN_THOAI = nguoiDung.SO_DIEN_THOAI;
                 nguoidung.MA_KHO = nguoiDung.MA_KHO;
-                nguoidung.USER_NAME = nguoiDung.USER_NAME;
-                nguoidung.MAT_KHAU = nguoiDung.MAT_KHAU;
                 nguoidung.NGAY_VAO_LAM = nguoiDung.NGAY_VAO_LAM;
 
                 if (Request.Files[0].InputStream.Length != 0)
@@ -201,6 +204,7 @@ namespace SMS.Controllers
             if (ModelState.IsValid)
             {
                 var db = new SmsContext();
+                var crypto = new SimpleCrypto.PBKDF2();
                 var nguoidung = db.NGUOI_DUNG.Create();
                 nguoidung.TEN_NGUOI_DUNG = nguoiDung.TEN_NGUOI_DUNG;
                 nguoidung.NGAY_SINH = nguoiDung.NGAY_SINH;
@@ -209,7 +213,8 @@ namespace SMS.Controllers
                 nguoidung.SO_DIEN_THOAI = nguoiDung.SO_DIEN_THOAI;
                 nguoidung.MA_KHO = nguoiDung.MA_KHO;
                 nguoidung.USER_NAME = nguoiDung.USER_NAME;
-                nguoidung.MAT_KHAU = nguoiDung.MAT_KHAU;
+                nguoidung.MAT_KHAU = crypto.Compute(nguoiDung.MAT_KHAU);
+                nguoidung.SALT = crypto.Salt;
                 nguoidung.NGAY_VAO_LAM = nguoiDung.NGAY_VAO_LAM;
 
                 if (Request.Files[0].InputStream.Length != 0)
@@ -279,7 +284,9 @@ namespace SMS.Controllers
                                 {
                                     if (newpass.Equals(confirmpass))
                                     {
-                                        nd.MAT_KHAU = newpass;
+                                        var crypto = new SimpleCrypto.PBKDF2();
+                                        nd.MAT_KHAU = crypto.Compute(newpass);
+                                        nd.SALT = crypto.Salt;
                                         ctx.SaveChanges();
                                         ViewData["errormsg"] = "Thay đổi mật khẩu thành công!";
                                     }
@@ -339,6 +346,11 @@ namespace SMS.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Show()
+        {
+            return View();
+        }
 
         [HttpPost]
         public JsonResult ResetPassword(int id)
