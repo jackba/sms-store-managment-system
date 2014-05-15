@@ -189,9 +189,13 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_EXPORT_REPORT_SUM", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
-        public virtual ObjectResult<SP_GET_ALL_ROLE_Result> SP_GET_ALL_ROLE()
+        public virtual ObjectResult<SP_GET_ALL_ROLE_Result> SP_GET_ALL_ROLE(Nullable<int> uSER_ID)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE");
+            var uSER_IDParameter = uSER_ID.HasValue ?
+                new ObjectParameter("USER_ID", uSER_ID) :
+                new ObjectParameter("USER_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE", uSER_IDParameter);
         }
     
         public virtual ObjectResult<SP_GET_DON_VI_TINH_Result> SP_GET_DON_VI_TINH(Nullable<int> mA_SAN_PHAM)
@@ -279,15 +283,6 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_Result>("SP_GET_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
         }
     
-        public virtual ObjectResult<SP_GET_INVENTORY_BY_STORE_ID_Result> SP_GET_INVENTORY_BY_STORE_ID(Nullable<int> mA_KHO)
-        {
-            var mA_KHOParameter = mA_KHO.HasValue ?
-                new ObjectParameter("MA_KHO", mA_KHO) :
-                new ObjectParameter("MA_KHO", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_BY_STORE_ID_Result>("SP_GET_INVENTORY_BY_STORE_ID", mA_KHOParameter);
-        }
-    
         public virtual ObjectResult<SP_GET_NHAP_XUAT_Result> SP_GET_NHAP_XUAT(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
@@ -371,7 +366,33 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_VALUE_OF_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
         }
     
-        public virtual ObjectResult<SP_IMPORT_REPORTER_Result> SP_IMPORT_REPORTER(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<SP_IMPORT_REPORTER_Result> SP_IMPORT_REPORTER(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
         {
             var kINDParameter = kIND.HasValue ?
                 new ObjectParameter("KIND", kIND) :
@@ -385,10 +406,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
-            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
-                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
-                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
-    
             var fROM_DATEParameter = fROM_DATE.HasValue ?
                 new ObjectParameter("FROM_DATE", fROM_DATE) :
                 new ObjectParameter("FROM_DATE", typeof(System.DateTime));
@@ -397,7 +414,7 @@ namespace SMS.Models
                 new ObjectParameter("TO_DATE", tO_DATE) :
                 new ObjectParameter("TO_DATE", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_IMPORT_REPORTER_Result>("SP_IMPORT_REPORTER", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_IMPORT_REPORTER_Result>("SP_IMPORT_REPORTER", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
         public virtual ObjectResult<SP_IMPORT_REPORTER_DETAIL_Result> SP_IMPORT_REPORTER_DETAIL(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)

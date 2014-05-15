@@ -11,11 +11,9 @@ namespace SMS.Models
 {
     using System;
     
-    public partial class SP_GET_INVENTORY_BY_STORE_ID_Result
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int MA_SAN_PHAM { get; set; }
-        public string TEN_SAN_PHAM { get; set; }
-        public string TEN_DON_VI { get; set; }
-        public double SO_LUONG_TON { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
