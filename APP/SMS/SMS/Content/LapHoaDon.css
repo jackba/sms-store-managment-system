@@ -3,7 +3,7 @@ div.mainContainer {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    width: 870px;
+    /*width: 870px;*/
     height: 500px;
     overflow: hidden;
     border: 1px solid black;
@@ -13,7 +13,8 @@ div.mainContentScroll {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    width: 871px;
+    /*width: 871px;*/
+    width:958px;
     height: 442px;
     overflow: auto;
 }
@@ -22,13 +23,14 @@ div.mainContentScroll {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    background: #C96;
-    border-left: 1px solid #EB8;
-    border-right: 1px solid #B74;
-    border-top: 1px solid #EB8;
+    background: #B4CFC3;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    /*border-top: 1px solid #666;*/
+    border-bottom: 1px solid #666;
     /*font-weight: normal;*/
     /*padding: 4px 3px;*/
-    width: 870px;
+    /*width: 870px;*/
     height: 20px;
     
 }
@@ -36,7 +38,9 @@ div.mainContentScroll {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    width: 853px;
+    /*width: 853px;*/
+    width:942px;
+    table-layout: fixed;
 }
 
 table.tableSearch{
@@ -52,13 +56,18 @@ table.tableHeader th {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    background: #C96;
-    border-left: 1px solid #EB8;
-    border-right: 1px solid #EB8;
-    border-top: 1px solid #EB8;
+    background: #B4CFC3;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    /*border-top: 1px solid #666;*/
+    border-bottom: 1px solid #666;
     /*font-weight: normal;
     padding: 4px 3px;*/
     text-align: center !important;
+    height: 20px;
+}
+table.tableHeader th:first-child {
+    border-left:none;
 }
 table.tableContentScroll tr {
     margin: 0;
@@ -66,7 +75,7 @@ table.tableContentScroll tr {
     border-collapse: collapse;
 }
 table.tableContentScroll td{
-    border: 1px solid #EB8;
+    border: 1px solid #666;
    padding: 0em 0em 0em 0em !important;
   
 }
@@ -112,34 +121,51 @@ table.tableContentScroll tr:nth-child(odd) {
 .textLeft{
     text-align:left
 }
-.colProductNm{
-    width: 221px;
-    padding-left: 2px !important;
-}
 
-.colPrice{
-    width:180px;
-}
-.colDiscount{
-    width:117px;
-}
-.colRealPrice{
-    width:180px;
-}
-
+/*header s*/
 .colProductNmHeader{
-    width: 223px;
+    width: 210px;
 }
 
+.colStoreHeader{
+    width:150px;
+}
 .colPriceHeader{
     width:180px;
 }
-.colDiscountHeader{
-    width:117px;
+.colAmountHeader{
+    width:100px;
 }
-.colRealPriceHeader{
+.colUnitHeader{
+    width:150px;
+}
+.colTotalHeader{
     width:180px;
 }
+/*header e*/
+/*content s*/
+.colProductNm {
+    width: 210px;
+    padding-left: 2px !important;
+}
+
+.colStore {
+    width: 137px;
+    padding-left: 2px !important;
+}
+.colPrice{
+    width:165px;
+}
+.colAmount{
+    width:95px;
+}
+.colUnit{
+    width:138px;
+}
+.colTotal{
+    width:167px;
+}
+/*content e*/
 .hiddenColScroll{
     border-right: 1px solid #FFF;
     border-top: 1px solid #FFF;
