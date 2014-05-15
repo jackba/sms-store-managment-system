@@ -1,0 +1,113 @@
+﻿@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Thông tin người dùng";
+}
+
+<h2>Thông tin người dùng</h2>
+<br />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <table width="100%">
+                <tr>
+                    <td class="center">
+                        User name
+                    </td>
+                    <td class="right">
+                        @Model.USER_NAME
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Tên người dùng
+                    </td>
+                    <td class="right">
+                        @Model.TEN_NGUOI_DUNG
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Ngày sinh
+                    </td>
+                    <td class="right">
+                        @{
+    var birthDay = "";
+    if (Model.NGAY_SINH != null)
+    {
+        birthDay = DateTime.Parse(Model.NGAY_SINH.ToString()).ToString("dd/MM/yyyy");
+    }
+                        }
+                       @birthDay
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Số điện thoại
+                    </td>
+                    <td class="right">
+                        @Model.SO_DIEN_THOAI
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                       Số chứng minh thư
+                    </td>
+                    <td class="right">
+                        @Model.SO_CHUNG_MINH
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Địa chỉ
+                    </td>
+                    <td class="right">
+                        @Model.DIA_CHI
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Kho
+                    </td>
+                    <td class="right">
+                        @{
+                            var store = "";
+    if (Model.KHO != null)
+    {
+        store = Model.KHO.TEN_KHO;
+    }
+                        }
+                        @store
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Nhóm người dùng
+                    </td>
+                    <td class="right">@{
+    var group = "";
+    if (Model.NHOM_NGUOI_DUNG != null)
+    {
+        group = Model.NHOM_NGUOI_DUNG.TEN_NHOM;
+    }
+}
+                        @group
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <script>
+        function reset() {
+            window.location.reload();
+            return false;
+        }
+    </script>
+
+
+}

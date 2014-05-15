@@ -72,6 +72,14 @@ namespace SMS.Controllers
             FormsAuthentication.RedirectToLoginPage();
             //return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        public ActionResult Show()
+        {
+            int id = (int)Session["UserId"];
+            var ctx = new SmsContext();
+            var User = ctx.NGUOI_DUNG.Include("KHO").Include("NHOM_NGUOI_DUNG").Single(us => us.MA_NGUOI_DUNG == id);
+            return View(User);
+        }
 
         [HttpGet]
         [AllowAnonymous]
