@@ -9,12 +9,18 @@
 
 namespace SMS.Models
 {
+    using PagedList;
     using System;
-    
+    public class RoleModel
+    {
+        public IPagedList<SP_GET_ALL_ROLE_Result> RoleList { get; set; }
+        public long PageCount { get; set; }
+    }
     public partial class SP_GET_ALL_ROLE_Result
     {
         public Nullable<int> ID { get; set; }
         public string TEN_NGUOI_DUNG { get; set; }
+        public int STATUS { get; set; }
         public Nullable<bool> IS_ADMIN { get; set; }
         public Nullable<bool> IS_METADATA_MANAGER { get; set; }
         public Nullable<bool> IS_SALER { get; set; }
