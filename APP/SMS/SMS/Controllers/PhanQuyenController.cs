@@ -16,51 +16,16 @@ namespace SMS.Controllers
         // GET: /PhanQuyen/
 
         [HttpGet]
-        public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
+        public ActionResult Index()
         {
             var ctx = new SmsContext();
-            if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.IdSortParm = sortOrder == "id_desc" ? "id" : "id_desc";
-            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
-            var list = ctx.SP_GET_ALL_ROLE().Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
-            var theListContext = (from u in ctx.PHAN_QUYEN
-                                  join u1 in ctx.NGUOI_DUNG on u.CREATE_BY equals u1.MA_NGUOI_DUNG
-                                  join u2 in ctx.NGUOI_DUNG on u.UPDATE_BY equals u2.MA_NGUOI_DUNG
-                                  where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString)))
-                                  select new PhanQuyenObj
-                                  {
-                                      PhanQuyen = u,
-                                      NguoiTao = u1,
-                                      NguoiCapNhat = u2
-                                  }).Take(SystemConstant.MAX_ROWS);
-            ViewBag.CurrentFilter = searchString;
-
-            IPagedList<PhanQuyenObj> phanQuyens = null;
+            var list = ctx.SP_GET_ALL_ROLE(0).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            RoleModel model = new RoleModel();       
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
-            ViewBag.CurrentPageIndex = pageIndex;
-            ViewBag.Count = theListContext.Count();
-            switch (sortOrder)
-            {
-                case "id":
-                    phanQuyens = theListContext.OrderBy(pq => pq.PhanQuyen.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "id_desc":
-                    phanQuyens = theListContext.OrderByDescending(pq => pq.PhanQuyen.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
-                    break;
-                default:
-                    phanQuyens = theListContext.OrderBy(pq => pq.PhanQuyen.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
-                    break;
-            }
-            return View(phanQuyens);
+            int pageIndex = 1;
+            model.RoleList = list.ToPagedList(pageIndex, pageSize);
+            model.PageCount = list.Count;
+            return View(model);
         }
 
         [HttpGet]
