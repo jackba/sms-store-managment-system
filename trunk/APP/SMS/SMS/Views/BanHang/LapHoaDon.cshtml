@@ -368,7 +368,7 @@ function prependNewRowToTable() {
     var TenSP = $('#tableSearch #TenSanPham').val();
     var newRow = '';
     newRow += ' <tr class="rowHeight" id=\'' + MaSP + '\'> ';
-    newRow += '<td style="width:20px;"> ';
+    newRow += '<td style="width:22px;"> ';
     newRow += '  <div class="colDelete">';
     newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
     newRow += '   </div>';
@@ -381,18 +381,30 @@ function prependNewRowToTable() {
     newRow += '  <input name="TenSanPham_' + MaSP + '" type="hidden" value="' + TenSP + '" />';
     newRow += '   </div>';
     newRow += ' </td> ';
-    newRow += ' <td class="colPrice textRight"> ';
-    newRow += $('#tableSearch #GiaBan').val();
-    newRow += '  <input name="GiaBan_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaBan').val() + '" />';
+    newRow += ' <td class="colStore textLeft"> ';
+    newRow += $('#typeStore :selected').text()
+    newRow += '  <input name="MaKho_' + MaSP + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
     newRow += ' </td> ';
-    newRow += '  <td  class="colDiscount textRight"> ';
-    newRow += $('#tableSearch #ChietKhau').val();
-    newRow += '  <input name="ChietKhau_' + MaSP + '" type="hidden" value="' + $('#tableSearch #ChietKhau').val() + '" />';
+    newRow += '  <td  class="colPrice textRight"> ';
+    newRow += $('#tableSearch #GiaThuc').val();
+    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
     newRow += ' </td>  ';
-    newRow += '  <td class="colRealPrice textRight"> ';
+
+    newRow += '  <td class="colAmount textRight"> ';
+    newRow += $('#tableSearch #SoLuong').val();
+    newRow += '  <input name="SoLuong_' + MaSP + '" type="hidden" value="' + $('#tableSearch :selected').val() + '" />';
+    newRow += ' </td> ';
+
+    newRow += '  <td class="colUnit textCenter"> ';
+    newRow += $('#typeDonViTinh :selected').text()
+    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#typeDonViTinh #GiaThuc').val() + '" />';
+    newRow += ' </td> ';
+
+    newRow += '  <td class="colTotal textRight"> ';
     newRow += $('#tableSearch #GiaThuc').val();
     newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
     newRow += ' </td> ';
+
     newRow += '  </tr> ';
     $('#tableContent').prepend(newRow);
     //reset value
@@ -687,8 +699,8 @@ function RemoveRougeChar(convertString) {
                 <div class="titleItem">Số lượng</div>
                 <br />
                 <div>
-                    <input type="text" id="SoLuong" maxlength="5" style="width: 110px !important;"
-                           class="alignNumberic" />
+                    <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;"
+                           class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                 </div>
             </td>
             <td></td>
@@ -737,7 +749,7 @@ function RemoveRougeChar(convertString) {
     <table class="tableHeader">     
         <tbody>
             <tr >
-                <th style="width: 23px; padding: 0.5em 0em 0em 0em !important; ">
+                <th style="width: 25px; padding: 0.5em 0em 0em 0em !important; ">
                     <div class="colDelete">
                         <img src="/Content/images/delete-20.png" style="display:none;">
                     </div>
@@ -747,7 +759,7 @@ function RemoveRougeChar(convertString) {
                         Tên sản phẩm
                     </div>
                 </th>
-                <th class="colRealPriceHeader">
+                <th class="colStoreHeader">
                     Kho
                 </th>
                 <th class="colPriceHeader">
@@ -759,13 +771,13 @@ function RemoveRougeChar(convertString) {
                 <th class="colRealPriceHeader">
                     Giá thực
                 </th>*@
-                <th class="colRealPriceHeader">
+                <th class="colAmountHeader">
                     Số lượng
                 </th>
-                <th class="colRealPriceHeader">
+                <th class="colUnitHeader">
                     Đơn vị tính
                 </th>
-                <th class="colRealPriceHeader">
+                <th class="colTotalHeader">
                     Thành tiền
                 </th>
               

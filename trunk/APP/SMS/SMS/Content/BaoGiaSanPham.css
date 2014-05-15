@@ -22,15 +22,15 @@ div.mainContentScroll {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    background: #C96;
-    border-left: 1px solid #EB8;
+    background: #B4CFC3;
+    border-left: 1px solid #666;
     border-right: 1px solid #B74;
-    border-top: 1px solid #EB8;
+    /*border-top: 1px solid #666;*/
+    border-bottom: 1px solid #666;
     /*font-weight: normal;*/
     /*padding: 4px 3px;*/
     width: 870px;
     height: 20px;
-    
 }
 .tableContentScroll {
     margin: 0;
@@ -48,13 +48,16 @@ table.tableHeader th {
     margin: 0;
     padding: 0;
     border-collapse: collapse;
-    background: #C96;
-    border-left: 1px solid #EB8;
-    border-right: 1px solid #EB8;
-    border-top: 1px solid #EB8;
+    background: #B4CFC3;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    /*border-top: 1px solid #666;*/
+    border-bottom: 1px solid #666;
     /*font-weight: normal;
     padding: 4px 3px;*/
     text-align: center !important;
+    /*font-size: 1.1em !important;*/
+    height: 20px;
 }
 table.tableContentScroll tr {
     margin: 0;
@@ -62,7 +65,7 @@ table.tableContentScroll tr {
     border-collapse: collapse;
 }
 table.tableContentScroll td{
-    border: 1px solid #EB8;
+    border: 1px solid #666;
    padding: 0em 0em 0em 0em !important;
 }
 input[type="radio"] {
