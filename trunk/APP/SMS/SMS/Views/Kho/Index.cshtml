@@ -95,16 +95,62 @@
                         {
                             <tr>
                                 <td class='inner column-hscroll alignCenter'> @donvi.Kho.SO_DIEN_THOAI </td>
-                                <td class='inner column-hscroll alignCenter'> @donvi.NguoiDungDau.TEN_NGUOI_DUNG </td>
+                                <td class='inner column-hscroll alignCenter'> 
+                                    @{
+                            var nguoiDungDau = "";
+                            if(donvi.NguoiDungDau != null)
+                            {
+                                nguoiDungDau = donvi.NguoiDungDau.TEN_NGUOI_DUNG; 
+                            }
+                                    }
+                                @nguoiDungDau
+                                </td>
                                 <td class='inner column-hscroll alignCenter'> @donvi.Kho.DIA_CHI </td>
                                 <td class='inner column-hscroll alignCenter'> @donvi.Kho.GHI_CHU </td>
                                 @{
                             if ((bool)Session["IsAdmin"] == true)
                             {
-                                <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.Kho.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.Kho.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                <td class='inner  alignCenter' style="width:70px;"> 
+                                    @{
+                                var nguoiTao = "";
+                                if (donvi.NguoiTao != null)
+                                {
+                                    nguoiTao = donvi.NguoiTao.TEN_NGUOI_DUNG;
+                                }
+                                    }
+                                @nguoiTao
+                                </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                 @{
+                                var createDate = "";
+                                if (donvi.Kho.CREATE_AT != null)
+                                {
+                                    createDate = DateTime.Parse(@donvi.Kho.CREATE_AT.ToString()).ToString("dd/MM/yyyy");
+                                    
+                                }
+                                 }
+                                        @createDate
+                                    </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> 
+                                @{
+                                var nguoiCapNhat = "";
+                                if (donvi.NguoiCapNhat != null)
+                                {
+                                    nguoiCapNhat = donvi.NguoiCapNhat.TEN_NGUOI_DUNG;
+                                }
+                                }
+                                @nguoiCapNhat </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                
+                                @{
+                                var ngayCapNhat = "";
+                                if (donvi.Kho.UPDATE_AT != null)
+                                {
+                                    ngayCapNhat = DateTime.Parse(@donvi.Kho.UPDATE_AT.ToString()).ToString("dd/MM/yyyy");
+                                }
+                                }
+                                
+                                 @ngayCapNhat</td>
                             }
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                             {

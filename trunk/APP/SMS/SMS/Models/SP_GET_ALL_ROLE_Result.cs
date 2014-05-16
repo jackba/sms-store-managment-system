@@ -11,6 +11,7 @@ namespace SMS.Models
 {
     using PagedList;
     using System;
+
     public class RoleModel
     {
         public IPagedList<SP_GET_ALL_ROLE_Result> RoleList { get; set; }
@@ -19,6 +20,7 @@ namespace SMS.Models
     public partial class SP_GET_ALL_ROLE_Result
     {
         public Nullable<int> ID { get; set; }
+        public int MA_NHOM { get; set; }
         public string TEN_NGUOI_DUNG { get; set; }
         public int STATUS { get; set; }
         public Nullable<bool> IS_ADMIN { get; set; }

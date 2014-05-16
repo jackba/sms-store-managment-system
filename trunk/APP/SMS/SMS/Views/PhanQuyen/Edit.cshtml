@@ -1,7 +1,7 @@
 ﻿@model SMS.Models.PHAN_QUYEN
 
 @{
-    ViewBag.Title = "Chỉnh sửa thông tin người dùng";
+    ViewBag.Title = "Chỉnh sửa thông tin phân quyền người dùng";
 }
 @section Scripts {
     
@@ -15,67 +15,71 @@
 }
 <h2>  @ViewBag.Title </h2>
 <hr style="width:100%" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @using (Html.BeginForm("Edit", "PhanQuyen", FormMethod.Post, new { autocomplete = "off" }))
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
     <div>
         <fieldset>
+            <table width="100%">
+                <tr>
+                    <td class="center1">
+                        @Html.LabelFor(u => u.MA_NGUOI_DUNG)
+                    </td>
+                    <td class="right1 required">
+                        @Html.DropDownListFor(u => u.MA_NGUOI_DUNG, new SelectList(ViewBag.ListNguoiDung, "MA_NGUOI_DUNG", "TEN_NGUOI_DUNG"), "---------------------Chọn người dùng---------------------", new { @disabled = "disabled", style = "padding:5px;font-size:1.2em" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center1">
+                       @Html.LabelFor(u => u.QUYEN_ADMIN)
+                    </td>
+                    <td class="right1 ">
+                        @Html.CheckBoxFor(u => u.QUYEN_ADMIN, new { id = "admin_chk" })
+                    </td>
+                </tr>
 
-            <div>
-                @Html.LabelFor(u => u.MA_NGUOI_DUNG)
-            </div>
-            <div class="required">
-                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG, new SelectList(ViewBag.ListNguoiDung, "MA_NGUOI_DUNG", "TEN_NGUOI_DUNG"), "-Chọn người dùng-", new { @disabled = "disabled", style = "padding:5px;font-size:1.2em" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.QUYEN_ADMIN)
-            </div>
-            <div>
-                @Html.CheckBoxFor(u => u.QUYEN_ADMIN, new { id = "admin_chk" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.QUYEN_DANH_MUC_SAN_PHAM)
-            </div>
-            <div>
-                @Html.CheckBoxFor(u => u.QUYEN_DANH_MUC_SAN_PHAM, new { id = "sanpham_chk" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.QUYEN_BAN_HANG)
-            </div>
-            <div>
-                @Html.CheckBoxFor(u => u.QUYEN_BAN_HANG, new { id = "banhang_chk" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.QUYEN_THAU_NGAN)
-            </div>
-            <div>
-                @Html.CheckBoxFor(u => u.QUYEN_THAU_NGAN, new { id = "thaungan_chk" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.QUYEN_QUAN_LY_KHO)
-            </div>
-            <div>
-                @Html.CheckBoxFor(u => u.QUYEN_QUAN_LY_KHO, new { id = "qlkho_chk" })
-            </div>
-            <br />
-            <div>
-                @Html.LabelFor(u => u.MA_NHOM_NGUOI_DUNG)
-            </div>
-            <div>
-                @Html.DropDownListFor(u => u.MA_NHOM_NGUOI_DUNG, new SelectList(ViewBag.NhomNguoiDung, "MA_NHOM", "TEN_NHOM"), "-Chọn mã nhóm-", new { style = "padding:5px;font-size:1.2em" })
-            </div>
-            <br />
-            <div>
-                <input type="submit" style="width:100px" value="Lưu" />
-                <span> </span>
-                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
-            </div>
-        </fieldset>
+                <tr>
+                    <td class="center1">
+                        @Html.LabelFor(u => u.QUYEN_DANH_MUC_SAN_PHAM)
+                    </td>
+                    <td class="right1 ">
+                        @Html.CheckBoxFor(u => u.QUYEN_DANH_MUC_SAN_PHAM, new { id = "sanpham_chk" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center1">
+                       @Html.LabelFor(u => u.QUYEN_BAN_HANG)
+                    </td>
+                    <td class="right1 ">
+                       @Html.CheckBoxFor(u => u.QUYEN_BAN_HANG, new { id = "banhang_chk" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center1">
+                        @Html.LabelFor(u => u.QUYEN_THAU_NGAN)
+                    </td>
+                    <td class="right1 ">
+                        @Html.CheckBoxFor(u => u.QUYEN_THAU_NGAN, new { id = "thaungan_chk" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center1">
+                        @Html.LabelFor(u => u.QUYEN_QUAN_LY_KHO)
+                    </td>
+                    <td class="right1 ">
+                        @Html.CheckBoxFor(u => u.QUYEN_QUAN_LY_KHO, new { id = "qlkho_chk" })
+                    </td>
+                </tr>
+                </table>
+                <div>
+                    <input type="submit" style="width:100px" value="Lưu" />
+                    <span> </span>
+                    <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+                </div>
+</fieldset>
     </div>
     <script>
         function reset() {

@@ -76,6 +76,7 @@ td.innerLast
     border-left: 1px solid #666;
     border-right: 1px solid #666;
     border-bottom: 1px solid #666;
+    border-top: 1px solid #666;
     padding: 3px;
     height: 28px;
 }

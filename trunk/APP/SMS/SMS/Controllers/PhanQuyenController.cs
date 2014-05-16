@@ -9,6 +9,8 @@ using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     [CustomActionFilter]
     public class PhanQuyenController : Controller
     {
@@ -21,6 +23,19 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var list = ctx.SP_GET_ALL_ROLE(0).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             RoleModel model = new RoleModel();       
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = 1;
+            model.RoleList = list.ToPagedList(pageIndex, pageSize);
+            model.PageCount = list.Count;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(int? UserId)
+        {
+            var ctx = new SmsContext();
+            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            RoleModel model = new RoleModel();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = 1;
             model.RoleList = list.ToPagedList(pageIndex, pageSize);
