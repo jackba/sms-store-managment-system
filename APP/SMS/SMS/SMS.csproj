@@ -269,6 +269,9 @@
     <Compile Include="Models\SP_GET_IMPORT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_INVENTORY_BY_STORE_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -276,12 +279,6 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_ROLE_OF_USER_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">

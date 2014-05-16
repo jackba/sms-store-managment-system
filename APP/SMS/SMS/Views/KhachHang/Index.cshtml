@@ -163,7 +163,7 @@
     
     <div id="advSearch" name="advSearch" style="width:100%">
         <div style="display:inline-block; width:200px; height:28px"> Tên khách hàng:</div>
-        <div style="display: inline-block; width: 400px; height: 28px"> @Html.TextBox("customerName", ViewBag.CurrentFilter as string, new { @id = "customerName" })</div>
+        <div style="display: inline-block; width: 400px; height: 28px"> @Html.TextBox("customerName", ViewBag.customerName as string, new { @id = "customerName" })</div>
         <br />
         <div style="display:inline-block; width:200px; height:28px"> Loại khách hàng:</div>
         <div style="display: inline-block; width: 400px; height: 28px"> @Html.DropDownList("customerKind", kinds, new { @id = "customerKind", @style = "padding:2px;font-size:1.2em; " })</div>
@@ -196,10 +196,31 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
                         <tr>
                             <td class='inner colwidth head ' width="40%">
-                                @Html.ActionLink("Mã khách hàng", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                                @Html.ActionLink("Mã khách hàng", "Index", new
+                           {
+                               sortOrder = ViewBag.CurrentSort,
+                               customerName = ViewBag.customerName,
+                               currentFilter = ViewBag.CurrentFilter,
+                               customerAmountFrom = ViewBag.customerAmountFrom,
+                               customerAmountTo = ViewBag.customerAmountTo,
+                               customerDebitFrom = ViewBag.customerDebitFrom,
+                               ShowFlag = ViewBag.ShowFlag,
+                               customerKind = ViewBag.CusomerKind,
+                               customerArea = ViewBag.customerArea
+                           })
                             </td>
                             <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên khách hàng", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
+                                @Html.ActionLink("Tên khách hàng", "Index", new {
+                               sortOrder = ViewBag.CurrentSort,
+                               customerName = ViewBag.customerName,
+                               currentFilter = ViewBag.CurrentFilter,
+                               customerAmountFrom = ViewBag.customerAmountFrom,
+                               customerAmountTo = ViewBag.customerAmountTo,
+                               customerDebitFrom = ViewBag.customerDebitFrom,
+                               ShowFlag = ViewBag.ShowFlag,
+                               customerKind = ViewBag.CusomerKind,
+                               customerArea = ViewBag.customerArea
+                           })
                             </td>
                         </tr>
                     </table>
@@ -420,7 +441,16 @@
             <td>
                 <div style="text-align:right; padding-top:3px;">
                     @Html.PagedListPager(Model, page => Url.Action("Index",
-                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                                new { page, sortOrder = ViewBag.CurrentSort,
+                                    customerName = ViewBag.customerName,
+                                    currentFilter = ViewBag.CurrentFilter,
+                                    customerAmountFrom = ViewBag.customerAmountFrom,
+                                    customerAmountTo = ViewBag.customerAmountTo,
+                                    customerDebitFrom = ViewBag.customerDebitFrom,
+                                    ShowFlag = ViewBag.ShowFlag,
+                                    customerKind = ViewBag.CusomerKind,
+                                    customerArea = ViewBag.customerArea
+                                }))
                 </div>
             </td>
         </tr>

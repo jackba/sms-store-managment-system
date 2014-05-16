@@ -347,9 +347,26 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
-        public ActionResult Show()
+        public ActionResult Show(int id)
         {
-            return View();
+            var ctx = new SmsContext();
+            var User = ctx.NGUOI_DUNG.Include("KHO").Include("NHOM_NGUOI_DUNG").Single(us => us.MA_NGUOI_DUNG == id);
+            return View(User);
+        }
+
+        [HttpPost]
+        public JsonResult Find(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedUsers = from x in ctx.NGUOI_DUNG
+                                 where (x.TEN_NGUOI_DUNG.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                 select new
+                                 {
+                                     id = x.MA_NGUOI_DUNG,
+                                     value = x.TEN_NGUOI_DUNG
+                                 };
+            var result = Json(suggestedUsers.Take(5).ToList());
+            return result; 
         }
 
         [HttpPost]

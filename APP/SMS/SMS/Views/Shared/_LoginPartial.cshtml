@@ -1,13 +1,13 @@
 ﻿@if (Request.IsAuthenticated)
 {
     <text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        Hello, @Html.ActionLink(User.Identity.Name, "Show", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             @Html.AntiForgeryToken()
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
-        | @Html.ActionLink("Change password","changePass","NguoiDung")
+        | @Html.ActionLink("Thay đổi mật khẩu","changePass","NguoiDung")
     </text>
 }
 else

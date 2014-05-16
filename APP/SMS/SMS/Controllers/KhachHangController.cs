@@ -25,7 +25,12 @@ namespace SMS.Controllers
             ViewBag.CusomerKind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
             ViewBag.CustomerArea = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
             ViewBag.ShowFlag = string.IsNullOrEmpty(ShowFlag) ? 0 : int.Parse(ShowFlag);
-
+            ViewBag.customerAmountFrom = customerAmountFrom;
+            ViewBag.customerAmountTo = customerAmountTo;
+            ViewBag.customerDebitFrom = customerDebitFrom;
+            ViewBag.customerDebitTo = customerDebitTo;
+            ViewBag.customerName = customerName;
+            
             int kind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
             int areaId = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
             decimal amountFrom = 0;

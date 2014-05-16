@@ -78,7 +78,7 @@
                     @Html.LabelFor(u => u.KhachHang.MA_THE_KHACH_HANG)
                 </div>
                 <div class="right">
-                    @Html.Label(Model.KhachHang.MA_THE_KHACH_HANG)
+                    @Html.Label(Model.KhachHang.MA_THE_KHACH_HANG == null ? "No#" : Model.KhachHang.MA_THE_KHACH_HANG)
                     @Html.HiddenFor(u => u.KhachHang.MA_THE_KHACH_HANG)
                 </div>
                 <div class="left">
