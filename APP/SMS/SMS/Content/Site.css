@@ -821,15 +821,20 @@ tr.pager td {
     white-space:nowrap;
     text-overflow: ellipsis;
 }
-.tooltip:hover {text-decoration:none;} 
-.tooltip span {
-    z-index:10;display:none; padding:14px 20px;
-    margin-top:-30px; margin-left:28px;
-    width:300px; 
-    height:auto;
-    line-height:16px;
-    white-space:normal;
-}
+.tooltip:hover {text-decoration:none;}
+    .tooltip span {
+        z-index: 10;
+        display: none;
+        padding: 14px 20px;
+        /*margin-top: -30px;*/
+        /*margin-left: 28px;*/
+        /*width: 300px;*/
+        width:auto;
+        height: auto;
+        line-height: 16px;
+        white-space: normal;
+        text-align:left;
+    }
 .tooltip:hover span{
     display:inline; position:absolute; color:#111;
     border:1px solid #DCA; background:#fffAF0;}
