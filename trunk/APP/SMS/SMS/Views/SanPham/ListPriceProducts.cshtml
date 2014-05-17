@@ -73,6 +73,34 @@ function changeTypeCustomer(value) {
     $('#Type' + value).click(fnOpenNormalDialog(title, content, action));
 }
 
+function confirmBack() {
+    var title = "Xác nhận";
+    var content = "Dữ liệu bạn đang thao tác có thể bị mất, bạn muốn tiếp tục hay không?"
+    if ($("table.tableContentScroll tr").length == 0) {
+        $('#hidBtnBack').click();
+    } else {
+        fnOpenConfirmDialog(title, content);
+    }
+}
+function fnOpenConfirmDialog(title, content) {
+    $("#dialogConfirm").html(content);
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        modal: true,
+        title: title,
+        height: 200,
+        width: 550,
+        buttons: {
+            "Đồng ý": function () {
+                $(this).dialog('close');
+                $('#hidBtnBack').click();
+            },
+            "Không": function () {
+                $(this).dialog('close');               
+            }
+        }
+    });
+}
 function fnOpenNormalDialog(title, content, action) {
     if ($("table.tableContentScroll tr").length == 0) {
         return;
@@ -432,6 +460,8 @@ function RemoveRougeChar(convertString) {
 <div>
     <input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />
     <input type="button" id="reset" style="width:135px" value="Tạo mới báo giá" onclick="reset();" />
-    <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
+    
+    <input type="button" style="width:100px" value="Trở về" onclick="confirmBack();" />
+    <input type="button" id="hidBtnBack" style="display:none" onclick="location.href='@Url.Action("Index", "SanPham")'" />
 </div>
 

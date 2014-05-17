@@ -79,7 +79,8 @@ namespace SMS.Controllers
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
-                                        name = x.TEN_SAN_PHAM,                                
+                                        name = x.TEN_SAN_PHAM,    
+                                        unit = x.MA_DON_VI,
                                         price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0: 
                                                     (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
@@ -506,21 +507,21 @@ namespace SMS.Controllers
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
 
             double weightFrom = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongFrom) ? "0" : psa.TrongLuongFrom.Replace("'", ""), out weightFrom);
+            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongFrom) ? "0" : psa.TrongLuongFrom.Replace(",", ""), out weightFrom);
             double weightTo = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongTo) ? "0" : psa.TrongLuongTo.Replace("'", ""), out weightTo);
+            double.TryParse(string.IsNullOrEmpty(psa.TrongLuongTo) ? "0" : psa.TrongLuongTo.Replace(",", ""), out weightTo);
             double priceFrom = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.GiaBanFrom) ? "0" : psa.GiaBanFrom.Replace("'", ""), out priceFrom);
+            double.TryParse(string.IsNullOrEmpty(psa.GiaBanFrom) ? "0" : psa.GiaBanFrom.Replace(",", ""), out priceFrom);
             double priceTo = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.GiaBanTo) ? "0" : psa.GiaBanTo.Replace("'", ""), out priceTo);
+            double.TryParse(string.IsNullOrEmpty(psa.GiaBanTo) ? "0" : psa.GiaBanTo.Replace(",", ""), out priceTo);
             double discountFrom = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauFrom) ? "0" : psa.ChietKhauFrom.Replace("'", ""), out discountFrom);
+            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauFrom) ? "0" : psa.ChietKhauFrom.Replace(",", ""), out discountFrom);
             double discountTo = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauTo) ? "0" : psa.ChietKhauTo.Replace("'", ""), out discountTo);
+            double.TryParse(string.IsNullOrEmpty(psa.ChietKhauTo) ? "0" : psa.ChietKhauTo.Replace(",", ""), out discountTo);
             double amoutFrom = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.CoSoFrom) ? "0" : psa.CoSoFrom.Replace("'", ""), out amoutFrom);
+            double.TryParse(string.IsNullOrEmpty(psa.CoSoFrom) ? "0" : psa.CoSoFrom.Replace(",", ""), out amoutFrom);
             double amountTo = 0;
-            double.TryParse(string.IsNullOrEmpty(psa.CoSoTo) ? "0" : psa.CoSoTo.Replace("'", ""), out amountTo);
+            double.TryParse(string.IsNullOrEmpty(psa.CoSoTo) ? "0" : psa.CoSoTo.Replace(",", ""), out amountTo);
 
             var ctx = new SmsContext();
             var contentLst = (from s in ctx.SAN_PHAM

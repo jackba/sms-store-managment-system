@@ -19,12 +19,21 @@
     
     $(document).ready(function () {
         //show calendar
+       
         $('.datePicker').datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
             yearRange: "-60:+0"
         });
+        //$('#addRecord').triggerHandler("click", function () {
+        //    addRecord();
+        //});
+        $("#addRecord").click(function () {
+            addRecord();
+        });
+        $('#NgayBan').datepicker('setDate', 'today');
+        $('#NgayGiao').datepicker('setDate', 'today + 3');
         // hide 
         hideRelationProduct();
         hideRelationCustomer();
@@ -32,8 +41,8 @@
         //initial combobox store
         $('#typeStore').html(createStore());
         /*disabled export excel*/
-        $('#exportExcel').attr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "#ECECEC");
+        $('#saveBill').attr("disabled", "disabled");
+        $('#saveBill').css("background-color", "#ECECEC");
 
         /**AUTOCOMPLETE**/
         // Customer name
@@ -42,7 +51,8 @@
                 $.ajax({
                     url: "/KhachHang/FindDetailCustomer", data: "{ 'prefixText': '" + request.term + "' }",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; }, success:
+                    dataFilter: function (data) { return data; },
+                    success:
                         function (data) {
                             response($.map(data, function (item) {
                                 return {
@@ -56,25 +66,25 @@
                                     kind : item.kind
                                 }
                             }))
-                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-                $('#kindCustomer').val('0');
+                $('#kindCustomer').val('3');
             },
             select: function (event, ui) {
                 $('#kindCustomer').val(ui.item.kind);
                 $("#typeCustomers").val(ui.item.kind);
 
                 setRelationCustomer(ui.item, true);
-                $('#relationCustomer').removeClass('relationCustomerShow');
-                $('#relationCustomer').addClass('HideElement');
+                hideRelationCustomer();
 
                 return false;
             },
             focus: function (event, ui) {
                 setRelationCustomer(ui.item);
 
-                $('#relationCustomer').removeClass('HideElement');
-                $('#relationCustomer').addClass('relationCustomerShow');
+                showRelationCustomer();
             },
             close: function () {
                 hideRelationCustomer();
@@ -88,7 +98,8 @@
                 $.ajax({
                     url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; }, success:
+                    dataFilter: function (data) { return data; },
+                    success:
                         function (data) {
                             response($.map(data, function (item) {
                                 return {
@@ -97,27 +108,30 @@
                                     id: item.id,
                                     price: item.price,
                                     discount: item.discount,
-                                    
+                                    unit:item.unit
                                 }
                             }))
-                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-
+                setEmptyFixedField();
             },
             select: function (event, ui) {
                 setFixedField(ui.item);
               
-                $('#relationProduct').removeClass('relationProductShow');
-                $('#relationProduct').addClass('HideElement');
+                hideRelationProduct();
                 createDonViTinh();
+
+                $('#hidFactorValue').val('1');
                 return false;
             },
             focus: function (event, ui) {
               
                 setRelationProduct(ui.item);
                 setStoreInformation(ui.item);
-                $('#relationProduct').removeClass('HideElement');
-                $('#relationProduct').addClass('relationProductShow');
+                showRelationProduct();
+                $('#hidFactorValue').val('1');
             },
             close: function () {
                 hideRelationProduct();
@@ -127,8 +141,7 @@
         }).keyup(function (e) {
             if (e.which === 13 || e.which === 27) {
                 $(".ui-menu-item").hide();
-                $('#relationProduct').removeClass('relationProductShow');
-                $('#relationProduct').addClass('HideElement');
+                hideRelationProduct();
             }
         });;
 
@@ -166,10 +179,29 @@ function hideRelationProduct(){
     $('#relationProduct').addClass('HideElement');
   
 }
+function showRelationProduct() {
+    var width = $('#ui-id-2').width();
+    var offset = $('#ui-id-2').offset();
+    offset.left = offset.left + width + 10;
+    $('#relationProduct').offset({ top: offset.top, left: offset.left })
+    // show relation product
+    $('#relationProduct').removeClass('HideElement');
+    $('#relationProduct').addClass('relationProductShow');
+
+}
 function hideRelationCustomer() {
     // hide relation customer
     $('#relationCustomer').removeClass('relationCustomerShow');
     $('#relationCustomer').addClass('HideElement');
+}
+function showRelationCustomer() {
+    var width = $('#ui-id-1').width();
+    var offset = $('#ui-id-1').offset();
+    offset.left = offset.left + width + 10;
+    $('#relationCustomer').offset({ top: offset.top, left: offset.left })
+    // show relation customer
+    $('#relationCustomer').removeClass('HideElement');
+    $('#relationCustomer').addClass('relationCustomerShow');
 }
 function addCommaNumberic(ctrlID, isSpanTag) {
     if (isSpanTag == true) {
@@ -183,7 +215,13 @@ function addCommaNumberic(ctrlID, isSpanTag) {
 function changeTypeCustomer() {
     $('#kindCustomer').val($('#typeCustomers').val());
 }
-
+function setEmptyFixedField() {
+    //$('#MaSanPham').val('');
+    $('#GiaBan').val('');
+    $('#ChietKhau').val('');
+    $('#GiaThuc').val('');
+    $('#typeDonViTinh').empty();
+}
 function setFixedField(item) {
     CalcRealPrice(item.price, item.discount);
     addCommaNumberic('#GiaThuc');
@@ -210,12 +248,7 @@ function setRelationProduct(item, isSelected) {
         var priceReal = CalcRealPrice(item.price, item.discount, true);
         $('#S_GiaThuc').html(priceReal);
         addCommaNumberic('#S_GiaThuc', true);
-    }
-    
-
-   
-   
-    //TODO :
+    }  
 }
 function setRelationCustomer(item, isSelected) {
 
@@ -288,7 +321,42 @@ function createStore() {
             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
     });
 }
-
+function confirmBack() {
+    var title = "Xác nhận";
+    var content = "Quá trình trở về có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?";
+    if ($("table.tableContentScroll tr").length == 0) {
+        $('#hidBtnBack').click();
+    } else {
+        fnOpenConfirmDialog(title, content,1);
+    }
+}
+function fnOpenConfirmDialog(title, content, action) {
+    $("#dialogConfirm").html(content);
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        modal: true,
+        title: title,
+        height: 200,
+        width: 550,
+        buttons: {
+            "Đồng ý": function () {
+                $(this).dialog('close');
+                switch(action) {
+                    case 1:
+                        $('#hidBtnBack').click();
+                        break;
+                    case 2:
+                        reset();
+                        break;
+                }
+           
+            },
+            "Không": function () {
+                $(this).dialog('close');               
+            }
+        }
+    });
+}
 function fnOpenNormalDialog(title, content, action) {
     if ($("table.tableContentScroll tr").length == 0) {
         return;
@@ -340,8 +408,8 @@ function fnOpenNormalDialog(title, content, action) {
 function callback(valueReturn) {
     if (valueReturn) {
         $("table.tableContentScroll tr").remove();
-        $('#exportExcel').attr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "#ECECEC");
+        $('#saveBill').attr("disabled", "disabled");
+        $('#saveBill').css("background-color", "#ECECEC");
     } else {
         $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
     }
@@ -349,23 +417,116 @@ function callback(valueReturn) {
     
 
 function addRecord() {
-    if ($('#tableSearch #MaSanPham').val() != '') {
-        if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
-            var title = "Xác nhận"
-            var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
-            var action = 2;
-            $('#addRecord').click(fnOpenNormalDialog(title, content, action));
-        } else {
+
+    $('#contentMsgErr').empty();
+    $('#divErr').hide();
+    var msgErr = checkInput();
+    if ('' == msgErr) {
+        //if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
+        //    var title = "Xác nhận"
+        //    var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
+        //    var action = 2;
+        //    $('#addRecord').click(fnOpenNormalDialog(title, content, action));
+        //} else {
             prependNewRowToTable();
-            $('#exportExcel').removeAttr("disabled", "disabled");
-            $('#exportExcel').css("background-color", "");
-        }
+            resetFieldAfterAdding();
+            $('#saveBill').removeAttr("disabled", "disabled");
+            $('#saveBill').css("background-color", "");
+            CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
+        //}
+    } else {
+        showMsgErr(msgErr,true);
     }
 
+}
+function CalcTotalAllMoney(totalRow, isPlus) {
+    var result = 0;
+    totalRow = parseFloat(removeCommas(totalRow));
+    var totalAll = parseFloat(removeCommas($('#hidTotalAllMoney').val()));
+    if (isPlus) {
+        result = totalAll + totalRow;
+    } else {
+        result = totalAll - totalRow;
+    }
+    $('#hidTotalAllMoney').val(result);
+    addCommaNumberic('#hidTotalAllMoney');
+    $('#totalAll').html($('#hidTotalAllMoney').val());
+}
+function checkInput() {
+    var msgErr = '';
+    var empty = '';
+    if (empty == $('#TenKhachHang').val()) {
+        msgErr += " + Tên khách hàng. <br/>";
+    }
+    if (empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
+        msgErr += " + Tên sản phẩm. <br/>";
+    }
+    if (empty == $('#GiaBan').val()) {
+        msgErr += " + Giá bán. <br/>";
+    }
+    if (empty == $('#ChietKhau').val()) {
+        msgErr += " + Chiết khấu. <br/>";
+    }
+    if (empty == $('#SoLuong').val()) {
+        msgErr += " + Số lượng <br/>";
+    }
+    if (empty == $('#NgayBan').val()) {
+        msgErr += " + Ngày bán <br/>";
+    }
+    if (empty == $('#NgayGiao').val()) {
+        msgErr += " + Ngày giao <br/>";
+    }
+    if (empty != $('#NgayBan').val() && empty != $('#NgayGiao').val()) {
+        if (compareDate($('#NgayBan').val(), $('#NgayGiao').val(), 0) > 0) {
+            msgErr += " + Ngày bán hàng lớn hơn ngày giao hàng. <br/>";
+        }
+    }
+    if (empty == $('#DiaChi').val()) {
+        msgErr += " + Địa chỉ <br/>";
+    }
+    return msgErr;
+}
+
+function showMsgErr(msgErr, isShowTitle) {
+    if (isShowTitle == true) {
+        $('#titleMsgErr').show();
+    } else {
+        $('#titleMsgErr').hide();
+    }
+    $('#contentMsgErr').append(msgErr);
+    $('#divHr').show();
+    $('#divErr').show();
+}
+
+/*compare 2 date : date1 , date2 with n day
+*return 1 : date1 > date2 / 0 : date1 <= date2
+*/
+function compareDate(dtFrom, dtTo, day) {
+    if (($.datepicker.parseDate('dd/mm/yy', dtFrom) - $.datepicker.parseDate('dd/mm/yy', dtTo)) > day) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+function resetFieldAfterAdding() {
+    $('#tableSearch #TenSanPham').val('');
+    $('#tableSearch #MaSanPham').val('');
+    $('#tableSearch #GiaBan').val('');
+    $('#tableSearch #ChietKhau').val('');
+    $('#tableSearch #GiaThuc').val('');
+    $('#tableSearch #typeDonViTinh').empty();
+    $('#tableSearch #SoLuong').val('1');
+  
 }
 function prependNewRowToTable() {
     var MaSP = $('#tableSearch #MaSanPham').val();
     var TenSP = $('#tableSearch #TenSanPham').val();
+    var ChietKhau = $('#tableSearch #ChietKhau').val();
+    var GiaBan = $('#tableSearch #GiaBan').val();
+
+    CalcTotalMoney1Row();
+
     var newRow = '';
     newRow += ' <tr class="rowHeight" id=\'' + MaSP + '\'> ';
     newRow += '<td style="width:22px;"> ';
@@ -377,7 +538,7 @@ function prependNewRowToTable() {
     newRow += ' <div  class="colProductNm tooltip truncate">';
     newRow += TenSP;
     newRow += '  <span>' + TenSP + '</span>';
-    newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
+    newRow += '  <input name="MaSanPham_' + MaSP + '" type="hidden" value="' + MaSP + '" />';
     newRow += '  <input name="TenSanPham_' + MaSP + '" type="hidden" value="' + TenSP + '" />';
     newRow += '   </div>';
     newRow += ' </td> ';
@@ -386,40 +547,82 @@ function prependNewRowToTable() {
     newRow += '  <input name="MaKho_' + MaSP + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
     newRow += ' </td> ';
     newRow += '  <td  class="colPrice textRight"> ';
-    newRow += $('#tableSearch #GiaThuc').val();
+    newRow += ' <div  class="colPrice tooltip truncate">';
+    newRow +=   $('#tableSearch #GiaThuc').val();
     newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+    newRow += '  <input name="ChietKhau_' + MaSP + '" type="hidden" value="' + ChietKhau + '" />';
+    newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
+    newRow += '   </div>';
     newRow += ' </td>  ';
 
     newRow += '  <td class="colAmount textRight"> ';
     newRow += $('#tableSearch #SoLuong').val();
-    newRow += '  <input name="SoLuong_' + MaSP + '" type="hidden" value="' + $('#tableSearch :selected').val() + '" />';
+    newRow += '  <input name="SoLuong_' + MaSP + '" type="hidden" value="' + $('#tableSearch #SoLuong').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  <td class="colUnit textCenter"> ';
     newRow += $('#typeDonViTinh :selected').text()
-    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#typeDonViTinh #GiaThuc').val() + '" />';
+    newRow += '  <input name="MaDonViTinh_' + MaSP + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  <td class="colTotal textRight"> ';
-    newRow += $('#tableSearch #GiaThuc').val();
-    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+    newRow += $('#hidTotalRowAdded').val()
+  
+    newRow += '  <input name="ThanhTien_' + MaSP + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  </tr> ';
     $('#tableContent').prepend(newRow);
-    //reset value
-    $('#tableSearch #TenSanPham').val('')
-    $('#tableSearch #MaSanPham').val('')
-    $('#tableSearch #GiaBan').val('')
-    $('#tableSearch #ChietKhau').val('')
-    $('#tableSearch #GiaThuc').val('')
+
+}
+function CalcFactorOfProduct() {
+    var unitNo = $('#typeDonViTinh :selected').val();
+    var productNo = $('#tableSearch #MaSanPham').val();
+    GetFactorOfProduct(productNo, unitNo);
+
+}
+function CalcTotalMoney1Row() {
+    var result = 0;
+
+    var factor = $('#hidFactorValue').val();
+   
+    var count = removeCommas($('#tableSearch #SoLuong').val());
+    var realPrice = removeCommas($('#tableSearch #GiaThuc').val());
+
+    result = count * factor * realPrice;
+    $('#hidTotalRowAdded').val(result);
+    addCommaNumberic('#hidTotalRowAdded');
+    
+    result = $('#hidTotalRowAdded').val();
+
+    return result;
+}
+function GetFactorOfProduct(productNo, unitNo) {
+    if (unitNo != null && unitNo != 'undefined') {
+        $.ajax({
+            url: "/BanHang/FindFactorOfProduct",
+            //data: "{'maSP' : '" + productNo + "'}",
+            data: "{ 'maSP': '" + productNo + "' , 'unitNo' : '" + unitNo + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",        
+            success: function (data) {
+                $('#hidFactorValue').val(data.heso);           
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
 }
 function CalcRealPrice(price, discount, isReturn) {
+    $('#contentMsgErr').empty();
+    $('#divHr').hide();
     var result = '';
     if (price == 0 || discount == 0) {
         result = price;
     } else {
         result = roundToTwo(price - ((price * discount) / 100));
+    }
+    if (result < 0) {
+        showMsgErr(" Giá trị của chiết khấu quá lớn so với giá gốc của sản phẩm <br/> Hãy nhập lại giá trị chiết khấu.", false)
+        return false;
     }
     if (isReturn == true) {
         return result;
@@ -427,9 +630,11 @@ function CalcRealPrice(price, discount, isReturn) {
         $('#tableSearch #GiaThuc').val(result);
     }
 }
+
 function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
 }
+
 function UpdateRealPrice() {
     if ('' == $('#MaSanPham').val() || null == $('#MaSanPham').val()) {
         return
@@ -444,8 +649,15 @@ function UpdateRealPrice() {
         discount = 0;
         $('#ChietKhau').val('0');
     }
-    CalcRealPrice(price, discount);
-    addCommaNumberic('#GiaThuc');
+    var result = CalcRealPrice(price, discount);
+    if(result == false){
+        $('#GiaThuc').val('');
+        $('#ChietKhau').focus();
+        return;
+    }else{
+     addCommaNumberic('#GiaThuc');
+    }
+   
 }
 
 /*remove comma from value input*/
@@ -457,18 +669,45 @@ function removeCommas(str) {
     }
 
 }
+
 function deleteRow(rowId) {
+    var totalRow = $('input[name="ThanhTien_' + rowId + '"]').val();
+    CalcTotalAllMoney(totalRow, false);
+
     $('#' + rowId).remove();
     if ($("table.tableContentScroll tr").length == 0) {
-        $('#exportExcel').attr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "#ECECEC");
+        $('#saveBill').attr("disabled", "disabled");
+        $('#saveBill').css("background-color", "#ECECEC");
     } else {
-        $('#exportExcel').removeAttr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "");
+        $('#saveBill').removeAttr("disabled", "disabled");
+        $('#saveBill').css("background-color", "");
         
     }
 }
+function saveBill() {
+    var listProductNo = '';
+    var indx = 0;
+    $('#tableContent tr').each(function () {
+        listProductNo += this.id
+        if (indx < ($('#tableContent tr').length - 1)) {
+            listProductNo += ','
+        }
+        indx += 1;
+    })
 
+    $('#ListProductID').val(listProductNo);
+    $('#formContent').submit();
+}
+function createNewBill() {
+    var title = "Xác nhận";
+    var content = "Quá trình tạo mới hóa đơn có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?"
+    if ($("table.tableContentScroll tr").length == 0) {
+        reset();
+    } else {
+        fnOpenConfirmDialog(title, content, 2);
+    }
+    
+}
 function exportExcel() {
 
     var listProductNo = '';
@@ -485,7 +724,38 @@ function exportExcel() {
     $('#formContent').submit();
   
 }
+function reset() {
 
+    //reset content prev
+    $("table.tableContentScroll tr").remove();
+    $('#saveBill').attr("disabled", "disabled");
+    $('#saveBill').css("background-color", "#ECECEC");
+    //reset field input prev
+    $('#TenKhachHang').val('');
+    $('#MaKhachHang').val('');
+    $('#kindCustomer').val('');
+
+    $('#typeCustomers').val('3');
+
+    $('#TenSanPham').val('');
+    $('#MaSanPham').val('');
+    $('#GiaBan').val('');
+    $('#ChietKhau').val('');
+    $('#GiaThuc').val('');
+
+    $('#typeStore option:eq(0)').attr('selected', 'selected');
+    $('#typeDonViTinh').empty();
+    $('#SoLuong').val('');
+
+    $('#NgayBan').datepicker('setDate', 'today');
+    $('#NgayGiao').datepicker('setDate', 'today + 3');
+
+    $('#DiaChi').val('');
+    //hidden field
+    $('#hidFactorValue').val('1');
+    $('#hidTotalRowAdded').val('1');
+    $('#hidTotalAllMoney').val('1');
+}
 /*start format numberic*/
 function NumbericOnly(ctrl) {
     $(ctrl).keypress(function (e) {
@@ -502,6 +772,7 @@ function NumbericOnly(ctrl) {
     });
 
 }
+
 function formatNumberic() {
     $('input.numberic').each(function () {
         $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
@@ -539,30 +810,49 @@ function RemoveRougeChar(convertString) {
 </script>
 }
 <hr />
-<div id="customerArea">
+<!--Message-->
+<div id="msgId">
+    <div id="divErr" style="display:none; color:red">
+        <div id="titleMsgErr">
+            Hãy nhập các giá trị bên dưới :
+        </div>
+        <div id="contentMsgErr" style="margin-left:15px">
+
+        </div>
+        <div id="divHr">
+            <hr />
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("SaveBill", "BanHang", FormMethod.Post,
+        new { @id = "formContent", enctype = "multipart/form-data" }))
+{
+<!--customer & user area-->
+<div id="customerArea">    
     <table id="tableCustomer" class="tableSearch tableBasic">
         <tr>
             <td>
-                <div class="titleItem">Tên khách hàng </div>
+                <div class="titleItem required">Tên khách hàng </div>
                 <br />
                 <div>
-                    <input type="text" id="TenKhachHang" style="margin-left: 2px;"/>
-                    <input type="hidden" id="MaKhachHang"  />
+                    <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;"/>
+                    <input type="hidden" name="MaKhachHang" id="MaKhachHang"  />
+                    <input type="hidden" name="UserId" value="@ViewBag.UserId" />
                     <input type="hidden" id="kindCustomer" />
                 </div>
                 
             </td>
             <td>
                 <div>
-                    <span style="font-size:16px;">Loại nghiệp vụ : </span>
+                    <span class="required" style="font-size:16px;">Loại nghiệp vụ  </span>
                     <br />
 
                     <div>
                         <select id="typeCustomers" class="ComboboxCustomer" onchange="changeTypeCustomer();">
-                            <option value="0"> VL - 00 </option>
-                            <option value="1"> L1 - 01 </option>
-                            <option value="2"> L2 - 02 </option>
                             <option value="3"> L3 - 03 </option>
+                            <option value="2"> L2 - 02 </option>
+                            <option value="1"> L1 - 01 </option>
                         </select>
 
                     </div>
@@ -590,29 +880,26 @@ function RemoveRougeChar(convertString) {
         </tr>
 
     </table>
-
-
-
-
+    <!--input information product-->
 <div>
     <table id="tableSearch" class="tableSearch tableBasic">
         <tr>
             <td>
                 <input type="hidden" id="MaSanPham" />
-                <div class="titleItem">Tên sản phẩm </div>
+                <div class="titleItem required">Tên sản phẩm </div>
                 <br />
                 <div>
                     <input type="text" id="TenSanPham" style="margin-left: 2px; " />
                 </div>
             </td>
             <td>
-                <div class="titleItem">Giá bán</div>
+                <div class="titleItem required">Giá bán</div>
                 <br />
                 <div>
                     <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
                             class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                 </div>
-                <div id="relationProduct">
+                <div id="relationProduct" style="top: 319px; left: 565px;">
                     <div id="toolTipRelationProduct">
                         <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
                         <br />
@@ -627,43 +914,43 @@ function RemoveRougeChar(convertString) {
                         <span><strong>- Số lượng: </strong> </span>
                         @{
                             int j = 0;
-                    foreach (var Kho in ViewBag.KhoList)
-                    {
-                        j++;
-                        if (j <= 5)
-                        {
-                            switch (j)
+                            foreach (var Kho in ViewBag.KhoList)
                             {
-                                case 1:
-                                    <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
-                                    break;
-                               case 2:
-                                    <br />
+                                j++;
+                                if (j <= 5)
+                                {
+                                    switch (j)
+                                    {
+                                        case 1:
+                                            <br />
+                                            <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
+                                            break;
+                                        case 2:
+                                        <br />
                                         <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
-                                    break;
-                               case 3:
-                                    <br />
+                                            break;
+                                        case 3:
+                                        <br />
                                         <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
-                                    break;
-                               case 4:
-                                    <br />
+                                            break;
+                                        case 4:
+                                        <br />
                                         <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
-                                    break;
-                               case 5:
-                                    <br />
+                                            break;
+                                        case 5:
+                                        <br />
                                         <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
-                                    break;
+                                            break;
+                                    }
+                                }
                             }
                         }
-                    }
-}
 
                     </div>
                 </div>
             </td>
             <td>
-                <div class="titleItem">Chiết khấu</div>
+                <div class="titleItem required">Chiết khấu</div>
                 <br />
                 <div>
                     <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
@@ -672,7 +959,7 @@ function RemoveRougeChar(convertString) {
                 </div>
             </td>
             <td>
-                <div class="titleItem">Giá sau chiết khấu </div>
+                <div class="titleItem ">Giá sau chiết khấu </div>
                 <br />
                 <div>
                     <input type="text" id="GiaThuc" maxlength="10"
@@ -683,24 +970,24 @@ function RemoveRougeChar(convertString) {
         <tr>
             <td>
                 <div>
-                    <span style="font-size:16px;">Kho hàng : </span>
+                    <span class="required" style="font-size:16px;">Kho hàng  </span>
                     <br />
                     <select id="typeStore" class="Combobox"></select>
                 </div>
             </td>
             <td>
                 <div>
-                    <span style="font-size:16px;">Đơn vị tính: </span>
+                    <span class="required" style="font-size:16px;">Đơn vị tính </span>
                     <br />
-                    <select id="typeDonViTinh" class="Combobox"></select>
+                    <select id="typeDonViTinh" class="Combobox" onchange="CalcFactorOfProduct();"></select>
                 </div>
             </td>
             <td>
-                <div class="titleItem">Số lượng</div>
+                <div class="titleItem required">Số lượng</div>
                 <br />
                 <div>
-                    <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;"
-                           class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
+                    <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;" value="1"
+                           class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"  />
                 </div>
             </td>
             <td></td>
@@ -708,18 +995,18 @@ function RemoveRougeChar(convertString) {
         <tr>
 
             <td>
-                <div class="titleItem">Ngày bán</div>
+                <div class="titleItem required">Ngày bán</div>
                 <br />
                 <div>
-                    <input type="text" id="NgayBan" maxlength="10"
+                    <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
                             class="datePicker alignCenter " />
                 </div>
             </td>
             <td colspan="2">
-                <div class="titleItem">Ngày giao hàng</div>
+                <div class="titleItem required">Ngày giao hàng</div>
                 <br />
                 <div>
-                    <input type="text" id="NgayGiao" maxlength="10"
+                    <input  type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
                             class="datePicker alignCenter" />
                 </div>
             </td>
@@ -727,24 +1014,29 @@ function RemoveRougeChar(convertString) {
         </tr>
         <tr>
             <td colspan="3">
-                <div class="titleItem">Địa chỉ giao hàng</div>
+                <div class="titleItem required">Địa chỉ giao hàng</div>
                 <br />
                 <div>
-                    <textarea id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
+                    <textarea name="DiaChi" id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
                 </div>
             </td>
         </tr>
     </table>
     <div class="myAction">
-        <input type="button" id="addRecord" onclick="addRecord();" value="Thêm sản phẩm"/>
+        <input type="button" id="addRecord" value="Thêm sản phẩm"/>
     </div>
 </div>
-
-
-
+    
+<!--hidden field start-->
 <div id="dialogConfirm"></div>
-<input type="hidden" id="currTypeCustomer" />
+<input type="hidden" id="hidFactorValue" value="1" />
+<input type="hidden" id="hidTotalRowAdded" value="0" />
+<input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
+<input type="hidden" id="ListProductID" name="ListProductID" value="" />
+    <!--hidden field end-->
+
 </div>
+<!--list content area-->
 <div class="mainContainer">
     <table class="tableHeader">     
         <tbody>
@@ -765,12 +1057,7 @@ function RemoveRougeChar(convertString) {
                 <th class="colPriceHeader">
                     Giá bán
                 </th>
-                @*<th class="colDiscountHeader">
-                    Chiết khấu
-                </th>
-                <th class="colRealPriceHeader">
-                    Giá thực
-                </th>*@
+
                 <th class="colAmountHeader">
                     Số lượng
                 </th>
@@ -788,23 +1075,38 @@ function RemoveRougeChar(convertString) {
         </tbody>
     </table>
 
-       @using (Html.BeginForm("ExportExcel", "SanPham", FormMethod.Post,
-        new { @id = "formContent", enctype = "multipart/form-data" }))
-        
-    {
         <div class="mainContentScroll">
             <table id="tableContent" class="tableContentScroll">          
-                <tbody >                          
+                <tbody >          
+                    <!--danh sach sp add vao day.-->                
                 </tbody>
             </table>
         </div>
     <input type="hidden" id="ListProductID" name="ListProductID" value="" />
-    }
+  
+</div>
+}
+<!--total money-->
+<div id="divTotal" >
+    <table cellpadding="0" cellspacing="0" class="tableTotal">
+        <tr>
+            <td class="colTitleTotal">
+                <div>Tổng tiền hóa đơn : </div>
+            </td>
+            <td class="colTotalValue">
+                <div id="totalAll"> 0 </div>
+            </td>
+        </tr>
+
+    </table>
 </div>
 <hr />
+
 <div>
     @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
-    <input type="button" id="createBill" style="width:100px" value="Lập hóa đơn" onclick="CreateBill();">
-    <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
+    <input type="button" id="saveBill" style="width: 120px" value="Lưu hóa đơn" onclick="saveBill();">
+    <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới" onclick="createNewBill();">
+    <input type="button" style="width:100px" value="Trở về" onclick="confirmBack();" >
+    <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
 </div>
 

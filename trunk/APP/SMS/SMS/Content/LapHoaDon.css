@@ -121,7 +121,9 @@ table.tableContentScroll tr:nth-child(odd) {
 .textLeft{
     text-align:left
 }
-
+.textCenter{
+    text-align:center
+}
 /*header s*/
 .colProductNmHeader{
     width: 210px;
@@ -331,3 +333,33 @@ select.Combobox {
    width: 280px !important;
    margin-left: 2px; 
 }
+.required:after {
+    color: #e32;
+    content: ' (*)';
+    display:inline;
+}
+
+table.tableTotal{
+    margin-right: 16px;
+}
+table.tableTotal td{
+     padding: 0.25em 0.25em 0.25em 0em !important;
+}
+td.colTitleTotal {
+    text-align: right;
+    width: 800px;
+    font-weight: bold;
+    font-size: medium;
+}
+td.colTotalValue {
+    width: 192px;
+    text-align: right;
+    background-color: rgb(220, 224, 238);
+    font-weight: bold;
+    font-size: medium;
+}
+/*hide button close in dialog s*/
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+/*hide button close in dialog e*/

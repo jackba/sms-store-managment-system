@@ -184,3 +184,8 @@ div.tooltip span {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+/*hide button close in dialog s*/
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+/*hide button close in dialog e*/
