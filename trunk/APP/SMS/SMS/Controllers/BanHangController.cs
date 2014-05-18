@@ -125,8 +125,9 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult SaveBill(FormCollection collection)
         {
+            int MaHD = -1;
             string SoHD = DateTime.Now.ToString("ddMMyyyyHHmmss");
-        
+            
             string listProductID = "";
             string[] arrProductID = new string[] { };
 
@@ -136,7 +137,9 @@ namespace SMS.Controllers
                 arrProductID = listProductID.Split(new char[] { ',' });
             }
 
+             System.Text.StringBuilder msgStringBuilder = new System.Text.StringBuilder();
             var db = new SmsContext();
+
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
@@ -179,6 +182,7 @@ namespace SMS.Controllers
                     db.HOA_DON.Add(hd);
                     db.SaveChanges();
 
+                    MaHD = hd.MA_HOA_DON;
                     //save CHI_TIET_HOA_DON
                     double SL = 0;
                     double DG = 0;
@@ -190,8 +194,7 @@ namespace SMS.Controllers
                         {
                             var cthd = db.CHI_TIET_HOA_DON.Create();
 
-                            cthd.MA_HOA_DON = hd.MA_HOA_DON;
-
+                            cthd.MA_HOA_DON = MaHD;
 
                             cthd.MA_SAN_PHAM = int.Parse(collection.Get("MaSanPham_" + id));
 
@@ -226,7 +229,12 @@ namespace SMS.Controllers
                     Transaction.Current.Rollback();
                 }
             }
-            return RedirectToAction("LapHoaDon");
+
+            msgStringBuilder.Append("<div>Hóa đơn đã được lưu thành công.</div>");
+            msgStringBuilder.Append("<div>Thông tin hóa đơn</div>");
+            msgStringBuilder.Append("<div style=\"margin-left: 15px;\"> + Mã hóa đơn : " + MaHD + "</div>");
+            msgStringBuilder.Append("<div style=\"margin-left: 15px;\"> + Số hóa đơn : " + SoHD + "</div>");
+            return Content(msgStringBuilder.ToString());
         }
 
 
@@ -277,7 +285,7 @@ namespace SMS.Controllers
             Response.Flush();
             Response.End();
 
-            return RedirectToAction("ListPriceProducts");
+            return Content("ListPriceProducts");
         }
     }
 

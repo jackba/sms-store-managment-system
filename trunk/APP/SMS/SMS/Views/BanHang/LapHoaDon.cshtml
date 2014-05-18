@@ -4,7 +4,7 @@
 }
 
 <link href="~/Content/LapHoaDon.css" rel="stylesheet" />
-
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
 <h2>@ViewBag.Title</h2>
 @section Scripts
 {
@@ -26,12 +26,26 @@
             changeYear: true,
             yearRange: "-60:+0"
         });
-        //$('#addRecord').triggerHandler("click", function () {
-        //    addRecord();
-        //});
+
+        $('#divHr').hide();
+
         $("#addRecord").click(function () {
             addRecord();
         });
+
+        $("#saveBill").click(function () {
+            saveListProductNo();
+        });
+        
+
+        $("#createNewBill").click(function () {
+            createNewBill();
+        });
+
+        $("#back").click(function () {
+            confirmBack();
+        });
+
         $('#NgayBan').datepicker('setDate', 'today');
         $('#NgayGiao').datepicker('setDate', 'today + 3');
         // hide 
@@ -211,7 +225,6 @@ function addCommaNumberic(ctrlID, isSpanTag) {
     }
     
 }
-
 function changeTypeCustomer() {
     $('#kindCustomer').val($('#typeCustomers').val());
 }
@@ -403,8 +416,6 @@ function fnOpenNormalDialog(title, content, action) {
             break;
     }
 }
-
-
 function callback(valueReturn) {
     if (valueReturn) {
         $("table.tableContentScroll tr").remove();
@@ -414,8 +425,6 @@ function callback(valueReturn) {
         $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
     }
 }
-    
-
 function addRecord() {
 
     $('#contentMsgErr').empty();
@@ -486,7 +495,6 @@ function checkInput() {
     }
     return msgErr;
 }
-
 function showMsgErr(msgErr, isShowTitle) {
     if (isShowTitle == true) {
         $('#titleMsgErr').show();
@@ -497,7 +505,6 @@ function showMsgErr(msgErr, isShowTitle) {
     $('#divHr').show();
     $('#divErr').show();
 }
-
 /*compare 2 date : date1 , date2 with n day
 *return 1 : date1 > date2 / 0 : date1 <= date2
 */
@@ -684,7 +691,7 @@ function deleteRow(rowId) {
         
     }
 }
-function saveBill() {
+function saveListProductNo() {
     var listProductNo = '';
     var indx = 0;
     $('#tableContent tr').each(function () {
@@ -696,7 +703,7 @@ function saveBill() {
     })
 
     $('#ListProductID').val(listProductNo);
-    $('#formContent').submit();
+    //$('#formContent').submit();
 }
 function createNewBill() {
     var title = "Xác nhận";
@@ -806,12 +813,26 @@ function RemoveRougeChar(convertString) {
     }
     return convertString;
 }
-/*end format numberic*/
+    /*end format numberic*/
+
+function saveBillSuccess() {
+    $('#divErr').hide();
+    $('#divInfo').show();
+    $('#divHr').show();
+}
+function saveBillFailure() {
+    $('#divInfo').hide();
+    $('#divErr').show();
+    $('#divHr').show();
+}
 </script>
 }
 <hr />
 <!--Message-->
 <div id="msgId">
+    <div id="divInfo" style="display: none; color: blue">
+       
+    </div>
     <div id="divErr" style="display:none; color:red">
         <div id="titleMsgErr">
             Hãy nhập các giá trị bên dưới :
@@ -819,294 +840,304 @@ function RemoveRougeChar(convertString) {
         <div id="contentMsgErr" style="margin-left:15px">
 
         </div>
-        <div id="divHr">
-            <hr />
-        </div>
+    </div>
+    <div id="divHr">
+        <hr />
     </div>
 </div>
 
-@using (Html.BeginForm("SaveBill", "BanHang", FormMethod.Post,
-        new { @id = "formContent", enctype = "multipart/form-data" }))
-{
-<!--customer & user area-->
-<div id="customerArea">    
-    <table id="tableCustomer" class="tableSearch tableBasic">
-        <tr>
-            <td>
-                <div class="titleItem required">Tên khách hàng </div>
-                <br />
-                <div>
-                    <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;"/>
-                    <input type="hidden" name="MaKhachHang" id="MaKhachHang"  />
-                    <input type="hidden" name="UserId" value="@ViewBag.UserId" />
-                    <input type="hidden" id="kindCustomer" />
-                </div>
-                
-            </td>
-            <td>
-                <div>
-                    <span class="required" style="font-size:16px;">Loại nghiệp vụ  </span>
-                    <br />
-
-                    <div>
-                        <select id="typeCustomers" class="ComboboxCustomer" onchange="changeTypeCustomer();">
-                            <option value="3"> L3 - 03 </option>
-                            <option value="2"> L2 - 02 </option>
-                            <option value="1"> L1 - 01 </option>
-                        </select>
-
-                    </div>
-                    <!--relationCustomer-->
-                    <div id="relationCustomer">
+<fieldset>
+    @using (Ajax.BeginForm("SaveBill", "BanHang", null,
+     new AjaxOptions()
+     {
+           UpdateTargetId = "divInfo",
+           OnSuccess="saveBillSuccess",
+           OnFailure = "saveBillFailure"
+     },
+     new { @id = "formContent" })
+     )
+    {
+        <!--customer & user area-->
+        <div id="customerArea">
+            <table id="tableCustomer" class="tableSearch tableBasic">
+                <tr>
+                    <td>
+                        <div class="titleItem required">Tên khách hàng </div>
+                        <br />
                         <div>
-                            <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
-                            <br />
-                            <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
-                            <br />
-                            <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
-                            <br />
-                            <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
-                            <br />
-                            <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
-                            <br />
-                            <span><strong>- Email : </strong> </span><span id="S_Email"></span>
-
+                            <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" />
+                            <input type="hidden" name="MaKhachHang" id="MaKhachHang" />
+                            <input type="hidden" name="UserId" value="@ViewBag.UserId" />
+                            <input type="hidden" id="kindCustomer" />
                         </div>
-                    </div>
-                </div>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
 
-    </table>
-    <!--input information product-->
-<div>
-    <table id="tableSearch" class="tableSearch tableBasic">
-        <tr>
-            <td>
-                <input type="hidden" id="MaSanPham" />
-                <div class="titleItem required">Tên sản phẩm </div>
-                <br />
-                <div>
-                    <input type="text" id="TenSanPham" style="margin-left: 2px; " />
-                </div>
-            </td>
-            <td>
-                <div class="titleItem required">Giá bán</div>
-                <br />
-                <div>
-                    <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
-                            class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
-                </div>
-                <div id="relationProduct" style="top: 319px; left: 565px;">
-                    <div id="toolTipRelationProduct">
-                        <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
+                    </td>
+                    <td>
+                        <div>
+                            <span class="required" style="font-size:16px;">Loại nghiệp vụ  </span>
+                            <br />
+
+                            <div>
+                                <select id="typeCustomers" class="ComboboxCustomer" onchange="changeTypeCustomer();">
+                                    <option value="3"> L3 - 03 </option>
+                                    <option value="2"> L2 - 02 </option>
+                                    <option value="1"> L1 - 01 </option>
+                                </select>
+
+                            </div>
+                            <!--relationCustomer-->
+                            <div id="relationCustomer">
+                                <div>
+                                    <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
+                                    <br />
+                                    <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
+                                    <br />
+                                    <span><strong>- Email : </strong> </span><span id="S_Email"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+            <!--input information product-->
+            <div>
+                <table id="tableSearch" class="tableSearch tableBasic">
+                    <tr>
+                        <td>
+                            <input type="hidden" id="MaSanPham" />
+                            <div class="titleItem required">Tên sản phẩm </div>
+                            <br />
+                            <div>
+                                <input type="text" id="TenSanPham" style="margin-left: 2px; " />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="titleItem required">Giá bán</div>
+                            <br />
+                            <div>
+                                <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
+                                       class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
+                            </div>
+                            <div id="relationProduct" style="top: 319px; left: 565px;">
+                                <div id="toolTipRelationProduct">
+                                    <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
+                                    <br />
+                                    <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
+                                    <br />
+                                    <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
+                                    <br />
+                                    <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
+                                    <br />
+                                    <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
+                                    <br />
+                                    <span><strong>- Số lượng: </strong> </span>
+                                    @{
+        int j = 0;
+        foreach (var Kho in ViewBag.KhoList)
+        {
+            j++;
+            if (j <= 5)
+            {
+                switch (j)
+                {
+                    case 1:
                         <br />
-                        <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
-                        <br />
-                        <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
-                        <br />
-                        <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
-                        <br />
-                        <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
-                        <br />
-                        <span><strong>- Số lượng: </strong> </span>
-                        @{
-                            int j = 0;
-                            foreach (var Kho in ViewBag.KhoList)
-                            {
-                                j++;
-                                if (j <= 5)
-                                {
-                                    switch (j)
-                                    {
-                                        case 1:
-                                            <br />
-                                            <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
-                                            break;
-                                        case 2:
-                                        <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
-                                            break;
-                                        case 3:
-                                        <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
-                                            break;
-                                        case 4:
-                                        <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
-                                            break;
-                                        case 5:
-                                        <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
-                                            break;
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
+                        break;
+                    case 2:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
+                        break;
+                    case 3:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
+                        break;
+                    case 4:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
+                        break;
+                    case 5:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
+                        break;
+                }
+            }
+        }
                                     }
-                                }
-                            }
-                        }
 
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="titleItem required">Chiết khấu</div>
-                <br />
-                <div>
-                    <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
-                            class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
-                            style="text-align: right; width: 110px !important;" />
-                </div>
-            </td>
-            <td>
-                <div class="titleItem ">Giá sau chiết khấu </div>
-                <br />
-                <div>
-                    <input type="text" id="GiaThuc" maxlength="10"
-                            style=" text-align:right;background: rgb(252, 252, 252);" readonly />
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <span class="required" style="font-size:16px;">Kho hàng  </span>
-                    <br />
-                    <select id="typeStore" class="Combobox"></select>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <span class="required" style="font-size:16px;">Đơn vị tính </span>
-                    <br />
-                    <select id="typeDonViTinh" class="Combobox" onchange="CalcFactorOfProduct();"></select>
-                </div>
-            </td>
-            <td>
-                <div class="titleItem required">Số lượng</div>
-                <br />
-                <div>
-                    <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;" value="1"
-                           class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"  />
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="titleItem required">Chiết khấu</div>
+                            <br />
+                            <div>
+                                <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
+                                       class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
+                                       style="text-align: right; width: 110px !important;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="titleItem ">Giá sau chiết khấu </div>
+                            <br />
+                            <div>
+                                <input type="text" id="GiaThuc" maxlength="10"
+                                       style=" text-align:right;background: rgb(252, 252, 252);" readonly />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <span class="required" style="font-size:16px;">Kho hàng  </span>
+                                <br />
+                                <select id="typeStore" class="Combobox"></select>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span class="required" style="font-size:16px;">Đơn vị tính </span>
+                                <br />
+                                <select id="typeDonViTinh" class="Combobox" onchange="CalcFactorOfProduct();"></select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="titleItem required">Số lượng</div>
+                            <br />
+                            <div>
+                                <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;" value="1"
+                                       class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
 
-            <td>
-                <div class="titleItem required">Ngày bán</div>
-                <br />
-                <div>
-                    <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
-                            class="datePicker alignCenter " />
+                        <td>
+                            <div class="titleItem required">Ngày bán</div>
+                            <br />
+                            <div>
+                                <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
+                                       class="datePicker alignCenter " />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="titleItem required">Ngày giao hàng</div>
+                            <br />
+                            <div>
+                                <input type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
+                                       class="datePicker alignCenter" />
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="titleItem required">Địa chỉ giao hàng</div>
+                            <br />
+                            <div>
+                                <textarea name="DiaChi" id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="myAction">
+                    <input type="button" id="addRecord" value="Thêm sản phẩm" />
                 </div>
-            </td>
-            <td colspan="2">
-                <div class="titleItem required">Ngày giao hàng</div>
-                <br />
-                <div>
-                    <input  type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
-                            class="datePicker alignCenter" />
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <div class="titleItem required">Địa chỉ giao hàng</div>
-                <br />
-                <div>
-                    <textarea name="DiaChi" id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <div class="myAction">
-        <input type="button" id="addRecord" value="Thêm sản phẩm"/>
-    </div>
-</div>
-    
-<!--hidden field start-->
-<div id="dialogConfirm"></div>
-<input type="hidden" id="hidFactorValue" value="1" />
-<input type="hidden" id="hidTotalRowAdded" value="0" />
-<input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
-<input type="hidden" id="ListProductID" name="ListProductID" value="" />
-    <!--hidden field end-->
+            </div>
 
-</div>
-<!--list content area-->
-<div class="mainContainer">
-    <table class="tableHeader">     
-        <tbody>
-            <tr >
-                <th style="width: 25px; padding: 0.5em 0em 0em 0em !important; ">
-                    <div class="colDelete">
-                        <img src="/Content/images/delete-20.png" style="display:none;">
-                    </div>
-                </th>
-                <th class="colProductNmHeader">
-                    <div class="colProductNmHeader">
-                        Tên sản phẩm
-                    </div>
-                </th>
-                <th class="colStoreHeader">
-                    Kho
-                </th>
-                <th class="colPriceHeader">
-                    Giá bán
-                </th>
+            <!--hidden field start-->
+            <div id="dialogConfirm"></div>
+            <input type="hidden" id="hidFactorValue" value="1" />
+            <input type="hidden" id="hidTotalRowAdded" value="0" />
+            <input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
+            <input type="hidden" id="ListProductID" name="ListProductID" value="" />
+            <!--hidden field end-->
 
-                <th class="colAmountHeader">
-                    Số lượng
-                </th>
-                <th class="colUnitHeader">
-                    Đơn vị tính
-                </th>
-                <th class="colTotalHeader">
-                    Thành tiền
-                </th>
-              
-                <th id="columnScroll" style="width: 16px;">
-                </th>
-            </tr>
-            
-        </tbody>
-    </table>
+        </div>
+        <!--list content area-->
+        <div class="mainContainer">
+            <table class="tableHeader">
+                <tbody>
+                    <tr>
+                        <th style="width: 25px; padding: 0.5em 0em 0em 0em !important; ">
+                            <div class="colDelete">
+                                <img src="/Content/images/delete-20.png" style="display:none;">
+                            </div>
+                        </th>
+                        <th class="colProductNmHeader">
+                            <div class="colProductNmHeader">
+                                Tên sản phẩm
+                            </div>
+                        </th>
+                        <th class="colStoreHeader">
+                            Kho
+                        </th>
+                        <th class="colPriceHeader">
+                            Giá bán
+                        </th>
 
-        <div class="mainContentScroll">
-            <table id="tableContent" class="tableContentScroll">          
-                <tbody >          
-                    <!--danh sach sp add vao day.-->                
+                        <th class="colAmountHeader">
+                            Số lượng
+                        </th>
+                        <th class="colUnitHeader">
+                            Đơn vị tính
+                        </th>
+                        <th class="colTotalHeader">
+                            Thành tiền
+                        </th>
+
+                        <th id="columnScroll" style="width: 16px;">
+                        </th>
+                    </tr>
+
                 </tbody>
             </table>
+
+            <div class="mainContentScroll">
+                <table id="tableContent" class="tableContentScroll">
+                    <tbody>
+                        <!--danh sach sp add vao day.-->
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" id="ListProductID" name="ListProductID" value="" />
+
         </div>
-    <input type="hidden" id="ListProductID" name="ListProductID" value="" />
-  
-</div>
-}
-<!--total money-->
-<div id="divTotal" >
-    <table cellpadding="0" cellspacing="0" class="tableTotal">
-        <tr>
-            <td class="colTitleTotal">
-                <div>Tổng tiền hóa đơn : </div>
-            </td>
-            <td class="colTotalValue">
-                <div id="totalAll"> 0 </div>
-            </td>
-        </tr>
 
-    </table>
-</div>
-<hr />
+    <!--total money-->
+        <div id="divTotal">
+            <table cellpadding="0" cellspacing="0" class="tableTotal">
+                <tr>
+                    <td class="colTitleTotal">
+                        <div>Tổng tiền hóa đơn : </div>
+                    </td>
+                    <td class="colTotalValue">
+                        <div id="totalAll"> 0 </div>
+                    </td>
+                </tr>
 
-<div>
-    @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
-    <input type="button" id="saveBill" style="width: 120px" value="Lưu hóa đơn" onclick="saveBill();">
-    <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới" onclick="createNewBill();">
-    <input type="button" style="width:100px" value="Trở về" onclick="confirmBack();" >
-    <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
-</div>
+            </table>
+        </div>
+        <hr />
+         <div>
+        @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
+        <input type="submit" id="saveBill" style="width: 120px" value="Lưu hóa đơn">
+        <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới">
+        <input type="button" id="back" style="width:100px" value="Trở về">
+        <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
+         </div>
 
+    }
+   
+</fieldset>
