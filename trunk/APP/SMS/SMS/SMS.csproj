@@ -261,6 +261,9 @@
     <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_HOA_DON_BH_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -617,6 +620,7 @@
     <Content Include="Views\NguoiDung\Show.cshtml" />
     <Content Include="Views\Home\NguoiDung.cshtml" />
     <Content Include="Views\Account\Show.cshtml" />
+    <Content Include="Views\HoaDon\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

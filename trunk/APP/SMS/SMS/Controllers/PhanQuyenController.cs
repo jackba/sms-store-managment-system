@@ -18,20 +18,21 @@ namespace SMS.Controllers
         // GET: /PhanQuyen/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? UserId,  string currentFilter, int? page)
         {
             var ctx = new SmsContext();
-            var list = ctx.SP_GET_ALL_ROLE(0).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             RoleModel model = new RoleModel();       
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = 1;
+            int pageIndex = page == null ? 1 : (int)page;
             model.RoleList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
+            ViewBag.CurrentFilter = currentFilter;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(int? UserId)
+        public ActionResult Index(int? UserId,  string currentFilter, int? page, bool? flag)
         {
             var ctx = new SmsContext();
             var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
@@ -39,6 +40,7 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = 1;
             model.RoleList = list.ToPagedList(pageIndex, pageSize);
+            ViewBag.CurrentFilter = currentFilter;
             model.PageCount = list.Count;
             return View(model);
         }
