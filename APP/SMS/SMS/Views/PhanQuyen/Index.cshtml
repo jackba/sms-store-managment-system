@@ -24,7 +24,7 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-            $("#SearchString").autocomplete({
+            $("#currentFilter").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
@@ -44,7 +44,7 @@
                     $('#UserId').val("");
                 },
                 select: function (event, ui) {
-                    $('#SearchString').val(ui.item.label);
+                    $('#currentFilter').val(ui.item.label);
                     $('#UserId').val(ui.item.id);
                     return false;
                 },
@@ -59,7 +59,7 @@
 {
     <div style="float:right">
         <p>
-            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            Từ khóa tìm kiếm: @Html.TextBox("currentFilter", ViewBag.CurrentFilter as string)
             @Html.Hidden("UserId", new { id = "UserId" })
             <input type="submit" value="Tìm kiếm" class="myButton" />
             @{
@@ -180,7 +180,7 @@
             </td>
             <td colspan="6" >
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.RoleList, page => Url.Action("ImportRepoterDetail",
+                    @Html.PagedListPager(Model.RoleList, page => Url.Action("Index",
                          new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                     </div>
 </td>
