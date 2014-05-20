@@ -189,13 +189,17 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_EXPORT_REPORT_SUM", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
-        public virtual ObjectResult<SP_GET_ALL_ROLE_Result> SP_GET_ALL_ROLE(Nullable<int> uSER_ID)
+        public virtual ObjectResult<SP_GET_ALL_ROLE_Result> SP_GET_ALL_ROLE(Nullable<int> uSER_ID, string uSER_FULL_NAME)
         {
             var uSER_IDParameter = uSER_ID.HasValue ?
                 new ObjectParameter("USER_ID", uSER_ID) :
                 new ObjectParameter("USER_ID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE", uSER_IDParameter);
+            var uSER_FULL_NAMEParameter = uSER_FULL_NAME != null ?
+                new ObjectParameter("USER_FULL_NAME", uSER_FULL_NAME) :
+                new ObjectParameter("USER_FULL_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE", uSER_IDParameter, uSER_FULL_NAMEParameter);
         }
     
         public virtual ObjectResult<SP_GET_DON_VI_TINH_Result> SP_GET_DON_VI_TINH(Nullable<int> mA_SAN_PHAM)
