@@ -11,7 +11,6 @@ namespace SMS.Models
 {
     using PagedList;
     using System;
-
     public class RoleModel
     {
         public IPagedList<SP_GET_ALL_ROLE_Result> RoleList { get; set; }
