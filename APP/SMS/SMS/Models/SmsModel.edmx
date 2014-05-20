@@ -1695,7 +1695,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
           <Parameter Name="TEN_KHACH_HANG" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_BAN" Type="int" Mode="In" />
+          <Parameter Name="TEN_NV_BAN" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_TT" Type="int" Mode="In" />
+          <Parameter Name="TEN_NV_TT" Type="nvarchar" Mode="In" />
           <Parameter Name="STATUS" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_GET_IMPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -4462,7 +4464,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
             <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
             <Parameter Name="MA_NHAN_VIEN_BAN" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_BAN" Mode="In" Type="String" />
             <Parameter Name="MA_NHAN_VIEN_TT" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
             <Parameter Name="STATUS" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_Result)">

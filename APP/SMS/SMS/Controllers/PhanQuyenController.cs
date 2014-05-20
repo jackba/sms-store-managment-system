@@ -21,7 +21,7 @@ namespace SMS.Controllers
         public ActionResult Index(int? UserId,  string currentFilter, int? page)
         {
             var ctx = new SmsContext();
-            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId), currentFilter).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             RoleModel model = new RoleModel();       
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
@@ -35,7 +35,7 @@ namespace SMS.Controllers
         public ActionResult Index(int? UserId,  string currentFilter, int? page, bool? flag)
         {
             var ctx = new SmsContext();
-            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId), currentFilter).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             RoleModel model = new RoleModel();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = 1;

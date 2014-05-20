@@ -11,7 +11,7 @@ namespace SMS.Models
 {
     using System;
     using PagedList;
-    
+
     public class HoaDonBHModel
     {
         public IPagedList<SP_GET_HOA_DON_BH_Result> HoaDonList { get; set; }

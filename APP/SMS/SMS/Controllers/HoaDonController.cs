@@ -17,12 +17,12 @@ namespace SMS.Controllers
 
 
         public ActionResult Index(DateTime? fromdate, DateTime? todate, 
-            int? customerId, string customerName, int? salerId, 
-            int? accountantId, int? status, int? page)
+            int? customerId, string customerName, int? salerId, string salerName,
+            int? accountantId, string accountantName, int? status, int? page)
         {
             var ctx = new SmsContext();
             var list = ctx.SP_GET_HOA_DON_BH(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), Convert.ToInt32(accountantId), Convert.ToInt32(status)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
             HoaDonBHModel model = new HoaDonBHModel();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
