@@ -1,5 +1,308 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model SMS.Models.HoaDonBHModel
+@using PagedList.Mvc;
 
-<h2>Index</h2>
+@{
+    ViewBag.Title = "DANH SÁCH HÓA ĐƠN";
+}
+@{
+    List<SelectListItem> kinds = new List<SelectListItem>();
+    SelectListItem ckind;
+
+
+    ckind = new SelectListItem();
+
+    ckind.Value = "0";
+    ckind.Text = "----------- Chọn loại hóa đơn ----------";
+    kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 1)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "1";
+    ckind.Text = "Chưa thanh toán";
+    kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 2)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "2";
+    ckind.Text = "Đã thanh toán";
+    kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 3)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "3";
+    ckind.Text = "Đã xuất kho";
+    kinds.Add(ckind);
+
+}
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<h3>Danh sách hóa đơn</h3>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+
+<br />
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+        $(document).ready(function () {
+
+            $("#customerName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/KhachHang/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#customerId').val("");
+                },
+                select: function (event, ui) {
+                    $('#customerName').val(ui.item.label);
+                    $('#customerId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+            $("#salerName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#salerId').val("");
+                },
+                select: function (event, ui) {
+                    $('#salerName').val(ui.item.label);
+                    $('#salerId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+            $("#accountantName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#accountantId').val("");
+                },
+                select: function (event, ui) {
+                    $('#accountantName').val(ui.item.label);
+                    $('#accountantId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+            })
+        });
+        $(document).ready(function () {
+            $('.datePicker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+@using (Html.BeginForm("Index", "HoaDon", FormMethod.Post, new { @id = "index" }))
+{
+    <hr style="width:100%" />
+    <div style="float:left">
+        <table>
+            <tr>
+                <td>
+                    @Html.Hidden("customerId", new { id = "customerId" })
+                    Khách hàng: 
+                </td>
+                <td>
+                    @Html.TextBox("customerName", ViewBag.customerName as string, new { id = "customerName" })
+                </td>
+            </tr>
+            @{
+    if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+    {   <tr>
+            <td>
+                @Html.Hidden("salerId", new { id = "salerId" })
+                Nhân viên lập hóa đơn:
+            </td>
+            <td>
+                @Html.TextBox("salerName", ViewBag.ProductName as string, new { id = "salerName" })
+            </td>
+            </tr>
+    }
+        if ((bool)Session["IsAdmin"])
+        {             <tr>
+                       <td>
+                           @Html.Hidden("accountantId", new { id = "accountantId" })
+                           Nhân viên thu tiền:
+                       </td>
+                        <td>
+                            @Html.TextBox("accountantName", ViewBag.ProductName as string, new { id = "accountantName" })
+                        </td>
+                    </tr>
+            
+         }    
+    }
+
+            <tr>
+                <td>
+                    Trạng thái hóa đơn :
+                </td>
+                <td>
+                    @Html.DropDownList("status", kinds, new { @id = "status", @style = "padding:2px;font-size:1.2em; " })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ngày Mua:
+                </td>
+                <td>
+                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
+                    <input type="submit" value="Tìm kiếm" class="myButton" />
+                    <input type="button" value="Xuất excel" id="btnExport" class="myButton" />
+                </td>
+            </tr>
+        </table>
+        </div>
+    <div style="clear:both"></div>
+    <hr style="width:100%" />
+    <div>
+        <table width="100%" id="tblExport" name="tblExport">
+            <tr style="width:100%">
+                <td class='inner colwidth head '> Tên khách hàng </td>
+                <td class='inner colwidth head '> Nhân viên lập hóa đơn </td>
+                <td class='inner colwidth head '>  Nhân viên thu tiền  </td>
+                <td class='inner colwidth head '>  Số tiền khách trả </td>
+                <td class='innerLast colwidth head '>  Số tiền khách nợ </td>
+            </tr>
+            @{
+    DateTime ImportDate = DateTime.Now;
+    if (Model.HoaDonList != null && Model.HoaDonList.Count() >= 1)
+    {
+        ImportDate = (DateTime)Model.HoaDonList[0].NGAY_BAN;
+
+        <tr>
+            <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+        </tr>
+    }
+            }
+            @foreach (var dbHist in Model.HoaDonList)
+            {
+                if (ImportDate != (DateTime)dbHist.NGAY_BAN)
+                {
+                    ImportDate = (DateTime)dbHist.NGAY_BAN;
+                    <tr>
+                        <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    </tr>
+                }
+                <tr class="inner column-hscroll alignCenter">
+                    <td class="inner colwidth">
+                        @dbHist.TEN_KHACH_HANG
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_NGUOI_BAN
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_NV_TT
+                    </td>
+                    <td class="inner colwidth">
+                        @{
+                var amount = "";
+                if (dbHist.SO_TIEN_KHACH_TRA != null)
+                {
+                    amount = Convert.ToDouble(dbHist.SO_TIEN_KHACH_TRA).ToString("0,0.00");
+                }
+                        }
+                        @amount
+                    </td>
+                    <td class="innerLast colwidth">
+                        @{
+                var debit = "";
+                debit = Convert.ToDouble(dbHist.SO_TIEN_NO_GOI_DAU).ToString("0,0.00");
+                        }
+                        @debit
+                    </td>
+                </tr>
+            }
+            <tr class="inner column-hscroll alignCenter">
+                <td class="innerLast colwidth" colspan="4" style="background-color:lightgray"> Tổng cộng </td>
+                <td class="innerLast colwidth" style="background-color:lightgray"></td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <tr>
+                <td>
+                    <div style="text-align:left; padding-top:3px;">
+                        <label>@ViewBag.Count</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: right;  padding-top: 3px; ">
+                        @Html.PagedListPager(Model.HoaDonList, page => Url.Action("Index",
+                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+}
