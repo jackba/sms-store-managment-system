@@ -168,6 +168,7 @@ namespace SMS.Controllers
                             Session["IsSaler"] = usRole.IS_SALER != null ? (bool)usRole.IS_SALER : false;
                             Session["IsMetadataManager"] = usRole.IS_METADATA_MANAGER != null ? (bool)usRole.IS_METADATA_MANAGER : false;
                             Session["IsStoreManager"] = usRole.IS_STORE_MANAGER != null ? (bool)usRole.IS_STORE_MANAGER : false;
+                            Session["MyStore"] = user.MA_KHO;
                         }
                     }
                 }

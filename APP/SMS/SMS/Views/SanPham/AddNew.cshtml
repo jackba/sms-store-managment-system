@@ -104,13 +104,7 @@
         $("#CoSoMinID").val(removeCommas($("#CO_SO_TOI_THIEU").val()));
         $("#CoSoMaxID").val(removeCommas($("#CO_SO_TOI_DA").val()));
 
-        if ($("#ModeID").val() != null) {
-            if ($("#ModeID").val() == 'CREATE') {
-                $("#MA_SAN_PHAM").val(-1);
-            }
-        } 
-        
-        $("form:first").submit();
+        $("#frmMain").submit();
     }
     /*remove comma from value input*/
     function removeCommas(str) {
@@ -122,9 +116,8 @@
         
     }
 </script>
-@using (Html.BeginForm())
+@using (Html.BeginForm(@ViewBag.Mode == "CREATE" ? "AddNew" : "Edit", "SanPham", FormMethod.Post, new { @id="frmMain"}))
 {
-    <input type="hidden" id="ModeID" value="@ViewBag.Mode" />    
     @Html.HiddenFor(u => u.MA_SAN_PHAM)
     
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
@@ -154,7 +147,7 @@
                     <div>
                         @Html.LabelFor(u => u.CAN_NANG)
                         <input id="CAN_NANG" maxlength="10" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                         @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID"})
+                         @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID" })
                     </div>
                 </td>
                 <td></td>

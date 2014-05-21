@@ -54,6 +54,7 @@
 
         //initial combobox store
         $('#typeStore').html(createStore());
+        //$('#typeStore').val($('#MyStore').val());
         /*disabled export excel*/
         $('#saveBill').attr("disabled", "disabled");
         $('#saveBill').css("background-color", "#ECECEC");
@@ -326,7 +327,13 @@ function createStore() {
             function (data) {
                 $.each(data,function(i,item)
                 {
-                    var opt = "<option value=" + item.value + ">" + item.name + "</option>"
+                    var opt = '';
+                    if (item.value == parseInt($('#MyStore').val())) {
+                        opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
+                    }else { 
+                        opt = "<option value=" + item.value + ">" + item.name + "</option>"
+                    }
+                    
                     $(opt).appendTo('#typeStore');
                 });
             }, 
@@ -868,6 +875,7 @@ function saveBillFailure() {
                             <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" />
                             <input type="hidden" name="MaKhachHang" id="MaKhachHang" />
                             <input type="hidden" name="UserId" value="@ViewBag.UserId" />
+                            <input type="hidden" id="MyStore" value="@ViewBag.MyStore" />
                             <input type="hidden" id="kindCustomer" />
                         </div>
 
@@ -1001,7 +1009,7 @@ function saveBillFailure() {
                             <div>
                                 <span class="required" style="font-size:16px;">Kho hàng  </span>
                                 <br />
-                                <select id="typeStore" class="Combobox"></select>
+                                <select id="typeStore" class="Combobox" ></select>
                             </div>
                         </td>
                         <td>

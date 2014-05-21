@@ -1,11 +1,10 @@
 ﻿@model SMS.Models.CHUYEN_DOI_DON_VI_TINH
 
-@{
-    ViewBag.Title = "THÊM MỚI DANH CHUYỂN ĐỖI ĐƠN VỊ";
-}
-@{
-    ViewBag.Title = "CHUYỂN ĐỖI ĐƠN VỊ TÍNH";
-}
+<div class="divTitle">
+    <h2>@ViewBag.Title </h2>
+    <hr />
+</div>
+<link href="~/Content/ConvertUnit.css" rel="stylesheet" />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -13,6 +12,39 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
+
+
+            $("#btnSave").click(function () {
+                submitForm();
+            });
+
+            //format numberic start 
+            formatNumberic();
+            $('input.numberic').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    //alert(" Hãy nhập ký tự số.");
+                    return false;
+                }
+                else return true;
+
+            });
+            $('input.numberic').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+                FormatNumberic_KeyUp($(this));
+
+            });
+            $('input.numberic').bind("paste", function (e) {
+                e.preventDefault();
+            });
+            //format numberic end
+
             $("#InputUnitName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -72,45 +104,154 @@
 
             });
         });
-    </script>
-    <style type="text/css">
-        .required:after {
-            content: "*";
-            font-weight: bold;
-            color: red;
-        }
-    </style>
-}
-<h3>
-    Thêm mới chuyển đổi đơn vị
-</h3>
 
-<hr style="width:100%"/>
-<br />
-@using (Html.BeginForm())
+        /*start format numberic*/
+        function NumbericOnly(ctrl) {
+            $(ctrl).keypress(function (e) {
+
+                //getting key code of pressed key
+                var keycode = (e.which) ? e.which : e.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    //alert("Hãy nhập ký tự số.");
+                    return false;
+                }
+                else return true;
+            });
+
+        }
+
+        function formatNumberic() {
+            $('input.numberic').each(function () {
+                $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            });
+        }
+
+        function FormatNumberic_KeyUp(obj) {
+            var $this = $('#' + obj.id);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
+        }
+
+        function RemoveRougeChar(convertString) {
+            if (convertString.substring(0, 1) == ",") {
+                return convertString.substring(1, convertString.length)
+            }
+            return convertString;
+        }
+
+        /*end format numberic*/
+
+        function submitForm(){
+            if (checkInput() == false) {
+                $("#frmMain").submit();
+            } else {
+                $('#divMsg').show();
+            }
+        }
+        function checkInput() {
+            var isErr = false;
+            $('#divMsg').hide();
+            var value = $('#HE_SO').val();
+            if ($('#ProductId').val() == '' || $('#ProductId').val() == null) {
+                isErr = true;
+                $('#ErrProduct').show();
+                $('#ErrUnit').hide();
+                $('#ErrHeSo').hide();
+            }
+            if ($('#InputUnitId').val() == '' || $('#InputUnitId').val() == null) {
+                if (isErr == false) {
+                    $('#ErrProduct').hide();
+                } else {
+                    $('#ErrProduct').show();
+                }
+                isErr = true;
+                $('#ErrUnit').show();
+                $('#ErrHeSo').hide();
+            }
+            if (value != null && parseInt(removeCommas(value)) <= 1) {
+                if (isErr == false) {
+                    $('#ErrProduct').hide();
+                    $('#ErrUnit').hide();
+                }
+                isErr = true;
+                $('#ErrHeSo').show();
+
+                $('#HE_SO').focus();
+
+            } else {
+                $('#HE_SO').val(removeCommas(value));
+            }
+            return isErr;
+
+        }
+        /*remove comma from value input*/
+        function removeCommas(str) {
+            if (str != null && str != '') {
+                return (str.replace(/,/g, ''));
+            } else {
+                return null;
+            }
+
+        }
+    </script>
+
+}
+@using (Html.BeginForm(@ViewBag.ModeUnit == "CREATE" ? "AddNewConvertUnitOfProducts" : "EditConvertUnitOfProducts",
+                    "SanPham", FormMethod.Post, new { @id = "frmMain" }))
 {
-    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    @Html.HiddenFor(u => u.MA_CHUYEN_DOI)
+    
+    <div id="divMsg" style="display: none; color: red; " > Hãy kiểm tra các giá trị : 
+        <div id="ErrProduct" style="display: none; margin-left: 15px">+ Sản phẩm không tồn tại hoặc chưa được nhập.</div>
+        <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị chuyển đổi không tồn tại hoặc chưa được nhập.</div>
+        <div id="ErrHeSo" style="display: none; margin-left: 15px">+ Hệ số phải có giá trị lớn hơn 1 </div>
+    <hr />
+    </div>
     <div>
         <fieldset>
             <div>
-                @Html.LabelFor(u => u.MA_SAN_PHAN)
+                @Html.LabelFor(u => u.MA_SAN_PHAN, new { @class = "required" })
             </div>
             <div>
                @Html.HiddenFor(u => u.MA_SAN_PHAN, new { id = "ProductId" })
                @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
             </div>
             <div>
-                @Html.LabelFor(u => u.MA_DON_VI_VAO)
+                @Html.LabelFor(u => u.MA_DON_VI_VAO, new { @class = "required" })
             </div>
             <div>
                 @Html.HiddenFor(u => u.MA_DON_VI_VAO, new { id = "InputUnitId" })
                 @Html.TextBox("InputUnitName", ViewBag.InputUnitName as string, new { id = "InputUnitName" })
             </div>
             <div>
-                @Html.LabelFor(u => u.HE_SO)
+                @Html.LabelFor(u => u.HE_SO, new { @class = "required" })
             </div>
             <div>
-                @Html.TextBoxFor(u => u.HE_SO)
+                @Html.TextBox("HE_SO", ViewBag.HeSo as string, new
+           {
+               @class = "numberic alignNumberic",
+               @onkeydown = "NumbericOnly(this);",
+               @onkeyup = "FormatNumberic_KeyUp(this);",
+               @maxlength = "15"
+           })
+                @Html.HiddenFor(u => u.HE_SO, new { id = "HE_SO" })
             </div>
             <div>
                <label>Đơn vị cuối</label>
@@ -119,9 +260,9 @@
                 @Html.TextBox("UnitName", ViewBag.UnitName as string, new { id = "UnitName", @ReadOnly = "true" })
             </div>
             <div>
-                <input type="submit" style="width:100px" value="Lưu" />
+                <input type="button" id="btnSave" style="width:100px" value="Lưu"  />
                 <span> </span>
-                <input type="button" style="width:100px" value="Quay lại" />
+                <input type="button" style="width:100px" value="Quay lại" onclick="location.href='@Url.Action("ConvertUnitOfProducts", "SanPham")'" />
             </div>
         </fieldset>
     </div>

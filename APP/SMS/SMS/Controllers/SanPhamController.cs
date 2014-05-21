@@ -170,9 +170,10 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            string msg =  "Không tìm thấy sản phẩm tương ứng.";
             if (id <= 0)
             {
-                ViewBag.Message = "Không tìm thấy sản phẩm tương ứng.";
+                ViewBag.Message = msg; 
                 return View("../Home/Error"); ;
             }
             var ctx = new SmsContext();
@@ -190,7 +191,7 @@ namespace SMS.Controllers
             }
             else
             {
-                ViewBag.Message = "Không tìm thấy sản phẩm tương ứng.";
+                ViewBag.Message = msg; 
                 return View("../Home/Error"); ;
             }
         }
@@ -261,41 +262,39 @@ namespace SMS.Controllers
             return PartialView("SanPhamPV", listResult);
         }
         [HttpPost]
-        public ActionResult Edit(SAN_PHAM product)
+        public ActionResult Edit(SAN_PHAM productUpdated)
         {
             var db = new SmsContext();
             if (ModelState.IsValid)
             {
-                var sp = db.SAN_PHAM.Find((int)product.MA_SAN_PHAM);
+                var sp = db.SAN_PHAM.Find((int)productUpdated.MA_SAN_PHAM);
 
-                sp.TEN_SAN_PHAM = product.TEN_SAN_PHAM;
-                sp.KICH_THUOC = product.KICH_THUOC;
-                sp.CAN_NANG = product.CAN_NANG;
-                if (-1 == product.MA_DON_VI)
+                sp.TEN_SAN_PHAM = productUpdated.TEN_SAN_PHAM;
+                sp.KICH_THUOC = productUpdated.KICH_THUOC;
+                sp.CAN_NANG = productUpdated.CAN_NANG;
+                if (-1 == productUpdated.MA_DON_VI)
                 {
-                    product.MA_DON_VI = null;
+                    productUpdated.MA_DON_VI = null;
                 }
-                if (-1 == product.MA_NHA_SAN_XUAT)
+                if (-1 == productUpdated.MA_NHA_SAN_XUAT)
                 {
-                    product.MA_NHA_SAN_XUAT = null;
+                    productUpdated.MA_NHA_SAN_XUAT = null;
                 }
-                sp.MA_DON_VI = product.MA_DON_VI;
-                sp.MA_NHA_SAN_XUAT = product.MA_NHA_SAN_XUAT;
-                sp.DAC_TA = product.DAC_TA;
-                sp.GIA_BAN_1 = product.GIA_BAN_1;
-                sp.GIA_BAN_2 = product.GIA_BAN_2;
-                sp.GIA_BAN_3 = product.GIA_BAN_3;
-                sp.CHIEC_KHAU_1 = product.CHIEC_KHAU_1;
-                sp.CHIEC_KHAU_2 = product.CHIEC_KHAU_2;
-                sp.CHIEC_KHAU_3 = product.CHIEC_KHAU_3;
-                sp.CO_SO_TOI_THIEU = product.CO_SO_TOI_THIEU;
-                sp.CO_SO_TOI_DA = product.CO_SO_TOI_DA;
+                sp.MA_DON_VI = productUpdated.MA_DON_VI;
+                sp.MA_NHA_SAN_XUAT = productUpdated.MA_NHA_SAN_XUAT;
+                sp.DAC_TA = productUpdated.DAC_TA;
+                sp.GIA_BAN_1 = productUpdated.GIA_BAN_1;
+                sp.GIA_BAN_2 = productUpdated.GIA_BAN_2;
+                sp.GIA_BAN_3 = productUpdated.GIA_BAN_3;
+                sp.CHIEC_KHAU_1 = productUpdated.CHIEC_KHAU_1;
+                sp.CHIEC_KHAU_2 = productUpdated.CHIEC_KHAU_2;
+                sp.CHIEC_KHAU_3 = productUpdated.CHIEC_KHAU_3;
+                sp.CO_SO_TOI_THIEU = productUpdated.CO_SO_TOI_THIEU;
+                sp.CO_SO_TOI_DA = productUpdated.CO_SO_TOI_DA;
                 //common fields
                 sp.ACTIVE = "A";
                 sp.UPDATE_AT = DateTime.Now;
-                sp.CREATE_AT = DateTime.Now;
                 sp.UPDATE_BY = (int)Session["UserId"];
-                sp.CREATE_BY = (int)Session["UserId"];
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -303,7 +302,7 @@ namespace SMS.Controllers
             BindListDV(db);
             BindListNSX(db);
             SetModeTitle(true);
-            SetHiddenFields(product);
+            SetHiddenFields(productUpdated);
             return View();
         }
         [HttpGet]
@@ -329,35 +328,35 @@ namespace SMS.Controllers
             }
         }
         [HttpPost]
-        public ActionResult AddNew(SAN_PHAM product)
+        public ActionResult AddNew(SAN_PHAM productInsert)
         {
             var db = new SmsContext();
             if (ModelState.IsValid)
             {
                 var sp = db.SAN_PHAM.Create();
                 // input fields
-                sp.TEN_SAN_PHAM = product.TEN_SAN_PHAM;
-                sp.KICH_THUOC = product.KICH_THUOC;
-                sp.CAN_NANG = product.CAN_NANG;
-                if (-1 == product.MA_DON_VI)
+                sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
+                sp.KICH_THUOC = productInsert.KICH_THUOC;
+                sp.CAN_NANG = productInsert.CAN_NANG;
+                if (-1 == productInsert.MA_DON_VI)
                 {
-                    product.MA_DON_VI = null;
+                    productInsert.MA_DON_VI = null;
                 }
-                if (-1 == product.MA_NHA_SAN_XUAT)
+                if (-1 == productInsert.MA_NHA_SAN_XUAT)
                 {
-                    product.MA_NHA_SAN_XUAT = null;
+                    productInsert.MA_NHA_SAN_XUAT = null;
                 }
-                sp.MA_DON_VI = product.MA_DON_VI;
-                sp.MA_NHA_SAN_XUAT = product.MA_NHA_SAN_XUAT;
-                sp.DAC_TA = product.DAC_TA;
-                sp.GIA_BAN_1 = product.GIA_BAN_1;
-                sp.GIA_BAN_2 = product.GIA_BAN_2;
-                sp.GIA_BAN_3 = product.GIA_BAN_3;
-                sp.CHIEC_KHAU_1 = product.CHIEC_KHAU_1;
-                sp.CHIEC_KHAU_2 = product.CHIEC_KHAU_2;
-                sp.CHIEC_KHAU_3 = product.CHIEC_KHAU_3;
-                sp.CO_SO_TOI_THIEU = product.CO_SO_TOI_THIEU;
-                sp.CO_SO_TOI_DA = product.CO_SO_TOI_DA;
+                sp.MA_DON_VI = productInsert.MA_DON_VI;
+                sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
+                sp.DAC_TA = productInsert.DAC_TA;
+                sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
+                sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
+                sp.GIA_BAN_3 = productInsert.GIA_BAN_3;
+                sp.CHIEC_KHAU_1 = productInsert.CHIEC_KHAU_1;
+                sp.CHIEC_KHAU_2 = productInsert.CHIEC_KHAU_2;
+                sp.CHIEC_KHAU_3 = productInsert.CHIEC_KHAU_3;
+                sp.CO_SO_TOI_THIEU = productInsert.CO_SO_TOI_THIEU;
+                sp.CO_SO_TOI_DA = productInsert.CO_SO_TOI_DA;
                 //common fields
                 sp.ACTIVE = "A";
                 sp.UPDATE_AT = DateTime.Now;
@@ -373,7 +372,7 @@ namespace SMS.Controllers
             BindListDV(db);
             BindListNSX(db);
             SetModeTitle(false);
-            SetHiddenFields(product);
+            SetHiddenFields(productInsert);
             return View();
         }
 
@@ -661,6 +660,8 @@ namespace SMS.Controllers
             return View(model);
         }
 
+
+        /*** CONVERT UNIT START **/
         [HttpGet]
         public ActionResult ConvertUnitOfProducts(int? productId, int? page, string productName)
         {
@@ -730,15 +731,133 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult AddNewConvertUnitOfProducts()
         {
+            SetModeUnitTitle(false);
+            ViewBag.HeSo = "2";
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewConvertUnitOfProducts(SMS.Models.CHUYEN_DOI_DON_VI_TINH convertUnitInsert)
+        {
+            var ctx = new SmsContext();
+            var conUnit = ctx.CHUYEN_DOI_DON_VI_TINH.Create();
+            conUnit.MA_SAN_PHAN = convertUnitInsert.MA_SAN_PHAN;
+            conUnit.MA_DON_VI_VAO = convertUnitInsert.MA_DON_VI_VAO;
+            conUnit.HE_SO = convertUnitInsert.HE_SO;
+
+            conUnit.ACTIVE = "A";
+            conUnit.UPDATE_AT = DateTime.Now;
+            conUnit.CREATE_AT = DateTime.Now;
+            conUnit.UPDATE_BY = (int)Session["UserId"];
+            conUnit.CREATE_BY = (int)Session["UserId"];
+
+            ctx.CHUYEN_DOI_DON_VI_TINH.Add(conUnit);
+            ctx.SaveChanges();
+            return Redirect("ConvertUnitOfProducts");
         }
 
         [HttpGet]
         public ActionResult EditConvertUnitOfProducts(int id)
         {
+            string msg = "Không tìm thấy chuyển đổi đơn vị tương ứng.";
+            if (id <= 0)
+            {
+                ViewBag.Message = msg;
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            CHUYEN_DOI_DON_VI_TINH cddv = ctx.CHUYEN_DOI_DON_VI_TINH.Find(id);
+            if (cddv.ACTIVE.Equals("A"))
+            {
+                SetModeUnitTitle(true);
+
+                SetHiddenConvertUnitFields(cddv);
+
+                return View("../SanPham/AddNewConvertUnitOfProducts", cddv);
+
+            }
+            else
+            {
+                ViewBag.Message = msg;
+                return View("../Home/Error"); ;
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult EditConvertUnitOfProducts(SMS.Models.CHUYEN_DOI_DON_VI_TINH convertUnitUpdated)
+        {
+            var db = new SmsContext();
+            if (ModelState.IsValid)
+            {
+                var cddv = db.CHUYEN_DOI_DON_VI_TINH.Find((int)convertUnitUpdated.MA_CHUYEN_DOI);
+                cddv.MA_SAN_PHAN = convertUnitUpdated.MA_SAN_PHAN;
+                cddv.MA_DON_VI_VAO = convertUnitUpdated.MA_DON_VI_VAO;
+                cddv.HE_SO = convertUnitUpdated.HE_SO;
+                //common fields
+                cddv.ACTIVE = "A";
+                cddv.UPDATE_AT = DateTime.Now;
+                cddv.UPDATE_BY = (int)Session["UserId"];
+
+                db.SaveChanges();
+                return RedirectToAction("ConvertUnitOfProducts");
+            }
+
             return View();
         }
 
+        private void SetModeUnitTitle(bool isModeUpdate)
+        {
+            if (isModeUpdate)
+            {
+                ViewBag.Title = "Cập nhật chuyển đổi đơn vị";
+                ViewBag.ModeUnit = "UPDATE";
+            }
+            else
+            {
+                ViewBag.Title = "Thêm mới chuyển đổi đơn vị";
+                ViewBag.ModeUnit = "CREATE";
+            }
+        }
+        private void SetHiddenConvertUnitFields(CHUYEN_DOI_DON_VI_TINH cddv)
+        {
+            if (cddv != null)
+            {
+                var ctx = new SmsContext();
+                SAN_PHAM sp = ctx.SAN_PHAM.Find(cddv.MA_SAN_PHAN);
+                ViewBag.ProductName = sp.TEN_SAN_PHAM ;
+                DON_VI_TINH dv = ctx.DON_VI_TINH.Find(cddv.MA_DON_VI_VAO);
+                ViewBag.InputUnitName = dv.TEN_DON_VI ;
+                ViewBag.HeSo = cddv.HE_SO;
+                DON_VI_TINH dvroot = ctx.DON_VI_TINH.Find(sp.MA_DON_VI);
+                ViewBag.UnitName = dvroot.TEN_DON_VI;
+            }
+
+        }
+        [HttpGet]
+        public ActionResult DeleteConvertUnit(int id)
+        {
+            string msg = "Không tìm thấy chuyển đổi đơn vị tương ứng.";
+            if (id <= 0)
+            {
+                ViewBag.Message = msg;
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            CHUYEN_DOI_DON_VI_TINH cddv = ctx.CHUYEN_DOI_DON_VI_TINH.Find(id);
+            if (cddv.ACTIVE.Equals("A"))
+            {
+                cddv.ACTIVE = "I";
+                ctx.SaveChanges();
+                return RedirectToAction("ConvertUnitOfProducts");
+            }
+            else
+            {
+                ViewBag.Message = msg;
+                return View("../Home/Error"); ;
+            }
+        }
+        /*** CONVERT UNIT END **/
     }
 
 }
