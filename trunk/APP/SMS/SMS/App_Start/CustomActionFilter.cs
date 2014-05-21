@@ -38,7 +38,7 @@ namespace SMS.App_Start
                                (IsAdmin && u.IS_ADMIN == IsAdmin) ||
                                (IsAccounting && u.IS_ACCOUNTING == IsAccounting) ||
                                (IsStoreManager && u.IS_STORE_MANAGER == IsStoreManager) ||
-                               (IsAccounting && u.IS_ACCOUNTING == IsAccounting) ||
+                               (IsSaler && u.IS_ACCOUNTING == IsSaler) ||
                                (IsMetadataManager && u.IS_METEDATA_MANAGER == IsMetadataManager)
                             )
                         );

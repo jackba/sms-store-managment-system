@@ -24,6 +24,16 @@ namespace SMS.Controllers
         [AllowAnonymous]
         public ActionResult LogIn()
         {
+            if (Session["UserId"] == null)
+            {
+                Session.Abandon();
+                Session.Clear();
+                Session.RemoveAll();
+                FormsAuthentication.SignOut();
+
+                Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
+                return View();
+            }
             if (Request.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -36,8 +46,6 @@ namespace SMS.Controllers
         [AllowAnonymous]
         public ActionResult LogIn(Models.NGUOI_DUNG userr)
         {
-            //if (ModelState.IsValid)
-
             if (IsValid(userr.USER_NAME, userr.MAT_KHAU))
             {
                 FormsAuthentication.SetAuthCookie(userr.USER_NAME, false);
@@ -60,17 +68,7 @@ namespace SMS.Controllers
             FormsAuthentication.SignOut();
 
             Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
-
-            //HttpCookie cookie1 = new HttpCookie(FormsAuthentication.FormsCookieName, "");
-            //cookie1.Expires = DateTime.Now.AddYears(-1);
-            //Response.Cookies.Add(cookie1);
-
-            //HttpCookie cookie2 = new HttpCookie("ASP.NET_SessionId", "");
-            //cookie2.Expires = DateTime.Now.AddYears(-1);
-            //Response.Cookies.Add(cookie2);
-
             FormsAuthentication.RedirectToLoginPage();
-            //return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public ActionResult Show()
@@ -98,12 +96,7 @@ namespace SMS.Controllers
                 {
                     using (var ctx = new SmsContext())
                     {
-                        //var db = ctx.NGUOI_DUNG;
-                        //var crypto = new SimpleCrypto.PBKDF2();
-                        //var encrypPass = crypto.Compute(user.Password);
                         var newUser = ctx.NGUOI_DUNG.Create();
-
-                        //TODO: fill all properties of NGUOI_DUNG
                         newUser.TEN_NGUOI_DUNG = user.TEN_NGUOI_DUNG;
                         newUser.NGAY_SINH = user.NGAY_SINH;
                         newUser.SO_CHUNG_MINH = user.SO_CHUNG_MINH;
