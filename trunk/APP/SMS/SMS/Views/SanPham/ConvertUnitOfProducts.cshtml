@@ -13,6 +13,7 @@
 @{
     ViewBag.Title = "CHUYỂN ĐỖI ĐƠN VỊ TÍNH";
 }
+<link href="~/Content/ConvertUnit.css" rel="stylesheet" />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -47,14 +48,23 @@
 
             });
         });
-    </script>
-    <style type="text/css">
-        .required:after {
-            content: "*";
-            font-weight: bold;
-            color: red;
+        // FORMAT NUMBERIC TO DISPLAY INITPAGE S
+        $(document).ready(function () {
+            renderFormatTable();
+        });
+        /*format row odd/even & field numberic*/
+        function renderFormatTable() {
+            $('td.alignNumberic').each(function () {
+                $(this).html($(this).html().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            });
+
+            $("#contentFrozen tr:odd").css("background-color", "#f3f7f5");
+            $("#contentFrozen tr:even").css("background-color", "#fff");
+            $("#innercontent tr:odd").css("background-color", "#f3f7f5");
+            $("#innercontent tr:even").css("background-color", "#fff");
         }
-    </style>
+        // FORMAT NUMBERIC TO DISPLAY INITPAGE E 
+    </script>
 }
 <h2>Chuyển đổi đơn vị tính </h2>
 
@@ -102,7 +112,7 @@
                                 <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
                                     @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI
                                 </td>
-                                <td class='inner frozencol toprow alignText'>
+                                <td class='inner frozencol toprow alignText truncate' title="@donvi.SanPham.TEN_SAN_PHAM">
                                     @donvi.SanPham.TEN_SAN_PHAM
                                 </td>
                             </tr>
@@ -146,8 +156,8 @@
                         {
                             <tr>
                                 <td class='inner column-hscroll alignCenter'> @donvi.DonViVao.TEN_DON_VI </td>
-                                <td class='inner column-hscroll alignCenter'> @donvi.ChuyenDoiDonVi.HE_SO </td>
                                 <td class='inner column-hscroll alignCenter'> @donvi.DonViCuoi.TEN_DON_VI </td>
+                                <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.HE_SO </td>
                                 @{
                             if ((bool)Session["IsAdmin"] == true)
                             {
@@ -159,12 +169,12 @@
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                             {
                                 <td class='inner alignCenter' style="width:50px;">
-                                    <a href="@Url.Action("Edit", "DonVi", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module">
+                                    <a href="@Url.Action("EditConvertUnitOfProducts", "SanPham", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module">
                                         <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
                                     </a>
                                 </td>
                                     <td class='inner alignCenter' style="width:50px;">
-                                        <a href="@Url.Action("Delete", "DonVi", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module" onclick="return deleteSubmit()">
+                                        <a href="@Url.Action("DeleteConvertUnit", "SanPham", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module" onclick="return deleteSubmit()">
                                             <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
                                         </a>
                                     </td>
@@ -203,7 +213,8 @@
     function deleteSubmit() {
         var r = confirm("Bạn muốn xóa đơn vị tính này!");
         if (r == true) {
-            document.forms[0].submit();
+            //
+            return true;
         }
         else {
             return false;

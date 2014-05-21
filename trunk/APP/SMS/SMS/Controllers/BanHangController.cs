@@ -31,6 +31,7 @@ namespace SMS.Controllers
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
             ViewBag.KhoList = ListKho;
             ViewBag.UserId = Session["UserId"];
+            ViewBag.MyStore = Session["MyStore"];
             return View();
         }
 
