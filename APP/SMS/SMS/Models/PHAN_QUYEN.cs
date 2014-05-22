@@ -28,19 +28,19 @@ namespace SMS.Models
         public Nullable<int> MA_NGUOI_DUNG { get; set; }
 
         [Display(Name = "Quyền Admin")]
-        public Nullable<bool> QUYEN_ADMIN { get; set; }
+        public bool QUYEN_ADMIN { get; set; }
 
         [Display(Name = "Quyền tạo mới danh mục")]
-        public Nullable<bool> QUYEN_DANH_MUC_SAN_PHAM { get; set; }
+        public bool QUYEN_DANH_MUC_SAN_PHAM { get; set; }
 
         [Display(Name = "Quyền bán hàng")]
-        public Nullable<bool> QUYEN_BAN_HANG { get; set; }
+        public bool QUYEN_BAN_HANG { get; set; }
 
         [Display(Name = "Quyền thu ngân")]
-        public Nullable<bool> QUYEN_THAU_NGAN { get; set; }
+        public bool QUYEN_THAU_NGAN { get; set; }
 
         [Display(Name = "Quyền quản lý kho")]
-        public Nullable<bool> QUYEN_QUAN_LY_KHO { get; set; }
+        public bool QUYEN_QUAN_LY_KHO { get; set; }
         public Nullable<int> MA_NHOM_NGUOI_DUNG { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }

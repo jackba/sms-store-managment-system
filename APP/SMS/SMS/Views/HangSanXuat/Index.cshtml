@@ -32,6 +32,7 @@
         </p>
 
     </div>
+    <div style="clear:both"></div>
     <hr style="width:100%" />
     <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
         <tr>
@@ -99,9 +100,19 @@
                             if ((bool)Session["IsAdmin"] == true)
                             {
                                 <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.HangSanXuat.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:70px;"> 
+                                @if (@donvi.HangSanXuat.CREATE_AT != null)
+                                {
+                                    @DateTime.Parse(@donvi.HangSanXuat.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                    </td>
                                     <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.HangSanXuat.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:70px;"> 
+                                @if (@donvi.HangSanXuat.UPDATE_AT != null)
+                                {
+                                    @DateTime.Parse(@donvi.HangSanXuat.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                </td>
                             }
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                             {

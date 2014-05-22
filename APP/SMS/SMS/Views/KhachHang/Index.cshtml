@@ -143,7 +143,7 @@
             <input type="submit" value="Tìm kiếm" class="myButton" />
             
             @{
-    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
     {
                 <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew", "KhachHang")'" />
     }
@@ -276,7 +276,7 @@
                         {
         <td class='inner head' style="width:50px;" title="Thay đổi công nợ">Thay đổi c/n</td>
                         }
-                        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
                         {
         <td class='inner head' style="width:50px;">Sửa</td>
                                 <td class='inner head' style="width:50px;">Xóa</td>
@@ -404,7 +404,7 @@
                                 </td>
                                 }
                             }
-                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
                             {
                                 <td class='inner alignCenter' style="width:50px;">
                                     <a href="@Url.Action("Edit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">

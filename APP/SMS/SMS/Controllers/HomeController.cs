@@ -21,8 +21,8 @@ namespace SMS.Controllers
         public ActionResult Index(string SearchString, int? page, bool? flag)
         {
             IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
-            
-            ViewBag.CurrentFilter = SearchString;
+
+            ViewBag.SearchString = SearchString;
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
             
@@ -49,7 +49,6 @@ namespace SMS.Controllers
         public ActionResult Index(string SearchString, int? page)
         {
             IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
-            ViewBag.CurrentFilter = SearchString;
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
             var ctx = new SmsContext();
@@ -61,6 +60,7 @@ namespace SMS.Controllers
             ViewBag.Count = tonkho.Count();
             tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
             ViewBag.KhoList = ListKho;
+            ViewBag.SearchString = SearchString;
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;

@@ -29,6 +29,16 @@ namespace SMS.App_Start
                 bool IsStoreManager =  filterContext.HttpContext.Session["IsStoreManager"] == null ? false :(bool)filterContext.HttpContext.Session["IsStoreManager"];
                 bool IsAdmin = filterContext.HttpContext.Session["IsAdmin"] == null ? false : (bool)filterContext.HttpContext.Session["IsAdmin"];
                 bool IsAccounting = filterContext.HttpContext.Session["IsAccounting"] == null ? false : (bool)filterContext.HttpContext.Session["IsAccounting"];
+                if (filterContext.HttpContext.Session["UserId"] == null ||
+                    Convert.ToInt32(filterContext.HttpContext.Session["UserId"]) <= 0)
+                {
+                    filterContext.HttpContext.Session.Abandon();
+                    filterContext.HttpContext.Session.Clear();
+                    filterContext.HttpContext.Session.RemoveAll();
+                    FormsAuthentication.SignOut();
+                    filterContext.HttpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
+                    throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này. Login đã timeout, vui lòng đăng nhập lại.");
+                }
                 if (!IsAdmin)
                 {
                     var permission = ctx.CONTROLLER_PERMISSION.FirstOrDefault(u => u.CONTROLLER_NAME == currentController
@@ -44,7 +54,12 @@ namespace SMS.App_Start
                         );
                     if (permission == null)
                     {
-                        throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này");
+                        filterContext.HttpContext.Session.Abandon();
+                        filterContext.HttpContext.Session.Clear();
+                        filterContext.HttpContext.Session.RemoveAll();
+                        FormsAuthentication.SignOut();
+                        filterContext.HttpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
+                        throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này. Vui lòng liên hệ admin để biết thêm phân quyền của bạn.");
                     }
                     else
                     {

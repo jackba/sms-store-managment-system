@@ -65,7 +65,7 @@
 {
     <hr style="width:100%" />
     <div style="float:right">
-        Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { id = "SearchString" })
+        Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
             <input type="submit" value="Tìm kiếm" class="myButton" />
         </div>
     <div style="clear:both"></div>
@@ -158,7 +158,7 @@
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
                         @Html.PagedListPager(Model.WarningList, page => Url.Action("Index",
-                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+new { page, sortOrder = ViewBag.CurrentSort, SearchString = ViewBag.SearchString }))
                     </div>
                 </td>
             </tr>
