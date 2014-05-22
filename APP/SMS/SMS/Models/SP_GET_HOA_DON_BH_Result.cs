@@ -15,6 +15,7 @@ namespace SMS.Models
     public class HoaDonBHModel
     {
         public IPagedList<SP_GET_HOA_DON_BH_Result> HoaDonList { get; set; }
+        public SP_GET_VALUE_ALL_HOA_DON_Result AllValue { get; set; }
         public long PageCount { get; set; }
     }
 
