@@ -191,9 +191,7 @@ namespace SMS.Controllers
                 khuVucNew.MA_NGUOI_DUNG_DAU = kho.MA_NGUOI_DUNG_DAU;
                 khuVucNew.ACTIVE = "A";
                 khuVucNew.UPDATE_AT = DateTime.Now;
-                khuVucNew.CREATE_AT = DateTime.Now;
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
-                khuVucNew.CREATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -220,7 +218,7 @@ namespace SMS.Controllers
             {
                 khuVuc.ACTIVE = "I";
                 khuVuc.UPDATE_AT = DateTime.Now;
-                khuVuc.CREATE_BY = (int)Session["UserId"];
+                khuVuc.UPDATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 return RedirectToAction("Index");
             }

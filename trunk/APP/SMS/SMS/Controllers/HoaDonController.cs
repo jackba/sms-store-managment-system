@@ -66,6 +66,9 @@ namespace SMS.Controllers
             model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
             ViewBag.InputKind = Convert.ToInt32(status);
+            ViewBag.customerName = customerName;
+            ViewBag.salerName = salerName;
+            ViewBag.accountantName = accountantName;
             return View(model);
         }
 

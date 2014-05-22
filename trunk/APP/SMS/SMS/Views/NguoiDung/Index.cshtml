@@ -121,7 +121,12 @@
                         @foreach (var nguoidung in Model)
                         {
                             <tr>
-                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.NGAY_SINH</td>
+                                <td class='inner column-hscroll alignCenter'> 
+                                @if (@nguoidung.NguoiDung.NGAY_SINH != null)
+                                {
+                                    @DateTime.Parse(@nguoidung.NguoiDung.NGAY_SINH.ToString()).ToString("dd/MM/yyyy")
+                                }
+                               </td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_CHUNG_MINH</td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.DIA_CHI</td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.SO_DIEN_THOAI</td>
@@ -136,7 +141,12 @@
                                 @lable
                                 </td>
                                 <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.USER_NAME</td>
-                                <td class='inner column-hscroll alignCenter'> @nguoidung.NguoiDung.NGAY_VAO_LAM</td>
+                                <td class='inner column-hscroll alignCenter'> 
+                                @if  (@nguoidung.NguoiDung.NGAY_VAO_LAM != null)
+                                {
+                                    @DateTime.Parse(@nguoidung.NguoiDung.NGAY_VAO_LAM.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                </td>
                                 <td class='inner column-hscroll alignCenter'>
                                 @{
                             var groupName = "";
@@ -152,9 +162,21 @@
                             if ((bool)Session["IsAdmin"] == true)
                             {
                                 <td class='inner  alignCenter' style="width:90px;"> @nguoidung.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:90px;"> @Html.Label(DateTime.Parse(@nguoidung.NguoiDung.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:90px;"> 
+                                @if (@nguoidung.NguoiDung.CREATE_AT != null)
+                                {
+                                    @DateTime.Parse(@nguoidung.NguoiDung.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                </td>
                                     <td class='inner  alignCenter' style="width:110px;"> @nguoidung.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:110px;"> @Html.Label(DateTime.Parse(@nguoidung.NguoiDung.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:110px;"> 
+                                @{if (@nguoidung.NguoiDung.UPDATE_AT != null)
+                                  {
+                                      @DateTime.Parse(@nguoidung.NguoiDung.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                  }
+                                 }
+                                
+                               </td>
                             }
                             if ((bool)Session["IsAdmin"] == true)
                             {

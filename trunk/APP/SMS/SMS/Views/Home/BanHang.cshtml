@@ -27,10 +27,14 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/buycart.png"></img>
         <span>BÁN HÀNG</span>
     </a>
+@{
+        if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
+        {
     <a class="dashboard-module" href="#">
         <img width="64" height="64" alt="edit" src="../../Content/images/charge.png"></img>
         <span>THU TIỀN</span>
     </a>
+}}
     <a class="dashboard-module" href="@Url.Action("Index", "HoaDon")">
         <img width="64" height="64" alt="edit" src="../../Content/images/bill.png"></img>
         <span>DANH SÁCH HÓA ĐƠN</span>
@@ -43,4 +47,14 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/provider_back.png"></img>
         <span>TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
     </a>
+    @{
+        if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
+        {
+            <a class="dashboard-module" href="@Url.Action("Warning", "KhachHang")">
+                <img width="64" height="64" alt="edit" src="../../Content/images/cus_warning.png"></img>
+                <span>DANH SÁCH KHÁCH HÀNG - WARNING</span>
+            </a>
+        }
+    }
+    
 </div>

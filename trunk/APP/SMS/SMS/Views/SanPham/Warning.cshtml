@@ -151,7 +151,7 @@
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
                     @Html.PagedListPager(Model.WarningList, page => Url.Action("Warning",
-                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+              new { page, sortOrder = ViewBag.CurrentSort, SearchString = ViewBag.CurrentFilter }))
                 </div>
             </td>
         </tr>

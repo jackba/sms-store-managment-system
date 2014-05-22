@@ -51,16 +51,16 @@
                      <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            @if((bool)Session["IsStoreManager"] ||  (bool)Session["IsAdmin"])
+                            @if(Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
                             {
                                 <li>@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home")</li>
                             }
-                            @if((bool)Session["IsSaler"] ||  (bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+                            @if(Convert.ToBoolean(Session["IsSaler"]) ||  Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
                             {
                                 <li>@Html.ActionLink("Bán Hàng", "BanHang", "Home")</li>
                             }
                             <li>@Html.ActionLink("Danh Mục", "DanhMuc", "Home")</li>
-@if((bool)Session["IsAdmin"])
+@if(Convert.ToBoolean(Session["IsAdmin"]))
                             {
                             <li>@Html.ActionLink("Quản Trị", "QuanTri", "Home")</li>
                             }
