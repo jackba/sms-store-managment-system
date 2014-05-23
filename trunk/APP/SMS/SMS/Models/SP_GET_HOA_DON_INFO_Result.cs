@@ -10,30 +10,22 @@
 namespace SMS.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class V_HOA_DON
+    public partial class SP_GET_HOA_DON_INFO_Result
     {
         public int MA_HOA_DON { get; set; }
         public string SO_HOA_DON { get; set; }
         public Nullable<int> MA_KHACH_HANG { get; set; }
         public string TEN_KHACH_HANG { get; set; }
-        public int MA_NHAN_VIEN_BAN { get; set; }
-        public string TEN_NHAN_VIEN_BAN { get; set; }
+        public Nullable<int> MA_NHAN_VIEN_BAN { get; set; }
+        public string TEN_NGUOI_BAN { get; set; }
         public Nullable<System.DateTime> NGAY_BAN { get; set; }
         public Nullable<System.DateTime> NGAY_GIAO { get; set; }
         public string DIA_CHI_GIAO_HANG { get; set; }
-        public int MA_NHAN_VIEN_THU_TIEN { get; set; }
-        public string TEN_NV_THU_TIEN { get; set; }
         public Nullable<short> STATUS { get; set; }
-        public double SO_TIEN_KHACH_TRA { get; set; }
-        public double SO_TIEN_NO_GOI_DAU { get; set; }
-        public Nullable<int> MA_SAN_PHAM { get; set; }
-        public string TEN_SAN_PHAM { get; set; }
-        public double SO_LUONG { get; set; }
-        public double DON_GIA { get; set; }
-        public double PHAN_TRAM_CHIEC_KHAU { get; set; }
-        public Nullable<int> MA_KHO_XUAT { get; set; }
-        public string TEN_DON_VI { get; set; }
+        public Nullable<double> SO_TIEN_KHACH_TRA { get; set; }
+        public Nullable<double> SO_TIEN_NO_GOI_DAU { get; set; }
+        public Nullable<int> MA_NHAN_VIEN_THU_TIEN { get; set; }
+        public string TEN_NV_TT { get; set; }
     }
 }
