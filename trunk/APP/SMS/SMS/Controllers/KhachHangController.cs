@@ -474,11 +474,6 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"] && !(bool)Session["IsMetadataManager"])
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return RedirectToAction("Index");
-            }
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
@@ -504,11 +499,6 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult CancelHist(int id)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return RedirectToAction("Index");
-            }
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
@@ -576,11 +566,6 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return RedirectToAction("Index");
-            }
             if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
             {
                 page = 1;
@@ -635,11 +620,6 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page, bool? submit)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return RedirectToAction("Index");
-            }
             if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
             {
                 page = 1;

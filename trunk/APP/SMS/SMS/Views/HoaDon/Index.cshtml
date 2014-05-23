@@ -317,7 +317,8 @@
                     </td>
                     <td class ="innerLast colwidth">
 @{
-                if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (dbHist.STATUS == 1 && (int)dbHist.MA_NHAN_VIEN_BAN == (int)Session["UserId"])))
+                if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || 
+                    (dbHist.STATUS == 1 && (int)dbHist.MA_NHAN_VIEN_BAN == (int)Session["UserId"])))
                 {
                         <a href="@Url.Action("Delete", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module" onclick="return deleteSubmit()">
                             <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
