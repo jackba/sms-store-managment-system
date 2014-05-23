@@ -48,7 +48,7 @@
             $("#InputUnitName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/DonVi/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/DonVi/FindSuggestConvertNotRootUnit", data: "{ 'prefixText': '" + request.term + "', 'rootUnitId': '" + $('#unitRoot').val() + "'  }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -64,10 +64,12 @@
                     });
 
                     $('#InputUnitId').val("");
+                    $('#checkExistConvertUnit').val('');
                 },
                 select: function (event, ui) {
                     $('#InputUnitName').val(ui.item.label);
                     $('#InputUnitId').val(ui.item.id);
+                    checkExistConvertUnit();
                     return false;
                 },
                 minLength: 1
@@ -86,6 +88,7 @@
                                         label: item.value,
                                         value: item.value,
                                         id: item.id, 
+                                        unitRoot:item.unitRoot,
                                         unitName: item.unitName
                                     }
                                 }))
@@ -93,11 +96,14 @@
                     });
                    
                     $('#ProductId').val("");
+                    $('#checkExistConvertUnit').val('');
                 },
                 select: function (event, ui) {
                     $('#ProductName').val(ui.item.label);
                     $('#ProductId').val(ui.item.id);
+                    $('#unitRoot').val(ui.item.unitRoot);
                     $('#UnitName').val(ui.item.unitName);
+                    checkExistConvertUnit();
                     return false;
                 },
                 minLength: 1
@@ -159,13 +165,23 @@
         /*end format numberic*/
 
         function submitForm(){
-            if (checkInput() == false) {
-                $("#frmMain").submit();
+            if (checkErrorInput() == false) {
+                if( $('#checkExistConvertUnit').val() != ''){
+                    $('#ErrProduct').hide();
+                    $('#ErrUnit').hide();
+                    $('#ErrHeSo').hide();
+                    $('#ErrDuplicate').show();
+                    $('#divMsg').show();
+                }else{
+                    $("#frmMain").submit();
+                }
+                
             } else {
+                $('#ErrDuplicate').hide();
                 $('#divMsg').show();
             }
         }
-        function checkInput() {
+        function checkErrorInput() {
             var isErr = false;
             $('#divMsg').hide();
             var value = $('#HE_SO').val();
@@ -173,7 +189,8 @@
                 isErr = true;
                 $('#ErrProduct').show();
                 $('#ErrUnit').hide();
-                $('#ErrHeSo').hide();
+                $('#ErrHeSo').hide();  
+               
             }
             if ($('#InputUnitId').val() == '' || $('#InputUnitId').val() == null) {
                 if (isErr == false) {
@@ -198,8 +215,27 @@
             } else {
                 $('#HE_SO').val(removeCommas(value));
             }
+
             return isErr;
 
+        }
+        function checkExistConvertUnit(){
+            var productNo = $('#ProductId').val() != '' ? $('#ProductId').val() : -1; 
+            var unitNo =  $('#InputUnitId').val() != '' ? $('#InputUnitId').val() : -1; 
+            $.ajax({
+                url: "/DonVi/checkExistConvertUnit",
+                data: "{'productNo' : " + productNo  + ", 'unitNo' : " + unitNo + " }",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success:
+                    function (data) {
+                        $.each(data, function (i, item) {
+                            $('#checkExistConvertUnit').val(item.id);
+                        });                      
+                    },
+                error:
+                    function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+           
         }
         /*remove comma from value input*/
         function removeCommas(str) {
@@ -222,6 +258,7 @@
         <div id="ErrProduct" style="display: none; margin-left: 15px">+ Sản phẩm không tồn tại hoặc chưa được nhập.</div>
         <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị chuyển đổi không tồn tại hoặc chưa được nhập.</div>
         <div id="ErrHeSo" style="display: none; margin-left: 15px">+ Hệ số phải có giá trị lớn hơn 1 </div>
+        <div id="ErrDuplicate" style="display: none; margin-left: 15px">+ Chuyển đổi đơn vị này đã tồn tại, bạn kiểm tra lại nhé. </div>
     <hr />
     </div>
     <div>
@@ -258,6 +295,8 @@
             </div>
             <div>
                 @Html.TextBox("UnitName", ViewBag.UnitName as string, new { id = "UnitName", @ReadOnly = "true" })
+                <input type="hidden" id="unitRoot" value="" />
+                <input type="hidden" id="checkExistConvertUnit" value="" />
             </div>
             <div>
                 <input type="button" id="btnSave" style="width:100px" value="Lưu"  />

@@ -32,6 +32,36 @@ namespace SMS.Controllers
             return result;
         }
 
+        [HttpPost]
+        public JsonResult FindSuggestConvertNotRootUnit(string prefixText, int rootUnitId)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.DON_VI_TINH
+                                    where (x.TEN_DON_VI.StartsWith(prefixText) && x.ACTIVE.Equals("A") && x.MA_DON_VI  != rootUnitId)
+                                    select new
+                                    {
+                                        id = x.MA_DON_VI,
+                                        value = x.TEN_DON_VI
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult checkExistConvertUnit(int productNo, int unitNo)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.CHUYEN_DOI_DON_VI_TINH
+                                    where (x.MA_SAN_PHAN == productNo && x.ACTIVE.Equals("A") && x.MA_DON_VI_VAO == unitNo)
+                                    select new
+                                    {
+                                        id = x.MA_CHUYEN_DOI
+                                    };
+        
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {

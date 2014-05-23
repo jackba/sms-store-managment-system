@@ -101,6 +101,7 @@ namespace SMS.Controllers
                                     {
                                         id = x.MA_SAN_PHAM,
                                         value = x.TEN_SAN_PHAM,
+                                        unitRoot = x.MA_DON_VI,
                                         unitName = u.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(5).ToList());
