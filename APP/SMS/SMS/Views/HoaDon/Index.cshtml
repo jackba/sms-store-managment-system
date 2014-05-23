@@ -152,6 +152,15 @@
                 yearRange: "-60:+0"
             });
         });
+        function deleteSubmit() {
+            var r = confirm("Bạn muốn xóa hóa đơn này!");
+            if (r == true) {
+                document.forms["index"].submit();
+            }
+            else {
+                return false;
+            }
+        }
     </script>
     <style type="text/css">
         .required:after {
@@ -379,5 +388,7 @@
             </tr>
 
         </table>
+
     </div>
+
 }
