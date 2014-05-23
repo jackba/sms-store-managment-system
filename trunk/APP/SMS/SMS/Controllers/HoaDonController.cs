@@ -144,15 +144,16 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            var ctx = new SmsContext();
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy  hóa đơn tương ứng.";
                 return View("../Home/Error"); ;
             }
-            
+            var ctx = new SmsContext();
+            int userid = (int)Session["UserId"];
             var invoice = ctx.HOA_DON.Find(id);
             if (invoice.ACTIVE.Equals("A"))
             {
@@ -161,6 +162,11 @@ namespace SMS.Controllers
                 invoice.UPDATE_AT = DateTime.Now;
                 invoice.CREATE_BY = (int)Session["UserId"];
 
+                if(invoice.STATUS  >=2 && (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"]))
+                {
+                    ViewBag.Message = "Bạn không có quyền xóa hóa đơn này.";
+                    return View("../Home/Error"); ;
+                }
                 if (invoice.STATUS >=2 && invoice.MA_KHACH_HANG != null && !string.IsNullOrEmpty(invoice.MA_KHACH_HANG.ToString()))
                 {
                     var customer = ctx.KHACH_HANG.Single(uh => uh.MA_KHACH_HANG == invoice.MA_KHACH_HANG

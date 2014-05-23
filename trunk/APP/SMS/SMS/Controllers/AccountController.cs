@@ -156,6 +156,7 @@ namespace SMS.Controllers
                         if (usRole != null)
                         {
                             Session["UserId"] = (int)user.MA_NGUOI_DUNG;
+                            Session["UserName"] = user.TEN_NGUOI_DUNG;
                             Session["IsAdmin"] = usRole.IS_ADMIN != null ? (bool)usRole.IS_ADMIN : false;
                             Session["IsAccounting"] = usRole.IS_ACCOUNTING != null ? (bool)usRole.IS_ACCOUNTING : false;
                             Session["IsSaler"] = usRole.IS_SALER != null ? (bool)usRole.IS_SALER : false;
