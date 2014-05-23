@@ -143,6 +143,67 @@ namespace SMS.Controllers
             model.detailList = detailList;
             return View(model);
         }
+
+        public ActionResult Delete(int id)
+        {
+            var ctx = new SmsContext();
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy  hóa đơn tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            
+            var invoice = ctx.HOA_DON.Find(id);
+            if (invoice.ACTIVE.Equals("A"))
+            {
+                
+                invoice.ACTIVE = "I";
+                invoice.UPDATE_AT = DateTime.Now;
+                invoice.CREATE_BY = (int)Session["UserId"];
+
+                if (invoice.STATUS >=2 && invoice.MA_KHACH_HANG != null && !string.IsNullOrEmpty(invoice.MA_KHACH_HANG.ToString()))
+                {
+                    var customer = ctx.KHACH_HANG.Single(uh => uh.MA_KHACH_HANG == invoice.MA_KHACH_HANG
+                        && uh.ACTIVE == "A");
+                    if (customer != null)
+                    {
+                        customer.DOANH_SO = Convert.ToDecimal(customer.DOANH_SO) -
+                            Convert.ToDecimal(invoice.SO_TIEN_KHACH_TRA)
+                            - Convert.ToDecimal(invoice.SO_TIEN_NO_GOI_DAU);
+                        customer.NO_GOI_DAU = Convert.ToDecimal(customer.NO_GOI_DAU) - Convert.ToDecimal(invoice.SO_TIEN_NO_GOI_DAU);
+                        if (customer.NO_GOI_DAU <= 0)
+                        {
+                            customer.NGAY_PHAT_SINH_NO = null;
+                        }
+                        customer.UPDATE_AT = DateTime.Now;
+                        customer.UPDATE_BY = (int)Session["UserId"];
+                    }
+                    var debitHist = ctx.KHACH_HANG_DEBIT_HIST.OrderByDescending(uh => uh.ID).FirstOrDefault(uh => uh.MA_HOA_DON == invoice.MA_HOA_DON && uh.ACTIVE == "A");
+                    if (debitHist != null)
+                    {
+                        debitHist.ACTIVE = "I";
+                        debitHist.UPDATE_AT = DateTime.Now;
+                        debitHist.UPDATE_BY = (int)Session["UserId"];
+                    }
+                }
+                var details = ctx.CHI_TIET_HOA_DON.Where(uh => uh.MA_HOA_DON == invoice.MA_HOA_DON 
+                    && uh.ACTIVE == "A").ToList<CHI_TIET_HOA_DON>();
+                foreach (CHI_TIET_HOA_DON detail in details)
+                {
+                    detail.ACTIVE = "I";
+                    detail.UPDATE_AT = DateTime.Now;
+                    detail.UPDATE_BY = (int)Session["UserId"];
+                }
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy hóa đơn tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
+
         [HttpPost]
         public ActionResult ShowDetail(InvoicesModel model)
         {

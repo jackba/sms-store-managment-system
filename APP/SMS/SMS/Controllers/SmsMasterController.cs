@@ -17,11 +17,6 @@ namespace SMS.Controllers
         public ActionResult Index()
         {
 
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"] )
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return View("../Home/Index");
-            }
             var ctx = new SmsContext();
             var theListContext = (from s in ctx.SMS_MASTER
                                       where s.ACTIVE.Equals("A")
@@ -62,11 +57,6 @@ namespace SMS.Controllers
         public ActionResult Index(string MaxDebit1, string MaxDebit2, 
             string MaxDebit3, string MaxMonth1, string MaxMonth2, string MaxMonth3)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
-            {
-                ViewBag.Message = "Bạn không có quyền vào mục này.";
-                return View("../Home/Index");
-            }
             if (string.IsNullOrEmpty(MaxDebit1) ||
                 string.IsNullOrEmpty(MaxDebit2) ||
                 string.IsNullOrEmpty(MaxDebit3) ||
