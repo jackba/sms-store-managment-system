@@ -171,7 +171,7 @@ namespace SMS.Controllers
                         hd.NGAY_GIAO = DateTime.ParseExact(dateDelivery, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     }
                     hd.DIA_CHI_GIAO_HANG = collection.Get("DiaChi");
-                    hd.STATUS = 0;
+                    hd.STATUS = 1;
 
                     //common fields
                     hd.ACTIVE = "A";
