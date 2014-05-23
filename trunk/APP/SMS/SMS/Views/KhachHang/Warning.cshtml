@@ -60,10 +60,10 @@
     <hr style="width:100%"/>
     <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
     <tr>
-        <td class='inner colwidth head ' width="15%">
+        <td class='inner colwidth head ' width="20%">
             @Html.ActionLink("Tên khách hàng", "Warning", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
         </td>
-        <td class='inner colwidth head ' width="15%">
+        <td class='inner colwidth head ' width="25%">
             Địa chỉ
         </td>
         <td class='inner colwidth head ' width="15%">
@@ -75,6 +75,10 @@
         <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
             @Html.ActionLink("Ngày phát sinh nợ", "Warning", new { sortOrder = ViewBag.DateSortParam, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
         </td>
+        @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+        {
+            <td class='innerLast head' style="width:50px;" title="Thay đổi công nợ">Thay đổi c/n</td>
+        }
     </tr>
     @foreach (var dbHist in ViewBag.debitHist)
     {
@@ -103,6 +107,22 @@
             <td class="innerLast colwidth">
                 @DateTime.Parse(@dbHist.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
             </td>
+            @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+            {
+            <td class='innerLast alignCenter' style="width:50px;">
+                <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @dbHist.MA_KHACH_HANG })" class="button-module">
+                    <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                </a>
+            </td>
+            }
+            else
+            {
+            <td class='inner alignCenter' style="width:50px;">
+                <a href="#" class="button-module" onclick="return false;">
+                    <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                </a>
+            </td>
+            }
         </tr>
         
     }
@@ -121,4 +141,5 @@
             </td>
         </tr>
 </table>
+    <input type="button" style="width:300px" value=">> Danh sách khách hàng >>" onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
 }

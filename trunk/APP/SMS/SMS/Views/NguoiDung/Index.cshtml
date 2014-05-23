@@ -57,10 +57,16 @@
                         {
                             <tr>
                                 <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
-                                    @nguoidung.NguoiDung.MA_NGUOI_DUNG
+                                    
+                                    <a href="@Url.Action("Show", "Nguoidung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module">
+                                       @nguoidung.NguoiDung.MA_NGUOI_DUNG
+                                    </a>
                                 </td>
                                 <td class='inner frozencol toprow alignText'>
-                                    @nguoidung.NguoiDung.TEN_NGUOI_DUNG
+                                    <a href="@Url.Action("Show", "Nguoidung", new { id = @nguoidung.NguoiDung.MA_NGUOI_DUNG })" class="button-module">
+                                        @nguoidung.NguoiDung.TEN_NGUOI_DUNG
+                                    </a>
+                                   
                                 </td>
                             </tr>
                         }

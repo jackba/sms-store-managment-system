@@ -231,7 +231,21 @@
                         {
                             <tr>
                                 <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
-                                    @donvi.KhachHang.MA_KHACH_HANG
+                                    @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                                    {
+                                        if (donvi.KhachHang.NO_GOI_DAU != 0)
+                                        {
+                                            <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
+                                            @donvi.KhachHang.MA_KHACH_HANG
+                                            </a>
+                                        }else
+                                        {
+                                             @donvi.KhachHang.MA_KHACH_HANG
+                                        }
+                                    } else
+                                    {
+                                        @donvi.KhachHang.MA_KHACH_HANG
+                                    }
                                 </td>
                                 <td class='inner frozencol toprow alignText'>
                                     <a href="@Url.Action("Show", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
@@ -327,7 +341,7 @@
                                 }
                                 else
                                 {
-                                    @Html.Label(DateTime.Parse(@donvi.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy"))
+                                    @DateTime.Parse(@donvi.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
                                 }
                                 }
 
@@ -371,7 +385,7 @@
                             }
                             else
                             {
-                                            @Html.Label(@donvi.KhuVuc.TEN_KHU_VUC)
+                                            @donvi.KhuVuc.TEN_KHU_VUC
                                            
                             }
                                     }
@@ -381,9 +395,20 @@
                             if ((bool)Session["IsAdmin"] == true)
                             {
                                 <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.KhachHang.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.KhachHang.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                @if (@donvi.KhachHang.CREATE_AT != null)
+                                {
+                                    @DateTime.Parse(@donvi.KhachHang.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                 </td>
+                                    <td class='inner  alignCenter' style="width:70px;">                                 
+                                @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                @if (@donvi.KhachHang.UPDATE_AT != null)
+                                {
+                                    @DateTime.Parse(@donvi.KhachHang.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                </td>
                             }
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
                             {

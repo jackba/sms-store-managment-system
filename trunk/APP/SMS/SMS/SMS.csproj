@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="Models\Import.cs" />
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\Invoices.cs" />
     <Compile Include="Models\KHACH_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -264,6 +265,9 @@
     <Compile Include="Models\SP_GET_HOA_DON_BH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_HOA_DON_INFO_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -283,6 +287,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_ROLE_OF_USER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">
