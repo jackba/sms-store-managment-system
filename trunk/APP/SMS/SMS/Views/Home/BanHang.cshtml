@@ -28,13 +28,13 @@
         <span>BÁN HÀNG</span>
     </a>
 @{
-        if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
-        {
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/charge.png"></img>
-        <span>THU TIỀN</span>
-    </a>
-}}
+    if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
+    {
+        <a class="dashboard-module" href="@Url.Action("Collection", "HoaDon")">
+            <img width="64" height="64" alt="edit" src="../../Content/images/charge.png"></img>
+            <span>THU TIỀN</span>
+        </a>
+    }}
     <a class="dashboard-module" href="@Url.Action("Index", "HoaDon")">
         <img width="64" height="64" alt="edit" src="../../Content/images/bill.png"></img>
         <span>DANH SÁCH HÓA ĐƠN</span>

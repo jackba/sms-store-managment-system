@@ -250,6 +250,9 @@
     <Compile Include="Models\SMS_MASTER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SMS_MESSAGES.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -631,6 +634,10 @@
     <Content Include="Views\HoaDon\Index.cshtml" />
     <Content Include="Views\Home\IndexPartialView.cshtml" />
     <Content Include="Views\SanPham\ListConvertUnitPartialView.cshtml" />
+    <Content Include="Views\HoaDon\Collection.cshtml" />
+    <Content Include="Views\SanPham\WarningPartialView.cshtml" />
+    <Content Include="Views\HoaDon\CollectionPartialView.cshtml" />
+    <Content Include="Views\Home\SmsMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

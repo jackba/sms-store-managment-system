@@ -372,7 +372,7 @@
           <Property Name="ID_NGUOI_GUI" Type="int" />
           <Property Name="ID_NHOM_NGUOI_NHAN" Type="int" />
           <Property Name="NGAY_GUI" Type="date" />
-          <Property Name="NOI_DUNG" Type="text" />
+          <Property Name="NOI_DUNG" Type="ntext" />
           <Property Name="CREATE_BY" Type="int" />
           <Property Name="UPDATE_BY" Type="int" />
           <Property Name="CREATE_AT" Type="date" />
@@ -1405,7 +1405,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__CREAT__1D7B6025">
+        <Association Name="FK__SMS_MESSA__CREAT__251C81ED">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1417,7 +1417,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__ID_NG__1B9317B3">
+        <Association Name="FK__SMS_MESSA__ID_NG__2334397B">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1429,7 +1429,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__ID_NH__1C873BEC">
+        <Association Name="FK__SMS_MESSA__ID_NH__24285DB4">
           <End Role="NHOM_NGUOI_DUNG" Type="Self.NHOM_NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1441,7 +1441,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__UPDAT__1E6F845E">
+        <Association Name="FK__SMS_MESSA__UPDAT__2610A626">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2250,19 +2250,19 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__CREAT__1D7B6025" Association="Self.FK__SMS_MESSA__CREAT__1D7B6025">
+          <AssociationSet Name="FK__SMS_MESSA__CREAT__251C81ED" Association="Self.FK__SMS_MESSA__CREAT__251C81ED">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NG__1B9317B3" Association="Self.FK__SMS_MESSA__ID_NG__1B9317B3">
+          <AssociationSet Name="FK__SMS_MESSA__ID_NG__2334397B" Association="Self.FK__SMS_MESSA__ID_NG__2334397B">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NH__1C873BEC" Association="Self.FK__SMS_MESSA__ID_NH__1C873BEC">
+          <AssociationSet Name="FK__SMS_MESSA__ID_NH__24285DB4" Association="Self.FK__SMS_MESSA__ID_NH__24285DB4">
             <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__UPDAT__1E6F845E" Association="Self.FK__SMS_MESSA__UPDAT__1E6F845E">
+          <AssociationSet Name="FK__SMS_MESSA__UPDAT__2610A626" Association="Self.FK__SMS_MESSA__UPDAT__2610A626">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
@@ -4857,7 +4857,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Name="ID_NGUOI_GUI" Type="Int32" />
           <Property Name="ID_NHOM_NGUOI_NHAN" Type="Int32" />
           <Property Name="NGAY_GUI" Type="DateTime" Precision="0" />
-          <Property Name="NOI_DUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NOI_DUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CREATE_BY" Type="Int32" />
           <Property Name="UPDATE_BY" Type="Int32" />
           <Property Name="CREATE_AT" Type="DateTime" Precision="0" />

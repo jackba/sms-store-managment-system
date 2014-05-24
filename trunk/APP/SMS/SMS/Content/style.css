@@ -80,3 +80,15 @@ a.button-module span {
     margin-top: 5px;
     display: block;
 }
+
+table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
