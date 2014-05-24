@@ -111,7 +111,8 @@ h5, h6 {
     }
 
     .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
+        background: url("../Images/logo2.png") no-repeat;
+        margin-top: -41px;
     }
 
 header .content-wrapper {
