@@ -1772,6 +1772,16 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="TEN_NV_TT" Type="nvarchar" Mode="In" />
           <Parameter Name="STATUS" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_GET_HOA_DON_CHUA_TT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+          <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHACH_HANG" Type="nvarchar" Mode="In" />
+          <Parameter Name="MA_NHAN_VIEN_BAN" Type="int" Mode="In" />
+          <Parameter Name="TEN_NV_BAN" Type="nvarchar" Mode="In" />
+          <Parameter Name="MA_NHAN_VIEN_TT" Type="int" Mode="In" />
+          <Parameter Name="TEN_NV_TT" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SP_GET_HOA_DON_INFO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
@@ -4684,6 +4694,16 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
+          <FunctionImport Name="SP_GET_HOA_DON_CHUA_TT" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_CHUA_TT_Result)">
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
+            <Parameter Name="MA_NHAN_VIEN_BAN" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_BAN" Mode="In" Type="String" />
+            <Parameter Name="MA_NHAN_VIEN_TT" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -4916,6 +4936,20 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_GET_HOA_DON_CHUA_TT_Result">
+          <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
+          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
+          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="false" />
+          <Property Type="String" Name="TEN_NHAN_VIEN_BAN" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
+          <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
+          <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
+          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
+          <Property Type="Double" Name="CHIEC_KHAU" Nullable="false" />
+          <Property Type="Double" Name="THUC_THU" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5723,6 +5757,24 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_HOA_DON_CHUA_TT" FunctionName="SmsModel.Store.SP_GET_HOA_DON_CHUA_TT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_HOA_DON_CHUA_TT_Result">
+                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
+                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
+                <ScalarProperty Name="TEN_NHAN_VIEN_BAN" ColumnName="TEN_NHAN_VIEN_BAN" />
+                <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
+                <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />
+                <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
+                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
+                <ScalarProperty Name="CHIEC_KHAU" ColumnName="CHIEC_KHAU" />
+                <ScalarProperty Name="THUC_THU" ColumnName="THUC_THU" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
