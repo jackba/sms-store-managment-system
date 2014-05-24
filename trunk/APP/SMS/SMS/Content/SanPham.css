@@ -226,6 +226,7 @@ table.fixed{
     padding-left:2em;
     height:28px;
   }
+
 .required:after {
     color: #e32;
     content: ' (*)';

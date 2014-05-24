@@ -94,17 +94,91 @@
 
     /*submit form to regist details of product*/
     function submitForm() {
-        $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));
-        $("#GiaBan1ID").val(removeCommas($("#GIA_BAN_1").val()));
-        $("#GiaBan2ID").val(removeCommas($("#GIA_BAN_2").val()));
-        $("#GiaBan3ID").val(removeCommas($("#GIA_BAN_3").val()));
-        $("#ChietKhau1ID").val(removeCommas($("#CHIET_KHAU_1").val()));
-        $("#ChietKhau2ID").val(removeCommas($("#CHIET_KHAU_2").val()));
-        $("#ChietKhau3ID").val(removeCommas($("#CHIET_KHAU_3").val()));
-        $("#CoSoMinID").val(removeCommas($("#CO_SO_TOI_THIEU").val()));
-        $("#CoSoMaxID").val(removeCommas($("#CO_SO_TOI_DA").val()));
+        var isErr = false;
+        // check input
+        if ($('#TEN_SAN_PHAM').val() == '' || $('#TEN_SAN_PHAM').val() == null) {
+            isErr = true;
+            $('#ErrProduct').show();
+            $('#ErrUnit').hide();
+        }
+        if ($('#MA_DON_VI').val() == '-1' || $('#MA_DON_VI').val() == -1) {
+            if (isErr == false) {
+                $('#ErrProduct').hide();
+            } else {
+                $('#ErrProduct').show();
+            }
+            isErr = true;
+            $('#ErrUnit').show();
+        }
+        if(isErr == false) {
+        // parse value
+            parseValueToSubmit();
+            $("#frmMain").submit();
+        }else{
+            $('#msgErr').show();
+        }
+    }
 
-        $("#frmMain").submit();
+    function parseValueToSubmit(){
+        if($("#CAN_NANG").val() == ''){
+            $("#CanNangID").val(0);
+        }else{
+            $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));  
+        }
+      
+        if($("#GIA_BAN_1").val() == ''){
+            $("#GiaBan1ID").val(0);
+        }else{
+            $("#GiaBan1ID").val(removeCommas($("#GIA_BAN_1").val()));
+        }
+       
+        if($("#GIA_BAN_2").val() == ''){
+            $("#GiaBan2ID").val(0);
+        }else{
+            $("#GiaBan2ID").val(removeCommas($("#GIA_BAN_2").val()));
+        }
+
+        if($("#GIA_BAN_3").val() == ''){
+            $("#GiaBan3ID").val(0);
+        }else{
+            $("#GiaBan3ID").val(removeCommas($("#GIA_BAN_3").val()));
+        }
+        
+        
+        if($("#CHIET_KHAU_1").val() == ''){
+            $("#ChietKhau1ID").val(0);
+        }else{
+            $("#ChietKhau1ID").val(removeCommas($("#CHIET_KHAU_1").val()));
+        }
+        
+
+        if($("#CHIET_KHAU_2").val() == ''){
+            $("#ChietKhau2ID").val(0);
+        }else{
+            $("#ChietKhau2ID").val(removeCommas($("#CHIET_KHAU_2").val()));
+        }
+       
+
+        if($("#CHIET_KHAU_3").val() == ''){
+            $("#ChietKhau3ID").val(0);
+        }else{
+            $("#ChietKhau3ID").val(removeCommas($("#CHIET_KHAU_3").val()));
+        }
+       
+
+        if($("#CO_SO_TOI_THIEU").val() == ''){
+            $("#CoSoMinID").val(0);
+        }else{
+            $("#CoSoMinID").val(removeCommas($("#CO_SO_TOI_THIEU").val()));
+        }
+        
+
+        if($("#CO_SO_TOI_DA").val() == ''){
+            $("#CoSoMaxID").val(0);
+        }else{
+            $("#CoSoMaxID").val(removeCommas($("#CO_SO_TOI_DA").val()));
+        }
+       
     }
     /*remove comma from value input*/
     function removeCommas(str) {
@@ -116,11 +190,18 @@
         
     }
 </script>
+<div id="divMsg" >
+    <div id="msgErr" style="display: none;" class="validation-summary-errors">
+        Hãy kiểm tra các giá trị :
+        <div id="ErrProduct" style="display: none; margin-left: 15px">+ Tên sản phẩm</div>
+        <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị tính</div>
+        <hr />
+    </div>
+</div>
 @using (Html.BeginForm(@ViewBag.Mode == "CREATE" ? "AddNew" : "Edit", "SanPham", FormMethod.Post, new { @id="frmMain"}))
 {
     @Html.HiddenFor(u => u.MA_SAN_PHAM)
     
-    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
     <div>
         
         <table class="fixed" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -155,7 +236,7 @@
             </tr>
             <tr>
                 <td>
-                    <div>
+                    <div class="required">
                         @Html.LabelFor(u => u.MA_DON_VI)
                         @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(ViewBag.dsDonvi, "MA_DON_VI", "TEN_DON_VI", ViewBag.DVSelected))
                     </div>
@@ -258,7 +339,7 @@
 
         <div class="divTitle">
             <hr />
-            <input type="submit"  style="width:100px" onclick="submitForm();" value="Lưu" />
+            <input type="button" style="width:100px" onclick="submitForm();" value="Lưu" />
             <span> </span>
             <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
         </div>

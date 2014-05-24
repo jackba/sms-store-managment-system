@@ -67,6 +67,7 @@ namespace SMS.Models
         [Display(Name = "Đặc tả")]
         [StringLength(1000)]
         public string DAC_TA { get; set; }
+        [Required(ErrorMessage = "Hãy nhập đơn vị tính cho sản phẩm.")]
         [Display(Name = "Đơn vị tính")]
         public Nullable<int> MA_DON_VI { get; set; }
         [Display(Name = "Nhà sản xuất")]

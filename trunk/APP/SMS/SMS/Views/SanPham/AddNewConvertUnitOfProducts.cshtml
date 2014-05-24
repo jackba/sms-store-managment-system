@@ -253,13 +253,14 @@
                     "SanPham", FormMethod.Post, new { @id = "frmMain" }))
 {
     @Html.HiddenFor(u => u.MA_CHUYEN_DOI)
-    
-    <div id="divMsg" style="display: none; color: red; " > Hãy kiểm tra các giá trị : 
+
+    <div id="divMsg" style="display: none;" class="validation-summary-errors">
+        Hãy kiểm tra các giá trị :
         <div id="ErrProduct" style="display: none; margin-left: 15px">+ Sản phẩm không tồn tại hoặc chưa được nhập.</div>
         <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị chuyển đổi không tồn tại hoặc chưa được nhập.</div>
         <div id="ErrHeSo" style="display: none; margin-left: 15px">+ Hệ số phải có giá trị lớn hơn 1 </div>
         <div id="ErrDuplicate" style="display: none; margin-left: 15px">+ Chuyển đổi đơn vị này đã tồn tại, bạn kiểm tra lại nhé. </div>
-    <hr />
+        <hr />
     </div>
     <div>
         <fieldset>

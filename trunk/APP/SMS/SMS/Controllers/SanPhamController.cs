@@ -80,6 +80,7 @@ namespace SMS.Controllers
                                         id = x.MA_SAN_PHAM,
                                         name = x.TEN_SAN_PHAM,    
                                         unit = x.MA_DON_VI,
+                                        unitNm = u.TEN_DON_VI,
                                         price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0: 
                                                     (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
@@ -164,6 +165,7 @@ namespace SMS.Controllers
             BindListDV(ctx);
             BindListNSX(ctx);
             SetModeTitle(false);
+            SetDefaultValue();
             return View();
         }
 
@@ -265,45 +267,35 @@ namespace SMS.Controllers
         public ActionResult Edit(SAN_PHAM productUpdated)
         {
             var db = new SmsContext();
-            if (ModelState.IsValid)
+            var sp = db.SAN_PHAM.Find((int)productUpdated.MA_SAN_PHAM);
+
+            sp.TEN_SAN_PHAM = productUpdated.TEN_SAN_PHAM;
+            sp.KICH_THUOC = productUpdated.KICH_THUOC;
+            sp.CAN_NANG = productUpdated.CAN_NANG;
+            sp.MA_DON_VI = productUpdated.MA_DON_VI;
+            
+            if (-1 == productUpdated.MA_NHA_SAN_XUAT)
             {
-                var sp = db.SAN_PHAM.Find((int)productUpdated.MA_SAN_PHAM);
-
-                sp.TEN_SAN_PHAM = productUpdated.TEN_SAN_PHAM;
-                sp.KICH_THUOC = productUpdated.KICH_THUOC;
-                sp.CAN_NANG = productUpdated.CAN_NANG;
-                if (-1 == productUpdated.MA_DON_VI)
-                {
-                    productUpdated.MA_DON_VI = null;
-                }
-                if (-1 == productUpdated.MA_NHA_SAN_XUAT)
-                {
-                    productUpdated.MA_NHA_SAN_XUAT = null;
-                }
-                sp.MA_DON_VI = productUpdated.MA_DON_VI;
-                sp.MA_NHA_SAN_XUAT = productUpdated.MA_NHA_SAN_XUAT;
-                sp.DAC_TA = productUpdated.DAC_TA;
-                sp.GIA_BAN_1 = productUpdated.GIA_BAN_1;
-                sp.GIA_BAN_2 = productUpdated.GIA_BAN_2;
-                sp.GIA_BAN_3 = productUpdated.GIA_BAN_3;
-                sp.CHIEC_KHAU_1 = productUpdated.CHIEC_KHAU_1;
-                sp.CHIEC_KHAU_2 = productUpdated.CHIEC_KHAU_2;
-                sp.CHIEC_KHAU_3 = productUpdated.CHIEC_KHAU_3;
-                sp.CO_SO_TOI_THIEU = productUpdated.CO_SO_TOI_THIEU;
-                sp.CO_SO_TOI_DA = productUpdated.CO_SO_TOI_DA;
-                //common fields
-                sp.ACTIVE = "A";
-                sp.UPDATE_AT = DateTime.Now;
-                sp.UPDATE_BY = (int)Session["UserId"];
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                productUpdated.MA_NHA_SAN_XUAT = null;
             }
-            BindListDV(db);
-            BindListNSX(db);
-            SetModeTitle(true);
-            SetHiddenFields(productUpdated);
-            return View();
+            sp.MA_DON_VI = productUpdated.MA_DON_VI;
+            sp.MA_NHA_SAN_XUAT = productUpdated.MA_NHA_SAN_XUAT;
+            sp.DAC_TA = productUpdated.DAC_TA;
+            sp.GIA_BAN_1 = productUpdated.GIA_BAN_1;
+            sp.GIA_BAN_2 = productUpdated.GIA_BAN_2;
+            sp.GIA_BAN_3 = productUpdated.GIA_BAN_3;
+            sp.CHIEC_KHAU_1 = productUpdated.CHIEC_KHAU_1;
+            sp.CHIEC_KHAU_2 = productUpdated.CHIEC_KHAU_2;
+            sp.CHIEC_KHAU_3 = productUpdated.CHIEC_KHAU_3;
+            sp.CO_SO_TOI_THIEU = productUpdated.CO_SO_TOI_THIEU;
+            sp.CO_SO_TOI_DA = productUpdated.CO_SO_TOI_DA;
+            //common fields
+            sp.ACTIVE = "A";
+            sp.UPDATE_AT = DateTime.Now;
+            sp.UPDATE_BY = (int)Session["UserId"];
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Delete(int id)
@@ -331,17 +323,13 @@ namespace SMS.Controllers
         public ActionResult AddNew(SAN_PHAM productInsert)
         {
             var db = new SmsContext();
-            if (ModelState.IsValid)
-            {
                 var sp = db.SAN_PHAM.Create();
                 // input fields
                 sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
                 sp.KICH_THUOC = productInsert.KICH_THUOC;
                 sp.CAN_NANG = productInsert.CAN_NANG;
-                if (-1 == productInsert.MA_DON_VI)
-                {
-                    productInsert.MA_DON_VI = null;
-                }
+                sp.MA_DON_VI = productInsert.MA_DON_VI;
+
                 if (-1 == productInsert.MA_NHA_SAN_XUAT)
                 {
                     productInsert.MA_NHA_SAN_XUAT = null;
@@ -367,13 +355,6 @@ namespace SMS.Controllers
                 db.SAN_PHAM.Add(sp);
                 db.SaveChanges();
                 return Redirect("Index");
-            }
-
-            BindListDV(db);
-            BindListNSX(db);
-            SetModeTitle(false);
-            SetHiddenFields(productInsert);
-            return View();
         }
 
         #region Common function
@@ -436,6 +417,18 @@ namespace SMS.Controllers
             }
         }
 
+        private void SetDefaultValue()
+        {
+            ViewBag.CanNang = "0";
+            ViewBag.GiaBan1 = "0";
+            ViewBag.GiaBan2 = "0";
+            ViewBag.GiaBan3 = "0";
+            ViewBag.ChietKhau1 = "0";
+            ViewBag.ChietKhau2 = "0";
+            ViewBag.ChietKhau3 = "0";
+            ViewBag.CoSoMin = "0";
+            ViewBag.CoSoMax = "0";
+        }
         private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
 

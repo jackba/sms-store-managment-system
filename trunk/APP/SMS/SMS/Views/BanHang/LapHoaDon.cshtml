@@ -16,10 +16,10 @@
 <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
 
 <script>
-    
+
     $(document).ready(function () {
         //show calendar
-       
+
         $('.datePicker').datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
@@ -36,7 +36,7 @@
         $("#saveBill").click(function () {
             saveListRowNum();
         });
-        
+
 
         $("#createNewBill").click(function () {
             createNewBill();
@@ -48,7 +48,7 @@
 
         $('#NgayBan').datepicker('setDate', 'today');
         $('#NgayGiao').datepicker('setDate', 'today + 3');
-        // hide 
+        // hide
         hideRelationProduct();
         hideRelationCustomer();
 
@@ -118,12 +118,13 @@
                         function (data) {
                             response($.map(data, function (item) {
                                 return {
-                                    lable : item.name,                                   
+                                    lable : item.name,
                                     value: item.name,
                                     id: item.id,
                                     price: item.price,
                                     discount: item.discount,
-                                    unit:item.unit
+                                    unit: item.unit,
+                                    unitNm: item.unitNm
                                 }
                             }))
                         },
@@ -134,15 +135,17 @@
             },
             select: function (event, ui) {
                 setFixedField(ui.item);
-              
+
                 hideRelationProduct();
                 createDonViTinh();
+               
+                $('#hidUnitRootName').val(ui.item.unitNm);
 
                 $('#hidFactorValue').val('1');
                 return false;
             },
             focus: function (event, ui) {
-              
+
                 setRelationProduct(ui.item);
                 setStoreInformation(ui.item);
                 showRelationProduct();
@@ -160,7 +163,7 @@
             }
         });;
 
-        //format numberic start 
+        //format numberic start
         formatNumberic();
         $('input.numberic').keypress(function (key) {
             var keycode = (key.which) ? key.which : key.keyCode;
@@ -188,655 +191,686 @@
         //format numberic end
     });
 
-function hideRelationProduct(){
-    // hide relation product
-    $('#relationProduct').removeClass('relationProductShow');
-    $('#relationProduct').addClass('HideElement');
-  
-}
-function showRelationProduct() {
+    function hideRelationProduct(){
+        // hide relation product
+        $('#relationProduct').removeClass('relationProductShow');
+        $('#relationProduct').addClass('HideElement');
 
-    // show relation product
-    $('#relationProduct').removeClass('HideElement');
-    $('#relationProduct').addClass('relationProductShow');
-
-    var width = $('#ui-id-2').width();
-    var offset = $('#ui-id-2').offset();
-    offset.left = offset.left + width + 10;
-    $('#relationProduct').offset({ top: offset.top, left: offset.left })
-}
-function hideRelationCustomer() {
-    // hide relation customer
-    $('#relationCustomer').removeClass('relationCustomerShow');
-    $('#relationCustomer').addClass('HideElement');
-}
-function showRelationCustomer() {   
-    // show relation customer
-    $('#relationCustomer').removeClass('HideElement');
-    $('#relationCustomer').addClass('relationCustomerShow');
-
-    var width = $('#ui-id-1').width();
-    var offset = $('#ui-id-1').offset();
-    offset.left = offset.left + width + 10;
-    $('#relationCustomer').offset({ top: offset.top, left: offset.left })
-}
-function addCommaNumberic(ctrlID, isSpanTag) {
-    if (isSpanTag == true) {
-        $(ctrlID).html($(ctrlID).html().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
-    } else {
-        $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
     }
-    
-}
-function changeTypeCustomer() {
-    $('#kindCustomer').val($('#typeCustomers').val());
-}
-function setEmptyFixedField() {
-    //$('#MaSanPham').val('');
-    $('#GiaBan').val('');
-    $('#ChietKhau').val('');
-    $('#GiaThuc').val('');
-    $('#typeDonViTinh').empty();
-}
-function setFixedField(item) {
-    CalcRealPrice(item.price, item.discount);
-    addCommaNumberic('#GiaThuc');
-    $('#MaSanPham').val(item.id);
-    $('#TenSanPham').val(item.label);
-    $('#GiaBan').val(item.price);
-    addCommaNumberic('#GiaBan');
-    $('#ChietKhau').val(item.discount);
-    addCommaNumberic('#ChietKhau');
-}
-function setRelationProduct(item, isSelected) {
-    $('#S_MaSanPham').html(item.id);
-    $('#S_TenSanPham').html(item.label);
-    if (isSelected == true) {
-        setFixedField(item);
-        $('#S_GiaBan').html($('#GiaBan').val());
-        $('#S_ChietKhau').html($('#ChietKhau').val());
-        $('#S_GiaThuc').html($('#GiaThuc').val());
-    } else {
-        $('#S_GiaBan').html(item.price);
-        addCommaNumberic('#S_GiaBan', true);
-        $('#S_ChietKhau').html(item.discount);
-        addCommaNumberic('#GiaBan',true);
-        var priceReal = CalcRealPrice(item.price, item.discount, true);
-        $('#S_GiaThuc').html(priceReal);
-        addCommaNumberic('#S_GiaThuc', true);
-    }  
-}
-function setRelationCustomer(item, isSelected) {
+    function showRelationProduct() {
 
-    $('#S_MaKhachHang').html(item.id);
-    $('#S_TenKhachHang').html(item.label);
-    $('#S_MaTheKhachHang').html(item.cardNo);
-    $('#S_DiaChi').html(item.address);
-    $('#S_SoDienThoai').html(item.fone);
-    $('#S_Email').html(item.email);
-    if (isSelected == true) {
-        $('#MaKhachHang').val(item.id);
-        $('#TenKhachHang').val(item.label);
-        $('#DiaChi').html(item.address);
-    }
+        // show relation product
+        $('#relationProduct').removeClass('HideElement');
+        $('#relationProduct').addClass('relationProductShow');
 
-}
-function setStoreInformation(item) {
-    var result = '';
-    $.ajax({
-        url: "/BanHang/CheckingProductInAllStore",
-        data: "{'maSP' : '" + item.id + "'}",
-        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-        success:
-            function (data) {
-                $.each(data, function (i, item) {
-                    $('#store_1').html(item.TON_KHO_1);
-                    $('#store_2').html(item.TON_KHO_2);
-                    $('#store_3').html(item.TON_KHO_3);
-                    $('#store_4').html(item.TON_KHO_4);
-                    $('#store_5').html(item.TON_KHO_5);
-                });
-            },
-        error:
-            function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-    });
-}
-function createDonViTinh() {
-    var result = '';
-    $.ajax({
-        url: "/BanHang/FindDonViTinhByMaSP",
-        data: "{'maSP' : '" + $('#MaSanPham').val() + "'}",
-        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-        success:
-            function (data) {
-                $('#typeDonViTinh').empty();
-                $.each(data, function (i, item) {
-                    var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
-                    $(opt).appendTo('#typeDonViTinh');
-                });
-            },
-        error:
-            function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-    });
-}
-function createStore() {
-    var result = '';
-    $.ajax({
-        url: "/BanHang/FindStore",
-        //data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
-        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-        success:
-            function (data) {
-                $.each(data,function(i,item)
-                {
-                    var opt = '';
-                    if (item.value == parseInt($('#MyStore').val())) {
-                        opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
-                    }else { 
-                        opt = "<option value=" + item.value + ">" + item.name + "</option>"
-                    }
-                    
-                    $(opt).appendTo('#typeStore');
-                });
-            }, 
-        error: 
-            function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-    });
-}
-function confirmBack() {
-    var title = "Xác nhận";
-    var content = "Quá trình trở về có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?";
-    if ($("table.tableContentScroll tr").length == 0) {
-        $('#hidBtnBack').click();
-    } else {
-        fnOpenConfirmDialog(title, content,1);
+        var width = $('#ui-id-2').width();
+        var offset = $('#ui-id-2').offset();
+        offset.left = offset.left + width + 10;
+        $('#relationProduct').offset({ top: offset.top, left: offset.left })
     }
-}
-function fnOpenConfirmDialog(title, content, action) {
-    $("#dialogConfirm").html(content);
-    $("#dialogConfirm").dialog({
-        resizable: false,
-        modal: true,
-        title: title,
-        height: 200,
-        width: 550,
-        buttons: {
-            "Đồng ý": function () {
-                $(this).dialog('close');
-                switch(action) {
-                    case 1:
-                        $('#hidBtnBack').click();
-                        break;
-                    case 2:
-                        reset();
-                        break;
-                }
-           
-            },
-            "Không": function () {
-                $(this).dialog('close');               
-            }
+    function hideRelationCustomer() {
+        // hide relation customer
+        $('#relationCustomer').removeClass('relationCustomerShow');
+        $('#relationCustomer').addClass('HideElement');
+    }
+    function showRelationCustomer() {
+        // show relation customer
+        $('#relationCustomer').removeClass('HideElement');
+        $('#relationCustomer').addClass('relationCustomerShow');
+
+        var width = $('#ui-id-1').width();
+        var offset = $('#ui-id-1').offset();
+        offset.left = offset.left + width + 10;
+        $('#relationCustomer').offset({ top: offset.top, left: offset.left })
+    }
+    function addCommaNumberic(ctrlID, isSpanTag) {
+        if (isSpanTag == true) {
+            $(ctrlID).html($(ctrlID).html().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+        } else {
+            $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
         }
-    });
-}
-function fnOpenNormalDialog(title, content, action) {
-    if ($("table.tableContentScroll tr").length == 0) {
-        return;
-    }
 
-    $("#dialogConfirm").html(content);
-    switch(action)
-    {
-        case 1:  // change type customer
-            $("#dialogConfirm").dialog({
-                resizable: false,
-                modal: true,
-                title: title,
-                height: 200,
-                width: 550,
-                buttons: {
-                    "Đồng ý": function () {
-                        $(this).dialog('close');
-                        callback(true);
-                    },
-                    "Không": function () {
-                        $(this).dialog('close');
-                        callback(false);
-                    }
-                }
-            });
-            break;
-        case 2: // duplicate product item
-            $("#dialogConfirm").dialog({
-                resizable: false,
-                modal: true,
-                title: title,
-                height: 200,
-                width: 550,
-                buttons: {
-                    "Đóng": function () {
-                        $(this).dialog('close');
-                        $('#tableSearch #TenSanPham').select();
-                    }
-                }
-            });
-            break
-        default:
-            break;
     }
-}
-function callback(valueReturn) {
-    if (valueReturn) {
-        $("table.tableContentScroll tr").remove();
-        $('#saveBill').attr("disabled", "disabled");
-        $('#saveBill').css("background-color", "#ECECEC");
-    } else {
-        $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
+    function changeTypeCustomer() {
+        $('#kindCustomer').val($('#typeCustomers').val());
     }
-}
-function addRecord() {
+    function setEmptyFixedField() {
+        //$('#MaSanPham').val('');
+        $('#GiaBan').val('');
+        $('#ChietKhau').val('');
+        $('#GiaThuc').val('');
+        $('#typeDonViTinh').empty();
+        $('#hidUnitRootName').val('');
+    }
+    function setFixedField(item) {
+        CalcRealPrice(item.price, item.discount);
+        addCommaNumberic('#GiaThuc');
+        $('#MaSanPham').val(item.id);
+        $('#TenSanPham').val(item.label);
+        $('#GiaBan').val(item.price);
+        addCommaNumberic('#GiaBan');
+        $('#ChietKhau').val(item.discount);
+        addCommaNumberic('#ChietKhau');
+    }
+    function setRelationProduct(item, isSelected) {
+        $('#S_MaSanPham').html(item.id);
+        $('#S_TenSanPham').html(item.label);
+        if (isSelected == true) {
+            setFixedField(item);
+            $('#S_GiaBan').html($('#GiaBan').val());
+            $('#S_ChietKhau').html($('#ChietKhau').val());
+            $('#S_GiaThuc').html($('#GiaThuc').val());
+        } else {
+            $('#S_GiaBan').html(item.price);
+            addCommaNumberic('#S_GiaBan', true);
+            $('#S_ChietKhau').html(item.discount);
+            addCommaNumberic('#GiaBan',true);
+            var priceReal = CalcRealPrice(item.price, item.discount, true);
+            $('#S_GiaThuc').html(priceReal);
+            addCommaNumberic('#S_GiaThuc', true);
+        }
+    }
+    function setRelationCustomer(item, isSelected) {
 
-    $('#contentMsgErr').empty();
-    $('#divErr').hide();
-    var msgErr = checkInput();
-    if ('' == msgErr) {
-        //if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
-        //    var title = "Xác nhận"
-        //    var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
-        //    var action = 2;
-        //    $('#addRecord').click(fnOpenNormalDialog(title, content, action));
-        //} else {
+        $('#S_MaKhachHang').html(item.id);
+        $('#S_TenKhachHang').html(item.label);
+        $('#S_MaTheKhachHang').html(item.cardNo);
+        $('#S_DiaChi').html(item.address);
+        $('#S_SoDienThoai').html(item.fone);
+        $('#S_Email').html(item.email);
+        if (isSelected == true) {
+            $('#MaKhachHang').val(item.id);
+            $('#TenKhachHang').val(item.label);
+            $('#DiaChi').html(item.address);
+        }
+
+    }
+    function setStoreInformation(item) {
+        var result = '';
+        $.ajax({
+            url: "/BanHang/CheckingProductInAllStore",
+            data: "{'maSP' : '" + item.id + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $.each(data, function (i, item) {
+                        $('#store_1').html(item.TON_KHO_1);
+                        $('#store_2').html(item.TON_KHO_2);
+                        $('#store_3').html(item.TON_KHO_3);
+                        $('#store_4').html(item.TON_KHO_4);
+                        $('#store_5').html(item.TON_KHO_5);
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
+    function createDonViTinh() {
+        var result = '';
+        $.ajax({
+            url: "/BanHang/FindDonViTinhByMaSP",
+            data: "{'maSP' : '" + $('#MaSanPham').val() + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $('#typeDonViTinh').empty();
+                    $.each(data, function (i, item) {
+                        var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
+                        $(opt).appendTo('#typeDonViTinh');
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
+    function createStore() {
+        var result = '';
+        $.ajax({
+            url: "/BanHang/FindStore",
+            //data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $.each(data,function(i,item)
+                    {
+                        var opt = '';
+                        if (item.value == parseInt($('#MyStore').val())) {
+                            opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
+                        }else {
+                            opt = "<option value=" + item.value + ">" + item.name + "</option>"
+                        }
+
+                        $(opt).appendTo('#typeStore');
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
+    function confirmBack() {
+        var title = "Xác nhận";
+        var content = "Quá trình trở về có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?";
+        if ($("table.tableContentScroll tr").length == 0) {
+            $('#hidBtnBack').click();
+        } else {
+            fnOpenConfirmDialog(title, content,1);
+        }
+    }
+    function fnOpenConfirmDialog(title, content, action) {
+        $("#dialogConfirm").html(content);
+        $("#dialogConfirm").dialog({
+            resizable: false,
+            modal: true,
+            title: title,
+            height: 200,
+            width: 550,
+            buttons: {
+                "Đồng ý": function () {
+                    $(this).dialog('close');
+                    switch(action) {
+                        case 1:
+                            $('#hidBtnBack').click();
+                            break;
+                        case 2:
+                            reset();
+                            break;
+                    }
+
+                },
+                "Không": function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }
+    function fnOpenNormalDialog(title, content, action) {
+        if ($("table.tableContentScroll tr").length == 0) {
+            return;
+        }
+
+        $("#dialogConfirm").html(content);
+        switch(action)
+        {
+            case 1:  // change type customer
+                $("#dialogConfirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: title,
+                    height: 200,
+                    width: 550,
+                    buttons: {
+                        "Đồng ý": function () {
+                            $(this).dialog('close');
+                            callback(true);
+                        },
+                        "Không": function () {
+                            $(this).dialog('close');
+                            callback(false);
+                        }
+                    }
+                });
+                break;
+            case 2: // duplicate product item
+                $("#dialogConfirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: title,
+                    height: 200,
+                    width: 550,
+                    buttons: {
+                        "Đóng": function () {
+                            $(this).dialog('close');
+                            $('#tableSearch #TenSanPham').select();
+                        }
+                    }
+                });
+                break
+            default:
+                break;
+        }
+    }
+    function callback(valueReturn) {
+        if (valueReturn) {
+            $("table.tableContentScroll tr").remove();
+            $('#saveBill').attr("disabled", "disabled");
+            $('#saveBill').css("background-color", "#ECECEC");
+        } else {
+            $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
+        }
+    }
+    function addRecord() {
+
+        $('#contentMsgErr').empty();
+        $('#divErr').hide();
+        var msgErr = checkInput();
+        if ('' == msgErr) {
+            //if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
+            //    var title = "Xác nhận"
+            //    var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
+            //    var action = 2;
+            //    $('#addRecord').click(fnOpenNormalDialog(title, content, action));
+            //} else {
             prependNewRowToTable();
             resetFieldAfterAdding();
             $('#saveBill').removeAttr("disabled", "disabled");
             $('#saveBill').css("background-color", "");
             CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
-        //}
-    } else {
-        showMsgErr(msgErr,true);
-    }
 
-}
-function CalcTotalAllMoney(totalRow, isPlus) {
-    var result = 0;
-    totalRow = parseFloat(removeCommas(totalRow));
-    var totalAll = parseFloat(removeCommas($('#hidTotalAllMoney').val()));
-    if (isPlus) {
-        result = totalAll + totalRow;
-    } else {
-        result = totalAll - totalRow;
+            $('#hidUnitRootName').val('');
+            $('#suggestUnit').html('');
+            $('#suggestUnit').hide();
+            //}
+        } else {
+            showMsgErr(msgErr,true);
+        }
+
     }
-    $('#hidTotalAllMoney').val(result);
-    addCommaNumberic('#hidTotalAllMoney');
-    $('#totalAll').html($('#hidTotalAllMoney').val());
-}
-function checkInput() {
-    var msgErr = '';
-    var empty = '';
-    if (empty == $('#MaKhachHang').val() || empty == $('#TenKhachHang').val()) {
-        msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
+    function CalcTotalAllMoney(totalRow, isPlus) {
+        var result = 0;
+        totalRow = parseFloat(removeCommas(totalRow));
+        var totalAll = parseFloat(removeCommas($('#hidTotalAllMoney').val()));
+        if (isPlus) {
+            result = totalAll + totalRow;
+        } else {
+            result = totalAll - totalRow;
+        }
+        $('#hidTotalAllMoney').val(result);
+        addCommaNumberic('#hidTotalAllMoney');
+        $('#totalAll').html($('#hidTotalAllMoney').val());
     }
-    if (empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
-        msgErr += " + Tên sản phẩm không tồn tại hoặc chưa nhập. <br/>";
+    function checkInput() {
+        var msgErr = '';
+        var empty = '';
+        if (empty == $('#TenKhachHang').val()) {
+            msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
+        }
+        if (empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
+            msgErr += " + Tên sản phẩm không tồn tại hoặc chưa nhập. <br/>";
+        }
+        if (empty == $('#GiaBan').val()) {
+            msgErr += " + Giá bán. <br/>";
+        }
+        if (empty == $('#ChietKhau').val()) {
+            msgErr += " + Chiết khấu. <br/>";
+        }
+        if (empty == $('#SoLuong').val()) {
+            msgErr += " + Số lượng <br/>";
+        }
+        if (empty == $('#NgayBan').val()) {
+            msgErr += " + Ngày bán <br/>";
+        }
+        if (empty == $('#NgayGiao').val()) {
+            msgErr += " + Ngày giao <br/>";
+        }
+        if (empty != $('#NgayBan').val() && empty != $('#NgayGiao').val()) {
+            if (compareDate($('#NgayBan').val(), $('#NgayGiao').val(), 0) > 0) {
+                msgErr += " + Ngày bán hàng lớn hơn ngày giao hàng. <br/>";
+            }
+        }
+        if (empty == $('#DiaChi').val()) {
+            msgErr += " + Địa chỉ <br/>";
+        }
+        return msgErr;
     }
-    if (empty == $('#GiaBan').val()) {
-        msgErr += " + Giá bán. <br/>";
+    function showMsgErr(msgErr, isShowTitle) {
+        if (isShowTitle == true) {
+            $('#titleMsgErr').show();
+        } else {
+            $('#titleMsgErr').hide();
+        }
+        $('#contentMsgErr').append(msgErr);
+        $('#divHr').show();
+        $('#divErr').show();
     }
-    if (empty == $('#ChietKhau').val()) {
-        msgErr += " + Chiết khấu. <br/>";
-    }
-    if (empty == $('#SoLuong').val()) {
-        msgErr += " + Số lượng <br/>";
-    }
-    if (empty == $('#NgayBan').val()) {
-        msgErr += " + Ngày bán <br/>";
-    }
-    if (empty == $('#NgayGiao').val()) {
-        msgErr += " + Ngày giao <br/>";
-    }
-    if (empty != $('#NgayBan').val() && empty != $('#NgayGiao').val()) {
-        if (compareDate($('#NgayBan').val(), $('#NgayGiao').val(), 0) > 0) {
-            msgErr += " + Ngày bán hàng lớn hơn ngày giao hàng. <br/>";
+    /*compare 2 date : date1 , date2 with n day
+    *return 1 : date1 > date2 / 0 : date1 <= date2
+    */
+    function compareDate(dtFrom, dtTo, day) {
+        if (($.datepicker.parseDate('dd/mm/yy', dtFrom) - $.datepicker.parseDate('dd/mm/yy', dtTo)) > day) {
+            return 1;
+        } else {
+            return 0;
         }
     }
-    if (empty == $('#DiaChi').val()) {
-        msgErr += " + Địa chỉ <br/>";
+
+    function resetFieldAfterAdding() {
+        $('#tableSearch #TenSanPham').val('');
+        $('#tableSearch #MaSanPham').val('');
+        $('#tableSearch #GiaBan').val('');
+        $('#tableSearch #ChietKhau').val('');
+        $('#tableSearch #GiaThuc').val('');
+        $('#tableSearch #typeDonViTinh').empty();
+        $('#tableSearch #SoLuong').val('1');
+
     }
-    return msgErr;
-}
-function showMsgErr(msgErr, isShowTitle) {
-    if (isShowTitle == true) {
-        $('#titleMsgErr').show();
-    } else {
-        $('#titleMsgErr').hide();
+    function prependNewRowToTable() {
+        var MaSP = $('#tableSearch #MaSanPham').val();
+        var TenSP = $('#tableSearch #TenSanPham').val();
+        var ChietKhau = $('#tableSearch #ChietKhau').val();
+        var GiaBan = $('#tableSearch #GiaBan').val();
+        // avoid duplicate
+        var count = $('#tableContent tr').length;
+        var rowNum = MaSP + '_' + count;
+
+        CalcTotalMoney1Row();
+
+        var newRow = '';
+        newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
+        newRow += '<td style="width:22px;"> ';
+        newRow += '  <div class="colDelete">';
+        newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
+        newRow += '   </div>';
+        newRow += ' </td> ';
+        newRow += ' <td  class="colProductNm textLeft"> ';
+        newRow += ' <div  class="colProductNm tooltip truncate">';
+        newRow += TenSP;
+        newRow += '  <span>' + TenSP + '</span>';
+        newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
+        newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
+        newRow += '   </div>';
+        newRow += ' </td> ';
+        newRow += ' <td class="colStore textLeft"> ';
+        newRow += $('#typeStore :selected').text()
+        newRow += '  <input name="MaKho_' + rowNum + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
+        newRow += ' </td> ';
+        newRow += '  <td  class="colPrice textRight"> ';
+        newRow += ' <div  class="colPrice tooltip truncate">';
+        newRow +=   $('#tableSearch #GiaThuc').val();
+        newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+        newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + ChietKhau + '" />';
+        newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
+        newRow += '   </div>';
+        newRow += ' </td>  ';
+
+        newRow += '  <td class="colAmount textRight"> ';
+        newRow += $('#hidCount1Row').val(); /*$('#tableSearch #SoLuong').val()*/;
+        newRow += '  <input name="SoLuong_' + rowNum + '" type="hidden" value="' + $('#hidCount1Row').val()/*$('#tableSearch #SoLuong').val()*/ + '" />';
+        newRow += ' </td> ';
+
+        newRow += '  <td class="colUnit textCenter"> ';
+        newRow += $('#hidUnitRootName').val(); /*$('#typeDonViTinh :selected').text()*/
+        newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
+        newRow += ' </td> ';
+
+        newRow += '  <td class="colTotal textRight"> ';
+        newRow += $('#hidTotalRowAdded').val()
+
+        newRow += '  <input name="ThanhTien_' + rowNum + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
+        newRow += ' </td> ';
+
+        newRow += '  </tr> ';
+        $('#tableContent').prepend(newRow);
+
     }
-    $('#contentMsgErr').append(msgErr);
-    $('#divHr').show();
-    $('#divErr').show();
-}
-/*compare 2 date : date1 , date2 with n day
-*return 1 : date1 > date2 / 0 : date1 <= date2
-*/
-function compareDate(dtFrom, dtTo, day) {
-    if (($.datepicker.parseDate('dd/mm/yy', dtFrom) - $.datepicker.parseDate('dd/mm/yy', dtTo)) > day) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-function resetFieldAfterAdding() {
-    $('#tableSearch #TenSanPham').val('');
-    $('#tableSearch #MaSanPham').val('');
-    $('#tableSearch #GiaBan').val('');
-    $('#tableSearch #ChietKhau').val('');
-    $('#tableSearch #GiaThuc').val('');
-    $('#tableSearch #typeDonViTinh').empty();
-    $('#tableSearch #SoLuong').val('1');
-  
-}
-function prependNewRowToTable() {
-    var MaSP = $('#tableSearch #MaSanPham').val();
-    var TenSP = $('#tableSearch #TenSanPham').val();
-    var ChietKhau = $('#tableSearch #ChietKhau').val();
-    var GiaBan = $('#tableSearch #GiaBan').val();
-    // avoid duplicate
-    var count = $('#tableContent tr').length;
-    var rowNum = MaSP + '_' + count;
-
-    CalcTotalMoney1Row();
-
-    var newRow = '';
-    newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
-    newRow += '<td style="width:22px;"> ';
-    newRow += '  <div class="colDelete">';
-    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
-    newRow += '   </div>';
-    newRow += ' </td> ';
-    newRow += ' <td  class="colProductNm textLeft"> ';
-    newRow += ' <div  class="colProductNm tooltip truncate">';
-    newRow += TenSP;
-    newRow += '  <span>' + TenSP + '</span>';
-    newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
-    newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
-    newRow += '   </div>';
-    newRow += ' </td> ';
-    newRow += ' <td class="colStore textLeft"> ';
-    newRow += $('#typeStore :selected').text()
-    newRow += '  <input name="MaKho_' + rowNum + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
-    newRow += ' </td> ';
-    newRow += '  <td  class="colPrice textRight"> ';
-    newRow += ' <div  class="colPrice tooltip truncate">';
-    newRow +=   $('#tableSearch #GiaThuc').val();
-    newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
-    newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + ChietKhau + '" />';
-    newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
-    newRow += '   </div>';
-    newRow += ' </td>  ';
-
-    newRow += '  <td class="colAmount textRight"> ';
-    newRow += $('#tableSearch #SoLuong').val();
-    newRow += '  <input name="SoLuong_' + rowNum + '" type="hidden" value="' + $('#tableSearch #SoLuong').val() + '" />';
-    newRow += ' </td> ';
-
-    newRow += '  <td class="colUnit textCenter"> ';
-    newRow += $('#typeDonViTinh :selected').text()
-    newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
-    newRow += ' </td> ';
-
-    newRow += '  <td class="colTotal textRight"> ';
-    newRow += $('#hidTotalRowAdded').val()
-  
-    newRow += '  <input name="ThanhTien_' + rowNum + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
-    newRow += ' </td> ';
-
-    newRow += '  </tr> ';
-    $('#tableContent').prepend(newRow);
-
-}
-function CalcFactorOfProduct() {
-    var unitNo = $('#typeDonViTinh :selected').val();
-    var productNo = $('#tableSearch #MaSanPham').val();
-    GetFactorOfProduct(productNo, unitNo);
-
-}
-function CalcTotalMoney1Row() {
-    var result = 0;
-
-    var factor = $('#hidFactorValue').val();
-   
-    var count = removeCommas($('#tableSearch #SoLuong').val());
-    var realPrice = removeCommas($('#tableSearch #GiaThuc').val());
-
-    result = count * factor * realPrice;
-    $('#hidTotalRowAdded').val(result);
-    addCommaNumberic('#hidTotalRowAdded');
-    
-    result = $('#hidTotalRowAdded').val();
-
-    return result;
-}
-function GetFactorOfProduct(productNo, unitNo) {
-    if (unitNo != null && unitNo != 'undefined') {
-        $.ajax({
-            url: "/BanHang/FindFactorOfProduct",
-            //data: "{'maSP' : '" + productNo + "'}",
-            data: "{ 'maSP': '" + productNo + "' , 'unitNo' : '" + unitNo + "'}",
-            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",        
-            success: function (data) {
-                $('#hidFactorValue').val(data.heso);           
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-        });
-    }
-}
-function CalcRealPrice(price, discount, isReturn) {
-    $('#contentMsgErr').empty();
-    $('#divHr').hide();
-    var result = '';
-    if (price == 0 || discount == 0) {
-        result = price;
-    } else {
-        result = roundToTwo(price - ((price * discount) / 100));
-    }
-    if (result < 0) {
-        showMsgErr(" Giá trị của chiết khấu quá lớn so với giá gốc của sản phẩm <br/> Hãy nhập lại giá trị chiết khấu.", false)
-        return false;
-    }
-    if (isReturn == true) {
-        return result;
-    } else {
-        $('#tableSearch #GiaThuc').val(result);
-    }
-}
-
-function roundToTwo(num) {
-    return +(Math.round(num + "e+2") + "e-2");
-}
-
-function UpdateRealPrice() {
-    if ('' == $('#MaSanPham').val() || null == $('#MaSanPham').val()) {
-        return
-    }
-    var price = removeCommas($('#GiaBan').val());
-    var discount = removeCommas($('#ChietKhau').val());
-    if (null == price ){
-        price = 0;
-        $('#GiaBan').val('0');
-    }
-    if (null == discount) {
-        discount = 0;
-        $('#ChietKhau').val('0');
-    }
-    var result = CalcRealPrice(price, discount);
-    if(result == false){
-        $('#GiaThuc').val('');
-        $('#ChietKhau').focus();
-        return;
-    }else{
-     addCommaNumberic('#GiaThuc');
-    }
-   
-}
-
-/*remove comma from value input*/
-function removeCommas(str) {
-    if (str != null && str != '') {
-        return (str.replace(/,/g, ''));
-    } else {
-        return null;
-    }
-
-}
-
-function deleteRow(rowId) {
-    var totalRow = $('input[name="ThanhTien_' + rowId + '"]').val();
-    CalcTotalAllMoney(totalRow, false);
-
-    $('#' + rowId).remove();
-    if ($("table.tableContentScroll tr").length == 0) {
-        $('#saveBill').attr("disabled", "disabled");
-        $('#saveBill').css("background-color", "#ECECEC");
-    } else {
-        $('#saveBill').removeAttr("disabled", "disabled");
-        $('#saveBill').css("background-color", "");
+    function CalcFactorOfProduct() {
+        $('#suggestUnit').html('');
+        $('#suggestUnit').hide();
         
+        var unitNo = $('#typeDonViTinh :selected').val();
+        var productNo = $('#tableSearch #MaSanPham').val();
+        GetFactorOfProduct(productNo, unitNo);
+      
     }
-}
-function saveListRowNum() {
-    var listRowNum = '';
-    var indx = 0;
-    $('#tableContent tr').each(function () {
-        listRowNum += this.id
-        if (indx < ($('#tableContent tr').length - 1)) {
-            listRowNum += ','
-        }
-        indx += 1;
-    })
+    function showSuggestUnit() {
+        var unitName = $('#typeDonViTinh :selected').text();
 
-    $('#ListRowNum').val(listRowNum);
-    //$('#formContent').submit();
-}
-function createNewBill() {
-    var title = "Xác nhận";
-    var content = "Quá trình tạo mới hóa đơn có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?"
-    if ($("table.tableContentScroll tr").length == 0) {
-        reset();
-    } else {
-        fnOpenConfirmDialog(title, content, 2);
+        
+        $('#hidFactorValueSuggestUnit').val($('#hidFactorValue').val());
+        addCommaNumberic('#hidFactorValueSuggestUnit');
+
+        var buffer = "* 1 " + unitName + " = " + $('#hidFactorValueSuggestUnit').val() + " " + $('#hidUnitRootName').val();
+        $('#suggestUnit').append(buffer);
+        $('#suggestUnit').show();
     }
-    
-}
-function exportExcel() {
+    function CalcTotalMoney1Row() {
+        var result = 0;
+        var count1Row = 0;
+        var factor = $('#hidFactorValue').val();
 
-    var listRowNum = '';
-    var indx = 0;
-    $('#tableContent tr').each(function () {
-        listRowNum +=  this.id
-        if (indx < ($('#tableContent tr').length -1)) {
-            listRowNum += ','
+        var count = removeCommas($('#tableSearch #SoLuong').val());
+        var realPrice = removeCommas($('#tableSearch #GiaThuc').val());
+        count1Row = count * factor;
+        result = count1Row * realPrice;
+        // count sp 1 row voi don vi unit root
+        
+        $('#hidCount1Row').val(count1Row);
+        addCommaNumberic('#hidCount1Row');
+        // total row added
+        $('#hidTotalRowAdded').val(result);
+        addCommaNumberic('#hidTotalRowAdded');
+
+        result = $('#hidTotalRowAdded').val();
+
+        return result;
+    }
+    function GetFactorOfProduct(productNo, unitNo) {
+        if (unitNo != null && unitNo != 'undefined') {
+            $.ajax({
+                url: "/BanHang/FindFactorOfProduct",
+                //data: "{'maSP' : '" + productNo + "'}",
+                data: "{ 'maSP': '" + productNo + "' , 'unitNo' : '" + unitNo + "'}",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#hidFactorValue').val(data.heso);
+
+                    if ($('#hidFactorValue').val() != '' && $('#hidFactorValue').val() != '1') {
+                        showSuggestUnit();
+                    } else {
+                        $('#suggestUnit').html('');
+                        $('#suggestUnit').hide();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
         }
-        indx += 1; 
-    })
-
-    $('#ListRowNum').val(listRowNum);
-    $('#formContent').submit();
-  
-}
-function reset() {
-
-    //reset content prev
-    $("table.tableContentScroll tr").remove();
-    $('#saveBill').attr("disabled", "disabled");
-    $('#saveBill').css("background-color", "#ECECEC");
-    //reset field input prev
-    $('#TenKhachHang').val('');
-    $('#MaKhachHang').val('');
-    $('#kindCustomer').val('');
-
-    $('#typeCustomers').val('3');
-
-    $('#TenSanPham').val('');
-    $('#MaSanPham').val('');
-    $('#GiaBan').val('');
-    $('#ChietKhau').val('');
-    $('#GiaThuc').val('');
-
-    $('#typeStore option:eq(0)').attr('selected', 'selected');
-    $('#typeDonViTinh').empty();
-    $('#SoLuong').val('');
-
-    $('#NgayBan').datepicker('setDate', 'today');
-    $('#NgayGiao').datepicker('setDate', 'today + 3');
-
-    $('#DiaChi').val('');
-    //hidden field
-    $('#hidFactorValue').val('1');
-    $('#hidTotalRowAdded').val('1');
-    $('#hidTotalAllMoney').val('1');
-}
-/*start format numberic*/
-function NumbericOnly(ctrl) {
-    $(ctrl).keypress(function (e) {
-
-        //getting key code of pressed key
-        var keycode = (e.which) ? e.which : e.keyCode;
-        //comparing pressed keycodes
-
-        if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
-            //alert("Hãy nhập ký tự số.");
+    }
+    function CalcRealPrice(price, discount, isReturn) {
+        $('#contentMsgErr').empty();
+        $('#divHr').hide();
+        var result = '';
+        if (price == 0 || discount == 0) {
+            result = price;
+        } else {
+            result = roundToTwo(price - ((price * discount) / 100));
+        }
+        if (result < 0) {
+            showMsgErr(" Giá trị của chiết khấu quá lớn so với giá gốc của sản phẩm <br/> Hãy nhập lại giá trị chiết khấu.", false)
             return false;
         }
-        else return true;
-    });
-
-}
-
-function formatNumberic() {
-    $('input.numberic').each(function () {
-        $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
-    });
-}
-
-function FormatNumberic_KeyUp(obj) {
-    var $this = $('#' + obj.id);
-    var AmountWithCommas = $this.val();
-    var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-    var arParts = String(AmountWithCommas).split(DecimalSeparator);
-
-    var intPart = arParts[0];
-    var decPart = (arParts.length > 1 ? arParts[1] : '');
-
-    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-    if (decPart.length > 2) {
-        decPart = (decPart + '00').substr(0, 2);
+        if (isReturn == true) {
+            return result;
+        } else {
+            $('#tableSearch #GiaThuc').val(result);
+        }
     }
-    if (arParts.length > 1) {
-        $this.val(num2 + DecimalSeparator + decPart);
-    } else {
-        $this.val(num2);
-    }
-}
 
-function RemoveRougeChar(convertString) {
-    if (convertString.substring(0, 1) == ",") {
-        return convertString.substring(1, convertString.length)
+    function roundToTwo(num) {
+        return +(Math.round(num + "e+2") + "e-2");
     }
-    return convertString;
-}
+
+    function UpdateRealPrice() {
+        if ('' == $('#MaSanPham').val() || null == $('#MaSanPham').val()) {
+            return
+        }
+        var price = removeCommas($('#GiaBan').val());
+        var discount = removeCommas($('#ChietKhau').val());
+        if (null == price ){
+            price = 0;
+            $('#GiaBan').val('0');
+        }
+        if (null == discount) {
+            discount = 0;
+            $('#ChietKhau').val('0');
+        }
+        var result = CalcRealPrice(price, discount);
+        if(result == false){
+            $('#GiaThuc').val('');
+            $('#ChietKhau').focus();
+            return;
+        }else{
+            addCommaNumberic('#GiaThuc');
+        }
+
+    }
+
+    /*remove comma from value input*/
+    function removeCommas(str) {
+        if (str != null && str != '') {
+            return (str.replace(/,/g, ''));
+        } else {
+            return null;
+        }
+
+    }
+
+    function deleteRow(rowId) {
+        var totalRow = $('input[name="ThanhTien_' + rowId + '"]').val();
+        CalcTotalAllMoney(totalRow, false);
+
+        $('#' + rowId).remove();
+        if ($("table.tableContentScroll tr").length == 0) {
+            $('#saveBill').attr("disabled", "disabled");
+            $('#saveBill').css("background-color", "#ECECEC");
+        } else {
+            $('#saveBill').removeAttr("disabled", "disabled");
+            $('#saveBill').css("background-color", "");
+
+        }
+    }
+    function saveListRowNum() {
+        var listRowNum = '';
+        var indx = 0;
+        $('#tableContent tr').each(function () {
+            listRowNum += this.id
+            if (indx < ($('#tableContent tr').length - 1)) {
+                listRowNum += ','
+            }
+            indx += 1;
+        })
+
+        $('#ListRowNum').val(listRowNum);
+        //$('#formContent').submit();
+    }
+    function createNewBill() {
+        var title = "Xác nhận";
+        var content = "Quá trình tạo mới hóa đơn có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?"
+        if ($("table.tableContentScroll tr").length == 0) {
+            reset();
+        } else {
+            fnOpenConfirmDialog(title, content, 2);
+        }
+
+    }
+    function exportExcel() {
+
+        var listRowNum = '';
+        var indx = 0;
+        $('#tableContent tr').each(function () {
+            listRowNum +=  this.id
+            if (indx < ($('#tableContent tr').length -1)) {
+                listRowNum += ','
+            }
+            indx += 1;
+        })
+
+        $('#ListRowNum').val(listRowNum);
+        $('#formContent').submit();
+
+    }
+    function reset() {
+
+        //reset content prev
+        $("table.tableContentScroll tr").remove();
+        $('#saveBill').attr("disabled", "disabled");
+        $('#saveBill').css("background-color", "#ECECEC");
+        //reset field input prev
+        $('#TenKhachHang').val('');
+        $('#MaKhachHang').val('');
+        $('#kindCustomer').val('');
+
+        $('#typeCustomers').val('3');
+
+        $('#TenSanPham').val('');
+        $('#MaSanPham').val('');
+        $('#GiaBan').val('');
+        $('#ChietKhau').val('');
+        $('#GiaThuc').val('');
+
+        $('#typeStore option:eq(0)').attr('selected', 'selected');
+        $('#typeDonViTinh').empty();
+        $('#SoLuong').val('');
+
+        $('#NgayBan').datepicker('setDate', 'today');
+        $('#NgayGiao').datepicker('setDate', 'today + 3');
+
+        $('#DiaChi').val('');
+        //hidden field
+        $('#hidFactorValue').val('1');
+        $('#hidTotalRowAdded').val('1');
+        $('#hidTotalAllMoney').val('1');
+    }
+    /*start format numberic*/
+    function NumbericOnly(ctrl) {
+        $(ctrl).keypress(function (e) {
+
+            //getting key code of pressed key
+            var keycode = (e.which) ? e.which : e.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                //alert("Hãy nhập ký tự số.");
+                return false;
+            }
+            else return true;
+        });
+
+    }
+
+    function formatNumberic() {
+        $('input.numberic').each(function () {
+            $(this).val($(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+        });
+    }
+
+    function FormatNumberic_KeyUp(obj) {
+        var $this = $('#' + obj.id);
+        var AmountWithCommas = $this.val();
+        var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+        var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+        var intPart = arParts[0];
+        var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+        var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+        var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+        if (decPart.length > 2) {
+            decPart = (decPart + '00').substr(0, 2);
+        }
+        if (arParts.length > 1) {
+            $this.val(num2 + DecimalSeparator + decPart);
+        } else {
+            $this.val(num2);
+        }
+    }
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    }
     /*end format numberic*/
 
-function saveBillSuccess() {
-    $('#divErr').hide();
-    $('#divInfo').show();
-    $('#divHr').show();
-}
-function saveBillFailure() {
-    $('#divInfo').hide();
-    $('#divErr').show();
-    $('#divHr').show();
-}
+    function saveBillSuccess() {
+        $('#divErr').hide();
+        $('#divInfo').show();
+        $('#divHr').show();
+    }
+    function saveBillFailure() {
+        $('#divInfo').hide();
+        $('#divErr').show();
+        $('#divHr').show();
+    }
 </script>
 }
 <hr />
@@ -845,7 +879,7 @@ function saveBillFailure() {
     <div id="divInfo" style="display: none; color: blue">
        
     </div>
-    <div id="divErr" style="display:none; color:red">
+    <div id="divErr" style="display:none; " class="validation-summary-errors">
         <div id="titleMsgErr">
             Hãy nhập các giá trị bên dưới :
         </div>
@@ -862,9 +896,9 @@ function saveBillFailure() {
     @using (Ajax.BeginForm("SaveBill", "BanHang", null,
      new AjaxOptions()
      {
-           UpdateTargetId = "divInfo",
-           OnSuccess="saveBillSuccess",
-           OnFailure = "saveBillFailure"
+         UpdateTargetId = "divInfo",
+         OnSuccess = "saveBillSuccess",
+         OnFailure = "saveBillFailure"
      },
      new { @id = "formContent" })
      )
@@ -1032,7 +1066,12 @@ function saveBillFailure() {
                                        class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                             </div>
                         </td>
-                        <td></td>
+                        <td>
+                            <div id="suggestUnit"  style="display: none; color: blue;
+                                   background-color: lightsteelblue; font-weight: bolder; margin-top: 14px;">
+                                <!--suggest unit-->
+                            </div>
+                        </td>
                     </tr>
                     <tr>
 
@@ -1066,15 +1105,21 @@ function saveBillFailure() {
                 </table>
                 <div class="myAction">
                     <input type="button" id="addRecord" value="Thêm sản phẩm" />
+                   
                 </div>
             </div>
 
             <!--hidden field start-->
             <div id="dialogConfirm"></div>
             <input type="hidden" id="hidFactorValue" value="1" />
+
+            <input type="hidden" id="hidFactorValueSuggestUnit" value="" />
+            <input type="hidden" id="hidCount1Row" value="0" />
+
             <input type="hidden" id="hidTotalRowAdded" value="0" />
             <input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
             <input type="hidden" id="ListRowNum" name="ListRowNum" value="" />
+            <input type="hidden" id="hidUnitRootName" value="">
             <!--hidden field end-->
 
         </div>
