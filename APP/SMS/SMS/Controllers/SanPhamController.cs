@@ -617,7 +617,8 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Warning(string SearchString, int? page, bool? flag)
         {
-            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+           
+            /*IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
             ViewBag.CurrentFilter = SearchString;
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
@@ -634,8 +635,34 @@ namespace SMS.Controllers
             ViewBag.KhoList = ListKho;
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
+            model.WarningList = tk;*/
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult PagingContentWarning(string SearchString, int? currentPageIndex)
+        {
+
+            IPagedList<SP_GET_TON_KHO_ALERT> tk = null;
+
+            ViewBag.SearchString = SearchString;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+
+            var ctx = new SmsContext();
+            ctx.Database.CommandTimeout = 300;
+            // var watch = Stopwatch.StartNew();
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            string s = ctx.Database.Connection.ToString();
+            var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>().Take(SystemConstant.MAX_ROWS); ;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.Count = tonkho.Count();
+            tk = tonkho.ToList().ToPagedList(pageIndex, pageSize);
+            ViewBag.KhoList = ListKho;
+            ViewBag.tonKho = tk;
+            GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
-            return View(model);
+            return PartialView("WarningPartialView", model);
         }
 
         [HttpPost]

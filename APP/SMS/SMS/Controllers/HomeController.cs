@@ -24,6 +24,16 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        public PartialViewResult SmsMessage()
+        {
+            var ctx = new SmsContext();
+            SMS_MESSAGES model = new SMS_MESSAGES();
+            int groupUserId = (int)Session["GroupUserId"];
+            model = ctx.SMS_MESSAGES.Include("NGUOI_DUNG1").OrderByDescending(uh => uh.ID)
+                .FirstOrDefault(uh => uh.ACTIVE == "A" && (uh.ID_NHOM_NGUOI_NHAN == groupUserId || uh.ID_NHOM_NGUOI_NHAN == null));
+            return PartialView("SmsMessage", model);
+        }
+        [HttpPost]
         public PartialViewResult PagingContent(string SearchString, int? currentPageIndex)
         {
 

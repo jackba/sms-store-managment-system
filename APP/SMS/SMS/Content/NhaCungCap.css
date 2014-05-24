@@ -233,3 +233,9 @@ div.divTitle{
     text-align:left;
     text-wrap:normal;
 }
+
+table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

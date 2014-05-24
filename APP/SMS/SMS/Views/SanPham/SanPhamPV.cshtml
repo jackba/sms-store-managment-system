@@ -201,9 +201,20 @@
                             if ((bool)Session["IsAdmin"] == true)
                             {
                                 <td class='inner column-hscroll alignText '> @sp.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner column-hscroll alignCenter '> @sp.SanPham.CREATE_AT.ToString("dd/MM/yyyy")  </td>
+                                    <td class='inner column-hscroll alignCenter '> 
+                                @if (sp.SanPham.CREATE_AT != null)
+                                {
+                                    @sp.SanPham.CREATE_AT.ToString("dd/MM/yyyy")
+                                }
+                                
+                                 </td>
                                     <td class='inner column-hscroll alignText '> @sp.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner column-hscroll alignCenter '> @sp.SanPham.UPDATE_AT.ToString("dd/MM/yyyy")  </td>
+                                    <td class='inner column-hscroll alignCenter '> 
+                                @if(@sp.SanPham.UPDATE_AT != null)
+                                {
+                                     @sp.SanPham.UPDATE_AT.ToString("dd/MM/yyyy") 
+                                }
+                                </td>
                             }
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                             {
