@@ -12,28 +12,22 @@ namespace SMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class NHOM_NGUOI_DUNG
+    public partial class SMS_MESSAGES
     {
-        public NHOM_NGUOI_DUNG()
-        {
-            this.NGUOI_DUNG = new HashSet<NGUOI_DUNG>();
-            this.PHAN_QUYEN = new HashSet<PHAN_QUYEN>();
-            this.SMS_MESSAGES = new HashSet<SMS_MESSAGES>();
-        }
-    
-        public int MA_NHOM { get; set; }
-        public string TEN_NHOM { get; set; }
-        public string GHI_CHU { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> ID_NGUOI_GUI { get; set; }
+        public Nullable<int> ID_NHOM_NGUOI_NHAN { get; set; }
+        public Nullable<System.DateTime> NGAY_GUI { get; set; }
+        public string NOI_DUNG { get; set; }
+        public Nullable<int> CREATE_BY { get; set; }
+        public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
-        public Nullable<int> CREATE_BY { get; set; }
-        public Nullable<int> UPDATE_BY { get; set; }
     
-        public virtual ICollection<NGUOI_DUNG> NGUOI_DUNG { get; set; }
+        public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
-        public virtual ICollection<PHAN_QUYEN> PHAN_QUYEN { get; set; }
-        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES { get; set; }
+        public virtual NHOM_NGUOI_DUNG NHOM_NGUOI_DUNG { get; set; }
     }
 }

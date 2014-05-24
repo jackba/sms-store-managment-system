@@ -58,6 +58,7 @@ namespace SMS.Models
         public virtual DbSet<V_NHAP_XUAT_DETAIL> V_NHAP_XUAT_DETAIL { get; set; }
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+        public virtual DbSet<SMS_MESSAGES> SMS_MESSAGES { get; set; }
     
         public virtual int dynTable()
         {
