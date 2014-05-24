@@ -14,45 +14,59 @@
         </div>
     </section>
 }
+<script>
+    //<![CDATA[
+    
+    function login() {
+        $('#resultLoadingDiv').show();
+        $('#mainForm').submit();
+    }
+    /*end format numberic*/
 
+    //]]>  
+</script>
+            <hgroup class="title">
+            <h2>@ViewBag.Message</h2>
+        </hgroup>
 
-<hgroup class="title">
-    <h2>@ViewBag.Message</h2>
-</hgroup>
-
-<section id="loginForm">
-<h2>Đăng nhập hệ thống</h2>
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+        <section id="loginForm">
+        <h2>Đăng nhập hệ thống</h2>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "mainForm" }))
+        {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.USER_NAME)
-                @Html.TextBoxFor(m => m.USER_NAME)
-                @Html.ValidationMessageFor(m => m.USER_NAME)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.MAT_KHAU)
-                @Html.PasswordFor(m => m.MAT_KHAU)
-                @Html.ValidationMessageFor(m => m.MAT_KHAU)
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
-    </fieldset>
-}
-</section>
+                <legend>Log in Form</legend>
+                <ol>
+                    <li>
+        @Html.LabelFor(m => m.USER_NAME)
+        @Html.TextBoxFor(m => m.USER_NAME)
+        @Html.ValidationMessageFor(m => m.USER_NAME)
+                    </li>
+                    <li>
+        @Html.LabelFor(m => m.MAT_KHAU)
+        @Html.PasswordFor(m => m.MAT_KHAU)
+        @Html.ValidationMessageFor(m => m.MAT_KHAU)
+                    </li>
+                </ol>
+                <input type="button" onclick="login();" value="Log in" />
+            </fieldset>
+        }
+        </section>
 
-<section class="social" id="socialLoginForm">
-    <h2>SMS - Store Management System</h2>
-    <p>
-        Đây là hệ thống quản lý tổng thể quá trình mua, bán và quản lý tồn kho của Công Ty TNHH .... 
-        <br />Bản quyền thuộc sở hửu của Công Ty TNHH .... 
-    </p>
-</section>
+        <div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 70px; ">
+            <img src="/Content/images/loadingColor.gif" />
+        </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        <section class="social" id="socialLoginForm">
+            <h2>SMS - Store Management System</h2>
+            <p>
+                Đây là hệ thống quản lý tổng thể quá trình mua, bán và quản lý tồn kho của Công Ty TNHH ....
+                <br />Bản quyền thuộc sở hửu của Công Ty TNHH ....
+            </p>
+        </section>
+
+        @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        }
