@@ -126,6 +126,11 @@
         <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__503BEA1C" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__6477ECF3" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__5CA1C101" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SmsModel.SMS_MESSAGES" Width="1.5" PointX="11.25" PointY="37.25" />
+        <AssociationConnector Association="SmsModel.FK__SMS_MESSA__CREAT__1D7B6025" />
+        <AssociationConnector Association="SmsModel.FK__SMS_MESSA__ID_NG__1B9317B3" />
+        <AssociationConnector Association="SmsModel.FK__SMS_MESSA__UPDAT__1E6F845E" />
+        <AssociationConnector Association="SmsModel.FK__SMS_MESSA__ID_NH__1C873BEC" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
