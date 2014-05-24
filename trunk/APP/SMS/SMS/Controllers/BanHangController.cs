@@ -129,13 +129,13 @@ namespace SMS.Controllers
             int MaHD = -1;
             string SoHD = DateTime.Now.ToString("ddMMyyyyHHmmss");
             
-            string listProductID = "";
-            string[] arrProductID = new string[] { };
+            string listRowNum = "";
+            string[] arrRowNum = new string[] { };
 
-            if (collection.AllKeys.Contains("ListProductID"))
+            if (collection.AllKeys.Contains("ListRowNum"))
             {
-                listProductID = collection.Get("ListProductID");
-                arrProductID = listProductID.Split(new char[] { ',' });
+                listRowNum = collection.Get("ListRowNum");
+                arrRowNum = listRowNum.Split(new char[] { ',' });
             }
 
              System.Text.StringBuilder msgStringBuilder = new System.Text.StringBuilder();
@@ -189,27 +189,27 @@ namespace SMS.Controllers
                     double DG = 0;
                     double CK = 0;
 
-                    foreach (string id in arrProductID)
+                    foreach (string rowNum in arrRowNum)
                     {
-                        if (!String.IsNullOrEmpty(id))
+                        if (!String.IsNullOrEmpty(rowNum))
                         {
                             var cthd = db.CHI_TIET_HOA_DON.Create();
 
                             cthd.MA_HOA_DON = MaHD;
 
-                            cthd.MA_SAN_PHAM = int.Parse(collection.Get("MaSanPham_" + id));
+                            cthd.MA_SAN_PHAM = int.Parse(collection.Get("MaSanPham_" + rowNum));
 
 
-                            double.TryParse(string.IsNullOrEmpty(collection.Get("SoLuong_" + id)) ? "0" : collection.Get("SoLuong_" + id).Replace(",", ""), out SL);
+                            double.TryParse(string.IsNullOrEmpty(collection.Get("SoLuong_" + rowNum)) ? "0" : collection.Get("SoLuong_" + rowNum).Replace(",", ""), out SL);
                             cthd.SO_LUONG = SL;
 
-                            double.TryParse(string.IsNullOrEmpty(collection.Get("GiaThuc_" + id)) ? "0" : collection.Get("GiaThuc_" + id).Replace(",", ""), out DG);
+                            double.TryParse(string.IsNullOrEmpty(collection.Get("GiaThuc_" + rowNum)) ? "0" : collection.Get("GiaThuc_" + rowNum).Replace(",", ""), out DG);
                             cthd.DON_GIA = DG;
 
-                            double.TryParse(string.IsNullOrEmpty(collection.Get("ChietKhau_" + id)) ? "0" : collection.Get("ChietKhau_" + id).Replace(",", ""), out CK);
+                            double.TryParse(string.IsNullOrEmpty(collection.Get("ChietKhau_" + rowNum)) ? "0" : collection.Get("ChietKhau_" + rowNum).Replace(",", ""), out CK);
                             cthd.PHAN_TRAM_CHIEC_KHAU = CK;
 
-                            cthd.MA_KHO_XUAT = int.Parse(collection.Get("MaKho_" + id));
+                            cthd.MA_KHO_XUAT = int.Parse(collection.Get("MaKho_" + rowNum));
 
                             //common fields
                             cthd.ACTIVE = "A";
@@ -248,9 +248,9 @@ namespace SMS.Controllers
             string listProductID = "";
             string[] arrProductID= new string[]{};
 
-            if (collection.AllKeys.Contains("ListProductID"))
+            if (collection.AllKeys.Contains("ListRowNum"))
             {
-                listProductID = collection.Get("ListProductID");
+                listProductID = collection.Get("ListRowNum");
                 arrProductID = listProductID.Split(new char[] { ',' });
             }
 
