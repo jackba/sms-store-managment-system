@@ -41,12 +41,14 @@
                 },
                 select: function (event, ui) {
                     $('#ProductName').val(ui.item.label);
-                    $('#ProductId').val(ui.item.id);
+                    //$('#ProductId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
 
             });
+
+            $('#mainForm').submit();
         });
         // FORMAT NUMBERIC TO DISPLAY INITPAGE S
         $(document).ready(function () {
@@ -68,147 +70,42 @@
 }
 <h2>Chuyển đổi đơn vị tính </h2>
 
-<hr style="width:100%" />
 
-
-@using (Html.BeginForm("ConvertUnitOfProducts", "SanPham", FormMethod.Post))
+@using (Ajax.BeginForm("ConvertUnitOfProducts", "SanPham", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
+                           new { @id = "mainForm" }
+                      ))
 {
-    <div style="float:right">
-        <p>
-            @Html.Hidden("ProductId", new { id = "ProductId" })
-            Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
-            <input type="submit" value="Tìm kiếm" class="myButton" />
-            @{
-    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-    {
-        <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNewConvertUnitOfProducts", "SanPham")'" />
-    }
-            }
-        </p>
-
-    </div>
-    <div style="clear:both"></div>
     <hr style="width:100%" />
-    <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
-        <tr>
-            <td class='tablefrozencolumn' width="15%">
-                <div id='divroot' class='root'>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
-                        <tr>
-                            <td class='inner colwidth head ' width="40%">
-                                @Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
-                            </td>
-                            <td class='inner colwidth head'>
-                                @Html.ActionLink("Tên sản phẩm", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id='divfrozen' class='frozen'>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
-                        @foreach (var donvi in Model)
-                        {
-                            <tr>
-                                <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
-                                    @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI
-                                </td>
-                                <td class='inner frozencol toprow alignText truncate' title="@donvi.SanPham.TEN_SAN_PHAM">
-                                    @donvi.SanPham.TEN_SAN_PHAM
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </td>
-            <td class='tablecontent'>
-                <div id='headscroll' class='divhead'>
-                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
-                        <tr>
-                            <td class='inner column-hscroll head'>
-                                Đơn vị chuyển
-                            </td>
-                            <td class='inner column-hscroll head'>
-                               Đơn vị gốc
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Hệ số
-                            </td>
-                            @{
-    if ((bool)Session["IsAdmin"] == true)
-    {
-        <td class='inner head' style="width:70px;">Người tạo</td>
-                                <td class='inner  head' style="width:70px;">Ngày tạo</td>
-                                <td class='inner  head' style="width:70px;">Người cập nhật</td>
-                                <td class='inner  head' style="width:70px;">Ngày cập nhật</td>
-    }
-    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-    {
-        <td class='inner head' style="width:50px;">Sửa</td>
-                                <td class='inner head' style="width:50px;">Xóa</td>
-    }
-                            }
-                        </tr>
-                    </table>
-                </div>
-                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
-                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
-                        @foreach (var donvi in Model)
-                        {
-                            <tr>
-                                <td class='inner column-hscroll alignCenter'> @donvi.DonViVao.TEN_DON_VI </td>
-                                <td class='inner column-hscroll alignCenter'> @donvi.DonViCuoi.TEN_DON_VI </td>
-                                <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.HE_SO </td>
-                                @{
-                            if ((bool)Session["IsAdmin"] == true)
-                            {
-                                <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.ChuyenDoiDonVi.CREATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner  alignCenter' style="width:70px;"> @Html.Label(DateTime.Parse(@donvi.ChuyenDoiDonVi.UPDATE_AT.ToString()).ToString("dd/MM/yyyy"))</td>
-                            }
-                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-                            {
-                                <td class='inner alignCenter' style="width:50px;">
-                                    <a href="@Url.Action("EditConvertUnitOfProducts", "SanPham", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module">
-                                        <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                                    </a>
-                                </td>
-                                    <td class='inner alignCenter' style="width:50px;">
-                                        <a href="@Url.Action("DeleteConvertUnit", "SanPham", new { id = @donvi.ChuyenDoiDonVi.MA_CHUYEN_DOI })" class="button-module" onclick="return deleteSubmit()">
-                                            <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                                        </a>
-                                    </td>
-                            }
-                                }
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
-                    <div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div style="text-align:left; padding-top:3px;">
-                    <label>@ViewBag.Count : dòng dữ liệu </label>
-                </div>
-            </td>
-            <td>
-                <div style="text-align:right; padding-top:3px;">
-                    @Html.PagedListPager(Model, page => Url.Action("ConvertUnitOfProducts",
-                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div style="float:right">
+        Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
+        <input type="submit" value="Tìm kiếm" class="myButton" />
+        @{
+        if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+        {
+            <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNewConvertUnitOfProducts", "SanPham")'" />
+        }
+        }
+    </div>
+
+    <div style="clear:both"></div>
+
+
 }
+
+<hr style="width:100%" />
+<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">
+    <img src="/Content/images/loading-2.gif" />
+</div>
+<div id="mainDiv">
+
+</div>
+
 <script>
     function deleteSubmit() {
         var r = confirm("Bạn muốn xóa đơn vị tính này!");

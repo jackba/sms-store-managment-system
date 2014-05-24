@@ -25,11 +25,10 @@ namespace SMS.Controllers
         IPagedList<SanPhamDisplay> listResult = null;
 
         [HttpGet]
-        public ActionResult Index(string sortOrder, string CurrentFilter, int? currentPageIndex)
+        public ActionResult Index()
         {
             Session[SEARCH_ADVANCE] = null;
-            listResult = LayDanhSachSanPham(sortOrder, CurrentFilter, currentPageIndex);
-            return View(listResult);
+            return View();
         }
 
         [HttpGet]
@@ -43,12 +42,12 @@ namespace SMS.Controllers
         {
             if (Session[SEARCH_ADVANCE] == null)
             {
-                listResult = LayDanhSachSanPham(sortOrder, CurrentFilter, currentPageIndex);
+                listResult = GetListProductNotSearchAdvance(sortOrder, CurrentFilter, currentPageIndex);
             }
             else
             {
                 ProductSA psa = (ProductSA)Session[SEARCH_ADVANCE];
-                listResult = LayDanhSachSanPham(sortOrder, psa, currentPageIndex);
+                listResult = GetListProductSearchAdvance(sortOrder, psa, currentPageIndex);
             }
 
             return PartialView("SanPhamPV", listResult);
@@ -259,7 +258,7 @@ namespace SMS.Controllers
 
             Session[SEARCH_ADVANCE] = psa;
 
-            IPagedList<SanPhamDisplay> listResult = LayDanhSachSanPham(null, psa, null);
+            IPagedList<SanPhamDisplay> listResult = GetListProductSearchAdvance(null, psa, null);
             return PartialView("SanPhamPV", listResult);
         }
         [HttpPost]
@@ -437,7 +436,7 @@ namespace SMS.Controllers
             }
         }
 
-        private IPagedList<SanPhamDisplay> LayDanhSachSanPham(string sortOrder, string CurrentFilter, int? currentPageIndex)
+        private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
 
             int pageSize = SystemConstant.ROWS;
@@ -497,7 +496,7 @@ namespace SMS.Controllers
             return DisplayContentLst;
         }
 
-        private IPagedList<SanPhamDisplay> LayDanhSachSanPham(string sortOrder, ProductSA psa, int? currentPageIndex)
+        private IPagedList<SanPhamDisplay> GetListProductSearchAdvance(string sortOrder, ProductSA psa, int? currentPageIndex)
         {
             int pageSize = SystemConstant.ROWS;
 
@@ -664,41 +663,21 @@ namespace SMS.Controllers
 
         /*** CONVERT UNIT START **/
         [HttpGet]
-        public ActionResult ConvertUnitOfProducts(int? productId, int? page, string productName)
-        {
-            var ctx = new SmsContext();
-            var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH
-                                  join sp in ctx.SAN_PHAM on cd.MA_SAN_PHAN equals sp.MA_SAN_PHAM
-                                  join dv1 in ctx.DON_VI_TINH on sp.MA_DON_VI equals dv1.MA_DON_VI
-                                  join dv2 in ctx.DON_VI_TINH on cd.MA_DON_VI_VAO equals dv2.MA_DON_VI
-                                  join u in ctx.NGUOI_DUNG on cd.CREATE_BY equals u.MA_NGUOI_DUNG
-                                  join u1 in ctx.NGUOI_DUNG on cd.UPDATE_BY equals u1.MA_NGUOI_DUNG
-                                  where
-                                  (cd.ACTIVE == "A"
-                                  && (string.IsNullOrEmpty(productName) || sp.TEN_SAN_PHAM.ToLower().Contains(productName.Trim().ToLower()))
-                                  && (string.IsNullOrEmpty(productName) || productId == null || productId == 0 || cd.MA_SAN_PHAN == productId))
-                                  select new ChuyenDoiDonViTinhModel
-                                  {
-                                      ChuyenDoiDonVi = cd,
-                                      SanPham = sp, 
-                                      DonViCuoi = dv1, 
-                                      DonViVao = dv2, 
-                                      NguoiCapNhat = u1, 
-                                      NguoiTao = u
-                                  }).ToList<ChuyenDoiDonViTinhModel>();
-            IPagedList<ChuyenDoiDonViTinhModel> khachHangs = null;
-            int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
-            ViewBag.CurrentPageIndex = pageIndex;
-            ViewBag.Count = theListContext.Count();
-            khachHangs = theListContext.ToPagedList(pageIndex, pageSize);
-            ViewBag.ProductName = productName;
-            return View(khachHangs);
+        public ActionResult ConvertUnitOfProducts()
+        {            
+            return View();
         }
 
         [HttpPost]
-        public ActionResult ConvertUnitOfProducts(int? productId, int? page, string productName, bool? flag)
+        public PartialViewResult ConvertUnitOfProducts(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
+             int pageSize = SystemConstant.ROWS;
+
+            ViewBag.CurrentSort = sortOrder;
+
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+
             var ctx = new SmsContext();
             var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH
                                   join sp in ctx.SAN_PHAM on cd.MA_SAN_PHAN equals sp.MA_SAN_PHAM
@@ -708,8 +687,10 @@ namespace SMS.Controllers
                                   join u1 in ctx.NGUOI_DUNG on cd.UPDATE_BY equals u1.MA_NGUOI_DUNG
                                   where
                                   (cd.ACTIVE == "A"
-                                  && (string.IsNullOrEmpty(productName) || sp.TEN_SAN_PHAM.ToLower().Contains(productName.Trim().ToLower()))
-                                  && (string.IsNullOrEmpty(productName) || productId == null || productId == 0 || cd.MA_SAN_PHAN == productId))
+                                  && (string.IsNullOrEmpty(CurrentFilter) 
+                                    || sp.TEN_SAN_PHAM.ToLower().Contains(CurrentFilter.Trim().ToLower())
+                                    || dv1.TEN_DON_VI.ToLower().Contains(CurrentFilter.Trim().ToLower())
+                                    || dv2.TEN_DON_VI.ToLower().Contains(CurrentFilter.Trim().ToLower())))
                                   select new ChuyenDoiDonViTinhModel
                                   {
                                       ChuyenDoiDonVi = cd,
@@ -720,13 +701,31 @@ namespace SMS.Controllers
                                       NguoiTao = u
                                   }).ToList<ChuyenDoiDonViTinhModel>();
             IPagedList<ChuyenDoiDonViTinhModel> khachHangs = null;
-            int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+           
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.Count = theListContext.Count();
-            ViewBag.ProductName = productName;
-            khachHangs = theListContext.ToPagedList(pageIndex, pageSize);
-            return View(khachHangs);
+       
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    khachHangs = theListContext.OrderByDescending(u => u.ChuyenDoiDonVi.MA_CHUYEN_DOI).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name":
+                    khachHangs = theListContext.OrderBy(u => u.SanPham.TEN_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "name_desc":
+                    khachHangs = theListContext.OrderByDescending(u => u.SanPham.TEN_SAN_PHAM).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khachHangs = theListContext.OrderBy(u => u.ChuyenDoiDonVi.MA_CHUYEN_DOI).ToPagedList(pageIndex, pageSize);
+                    break;
+            }
+
+            ViewBag.CurrentFilter = CurrentFilter;
+
+
+            return PartialView("ListConvertUnitPartialView", khachHangs);
         }
 
         [HttpGet]

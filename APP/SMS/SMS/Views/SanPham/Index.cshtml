@@ -48,7 +48,7 @@
 
         });
         
-        
+        $('#mainForm').submit();
 
     });
 
@@ -360,25 +360,38 @@
 }
 <hr style="width:100%" />
 <div style="float:right " >
-  
-    @using (Html.BeginForm("Index", "SanPham", FormMethod.Get))
-    {
-        <p>
-            Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string)
-            <input type="submit" value="Tìm kiếm" class="myButton" />
-@{
+
+  @using (Ajax.BeginForm("PagingContent", "SanPham", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
+                           new { @id = "mainForm" }
+                      ))
+{
+    <hr style="width:100%" />
+    <div style="float:right">
+        Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
+        <input type="submit" value="Tìm kiếm" class="myButton" />
+        @{
             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
             {
-                 <input type="button"  value="Thêm Mới" class="myButton" 
-                        onclick="location.href='@Url.Action("AddNew", "SanPham")'"  />
+                <input type="button" value="Thêm Mới" class="myButton"
+                    onclick="location.href='@Url.Action("AddNew", "SanPham")'" />
                 <input type="button" value="    Báo giá  " class="myButton"
-                 onclick="location.href='@Url.Action("ListPriceProducts", "SanPham")'" />
-   
-            }
-}
-        </p>
+                    onclick="location.href='@Url.Action("ListPriceProducts", "SanPham")'" />
 
-    }
+            }
+        }
+
+
+    </div>
+    <div style="clear:both"></div>
+
+
+}
 
 </div>
 
@@ -391,247 +404,10 @@
   
     </div>
 </div>
- 
-<div id="mainDiv"  >
-    <table id="mainTbl" border="0" cellpadding="0" cellspacing="0" style="width:100%">
 
-        <tr>
-            <td class='tablefrozencolumn' width="15%">
-                <div id='divroot' class='root'>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
-                        <tr>
-                            <td class='inner colwidth head ' width="40%">
-                                @Ajax.ActionLink("Mã sản phẩm", "PagingContent", 
-                                    new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.IdSortParm, CurrentFilter = ViewBag.CurrentFilter },
-                                    new AjaxOptions()
-                                    {
-                                        HttpMethod = "POST",
-                                        InsertionMode = InsertionMode.Replace,
-                                        UpdateTargetId = "mainDiv"
-                                    }
-                                )
+<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">
+    <img src="/Content/images/loading-2.gif" />
+</div>
+<div id="mainDiv">
 
-                            </td>
-                            <td class='inner colwidth head'>
-                                @Ajax.ActionLink("Tên sản phẩm", "PagingContent", 
-                                    new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter },
-                                    new AjaxOptions()
-                                    {
-                                        HttpMethod = "POST",
-                                        InsertionMode = InsertionMode.Replace,
-                                        UpdateTargetId = "mainDiv"
-                                    }
-                                 )
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id='divfrozen' class='frozen'>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
-                        @foreach (var sp in ViewBag.DisplayContentLst)
-                        {
-                            <tr>
-                                <td class='inner frozencol colwidth toprow ' width="40%">
-                                    @sp.SanPham.MA_SAN_PHAM
-                                </td>
-                                <td class='inner frozencol toprow alignText'>
-                                    <div class="tooltip truncate">
-                                        @sp.SanPham.TEN_SAN_PHAM
-                                        <span>@sp.SanPham.TEN_SAN_PHAM</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-
-                    </table>
-                </div>
-            </td>
-            <td class='tablecontent'>
-                <div id='headscroll' class='divhead'>
-                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
-                        <tr>
-                            <td class='inner column-hscroll head'>
-                                Kích thước
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Trọng lượng
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Đặc tả
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Đơn vị tính
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Nhà sản xuất
-                            </td>
-                            <td class='inner column-hscroll head' style="display:none">
-                                Hình ảnh
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Giá bán 1
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Giá bán 2
-                            </td>
-                            <td class='inner column-hscroll head '>
-                                Giá bán 3
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Chiết khấu 1 (%)
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Chiết khấu 2 (%)
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Chiết khấu 3 (%)
-                            </td>
-                            <td class='inner column-hscroll head'>
-                                Cơ số tối thiểu
-                            </td>
-                            <td class='inner column-hscroll head rightcol'>
-                                Cơ số tối đa
-                            </td>
-                            @{
-                                if ((bool)Session["IsAdmin"] == true)
-                                {
-                                    <td class='inner column-hscroll head '>
-                                        Người tạo
-                                    </td>
-                                    <td class='inner column-hscroll head '>
-                                        Ngày tạo
-                                    </td>
-                                    <td class='inner column-hscroll head '>
-                                        Người cập nhật
-                                    </td>
-                                    <td class='inner column-hscroll head '>
-                                        Ngày cập nhật
-                                    </td>
-                                }
-
-                                if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-                                {
-                                    <td class='inner column-action head '>
-                                        Sửa
-                                    </td>
-                                    <td class='inner column-action head '>
-                                        Xóa
-                                    </td>
-                                }
-                            }
-                        </tr>
-                    </table>
-                </div>
-                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
-                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
-                        @foreach (var sp in ViewBag.DisplayContentLst)
-                        {
-                            <tr>
-                                <td class='inner column-hscroll toprow alignText'>
-                                    @sp.SanPham.KICH_THUOC
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.CAN_NANG
-                                </td>
-                                <td class='inner column-hscroll alignText '>
-                                    <div class="tooltip truncate">
-                                        @sp.SanPham.DAC_TA
-                                        <span>@sp.SanPham.DAC_TA</span>
-                                    </div>
-
-                                </td>
-                                @{
-                                    <td class='inner column-hscroll alignCenter'>
-                                        @if (sp.DonVi != null)
-                                        {@sp.DonVi.TEN_DON_VI }
-
-                                    </td>
-                                    <td class='inner column-hscroll alignCenter'>
-                                        @if (sp.NhaSanXuat != null)
-                                        {@sp.NhaSanXuat.TEN_NHA_SAN_XUAT }
-
-                                    </td>
-                                }
-                                <td class='inner column-hscroll alignCenter' style="display:none">
-                                    @sp.SanPham.HINH_ANH
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.GIA_BAN_1
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.GIA_BAN_2
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.GIA_BAN_3
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.CHIEC_KHAU_1
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.CHIEC_KHAU_2
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.CHIEC_KHAU_3
-                                </td>
-                                <td class='inner column-hscroll alignNumberic'>
-                                    @sp.SanPham.CO_SO_TOI_THIEU
-                                </td>
-                                <td class='inner column-hscroll rightcol alignNumberic'>
-                                    @sp.SanPham.CO_SO_TOI_DA
-                                </td>
-                                @{
-                            if ((bool)Session["IsAdmin"] == true)
-                            {
-                                <td class='inner column-hscroll alignText '> @sp.NguoiTao.TEN_NGUOI_DUNG </td>
-                                    <td class='inner column-hscroll alignCenter '> @sp.SanPham.CREATE_AT.ToString("dd/MM/yyyy")  </td>
-                                    <td class='inner column-hscroll alignText '> @sp.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                    <td class='inner column-hscroll alignCenter '> @sp.SanPham.UPDATE_AT.ToString("dd/MM/yyyy")  </td>
-                            }
-                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-                            {
-                                <td class='inner column-action alignCenter '>
-                                    <a href="@Url.Action("Edit", "SanPham", new { id = @sp.SanPham.MA_SAN_PHAM })"
-                                       class="myEditButton">
-                                        <img width="24" height="24" alt="edit" src="~/Content/images/edit-icon.png" />
-                                    </a>
-                                </td>
-                                    <td class='inner column-action alignCenter '>
-                                        <a href="@Url.Action("Delete", "SanPham", new { id = @sp.SanPham.MA_SAN_PHAM })"
-                                           class="myEditButton" onclick="return confirmDelete()">
-                                            <img width="24" height="24" alt="edit" src="~/Content/images/edit_delete.png" />
-                                        </a>
-                                    </td>
-                            }
-                                }
-                            </tr>
-                        }
-
-                    </table>
-                </div>
-            </td>
-
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
-                    <div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <hr />
-    <div style="margin-top: -20px;">
-        @Html.PagedListPager(Model, currentPageIndex => Url.Action("PagingContent",
-        new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
-        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
-        new AjaxOptions()
-        {
-            HttpMethod = "POST",
-            InsertionMode = InsertionMode.Replace,
-            UpdateTargetId = "mainDiv"
-        }
-        ))
-        <span style="float: right; margin-top: -50px;">Tổng cộng : @ViewBag.Count sản phẩm.</span>
-    </div>
 </div>

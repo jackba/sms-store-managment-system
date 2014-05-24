@@ -630,6 +630,7 @@
     <Content Include="Views\Account\Show.cshtml" />
     <Content Include="Views\HoaDon\Index.cshtml" />
     <Content Include="Views\Home\IndexPartialView.cshtml" />
+    <Content Include="Views\SanPham\ListConvertUnitPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
