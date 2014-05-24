@@ -1,0 +1,112 @@
+﻿@model SMS.Models.GetTonKhoAlertModel
+@using PagedList.Mvc;
+
+   
+<table width="100%">
+    <tr style="width:100%">
+        <td class='inner colwidth head ' width="20%"> Tên sản phẩm </td>
+        <td class='inner colwidth head ' width="15%"> Đơn vị </td>
+        @{
+            int i = 0;
+            foreach (var Kho in ViewBag.KhoList)
+            {
+                i++;
+                if (i <= 5)
+                {
+                    <td class='inner colwidth head '>
+                        @Kho.TEN_KHO
+                    </td>
+                }
+            }
+        }
+        <td class='innerLast colwidth head '>
+            Tổng cộng
+        </td>
+    </tr>
+    @{
+        foreach (var tonKho in ViewBag.tonKho)
+        {
+            <tr>
+                <td class="inner colwidth"> @tonKho.TEN_SAN_PHAM </td>
+                <td class="inner colwidth"> @tonKho.TEN_DON_VI   </td>
+                @{
+            int j = 0;
+            foreach (var Kho in ViewBag.KhoList)
+            {
+                j++;
+                if (j <= 5)
+                {
+                    switch (j)
+                    {
+                        case 1:
+
+                            <td class="inner colwidth">
+                                @tonKho.TON_KHO_1.ToString("0,0.00")
+                            </td>
+                            break;
+                        case 2:
+
+                        <td class="inner colwidth">
+                            @tonKho.TON_KHO_2.ToString("0,0.00")
+                        </td>
+                            break;
+                        case 3:
+
+                        <td class="inner colwidth">
+                            @tonKho.TON_KHO_3.ToString("0,0.00")
+                        </td>
+                            break;
+                        case 4:
+
+                        <td class="inner colwidth">
+                            @tonKho.TON_KHO_4.ToString("0,0.00")
+                        </td>
+                            break;
+                        case 5:
+
+                        <td class="inner colwidth">
+                            @tonKho.TON_KHO_5.ToString("0,0.00")
+                        </td>
+                            break;
+                    }
+                }
+            }
+                }
+                <td class="innerLast colwidth">
+                    @tonKho.TOTAL.ToString("0,0.00")
+                </td>
+            </tr>
+        }
+    }
+</table>
+<div style="margin-top: -20px;">
+    @Html.PagedListPager(Model.WarningList, currentPageIndex => Url.Action("PagingContent",
+                        new { currentPageIndex, SearchString = ViewBag.SearchString }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+    <span style="float: right; margin-top: -50px;">Tổng cộng : @ViewBag.Count sản phẩm.</span>
+</div>
+
+@*<table width="100%">
+    <tr>
+        <td>
+            <div style="text-align:left; padding-top:3px;">
+                <label>@ViewBag.Count sản phầm </label>
+            </div>
+        </td>
+        <td>
+            <div style="text-align: right;  padding-top: 3px; ">
+                @Html.PagedListPager(Model.WarningList, page => Url.Action("Index",
+new { page, sortOrder = ViewBag.CurrentSort, SearchString = ViewBag.SearchString }))
+            </div>
+        </td>
+    </tr>
+</table>*@
+

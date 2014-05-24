@@ -629,6 +629,7 @@
     <Content Include="Views\Home\NguoiDung.cshtml" />
     <Content Include="Views\Account\Show.cshtml" />
     <Content Include="Views\HoaDon\Index.cshtml" />
+    <Content Include="Views\Home\IndexPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
