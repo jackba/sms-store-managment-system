@@ -34,7 +34,7 @@
         });
 
         $("#saveBill").click(function () {
-            saveListProductNo();
+            saveListRowNum();
         });
         
 
@@ -195,28 +195,30 @@ function hideRelationProduct(){
   
 }
 function showRelationProduct() {
-    var width = $('#ui-id-2').width();
-    var offset = $('#ui-id-2').offset();
-    offset.left = offset.left + width + 10;
-    $('#relationProduct').offset({ top: offset.top, left: offset.left })
+
     // show relation product
     $('#relationProduct').removeClass('HideElement');
     $('#relationProduct').addClass('relationProductShow');
 
+    var width = $('#ui-id-2').width();
+    var offset = $('#ui-id-2').offset();
+    offset.left = offset.left + width + 10;
+    $('#relationProduct').offset({ top: offset.top, left: offset.left })
 }
 function hideRelationCustomer() {
     // hide relation customer
     $('#relationCustomer').removeClass('relationCustomerShow');
     $('#relationCustomer').addClass('HideElement');
 }
-function showRelationCustomer() {
+function showRelationCustomer() {   
+    // show relation customer
+    $('#relationCustomer').removeClass('HideElement');
+    $('#relationCustomer').addClass('relationCustomerShow');
+
     var width = $('#ui-id-1').width();
     var offset = $('#ui-id-1').offset();
     offset.left = offset.left + width + 10;
     $('#relationCustomer').offset({ top: offset.top, left: offset.left })
-    // show relation customer
-    $('#relationCustomer').removeClass('HideElement');
-    $('#relationCustomer').addClass('relationCustomerShow');
 }
 function addCommaNumberic(ctrlID, isSpanTag) {
     if (isSpanTag == true) {
@@ -471,11 +473,11 @@ function CalcTotalAllMoney(totalRow, isPlus) {
 function checkInput() {
     var msgErr = '';
     var empty = '';
-    if (empty == $('#TenKhachHang').val()) {
-        msgErr += " + Tên khách hàng. <br/>";
+    if (empty == $('#MaKhachHang').val() || empty == $('#TenKhachHang').val()) {
+        msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
     }
     if (empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
-        msgErr += " + Tên sản phẩm. <br/>";
+        msgErr += " + Tên sản phẩm không tồn tại hoặc chưa nhập. <br/>";
     }
     if (empty == $('#GiaBan').val()) {
         msgErr += " + Giá bán. <br/>";
@@ -538,51 +540,54 @@ function prependNewRowToTable() {
     var TenSP = $('#tableSearch #TenSanPham').val();
     var ChietKhau = $('#tableSearch #ChietKhau').val();
     var GiaBan = $('#tableSearch #GiaBan').val();
+    // avoid duplicate
+    var count = $('#tableContent tr').length;
+    var rowNum = MaSP + '_' + count;
 
     CalcTotalMoney1Row();
 
     var newRow = '';
-    newRow += ' <tr class="rowHeight" id=\'' + MaSP + '\'> ';
+    newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
     newRow += '<td style="width:22px;"> ';
     newRow += '  <div class="colDelete">';
-    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
+    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td  class="colProductNm textLeft"> ';
     newRow += ' <div  class="colProductNm tooltip truncate">';
     newRow += TenSP;
     newRow += '  <span>' + TenSP + '</span>';
-    newRow += '  <input name="MaSanPham_' + MaSP + '" type="hidden" value="' + MaSP + '" />';
-    newRow += '  <input name="TenSanPham_' + MaSP + '" type="hidden" value="' + TenSP + '" />';
+    newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
+    newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td class="colStore textLeft"> ';
     newRow += $('#typeStore :selected').text()
-    newRow += '  <input name="MaKho_' + MaSP + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
+    newRow += '  <input name="MaKho_' + rowNum + '" type="hidden" value="' + $('#typeStore :selected').val() + '" />';
     newRow += ' </td> ';
     newRow += '  <td  class="colPrice textRight"> ';
     newRow += ' <div  class="colPrice tooltip truncate">';
     newRow +=   $('#tableSearch #GiaThuc').val();
-    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
-    newRow += '  <input name="ChietKhau_' + MaSP + '" type="hidden" value="' + ChietKhau + '" />';
+    newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+    newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + ChietKhau + '" />';
     newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
     newRow += '   </div>';
     newRow += ' </td>  ';
 
     newRow += '  <td class="colAmount textRight"> ';
     newRow += $('#tableSearch #SoLuong').val();
-    newRow += '  <input name="SoLuong_' + MaSP + '" type="hidden" value="' + $('#tableSearch #SoLuong').val() + '" />';
+    newRow += '  <input name="SoLuong_' + rowNum + '" type="hidden" value="' + $('#tableSearch #SoLuong').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  <td class="colUnit textCenter"> ';
     newRow += $('#typeDonViTinh :selected').text()
-    newRow += '  <input name="MaDonViTinh_' + MaSP + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
+    newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  <td class="colTotal textRight"> ';
     newRow += $('#hidTotalRowAdded').val()
   
-    newRow += '  <input name="ThanhTien_' + MaSP + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
+    newRow += '  <input name="ThanhTien_' + rowNum + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
     newRow += ' </td> ';
 
     newRow += '  </tr> ';
@@ -698,18 +703,18 @@ function deleteRow(rowId) {
         
     }
 }
-function saveListProductNo() {
-    var listProductNo = '';
+function saveListRowNum() {
+    var listRowNum = '';
     var indx = 0;
     $('#tableContent tr').each(function () {
-        listProductNo += this.id
+        listRowNum += this.id
         if (indx < ($('#tableContent tr').length - 1)) {
-            listProductNo += ','
+            listRowNum += ','
         }
         indx += 1;
     })
 
-    $('#ListProductID').val(listProductNo);
+    $('#ListRowNum').val(listRowNum);
     //$('#formContent').submit();
 }
 function createNewBill() {
@@ -724,17 +729,17 @@ function createNewBill() {
 }
 function exportExcel() {
 
-    var listProductNo = '';
+    var listRowNum = '';
     var indx = 0;
     $('#tableContent tr').each(function () {
-        listProductNo +=  this.id
+        listRowNum +=  this.id
         if (indx < ($('#tableContent tr').length -1)) {
-            listProductNo += ','
+            listRowNum += ','
         }
         indx += 1; 
     })
 
-    $('#ListProductID').val(listProductNo);
+    $('#ListRowNum').val(listRowNum);
     $('#formContent').submit();
   
 }
@@ -1069,7 +1074,7 @@ function saveBillFailure() {
             <input type="hidden" id="hidFactorValue" value="1" />
             <input type="hidden" id="hidTotalRowAdded" value="0" />
             <input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
-            <input type="hidden" id="ListProductID" name="ListProductID" value="" />
+            <input type="hidden" id="ListRowNum" name="ListRowNum" value="" />
             <!--hidden field end-->
 
         </div>
@@ -1119,7 +1124,7 @@ function saveBillFailure() {
                     </tbody>
                 </table>
             </div>
-            <input type="hidden" id="ListProductID" name="ListProductID" value="" />
+ 
 
         </div>
 
