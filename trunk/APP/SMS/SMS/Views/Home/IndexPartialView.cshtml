@@ -79,8 +79,17 @@
         }
     }
 </table>
-<div style="margin-top: -20px;">
-    @Html.PagedListPager(Model.WarningList, currentPageIndex => Url.Action("PagingContent",
+
+<table width="100%">
+    <tr>
+        <td>
+            <div style="text-align:left; padding-top:3px;">
+                <label>@ViewBag.Count sản phầm </label>
+            </div>
+        </td>
+        <td>
+            <div style="text-align: right;  padding-top: 3px; ">
+                @Html.PagedListPager(Model.WarningList, currentPageIndex => Url.Action("PagingContent",
                         new { currentPageIndex, SearchString = ViewBag.SearchString }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()
@@ -91,22 +100,8 @@
             UpdateTargetId = "mainDiv"
         }
     ))
-    <span style="float: right; margin-top: -50px;">Tổng cộng : @ViewBag.Count sản phẩm.</span>
-</div>
-
-@*<table width="100%">
-    <tr>
-        <td>
-            <div style="text-align:left; padding-top:3px;">
-                <label>@ViewBag.Count sản phầm </label>
-            </div>
-        </td>
-        <td>
-            <div style="text-align: right;  padding-top: 3px; ">
-                @Html.PagedListPager(Model.WarningList, page => Url.Action("Index",
-new { page, sortOrder = ViewBag.CurrentSort, SearchString = ViewBag.SearchString }))
             </div>
         </td>
     </tr>
-</table>*@
+</table>
 
