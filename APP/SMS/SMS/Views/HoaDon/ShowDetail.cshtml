@@ -29,7 +29,9 @@
             <div class="right">
                 <label> @Model.Infor.TEN_NGUOI_BAN</label>
             </div>
-            <div class="left">
+            @if(Model.Infor.STATUS >= 2)
+            {
+                <div class="left">
                 <label> Người thu tiền </label>
             </div>
             <div class="right">
@@ -42,6 +44,8 @@
                     <label>... </label>
                 }
             </div>
+            }
+            
             <div class="left">
                 <label> Ngày giao hàng </label>
             </div>
@@ -49,8 +53,11 @@
                 @if (@Model.Infor.NGAY_GIAO != null)
                 {
                     <label>@Convert.ToDateTime(@Model.Infor.NGAY_GIAO).ToString("dd/MM/yyyy") </label>
+                }else
+                {
+                    <label>...</label>
                 }
-                <label>...</label>
+                
             </div>
             <div class="left">
                 <label> Địa chỉ giao hàng </label>
@@ -58,6 +65,8 @@
             <div class="right">
                 <label>@Model.Infor.DIA_CHI_GIAO_HANG</label>
             </div>
+@if(Model.Infor.STATUS >= 2)
+            {
             <div class="left">
                 <label> Số tiền khách trả </label>
             </div>
@@ -85,6 +94,7 @@
                     <label>0</label>
                 }
             </div>
+}
             <div class="left">
                 <label> Tình trạng hóa đơn </label>
             </div>
@@ -110,6 +120,24 @@
             </div>
             <div style="clear:both"></div>
             <hr style="width:100%" />
+            <table>
+                <tr>
+                    <td>
+                       <label>Số tiền khách thanh toán</label> 
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Tiền khách nợ </label> 
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
             <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                 <tr>
                     <td class='inner colwidth head ' width="5%;">
@@ -189,6 +217,10 @@
             {
                 <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn"/>
             }
+            @if (@Model.Infor.STATUS == 1)
+{
+    <input type="button" style="width:300px" value="Thu tiền" onclick="window.location.href='@Url.Action("Payment", "HoaDon", new { @id = @Model.Infor.MA_HOA_DON })'" />
+}
             <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
         </fieldset>
     </div>

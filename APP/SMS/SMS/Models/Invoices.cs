@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PagedList;
 
 namespace SMS.Models
 {
@@ -9,5 +10,11 @@ namespace SMS.Models
     {
         public SP_GET_HOA_DON_INFO_Result Infor { get; set; }
         public List<V_HOA_DON> detailList { get; set; }
+    }
+
+    public class InvoicesNoReciveModel
+    {
+        public IPagedList<SP_GET_HOA_DON_CHUA_TT_Result> Invoices { get; set; }
+        public long PageCount { get; set; }
     }
 }
