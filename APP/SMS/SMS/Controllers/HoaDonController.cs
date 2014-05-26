@@ -201,7 +201,14 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
+        [HttpPost]
+        public ActionResult Payment(InvoicesModel model)
+        {
+            var x = model.Infor.SO_TIEN_KHACH_TRA;
+            var y = model.Infor.SO_TIEN_NO_GOI_DAU;
+            return View();
+        }
+        
         public ActionResult ShowDetail(int id)
         {
             var ctx = new SmsContext();
