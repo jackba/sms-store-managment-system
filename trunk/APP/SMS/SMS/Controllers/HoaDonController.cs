@@ -70,15 +70,17 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
 
-            var list = ctx.SP_GET_HOA_DON_BH(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, 1).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
-            HoaDonBHModel model = new HoaDonBHModel();
-            model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
+            var list = ctx.SP_GET_HOA_DON_CHUA_TT(fromdate, todate, Convert.ToInt32(customerId), customerName,
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CHUA_TT_Result>();
+            InvoicesNoReciveModel model = new InvoicesNoReciveModel();
+            model.Invoices = list.ToPagedList(pageIndex, pageSize);
+            model.PageCount = list.Count;
+            /*model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.customerName = customerName;
             ViewBag.salerName = salerName;
-            ViewBag.accountantName = accountantName;
+            ViewBag.accountantName = accountantName;*/
             return PartialView("CollectionPartialView", model);
         }
 
@@ -258,14 +260,39 @@ namespace SMS.Controllers
                         debitHist.UPDATE_AT = DateTime.Now;
                         debitHist.UPDATE_BY = (int)Session["UserId"];
                     }
+                    if(invoice.STATUS  > 2 )
+                    {
+                        var export = ctx.XUAT_KHO.OrderByDescending(uh => uh.MA_XUAT_KHO).FirstOrDefault(uh => uh.MA_HOA_DON == invoice.MA_HOA_DON && uh.ACTIVE == "A");
+                        if(export != null)
+                        {
+                            export.ACTIVE = "I";
+                            export.UPDATE_AT = DateTime.Now;
+                            export.UPDATE_BY = (int)Session["UserId"];
+                            var exportDetails = ctx.CHI_TIET_XUAT_KHO.Where(uh => uh.MA_XUAT_KHO == export.MA_XUAT_KHO && uh.ACTIVE == "A")
+                                .ToList<CHI_TIET_XUAT_KHO>();
+                            if (exportDetails != null)
+                            {
+                                foreach (CHI_TIET_XUAT_KHO detail in exportDetails)
+                                {
+                                    detail.ACTIVE = "I";
+                                    detail.UPDATE_AT = DateTime.Now;
+                                    detail.UPDATE_BY = (int)Session["UserId"];
+                                }
+                            }
+                        }
+                    }
+                    
                 }
                 var details = ctx.CHI_TIET_HOA_DON.Where(uh => uh.MA_HOA_DON == invoice.MA_HOA_DON 
                     && uh.ACTIVE == "A").ToList<CHI_TIET_HOA_DON>();
-                foreach (CHI_TIET_HOA_DON detail in details)
+                if (details != null)
                 {
-                    detail.ACTIVE = "I";
-                    detail.UPDATE_AT = DateTime.Now;
-                    detail.UPDATE_BY = (int)Session["UserId"];
+                    foreach (CHI_TIET_HOA_DON detail in details)
+                    {
+                        detail.ACTIVE = "I";
+                        detail.UPDATE_AT = DateTime.Now;
+                        detail.UPDATE_BY = (int)Session["UserId"];
+                    }
                 }
                 ctx.SaveChanges();
                 return RedirectToAction("Index");
