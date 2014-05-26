@@ -10,7 +10,7 @@
 
 <h2>Chi tiết hóa đơn bán hàng</h2>
 <hr style="width:100%" />
-@using (Html.BeginForm("ShowDetail", "HoaDon", FormMethod.Post, new { @name = "ShowDetail" }))
+@using (Html.BeginForm("ShowDetail", "HoaDon", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
 {
 
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
@@ -120,24 +120,36 @@
             </div>
             <div style="clear:both"></div>
             <hr style="width:100%" />
-            <table>
+            @if (Model.Infor.STATUS == 1)
+            {
+                <table border="1">
                 <tr>
-                    <td>
+                    <td width="40%" >
                        <label>Số tiền khách thanh toán</label> 
                     </td>
-                    <td>
-
+                    <td width="60%" >
+                        @Html.TextBoxFor(u => u.Infor.SO_TIEN_KHACH_TRA, new { id = "payMoney" })
                     </td>
+
                 </tr>
                 <tr>
-                    <td>
-                        <label>Tiền khách nợ </label> 
+                    <td width="40%" >
+                        <label>Tiền khách nợ </label>
                     </td>
-                    <td>
-
+                    <td width="60%" >
+                        @Html.TextBoxFor(u => u.Infor.SO_TIEN_NO_GOI_DAU, new { id = "debitMoney" })
                     </td>
                 </tr>
             </table>
+              
+                    <input type="button" id ="paymentFirst"style="width:300px" value="Thu tiền" />
+    
+            }
+            @if (@Model.Infor.STATUS == 2)
+            {
+                <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn" />
+            }
+            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
             <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                 <tr>
                     <td class='inner colwidth head ' width="5%;">
@@ -225,3 +237,14 @@
         </fieldset>
     </div>
 }
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#paymentFirst").click(function () {
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/Payment");
+            form.submit();
+        });
+    });
+</script>
