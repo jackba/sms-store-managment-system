@@ -18,6 +18,9 @@
         <fieldset>
             <div class="left">
                 @Html.HiddenFor(u => u.Infor.MA_HOA_DON)
+                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG)
+                @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien"})
+                @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
                 <label> Tên khách hàng</label>
             </div>
             <div class="right">
@@ -118,133 +121,304 @@
                 }
 
             </div>
-            <div style="clear:both"></div>
-            <hr style="width:100%" />
-            @if (Model.Infor.STATUS == 1)
-            {
-                <table border="1">
-                <tr>
-                    <td width="40%" >
-                       <label>Số tiền khách thanh toán</label> 
-                    </td>
-                    <td width="60%" >
-                        @Html.TextBoxFor(u => u.Infor.SO_TIEN_KHACH_TRA, new { id = "payMoney" })
-                    </td>
-
-                </tr>
-                <tr>
-                    <td width="40%" >
-                        <label>Tiền khách nợ </label>
-                    </td>
-                    <td width="60%" >
-                        @Html.TextBoxFor(u => u.Infor.SO_TIEN_NO_GOI_DAU, new { id = "debitMoney" })
-                    </td>
-                </tr>
-            </table>
-              
-                    <input type="button" id ="paymentFirst"style="width:300px" value="Thu tiền" />
-    
-            }
-            @if (@Model.Infor.STATUS == 2)
-            {
-                <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn" />
-            }
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
-            <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
-                <tr>
-                    <td class='inner colwidth head ' width="5%;">
-                        STT
-                    </td>
-                    <td class='inner colwidth head ' width="15%">
-                        Tên sản phầm
-                    </td>
-                    <td class='inner colwidth head ' width="15%">
-                        Số lượng
-                    </td>
-                    <td class='innerLast colwidth head ' width="15%">
-                        Đơn vị
-                    </td>
-                    <td class='inner colwidth head ' width="15%">
-                        Đơn giá
-                    </td>
-                    <td class='inner colwidth head ' width="15%">
-                        Chiếc khấu (%)
-                    </td>
-                    <td class='innerLast colwidth head '  width="15%">
-                       Thành tiền
-                    </td>
-                </tr>
-                @{
-    int i = 0;
-    double total = 0;
-    double price = 0;
-   double quantity = 0;
-    double discount = 0 ;
-    double totalAll = 0;
+            <div class="left">
+                <label> Tổng hóa đơn </label>
+            </div>
+            <div class="right">
+            <label> @Model.Infor.TONG_TIEN.ToString("0,0.00") </label>
+            </div>
+            <div class="left">
+                <label> Tổng chiếc khấu </label>
+            </div>
+            <div class="right">
+                <label> @Model.Infor.CHIEC_KHAU.ToString("0,0.00") </label>
+            </div>
+            <div class="left">
+                <label> Thực thu </label>
+            </div>
+            <div class="right">
+                <label> @{
+    var to = Model.Infor.TONG_TIEN - Model.Infor.CHIEC_KHAU;
                 }
-@foreach (var detail in Model.detailList)
-{
-    i += 1;
-    quantity = Convert.ToDouble(detail.SO_LUONG);
-    price = Convert.ToDouble(detail.DON_GIA);
-    discount = Convert.ToDouble(detail.PHAN_TRAM_CHIEC_KHAU);
-    total = quantity * price - quantity * price * discount / 100;
-    totalAll += total;
-    <tr>
-        <td class="inner colwidth" width="5%;">
-            @i
-        </td>
-        <td class="inner colwidth">
-           @detail.TEN_SAN_PHAM
-        </td>
-        <td class="inner colwidth">
-            @detail.SO_LUONG.ToString("0,0.00")
-        </td>
-        <td class="inner colwidth">
-            @detail.TEN_DON_VI
-        </td>
-        <td class="inner colwidth">
-            @detail.DON_GIA.ToString("0,0.00")
-        </td>
-        <td class="inner colwidth">
-            @detail.PHAN_TRAM_CHIEC_KHAU.ToString("0,0.00")
-        </td>
-        <td class="innerLast colwidth">
-            @total.ToString("0,0.00")
-        </td>
-    </tr>
-}
-                <tr style="background-color:lightgray">
-                    <td class="innerLast colwidth" colspan="6">
-                        <strong> Tồng cộng</strong>
-                    </td>
-                    <td class="innerLast colwidth">
-                        <strong>@totalAll.ToString("0,0.00")</strong>
-                    </td>
-                </tr>
+                @to.ToString("0,0.00") </label>
+            </div>
+                <div style="clear:both"></div>
+                <hr style="width:100%" />
+                @if (Model.Infor.STATUS == 1)
+                {
+                    <table border="1">
+                        <tr>
+                            <td width="40%">
+                                <label>Số tiền khách thanh toán</label>
+                            </td>
+                            <td width="60%">
+                                @Html.TextBoxFor(u => u.Infor.SO_TIEN_KHACH_TRA, new { @id = "payMoney", @Class = "numberic" })
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="40%">
+                                <label>Tiền khách nợ </label>
+                            </td>
+                            <td width="60%">
+                                @Html.TextBoxFor(u => u.Infor.SO_TIEN_NO_GOI_DAU, new { @id = "debitMoney", @Class = "numberic", @ReadOnly = "true" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="40%">
+                                <label>Tiền thối </label>
+                            </td>
+                            <td width="60%">
+                                <input id="returnMoney" type="text" class="numberic" readonly="readonly" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <input type="button" id="paymentFirst" style="width:100px" value="Thu tiền" />
+                    <input type="button" id="paymentAndExportFirst" style="width:200px" value="Thu tiền & Xuất kho" />
+
+                }
+                @if (@Model.Infor.STATUS == 2)
+                {
+                    <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn" />
+                }
+                <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
+                <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+                    <tr>
+                        <td class='inner colwidth head ' width="5%;">
+                            STT
+                        </td>
+                        <td class='inner colwidth head ' width="15%">
+                            Tên sản phầm
+                        </td>
+                        <td class='inner colwidth head ' width="15%">
+                            Số lượng
+                        </td>
+                        <td class='innerLast colwidth head ' width="15%">
+                            Đơn vị
+                        </td>
+                        <td class='inner colwidth head ' width="15%">
+                            Đơn giá
+                        </td>
+                        <td class='inner colwidth head ' width="15%">
+                            Chiếc khấu (%)
+                        </td>
+                        <td class='innerLast colwidth head ' width="15%">
+                            Thành tiền
+                        </td>
+                    </tr>
+                    @{
+                int i = 0;
+                double total = 0;
+                double price = 0;
+                double quantity = 0;
+                double discount = 0;
+                double totalAll = 0;
+                    }
+                    @foreach (var detail in Model.detailList)
+                    {
+                        i += 1;
+                        quantity = Convert.ToDouble(detail.SO_LUONG);
+                        price = Convert.ToDouble(detail.DON_GIA);
+                        discount = Convert.ToDouble(detail.PHAN_TRAM_CHIEC_KHAU);
+                        total = quantity * price - quantity * price * discount / 100;
+                        totalAll += total;
+                        <tr>
+                            <td class="inner colwidth" width="5%;">
+                                @i
+                            </td>
+                            <td class="inner colwidth">
+                                @detail.TEN_SAN_PHAM
+                            </td>
+                            <td class="inner colwidth">
+                                @detail.SO_LUONG.ToString("0,0.00")
+                            </td>
+                            <td class="inner colwidth">
+                                @detail.TEN_DON_VI
+                            </td>
+                            <td class="inner colwidth">
+                                @detail.DON_GIA.ToString("0,0.00")
+                            </td>
+                            <td class="inner colwidth">
+                                @detail.PHAN_TRAM_CHIEC_KHAU.ToString("0,0.00")
+                            </td>
+                            <td class="innerLast colwidth">
+                                @total.ToString("0,0.00")
+                            </td>
+                        </tr>
+                    }
+                    <tr style="background-color:lightgray">
+                        <td class="innerLast colwidth" colspan="6">
+                            <strong> Tồng tiền cần thanh toán</strong>
+                        </td>
+                        <td class="innerLast colwidth">
+                            <strong>@totalAll.ToString("0,0.00")</strong>
+                        </td>
+                    </tr>
                 </table>
-            <div style="clear:both"></div>
-            <hr style="width:100%" />
-            @if(@Model.Infor.STATUS == 2)
-            {
-                <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn"/>
-            }
-            @if (@Model.Infor.STATUS == 1)
+                <div style="clear:both"></div>
+                <hr style="width:100%" />
+                @if (@Model.Infor.STATUS == 2)
+                {
+                    <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn" />
+                }
+                @if (@Model.Infor.STATUS == 1)
 {
-    <input type="button" style="width:300px" value="Thu tiền" onclick="window.location.href='@Url.Action("Payment", "HoaDon", new { @id = @Model.Infor.MA_HOA_DON })'" />
+    <input type="button" id="paymentLast" style="width:100px" value="Thu tiền" onclick="window.location.href='@Url.Action("Payment", "HoaDon", new { @id = @Model.Infor.MA_HOA_DON })'" />
+                                    <input type="button" id="paymentAndExportLast" style="width:200px" value="Thu tiền & Xuất kho" />
+
 }
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
-        </fieldset>
+                <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
+</fieldset>
     </div>
 }
 
 
 <script type="text/javascript">
+    function formatNumberic() {
+        $('input.numberic').each(function () {
+            var $this = $(this);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
+        });
+    };
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    };
+
     $(document).ready(function () {
+        var total = $("#tongtien").val();
+        var totalPayment = $("#payMoney").val();
+        var totalDiscount = $("#ChiecKhau").val();
+        if (total - totalDiscount - totalPayment > 0) {
+            $("#debitMoney").val(total - totalDiscount - totalPayment);
+        }
+        else
+        {
+            $("#debitMoney").val(0);
+        }
+        $("#returnMoney").val(0);
+        formatNumberic();
+
         $("#paymentFirst").click(function () {
             var form = $("#ShowDetail");
             form.attr("action", "/HoaDon/Payment");
             form.submit();
         });
+    });
+
+    $(document).ready(function () {
+        formatNumberic();    
+           
+            $('input.numberic').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    return false;
+                }
+                else return true;
+
+            });
+            $('input.numberic').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+
+            $('#payMoney').keyup(function (event) {
+                var $this = $(this);
+                var total = $("#tongtien").val();
+                var totalDiscount = $("#ChiecKhau").val();
+                var amount = $this.val().replace(/,/gi, "");
+
+                var AmountWithCommas = (total - totalDiscount - amount);
+                if (AmountWithCommas < 0) {
+                    $("#debitMoney").val(0);
+                } else
+                {
+                    $("#returnMoney").val(0);
+                }
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                if (AmountWithCommas > 0) {
+                    var arParts = String(AmountWithCommas).split(DecimalSeparator);
+                    var intPart = arParts[0];
+                    var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                    if (decPart.length > 2) {
+                        decPart = (decPart + '00').substr(0, 2);
+                    }
+                    if (arParts.length > 1) {
+                        $("#debitMoney").val(num2 + DecimalSeparator + decPart);
+                    } else {
+                        $("#debitMoney").val(num2);
+                    }
+                    $("#returnMoney").val(0);
+                } else {
+                    AmountWithCommas = -1 * AmountWithCommas;
+                    var arParts = String(AmountWithCommas).split(DecimalSeparator);
+                    var intPart = arParts[0];
+                    var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                    if (decPart.length > 2) {
+                        decPart = (decPart + '00').substr(0, 2);
+                    }
+                    if (arParts.length > 1) {
+                        $("#returnMoney").val(num2 + DecimalSeparator + decPart);
+                    } else {
+                        $("#returnMoney").val(num2);
+                    }
+                    $("#debitMoney").val(0);
+                }
+                
+
+            });
+
+            $('input.numberic').bind("paste", function (e) {
+                e.preventDefault();
+            });
     });
 </script>
