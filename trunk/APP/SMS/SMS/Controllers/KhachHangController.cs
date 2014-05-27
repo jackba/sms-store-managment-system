@@ -276,14 +276,15 @@ namespace SMS.Controllers
             string note = Request.Form["note"];
             ViewBag.note = note;
             
-            
-            
-
             if (amount != 0 && returnDate != DateTime.MinValue)
             {                
                 var db = new SmsContext();
                 var donVitinh = db.KHACH_HANG.Find((int)khachHang.MA_KHACH_HANG);
                 donVitinh.NO_GOI_DAU = newDebit;
+                if (newDebit <= 0)
+                {
+                    donVitinh.NGAY_PHAT_SINH_NO = null;
+                }
                 donVitinh.ACTIVE = "A";
                 donVitinh.UPDATE_AT = DateTime.Now;
                 donVitinh.UPDATE_BY = (int)Session["UserId"];
@@ -331,7 +332,7 @@ namespace SMS.Controllers
                                   where s.ACTIVE == "A"
                                   select s).ToList<KHU_VUC>();
                 ViewBag.khuVucList = khuVucList;
-                DateTime fD = String.IsNullOrEmpty(fromDate)? DateTime.MinValue: DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime fD = String.IsNullOrEmpty(fromDate)? SystemConstant.MIN_DATE: DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 DateTime tD = String.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 var debitHist = (from s in ctx.KHACH_HANG_DEBIT_HIST
                                  join u1 in ctx.NGUOI_DUNG on s.MA_NHAN_VIEN_TH equals u1.MA_NGUOI_DUNG

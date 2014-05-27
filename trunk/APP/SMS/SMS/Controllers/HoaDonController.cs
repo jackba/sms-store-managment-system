@@ -204,8 +204,69 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult Payment(InvoicesModel model)
         {
-            var x = model.Infor.SO_TIEN_KHACH_TRA;
-            var y = model.Infor.SO_TIEN_NO_GOI_DAU;
+            var ctx = new SmsContext();
+            var invoice = ctx.HOA_DON.Find(model.Infor.MA_HOA_DON);
+            if (invoice != null && invoice.ACTIVE == "A")
+            {
+                invoice.SO_TIEN_KHACH_TRA = model.Infor.SO_TIEN_KHACH_TRA;
+                if (model.Infor.SO_TIEN_KHACH_TRA <= (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU))
+                {
+                    model.Infor.SO_TIEN_NO_GOI_DAU = (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU) - model.Infor.SO_TIEN_KHACH_TRA;
+                }
+                else
+                {
+                    model.Infor.SO_TIEN_KHACH_TRA = (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU);
+                    model.Infor.SO_TIEN_NO_GOI_DAU = 0;
+                }
+                
+                invoice.SO_TIEN_NO_GOI_DAU = model.Infor.SO_TIEN_NO_GOI_DAU;
+                invoice.STATUS = 2;
+                invoice.UPDATE_AT = DateTime.Now;
+                invoice.UPDATE_BY = (int)Session["UserId"];
+                invoice.MA_NHAN_VIEN_THU_TIEN = (int)Session["UserId"];
+                if(Convert.ToInt32(model.Infor.MA_KHACH_HANG) >0)
+                {
+                    var customer = ctx.KHACH_HANG.Find(Convert.ToInt32(model.Infor.MA_KHACH_HANG));
+                    if (customer != null && customer.ACTIVE == "A")
+                    {
+                        customer.DOANH_SO = customer.DOANH_SO + Convert.ToDecimal(model.Infor.TONG_TIEN) - Convert.ToDecimal(model.Infor.CHIEC_KHAU);
+                        if (model.Infor.SO_TIEN_NO_GOI_DAU > 0)
+                        {
+                            if (customer.NGAY_PHAT_SINH_NO == null)
+                            {
+                                customer.NGAY_PHAT_SINH_NO = DateTime.Now;
+                            }
+
+                            var DebitHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                            DebitHist.NO_TRUOC = Convert.ToDouble(customer.NO_GOI_DAU);
+                            DebitHist.NO_SAU = Convert.ToDouble(customer.NO_GOI_DAU) + model.Infor.SO_TIEN_NO_GOI_DAU;
+                            DebitHist.NGAY_PHAT_SINH = DateTime.Now;
+                            DebitHist.PHAT_SINH = -1*Convert.ToDouble(model.Infor.SO_TIEN_NO_GOI_DAU);
+                            DebitHist.MA_HOA_DON = model.Infor.MA_HOA_DON;
+                            DebitHist.MA_KHACH_HANG = customer.MA_KHACH_HANG;
+                            DebitHist.MA_NHAN_VIEN_TH = (int)Session["UserId"];
+                            DebitHist.ACTIVE = "A";
+                            DebitHist.UPDATE_AT = DateTime.Now;
+                            DebitHist.UPDATE_BY = (int)Session["UserId"];
+                            DebitHist.CREATE_AT = DateTime.Now;
+                            DebitHist.CREATE_BY = (int)Session["UserId"];
+                            ctx.KHACH_HANG_DEBIT_HIST.Add(DebitHist);
+                        }
+                        customer.NO_GOI_DAU = customer.NO_GOI_DAU + Convert.ToDecimal(model.Infor.SO_TIEN_NO_GOI_DAU);
+                        customer.UPDATE_AT = DateTime.Now;
+                        customer.UPDATE_BY = (int)Session["UserId"];
+                    }else
+                    {
+                        ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
+                        return View("../Home/Error");
+                    }
+                }
+                ctx.SaveChanges();
+            }else
+            {
+                ViewBag.Message = "Không tìm thấy  hóa đơn tương ứng.";
+                return View("../Home/Error");
+            }
             return View();
         }
         
@@ -359,7 +420,7 @@ namespace SMS.Controllers
             var infor = ctx.SP_GET_HOA_DON_INFO(model.Infor.MA_HOA_DON).FirstOrDefault();
             model.Infor = infor;
             model.detailList = detailList;
-            return View(model); 
+            return RedirectToAction("Index"); 
         }
     }
 }

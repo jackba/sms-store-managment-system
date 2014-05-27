@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -451,16 +451,16 @@ warning 6002: The table/view 'SMS.dbo.V_HOA_DON' does not have a primary key def
         <EntityType Name="V_HOA_DON">
           <Key>
             <PropertyRef Name="MA_HOA_DON" />
-            
+            <PropertyRef Name="MA_NHAN_VIEN_BAN" />
             <PropertyRef Name="TEN_NHAN_VIEN_BAN" />
-            
+            <PropertyRef Name="MA_NHAN_VIEN_THU_TIEN" />
             <PropertyRef Name="TEN_NV_THU_TIEN" />
-            
-            
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
             <PropertyRef Name="TEN_SAN_PHAM" />
-            
-            
-            
+            <PropertyRef Name="SO_LUONG" />
+            <PropertyRef Name="DON_GIA" />
+            <PropertyRef Name="PHAN_TRAM_CHIEC_KHAU" />
           </Key>
           <Property Name="MA_HOA_DON" Type="int" Nullable="false" />
           <Property Name="SO_HOA_DON" Type="varchar" MaxLength="30" />
@@ -1405,7 +1405,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__CREAT__251C81ED">
+        <Association Name="FK__SMS_MESSA__CREAT__14E61A24">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1417,7 +1417,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__ID_NG__2334397B">
+        <Association Name="FK__SMS_MESSA__ID_NG__12FDD1B2">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1429,7 +1429,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__ID_NH__24285DB4">
+        <Association Name="FK__SMS_MESSA__ID_NH__13F1F5EB">
           <End Role="NHOM_NGUOI_DUNG" Type="Self.NHOM_NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1441,7 +1441,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SMS_MESSA__UPDAT__2610A626">
+        <Association Name="FK__SMS_MESSA__UPDAT__15DA3E5D">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2260,19 +2260,19 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__CREAT__251C81ED" Association="Self.FK__SMS_MESSA__CREAT__251C81ED">
+          <AssociationSet Name="FK__SMS_MESSA__CREAT__14E61A24" Association="Self.FK__SMS_MESSA__CREAT__14E61A24">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NG__2334397B" Association="Self.FK__SMS_MESSA__ID_NG__2334397B">
+          <AssociationSet Name="FK__SMS_MESSA__ID_NG__12FDD1B2" Association="Self.FK__SMS_MESSA__ID_NG__12FDD1B2">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NH__24285DB4" Association="Self.FK__SMS_MESSA__ID_NH__24285DB4">
+          <AssociationSet Name="FK__SMS_MESSA__ID_NH__13F1F5EB" Association="Self.FK__SMS_MESSA__ID_NH__13F1F5EB">
             <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__UPDAT__2610A626" Association="Self.FK__SMS_MESSA__UPDAT__2610A626">
+          <AssociationSet Name="FK__SMS_MESSA__UPDAT__15DA3E5D" Association="Self.FK__SMS_MESSA__UPDAT__15DA3E5D">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
           </AssociationSet>
@@ -2353,7 +2353,8 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2704,6 +2705,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="SAN_PHAM1" Relationship="Self.FK__SAN_PHAM__UPDATE__3C69FB99" FromRole="NGUOI_DUNG" ToRole="SAN_PHAM" />
           <NavigationProperty Name="SMS_MASTER" Relationship="Self.FK__SMS_MASTE__CREAT__151B244E" FromRole="NGUOI_DUNG" ToRole="SMS_MASTER" />
           <NavigationProperty Name="SMS_MASTER1" Relationship="Self.FK__SMS_MASTE__UPDAT__160F4887" FromRole="NGUOI_DUNG" ToRole="SMS_MASTER" />
+          <NavigationProperty Name="SMS_MESSAGES" Relationship="Self.FK__SMS_MESSA__CREAT__14E61A24" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
+          <NavigationProperty Name="SMS_MESSAGES1" Relationship="Self.FK__SMS_MESSA__ID_NG__12FDD1B2" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
+          <NavigationProperty Name="SMS_MESSAGES2" Relationship="Self.FK__SMS_MESSA__UPDAT__15DA3E5D" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
           <NavigationProperty Name="TRA_HANG_NCC" Relationship="Self.FK__TRA_HANG___CREAT__5224328E" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC" />
           <NavigationProperty Name="TRA_HANG_NCC_CHI_TIET" Relationship="Self.FK__TRA_HANG___CREAT__5E8A0973" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC_CHI_TIET" />
           <NavigationProperty Name="TRA_HANG_NCC1" Relationship="Self.FK__TRA_HANG___NGUOI__51300E55" FromRole="NGUOI_DUNG" ToRole="TRA_HANG_NCC" />
@@ -2715,9 +2719,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__XUAT_KHO__CREATE__59FA5E80" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO1" Relationship="Self.FK__XUAT_KHO__MA_NHA__59063A47" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO2" Relationship="Self.FK__XUAT_KHO__UPDATE__5AEE82B9" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
-          <NavigationProperty Name="SMS_MESSAGES" Relationship="SmsModel.FK__SMS_MESSA__CREAT__1D7B6025" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
-          <NavigationProperty Name="SMS_MESSAGES1" Relationship="SmsModel.FK__SMS_MESSA__ID_NG__1B9317B3" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
-          <NavigationProperty Name="SMS_MESSAGES2" Relationship="SmsModel.FK__SMS_MESSA__UPDAT__1E6F845E" FromRole="NGUOI_DUNG" ToRole="SMS_MESSAGES" />
         </EntityType>
         <EntityType Name="NHA_CUNG_CAP">
           <Key>
@@ -2799,7 +2800,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__NHOM_NGUO__CREAT__0CBAE877" FromRole="NHOM_NGUOI_DUNG" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__NHOM_NGUO__UPDAT__0DAF0CB0" FromRole="NHOM_NGUOI_DUNG" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="PHAN_QUYEN" Relationship="Self.FK__PHAN_QUYE__MA_NH__078C1F06" FromRole="NHOM_NGUOI_DUNG" ToRole="PHAN_QUYEN" />
-          <NavigationProperty Name="SMS_MESSAGES" Relationship="SmsModel.FK__SMS_MESSA__ID_NH__1C873BEC" FromRole="NHOM_NGUOI_DUNG" ToRole="SMS_MESSAGES" />
+          <NavigationProperty Name="SMS_MESSAGES" Relationship="Self.FK__SMS_MESSA__ID_NH__13F1F5EB" FromRole="NHOM_NGUOI_DUNG" ToRole="SMS_MESSAGES" />
         </EntityType>
         <EntityType Name="PHAN_QUYEN">
           <Key>
@@ -2874,6 +2875,25 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__SMS_MASTE__CREAT__151B244E" FromRole="SMS_MASTER" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__SMS_MASTE__UPDAT__160F4887" FromRole="SMS_MASTER" ToRole="NGUOI_DUNG" />
+        </EntityType>
+        <EntityType Name="SMS_MESSAGES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_NGUOI_GUI" Type="Int32" />
+          <Property Name="ID_NHOM_NGUOI_NHAN" Type="Int32" />
+          <Property Name="NGAY_GUI" Type="DateTime" Precision="0" />
+          <Property Name="NOI_DUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATE_BY" Type="Int32" />
+          <Property Name="UPDATE_BY" Type="Int32" />
+          <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__SMS_MESSA__CREAT__14E61A24" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__SMS_MESSA__ID_NG__12FDD1B2" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__SMS_MESSA__UPDAT__15DA3E5D" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="Self.FK__SMS_MESSA__ID_NH__13F1F5EB" FromRole="SMS_MESSAGES" ToRole="NHOM_NGUOI_DUNG" />
         </EntityType>
         <EntityType Name="TRA_HANG">
           <Key>
@@ -2970,9 +2990,16 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <EntityType Name="V_HOA_DON">
           <Key>
             <PropertyRef Name="MA_HOA_DON" />
+            <PropertyRef Name="MA_NHAN_VIEN_BAN" />
             <PropertyRef Name="TEN_NHAN_VIEN_BAN" />
+            <PropertyRef Name="MA_NHAN_VIEN_THU_TIEN" />
             <PropertyRef Name="TEN_NV_THU_TIEN" />
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
             <PropertyRef Name="TEN_SAN_PHAM" />
+            <PropertyRef Name="SO_LUONG" />
+            <PropertyRef Name="DON_GIA" />
+            <PropertyRef Name="PHAN_TRAM_CHIEC_KHAU" />
           </Key>
           <Property Name="MA_HOA_DON" Type="Int32" Nullable="false" />
           <Property Name="SO_HOA_DON" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -3895,6 +3922,42 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__SMS_MESSA__CREAT__14E61A24">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="SMS_MESSAGES">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMS_MESSA__ID_NG__12FDD1B2">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="SMS_MESSAGES">
+              <PropertyRef Name="ID_NGUOI_GUI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMS_MESSA__UPDAT__15DA3E5D">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="SMS_MESSAGES">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__TRA_HANG___CREAT__5224328E">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC" Type="Self.TRA_HANG_NCC" Multiplicity="*" />
@@ -4087,6 +4150,18 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__SMS_MESSA__ID_NH__13F1F5EB">
+          <End Role="NHOM_NGUOI_DUNG" Type="Self.NHOM_NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="SMS_MESSAGES" Type="Self.SMS_MESSAGES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHOM_NGUOI_DUNG">
+              <PropertyRef Name="MA_NHOM" />
+            </Principal>
+            <Dependent Role="SMS_MESSAGES">
+              <PropertyRef Name="ID_NHOM_NGUOI_NHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__TRA_HANG___MA_SA__5D95E53A">
           <End Role="SAN_PHAM" Type="Self.SAN_PHAM" Multiplicity="0..1" />
           <End Role="TRA_HANG_NCC_CHI_TIET" Type="Self.TRA_HANG_NCC_CHI_TIET" Multiplicity="*" />
@@ -4157,6 +4232,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySet Name="PHAN_QUYEN" EntityType="Self.PHAN_QUYEN" />
           <EntitySet Name="SAN_PHAM" EntityType="Self.SAN_PHAM" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" />
+          <EntitySet Name="SMS_MESSAGES" EntityType="Self.SMS_MESSAGES" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" />
@@ -4447,6 +4523,18 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="SMS_MASTER" EntitySet="SMS_MASTER" />
           </AssociationSet>
+          <AssociationSet Name="FK__SMS_MESSA__CREAT__14E61A24" Association="Self.FK__SMS_MESSA__CREAT__14E61A24">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMS_MESSA__ID_NG__12FDD1B2" Association="Self.FK__SMS_MESSA__ID_NG__12FDD1B2">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMS_MESSA__UPDAT__15DA3E5D" Association="Self.FK__SMS_MESSA__UPDAT__15DA3E5D">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
+          </AssociationSet>
           <AssociationSet Name="FK__TRA_HANG___CREAT__5224328E" Association="Self.FK__TRA_HANG___CREAT__5224328E">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
@@ -4511,6 +4599,10 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
             <End Role="PHAN_QUYEN" EntitySet="PHAN_QUYEN" />
           </AssociationSet>
+          <AssociationSet Name="FK__SMS_MESSA__ID_NH__13F1F5EB" Association="Self.FK__SMS_MESSA__ID_NH__13F1F5EB">
+            <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
+            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
+          </AssociationSet>
           <AssociationSet Name="FK__TRA_HANG___MA_SA__5D95E53A" Association="Self.FK__TRA_HANG___MA_SA__5D95E53A">
             <End Role="SAN_PHAM" EntitySet="SAN_PHAM" />
             <End Role="TRA_HANG_NCC_CHI_TIET" EntitySet="TRA_HANG_NCC_CHI_TIET" />
@@ -4534,7 +4626,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GET_KHACH_HANG_ALERT">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SmsModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -4570,7 +4662,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="USER_FULL_NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_DON_VI_TINH" ReturnType="Collection(SmsModel.SP_GET_DON_VI_TINH_Result)">
-          <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -4589,6 +4681,19 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
             <Parameter Name="STATUS" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_HOA_DON_CHUA_TT" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_CHUA_TT_Result)">
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
+            <Parameter Name="MA_NHAN_VIEN_BAN" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_BAN" Mode="In" Type="String" />
+            <Parameter Name="MA_NHAN_VIEN_TT" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_HOA_DON_INFO" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_INFO_Result)">
+            <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
@@ -4598,7 +4703,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_NHA_CC" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_Result)">
-          <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
+            <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -4606,7 +4711,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY_BY_STORE_ID" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_BY_STORE_ID_Result)">
-          <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_NHAP_XUAT" ReturnType="Collection(SmsModel.SP_GET_NHAP_XUAT_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -4616,17 +4721,17 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_ROLE_OF_USER" ReturnType="Collection(SmsModel.SP_GET_ROLE_OF_USER_Result)">
-          <Parameter Name="USER_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USER_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO" />
           <FunctionImport Name="SP_GET_TON_KHO_ALERT">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_ALL">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_BY_ID">
-          <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
+            <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_VALUE_ALL_HOA_DON" ReturnType="Collection(SmsModel.SP_GET_VALUE_ALL_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -4673,36 +4778,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GET_HOA_DON_INFO" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_INFO_Result)">
-          <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <EntitySet Name="SMS_MESSAGES" EntityType="SmsModel.SMS_MESSAGES" />
-          <AssociationSet Name="FK__SMS_MESSA__CREAT__1D7B6025" Association="SmsModel.FK__SMS_MESSA__CREAT__1D7B6025">
-            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
-            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NG__1B9317B3" Association="SmsModel.FK__SMS_MESSA__ID_NG__1B9317B3">
-            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
-            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__UPDAT__1E6F845E" Association="SmsModel.FK__SMS_MESSA__UPDAT__1E6F845E">
-            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
-            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SMS_MESSA__ID_NH__1C873BEC" Association="SmsModel.FK__SMS_MESSA__ID_NH__1C873BEC">
-            <End Role="NHOM_NGUOI_DUNG" EntitySet="NHOM_NGUOI_DUNG" />
-            <End Role="SMS_MESSAGES" EntitySet="SMS_MESSAGES" />
-          </AssociationSet>
-          <FunctionImport Name="SP_GET_HOA_DON_CHUA_TT" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_CHUA_TT_Result)">
-            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
-            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
-            <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
-            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
-            <Parameter Name="MA_NHAN_VIEN_BAN" Mode="In" Type="Int32" />
-            <Parameter Name="TEN_NV_BAN" Mode="In" Type="String" />
-            <Parameter Name="MA_NHAN_VIEN_TT" Mode="In" Type="Int32" />
-            <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
@@ -4757,16 +4832,16 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="true" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="false" />
           <Property Type="String" Name="TEN_NHAN_VIEN_BAN" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
           <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
           <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
-          <Property Type="Int32" Name="MA_NHAN_VIEN_THU_TIEN" Nullable="true" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_THU_TIEN" Nullable="false" />
           <Property Type="String" Name="TEN_NV_THU_TIEN" Nullable="false" MaxLength="50" />
           <Property Type="Int16" Name="STATUS" Nullable="true" />
-          <Property Type="Double" Name="SO_TIEN_KHACH_TRA" Nullable="true" />
-          <Property Type="Double" Name="SO_TIEN_NO_GOI_DAU" Nullable="true" />
+          <Property Type="Double" Name="SO_TIEN_KHACH_TRA" Nullable="false" />
+          <Property Type="Double" Name="SO_TIEN_NO_GOI_DAU" Nullable="false" />
           <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_GET_HOA_DON_BH_Result">
@@ -4784,6 +4859,38 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_TIEN_NO_GOI_DAU" Nullable="true" />
           <Property Type="Int32" Name="MA_NHAN_VIEN_THU_TIEN" Nullable="true" />
           <Property Type="String" Name="TEN_NV_TT" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_HOA_DON_CHUA_TT_Result">
+          <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
+          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
+          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="false" />
+          <Property Type="String" Name="TEN_NHAN_VIEN_BAN" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
+          <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
+          <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
+          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
+          <Property Type="Double" Name="CHIEC_KHAU" Nullable="false" />
+          <Property Type="Double" Name="THUC_THU" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_HOA_DON_INFO_Result">
+          <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
+          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
+          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="true" />
+          <Property Type="String" Name="TEN_NGUOI_BAN" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
+          <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
+          <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
+          <Property Type="Int16" Name="STATUS" Nullable="true" />
+          <Property Type="Double" Name="SO_TIEN_KHACH_TRA" Nullable="true" />
+          <Property Type="Double" Name="SO_TIEN_NO_GOI_DAU" Nullable="true" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_THU_TIEN" Nullable="true" />
+          <Property Type="String" Name="TEN_NV_TT" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
+          <Property Type="Double" Name="CHIEC_KHAU" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_GET_IMPORT_Result">
           <Property Type="Int32" Name="MA_NHAP_KHO" Nullable="false" />
@@ -4852,103 +4959,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
           <Property Type="Double" Name="VALUE" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="SP_GET_HOA_DON_INFO_Result">
-          <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
-          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
-          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
-          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="true" />
-          <Property Type="String" Name="TEN_NGUOI_BAN" Nullable="false" MaxLength="50" />
-          <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
-          <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
-          <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
-          <Property Type="Int16" Name="STATUS" Nullable="true" />
-          <Property Type="Double" Name="SO_TIEN_KHACH_TRA" Nullable="true" />
-          <Property Type="Double" Name="SO_TIEN_NO_GOI_DAU" Nullable="true" />
-          <Property Type="Int32" Name="MA_NHAN_VIEN_THU_TIEN" Nullable="true" />
-          <Property Type="String" Name="TEN_NV_TT" Nullable="true" MaxLength="50" />
-        </ComplexType>
-        <EntityType Name="SMS_MESSAGES">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_NGUOI_GUI" Type="Int32" />
-          <Property Name="ID_NHOM_NGUOI_NHAN" Type="Int32" />
-          <Property Name="NGAY_GUI" Type="DateTime" Precision="0" />
-          <Property Name="NOI_DUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CREATE_BY" Type="Int32" />
-          <Property Name="UPDATE_BY" Type="Int32" />
-          <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
-          <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
-          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="NGUOI_DUNG" Relationship="SmsModel.FK__SMS_MESSA__CREAT__1D7B6025" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
-          <NavigationProperty Name="NGUOI_DUNG1" Relationship="SmsModel.FK__SMS_MESSA__ID_NG__1B9317B3" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
-          <NavigationProperty Name="NGUOI_DUNG2" Relationship="SmsModel.FK__SMS_MESSA__UPDAT__1E6F845E" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
-          <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="SmsModel.FK__SMS_MESSA__ID_NH__1C873BEC" FromRole="SMS_MESSAGES" ToRole="NHOM_NGUOI_DUNG" />
-        </EntityType>
-        <Association Name="FK__SMS_MESSA__CREAT__1D7B6025">
-          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
-          <End Type="SmsModel.SMS_MESSAGES" Role="SMS_MESSAGES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NGUOI_DUNG">
-              <PropertyRef Name="MA_NGUOI_DUNG" />
-            </Principal>
-            <Dependent Role="SMS_MESSAGES">
-              <PropertyRef Name="CREATE_BY" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__SMS_MESSA__ID_NG__1B9317B3">
-          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
-          <End Type="SmsModel.SMS_MESSAGES" Role="SMS_MESSAGES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NGUOI_DUNG">
-              <PropertyRef Name="MA_NGUOI_DUNG" />
-            </Principal>
-            <Dependent Role="SMS_MESSAGES">
-              <PropertyRef Name="ID_NGUOI_GUI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__SMS_MESSA__UPDAT__1E6F845E">
-          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
-          <End Type="SmsModel.SMS_MESSAGES" Role="SMS_MESSAGES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NGUOI_DUNG">
-              <PropertyRef Name="MA_NGUOI_DUNG" />
-            </Principal>
-            <Dependent Role="SMS_MESSAGES">
-              <PropertyRef Name="UPDATE_BY" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__SMS_MESSA__ID_NH__1C873BEC">
-          <End Type="SmsModel.NHOM_NGUOI_DUNG" Role="NHOM_NGUOI_DUNG" Multiplicity="0..1" />
-          <End Type="SmsModel.SMS_MESSAGES" Role="SMS_MESSAGES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NHOM_NGUOI_DUNG">
-              <PropertyRef Name="MA_NHOM" />
-            </Principal>
-            <Dependent Role="SMS_MESSAGES">
-              <PropertyRef Name="ID_NHOM_NGUOI_NHAN" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <ComplexType Name="SP_GET_HOA_DON_CHUA_TT_Result">
-          <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
-          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
-          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
-          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="false" />
-          <Property Type="String" Name="TEN_NHAN_VIEN_BAN" Nullable="false" MaxLength="50" />
-          <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
-          <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
-          <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
-          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
-          <Property Type="Double" Name="CHIEC_KHAU" Nullable="false" />
-          <Property Type="Double" Name="THUC_THU" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5336,6 +5346,22 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SMS_MESSAGES">
+            <EntityTypeMapping TypeName="SmsModel.SMS_MESSAGES">
+              <MappingFragment StoreEntitySet="SMS_MESSAGES">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_NGUOI_GUI" ColumnName="ID_NGUOI_GUI" />
+                <ScalarProperty Name="ID_NHOM_NGUOI_NHAN" ColumnName="ID_NHOM_NGUOI_NHAN" />
+                <ScalarProperty Name="NGAY_GUI" ColumnName="NGAY_GUI" />
+                <ScalarProperty Name="NOI_DUNG" ColumnName="NOI_DUNG" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TRA_HANG">
             <EntityTypeMapping TypeName="SmsModel.TRA_HANG">
               <MappingFragment StoreEntitySet="TRA_HANG">
@@ -5410,7 +5436,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySetMapping Name="V_HOA_DON">
             <EntityTypeMapping TypeName="SmsModel.V_HOA_DON">
               <MappingFragment StoreEntitySet="V_HOA_DON">
-                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
@@ -5431,6 +5456,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
                 <ScalarProperty Name="DON_GIA" ColumnName="DON_GIA" />
                 <ScalarProperty Name="PHAN_TRAM_CHIEC_KHAU" ColumnName="PHAN_TRAM_CHIEC_KHAU" />
                 <ScalarProperty Name="MA_KHO_XUAT" ColumnName="MA_KHO_XUAT" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5610,6 +5636,46 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_HOA_DON_CHUA_TT" FunctionName="SmsModel.Store.SP_GET_HOA_DON_CHUA_TT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_HOA_DON_CHUA_TT_Result">
+                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
+                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
+                <ScalarProperty Name="TEN_NHAN_VIEN_BAN" ColumnName="TEN_NHAN_VIEN_BAN" />
+                <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
+                <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />
+                <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
+                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
+                <ScalarProperty Name="CHIEC_KHAU" ColumnName="CHIEC_KHAU" />
+                <ScalarProperty Name="THUC_THU" ColumnName="THUC_THU" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_HOA_DON_INFO" FunctionName="SmsModel.Store.SP_GET_HOA_DON_INFO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_HOA_DON_INFO_Result">
+                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
+                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
+                <ScalarProperty Name="TEN_NGUOI_BAN" ColumnName="TEN_NGUOI_BAN" />
+                <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
+                <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />
+                <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
+                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
+                <ScalarProperty Name="MA_NHAN_VIEN_THU_TIEN" ColumnName="MA_NHAN_VIEN_THU_TIEN" />
+                <ScalarProperty Name="TEN_NV_TT" ColumnName="TEN_NV_TT" />
+                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
+                <ScalarProperty Name="CHIEC_KHAU" ColumnName="CHIEC_KHAU" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_GET_IMPORT" FunctionName="SmsModel.Store.SP_GET_IMPORT">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_GET_IMPORT_Result">
@@ -5721,60 +5787,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_IMPORT_REPORTER_SUM" FunctionName="SmsModel.Store.SP_IMPORT_REPORTER_SUM" />
           <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SmsModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
-          <FunctionImportMapping FunctionImportName="SP_GET_HOA_DON_INFO" FunctionName="SmsModel.Store.SP_GET_HOA_DON_INFO">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.SP_GET_HOA_DON_INFO_Result">
-                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
-                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
-                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
-                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
-                <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
-                <ScalarProperty Name="TEN_NGUOI_BAN" ColumnName="TEN_NGUOI_BAN" />
-                <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
-                <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />
-                <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
-                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
-                <ScalarProperty Name="MA_NHAN_VIEN_THU_TIEN" ColumnName="MA_NHAN_VIEN_THU_TIEN" />
-                <ScalarProperty Name="TEN_NV_TT" ColumnName="TEN_NV_TT" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="SMS_MESSAGES">
-            <EntityTypeMapping TypeName="SmsModel.SMS_MESSAGES">
-              <MappingFragment StoreEntitySet="SMS_MESSAGES">
-                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
-                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
-                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
-                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
-                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
-                <ScalarProperty Name="NOI_DUNG" ColumnName="NOI_DUNG" />
-                <ScalarProperty Name="NGAY_GUI" ColumnName="NGAY_GUI" />
-                <ScalarProperty Name="ID_NHOM_NGUOI_NHAN" ColumnName="ID_NHOM_NGUOI_NHAN" />
-                <ScalarProperty Name="ID_NGUOI_GUI" ColumnName="ID_NGUOI_GUI" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SP_GET_HOA_DON_CHUA_TT" FunctionName="SmsModel.Store.SP_GET_HOA_DON_CHUA_TT">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.SP_GET_HOA_DON_CHUA_TT_Result">
-                <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
-                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
-                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
-                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
-                <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
-                <ScalarProperty Name="TEN_NHAN_VIEN_BAN" ColumnName="TEN_NHAN_VIEN_BAN" />
-                <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
-                <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />
-                <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
-                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
-                <ScalarProperty Name="CHIEC_KHAU" ColumnName="CHIEC_KHAU" />
-                <ScalarProperty Name="THUC_THU" ColumnName="THUC_THU" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

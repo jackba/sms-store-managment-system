@@ -27,5 +27,7 @@ namespace SMS.Models
         public Nullable<double> SO_TIEN_NO_GOI_DAU { get; set; }
         public Nullable<int> MA_NHAN_VIEN_THU_TIEN { get; set; }
         public string TEN_NV_TT { get; set; }
+        public double TONG_TIEN { get; set; }
+        public double CHIEC_KHAU { get; set; }
     }
 }
