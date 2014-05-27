@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/960.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="../src/css/print-preview.css" type="text/css" media="screen">
+    <script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+    <script src="../src/jquery.print-preview.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function() {
+            /*
+             * Initialise example carousel
+             */
+                        
+            /*
+             * Initialise print preview plugin
+             */
+            // Add link for print preview and intialise
+			$("#feature > div").scrollable({interval: 2000}).autoscroll();
+            $("#printpreview").printPreview();
+            
+            // Add keybinding (not recommended for production use)
+            $(document).bind('keydown', function(e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 80 && !$('#print-modal').length) {
+                    $.printPreview.loadPrintPreview();
+                    return false;
+                }            
+            });
+        });
+    </script>
+	
+	<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+</style>
+
+
+</head>
+
+
+
+
+<body>
+ <div id="feature">
+<h1>My First Heading</h1>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+<p>
+My first paragraph.
+<br/>
+With HTML you can create your own Web site.
+<br/>
+This tutorial teaches you everything about HTML.
+<br/>
+HTML is easy to learn - You will enjoy it.
+</p>
+</div>
+<table style="width:300px">
+<tr>
+  <td>Jill</td>
+  <td>Smith</td>		
+  <td>50</td>
+</tr>
+<tr>
+  <td>Eve</td>
+  <td>Jackson</td>		
+  <td>94</td>
+</tr>
+<tr>
+  <td>John</td>
+  <td>Doe</td>		
+  <td>80</td>
+</tr>
+</table>
+
+<div >
+        <div id="nav">
+            <h2>Consectetur adipisicing</h2>
+            <ul>
+                <li><a href="http://designfestival.com">Lorem</a></li>
+                <li><a href="http://designfestival.com">Ipsum dollar</a></li>
+                <li><a href="http://designfestival.com">Sit amet consectetur</a></li>
+                <li><a href="http://designfestival.com">Sed do eiusmod</a></li>
+                <li><a href="http://designfestival.com">Tempor incididunt</a></li>
+            </ul>
+			<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+			<p>
+<br >
+ <a class="" id = "printpreview" name = "printpreview">Print this page</a>
+</p>
+        </div>
+        
+        
+</div>
+</body>
+</html>
