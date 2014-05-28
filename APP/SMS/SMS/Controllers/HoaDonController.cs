@@ -270,7 +270,7 @@ namespace SMS.Controllers
             return View();
         }
         
-        public ActionResult ShowDetail(int id)
+        public ActionResult ShowDetail(int id, int? flg )
         {
             var ctx = new SmsContext();
             var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
@@ -278,6 +278,7 @@ namespace SMS.Controllers
             InvoicesModel model = new InvoicesModel();
             model.Infor = invoiceInfor;
             model.detailList = detailList;
+            ViewBag.Flg = flg;
             return View(model);
         }
 

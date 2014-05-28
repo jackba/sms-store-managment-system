@@ -182,8 +182,16 @@
                 {
                     <input type="submit" style="width:300px" value="Cấp quyền thay đổi hóa đơn" />
                 }
-                <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
-                <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+                @if ((int)ViewBag.Flg == 1)
+                {
+                    <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />    
+                }
+                else
+                {
+                    <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Collection", "HoaDon")'" />
+                }
+                
+            <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                     <tr>
                         <td class='inner colwidth head ' width="5%;">
                             STT
@@ -268,7 +276,14 @@
                                     <input type="button" id="paymentAndExportLast" style="width:200px" value="Thu tiền & Xuất kho" />
 
 }
-                <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
+ @if ((int)ViewBag.Flg == 1)
+{
+    <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />
+}
+else
+{
+    <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Collection", "HoaDon")'" />
+}
 </fieldset>
     </div>
 }

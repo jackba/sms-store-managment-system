@@ -34,7 +34,7 @@
                 }
                 <tr class="inner column-hscroll alignCenter">
                     <td class="inner colwidth">
-                        <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module">
+                        <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON , flg = 2})" class="button-module">
                             @dbHist.SO_HOA_DON
                         </a>
                     </td>
@@ -73,7 +73,7 @@
                         @{
                 if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"])
                 {
-                    <a href="@Url.Action("Delete", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module" onclick="return deleteSubmit()">
+                    <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON, flg = 2 })" class="button-module">
                         <img width="16" height="16" alt="edit" src="~/Content/images/charge.png"></img>
                     </a>
                 }
