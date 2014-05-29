@@ -1,0 +1,55 @@
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "NHẬP KHO";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div class="grid_7">
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP - CHUYỂN KHO</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP - TRẢ HÀNG</span>
+    </a>
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <span>NHẬP - KIỂM KHO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("Index", "Import")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Enter.png"></img>
+        <span>DANH SÁCH HÓA ĐƠN NHẬP KHO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ImportRepoter", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Enter.png"></img>
+        <span>BÁO CÁO NHẬP KHO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ImportRepoterDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Detail.png"></img>
+        <span>BÁO CÁO NHẬP KHO - CHI TIẾT</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ImExDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/import-export-icon.png"></img>
+        <span>BÁO CÁO XUẤT - NHẬP</span>
+    </a>
+</div>

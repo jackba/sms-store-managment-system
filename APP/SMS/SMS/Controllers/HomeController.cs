@@ -18,6 +18,24 @@ namespace SMS.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Export()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Return()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
             return View();

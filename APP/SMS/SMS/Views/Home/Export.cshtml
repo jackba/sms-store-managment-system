@@ -1,0 +1,51 @@
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "QUẢN LÝ KHO - XUẤT KHO";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div class="grid_7">
+
+    <a class="dashboard-module" href="@Url.Action("ExportReport", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Export.jpg"></img>
+        <span>XUẤT KHO - BÁN LẺ</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ExportReport", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Export.jpg"></img>
+        <span>XUẤT CHUYỂN KHO</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ExportReport", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Export.jpg"></img>
+        <span>XUẤT HỦY</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ExportReport", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Export.jpg"></img>
+        <span>BÁO CÁO XUẤT KHO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ExportReportDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/export_icon.jpg"></img>
+        <span>BÁO CÁO XUẤT KHO - CHI TIẾT</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ImExDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/import-export-icon.png"></img>
+        <span>BÁO CÁO XUẤT - NHẬP</span>
+    </a>
+</div>
