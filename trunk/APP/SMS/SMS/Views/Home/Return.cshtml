@@ -1,0 +1,38 @@
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "QUẢN LÝ KHO - XỬ LÝ HÀNG TRẢ";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div class="grid_7">
+    <a class="dashboard-module" href="@Url.Action("Index", "Kho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/storage.png"></img>
+        <span>NHẬP LẠI HÀNG TRẢ</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("Warning", "SanPham")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Warning.png"></img>
+        <span>LẬP PHIẾU TRẢ HÀNG - NHÀ CUNG CẤP</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("Warning", "SanPham")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Warning.png"></img>
+        <span>XUẤT TRẢ HÀNG - NHÀ CUNG CẤP</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("Inventory", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Invientory.jpg"></img>
+        <span>BÁO CÁO TRẢ HÀNG</span>
+    </a>
+</div>

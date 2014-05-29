@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using SMS.App_Start;
 using SMS.Models;
 using PagedList;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace SMS.Controllers
 {
@@ -202,6 +204,54 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        public ActionResult PaymentAndExport(InvoicesModel model)
+        {
+            var ctx = new SmsContext();
+            var InvoiceId = new SqlParameter
+            {
+                ParameterName = "MA_HOA_DON",
+                Value = Convert.ToInt32(model.Infor.MA_HOA_DON)
+            };
+            var UserId = new SqlParameter
+            {
+                ParameterName = "MA_NHAN_VIEN_THUC_HIEN",
+                Value = Convert.ToInt32(Session["UserId"])
+            };
+            var TotalPay = new SqlParameter
+            {
+                ParameterName = "SO_TIEN_KHACH_TRA",
+                Value = Convert.ToDouble(model.Infor.SO_TIEN_KHACH_TRA)
+            };
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VALUE",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+
+            ctx.Database.CommandTimeout = 300;
+            var tonkho = ctx.Database.ExecuteSqlCommand("exec SP_THU_TIEN_XUAT_KHO @MA_HOA_DON, @MA_NHAN_VIEN_THUC_HIEN, @SO_TIEN_KHACH_TRA , @RETURN_VALUE OUT",
+                InvoiceId,
+                UserId,
+                TotalPay,
+                returnValue
+                );
+            int returnVal = Convert.ToInt32(returnValue.Value);
+            if (returnVal == 0)
+            {
+                ViewBag.Message = "Không đủ số lượng để xuất kho. Vui lòng kiểm tra lại hóa đơn.";
+                ViewBag.Status = 0;
+                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = 1, @status = 0 });
+            }
+            else if (returnVal == -1)
+            {
+                ViewBag.Message = "Hóa đơn đã được thu tiền. Không thể thu tiền hóa đơn này";
+                ViewBag.Status = -1;
+                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = 1, @status = -1 });
+            }
+            return View();
+        }
+        [HttpPost]
         public ActionResult Payment(InvoicesModel model)
         {
             var ctx = new SmsContext();
@@ -270,7 +320,7 @@ namespace SMS.Controllers
             return View();
         }
         
-        public ActionResult ShowDetail(int id, int? flg )
+        public ActionResult ShowDetail(int id, int? flg, int? status )
         {
             var ctx = new SmsContext();
             var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
@@ -279,6 +329,16 @@ namespace SMS.Controllers
             model.Infor = invoiceInfor;
             model.detailList = detailList;
             ViewBag.Flg = flg;
+            if (status == 0)
+            {
+                ViewBag.Message = "Không đủ số lượng để xuất kho. Vui lòng kiểm tra lại hóa đơn.";
+                ViewBag.Status = 0;
+            }
+            else if (status == -1)
+            {
+                ViewBag.Message = "Hóa đơn đã được thu tiền. Không thể thu tiền hóa đơn này";
+                ViewBag.Status = -1;
+            }
             return View(model);
         }
 

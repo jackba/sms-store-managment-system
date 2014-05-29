@@ -9,6 +9,8 @@
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
 
 <h2>Chi tiết hóa đơn bán hàng</h2>
+<div style="color:red">@ViewBag.Message </div>
+<div style="color:blue">@ViewBag.Info </div>
 <hr style="width:100%" />
 @using (Html.BeginForm("ShowDetail", "HoaDon", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
 {
@@ -339,6 +341,15 @@ else
             form.attr("action", "/HoaDon/Payment");
             form.submit();
         });
+
+        $("#paymentAndExportFirst").click(function () {
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/PaymentAndExport");
+            form.submit();
+        });
+
+        
+
     });
 
     $(document).ready(function () {

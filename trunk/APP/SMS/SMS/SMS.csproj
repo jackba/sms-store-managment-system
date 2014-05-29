@@ -642,6 +642,10 @@
     <Content Include="Views\HoaDon\CollectionPartialView.cshtml" />
     <Content Include="Views\Home\SmsMessage.cshtml" />
     <Content Include="Views\HoaDon\Payment.cshtml" />
+    <Content Include="Views\HoaDon\PaymentAndExport.cshtml" />
+    <Content Include="Views\Home\Import.cshtml" />
+    <Content Include="Views\Home\Export.cshtml" />
+    <Content Include="Views\Home\Return.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
