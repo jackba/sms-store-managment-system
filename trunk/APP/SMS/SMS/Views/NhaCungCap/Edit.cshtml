@@ -1,8 +1,14 @@
 ﻿@model SMS.Models.NHA_CUNG_CAP
 
 @{
-    ViewBag.Title = "Thêm mới nhà cung cấp";
+    ViewBag.Title = "Thay đổi thông tin nhà cung cấp";
 }
+<div style="float:left; font-family:'Times New Roman'; font-size:18px; padding-bottom:10px; padding-top:10px;">
+    <a href="@Url.Action("QuanTri", "Home")"> Quản trị </a> > <a href="@Url.Action("Index", "NhaCungCap")"> Danh sách nhà cung cấp </a>  > Thay đổi thông tin nhà cung cấp
+</div>
+<hr style="width:100%" />
+<h2> @ViewBag.Title</h2>
+<hr style="width:100%" />
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
@@ -51,7 +57,7 @@
             <div>
                 <input type="submit" style="width:100px" value="Lưu" />
                 <span> </span>
-                <input type="button" style="width:100px" value="Làm lại" onclick="reset()" />
+                <input type="button" style="width:100px" value="Quay lại" onclick="window.location.href='@Url.Action("Index","NhaCungCap")'" />
             </div>
         </fieldset>
     </div>
