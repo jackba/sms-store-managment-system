@@ -16,7 +16,67 @@ namespace SMS.Controllers
         // GET: /Export/
 
 
-        
+        [HttpPost]
+        public ActionResult Export(ExportModel model)
+        {
+            var ctx = new SmsContext();
+
+            var storeId = new SqlParameter
+            {
+                ParameterName = "MA_KHO",
+                Value = Convert.ToInt32(model.storeId)
+            };
+
+            var InvoiceId = new SqlParameter
+            {
+                ParameterName = "MA_HOA_DON",
+                Value = Convert.ToInt32(model.Infor.MA_HOA_DON)
+            };
+            var UserId = new SqlParameter
+            {
+                ParameterName = "MA_NHAN_VIEN_THUC_HIEN",
+                Value = Convert.ToInt32(Session["UserId"])
+            };
+            var customerName = new SqlParameter
+            {
+                ParameterName = "TEN_KHACH_HANG",
+                Value = model.Infor.TEN_KHACH_HANG
+            };
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VALUE",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+
+            ctx.Database.CommandTimeout = 300;
+            var export = ctx.Database.ExecuteSqlCommand("exec SP_SALE_EXPORT @MA_KHO, @MA_HOA_DON, @MA_NHAN_VIEN_THUC_HIEN, @TEN_KHACH_HANG , @RETURN_VALUE OUT",
+                storeId,
+                InvoiceId,
+                UserId,
+                customerName,
+                returnValue
+             );
+            
+            int returnVal = Convert.ToInt32(returnValue.Value);
+
+            if(returnVal == -1)
+            {
+                return RedirectToAction("Index", new { @message = "Không thể xuất kho hóa đơn này. Lý do: có thể hóa đơn đã được xuất kho, hay đã bị hủy." });
+            }
+            else if (returnVal == 0)
+            {
+                ViewBag.Message = "Không đủ số lượng để xuất kho";
+            }else
+            {
+                return RedirectToAction("Index", new { @messageInfor = "Xuất kho thành công" });
+            }
+            var infor = ctx.SP_GET_HOA_DON_INFO(model.storeId).FirstOrDefault();
+            var detailList = ctx.SP_GET_HD_DETAIL_FOR_EXPORT(Convert.ToInt32(model.storeId), Convert.ToInt32(model.Infor.MA_HOA_DON)).ToList<SP_GET_HD_DETAIL_FOR_EXPORT_Result>();
+            model.DetailList = detailList;
+            model.Infor = infor;
+            return View(model);
+        }
 
         public ActionResult Export(int id, int? makho)
         {
@@ -26,16 +86,19 @@ namespace SMS.Controllers
             {
                 makho = 0;
             }
-            var detailList = ctx.SP_GET_HD_DETAIL_FOR_EXPORT(Convert.ToInt32(id), Convert.ToInt32(makho)).ToList<SP_GET_HD_DETAIL_FOR_EXPORT_Result>();
+            var detailList = ctx.SP_GET_HD_DETAIL_FOR_EXPORT(Convert.ToInt32(makho), Convert.ToInt32(id)).ToList<SP_GET_HD_DETAIL_FOR_EXPORT_Result>();
             ExportModel model = new ExportModel();
             model.DetailList = detailList;
             model.Infor = infor;
+            model.storeId = Convert.ToInt32(makho);
             return View(model);
         }
 
 
-        public ActionResult Index()
+        public ActionResult Index(string message, string messageInfor)
         {
+            ViewBag.Message = message;
+            ViewBag.MessageInfor = messageInfor;
             return View();
         }
 
