@@ -17,4 +17,6 @@ namespace SMS.Models
         public IPagedList<SP_GET_HOA_DON_CHUA_TT_Result> Invoices { get; set; }
         public long PageCount { get; set; }
     }
+
+
 }

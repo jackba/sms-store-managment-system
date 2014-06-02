@@ -342,12 +342,23 @@ else
             form.submit();
         });
 
+        $("#paymentLast").click(function () {
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/Payment");
+            form.submit();
+        });
+
         $("#paymentAndExportFirst").click(function () {
             var form = $("#ShowDetail");
             form.attr("action", "/HoaDon/PaymentAndExport");
             form.submit();
         });
 
+        $("#paymentAndExportLast").click(function () {
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/PaymentAndExport");
+            form.submit();
+        });
         
 
     });
