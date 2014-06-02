@@ -188,6 +188,7 @@
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Export.cs" />
     <Compile Include="Models\GET_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -269,7 +270,13 @@
     <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_HD_DETAIL_FOR_EXPORT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HOA_DON_BH_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_HOA_DON_CAN_XUAT_KHO_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_HOA_DON_CHUA_TT_Result.cs">
@@ -652,6 +659,8 @@
     <Content Include="Views\Home\Export.cshtml" />
     <Content Include="Views\Home\Return.cshtml" />
     <Content Include="Views\Export\Index.cshtml" />
+    <Content Include="Views\Export\IndexPartialView.cshtml" />
+    <Content Include="Views\Export\Export.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

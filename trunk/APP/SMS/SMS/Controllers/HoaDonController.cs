@@ -19,11 +19,71 @@ namespace SMS.Controllers
 
         [HttpGet]
 
-        public ActionResult Collection()
+        public ActionResult Collection(string message)
         {
+            ViewBag.Message = message;
             return View();
         }
 
+        [HttpPost]
+        public PartialViewResult PagingContent(DateTime? fromdate, DateTime? todate,
+            int? customerId, string customerName, int? salerId, string salerName,
+            int? accountantId, string accountantName, int? currentPageIndex)
+        {
+            if (string.IsNullOrEmpty(customerName))
+            {
+                customerId = 0;
+            }
+            if (string.IsNullOrEmpty(salerName))
+            {
+                salerId = 0;
+            }
+            if (string.IsNullOrEmpty(accountantName))
+            {
+                accountantId = 0;
+            }
+            if (fromdate == null)
+            {
+                fromdate = SystemConstant.MIN_DATE;
+            }
+            else
+            {
+                ViewBag.FromDate = DateTime.Parse(fromdate.ToString()).ToString("dd/MM/yyyy");
+            }
+
+            if (todate == null)
+            {
+                todate = SystemConstant.MAX_DATE;
+            }
+            else
+            {
+                ViewBag.toDate = DateTime.Parse(todate.ToString()).ToString("dd/MM/yyyy");
+            }
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
+            {
+                salerId = Convert.ToInt32(Session["UserId"]);
+            }
+            if (!(bool)Session["IsAdmin"] && (bool)Session["IsAccounting"])
+            {
+                accountantId = Convert.ToInt32(Session["UserId"]);
+            }
+            var ctx = new SmsContext();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+
+            var list = ctx.SP_GET_HOA_DON_CHUA_TT(fromdate, todate, Convert.ToInt32(customerId), customerName,
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CHUA_TT_Result>();
+            InvoicesNoReciveModel model = new InvoicesNoReciveModel();
+            model.Invoices = list.ToPagedList(pageIndex, pageSize);
+            model.PageCount = list.Count;
+            /*model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
+            model.PageCount = list.Count;
+            ViewBag.CurrentPageIndex = pageIndex;
+            ViewBag.customerName = customerName;
+            ViewBag.salerName = salerName;
+            ViewBag.accountantName = accountantName;*/
+            return PartialView("CollectionPartialView", model);
+        }
 
         [HttpPost]
         public PartialViewResult CollectionPartialView(DateTime? fromdate, DateTime? todate, 
@@ -256,6 +316,10 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var invoice = ctx.HOA_DON.Find(model.Infor.MA_HOA_DON);
+            if (invoice != null && invoice.STATUS >= 2)
+            {
+                return RedirectToAction("Collection", new {@messagae = "Hóa đơn đã được thu tiền."});
+            }
             if (invoice != null && invoice.ACTIVE == "A")
             {
                 invoice.SO_TIEN_KHACH_TRA = model.Infor.SO_TIEN_KHACH_TRA;

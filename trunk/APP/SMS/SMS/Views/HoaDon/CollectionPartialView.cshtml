@@ -93,7 +93,17 @@
                 </td>
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
-                       
+                        @Html.PagedListPager(Model.Invoices, currentPageIndex => Url.Action("PagingContent",
+                        new { currentPageIndex, SearchString = ViewBag.SearchString }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
                     </div>
                 </td>
             </tr>
