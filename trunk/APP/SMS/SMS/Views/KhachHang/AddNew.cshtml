@@ -55,6 +55,17 @@
         }
     </style>
 }
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> > 
+    <a href="@Url.Action("Index", "KhachHang")"> Danh sách khách hàng </a>
+    > Thêm mới khách hàng
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
+<hr style="width:100%"/>
 <div>
     @using (Html.BeginForm())
     {

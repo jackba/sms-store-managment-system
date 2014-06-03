@@ -1,27 +1,27 @@
-﻿@model SMS.Models.ImportReportDetail
+﻿@model SMS.Models.ExportReportDetailModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Báo cáo nhập kho chi tiết";
+    ViewBag.Title = "BÁO CÁO XUẤT KHO CHI TIẾT";
 }
 @{
     List<SelectListItem> kinds = new List<SelectListItem>();
     SelectListItem ckind;
 
-    
+
     ckind = new SelectListItem();
 
     ckind.Value = "-1";
-    ckind.Text = "----------- Chọn loại nhập kho ----------";
+    ckind.Text = "----------- Chọn loại xuất kho ----------";
     kinds.Add(ckind);
-    
+
     ckind = new SelectListItem();
     if ((int)ViewBag.InputKind == 0)
     {
         ckind.Selected = true;
     }
     ckind.Value = "0";
-    ckind.Text = "Nhập mua hàng";
+    ckind.Text = "Xuất bán hàng";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -30,7 +30,7 @@
         ckind.Selected = true;
     }
     ckind.Value = "1";
-    ckind.Text = "Nhập lại hàng trả";
+    ckind.Text = "Xuất hủy";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -39,7 +39,7 @@
         ckind.Selected = true;
     }
     ckind.Value = "2";
-    ckind.Text = "Kiểm kho";
+    ckind.Text = "Xuất dùng nội bộ";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -48,20 +48,13 @@
         ckind.Selected = true;
     }
     ckind.Value = "3";
-    ckind.Text = "Nhập chuyển kho";
+    ckind.Text = "Xuất chuyển kho";
     kinds.Add(ckind);
 }
-<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Import", "Home")"> Quản lý kho - nhập kho </a>
-    > @ViewBag.Title
-
-    <br />
-</div>
-<br />
 <hgroup class="title">
-    <h2> @ViewBag.Title </h2>
+    <h2>@ViewBag.Message</h2>
 </hgroup>
-<h3>@ViewBag.Message</h3>
+<h3>Báo cáo xuất kho chi tiết</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -140,31 +133,31 @@
             });
         });
     </script>
-<style type="text/css">
-    .required:after {
-        content: "*";
-        font-weight: bold;
-        color: red;
-    }
-</style>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
 
 }
-@using (Html.BeginForm("ImportRepoterDetail", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("ExportReportDetail", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
 {
     <hr style="width:100%" />
     <div style="float:left">
         Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
         <br />
         Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-             @Html.Hidden("StoreId", new { id = "StoreId" })    
-    <br />
-      @Html.Hidden("ProductId", new { id = "ProductId" })
-       Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })        
+        @Html.Hidden("StoreId", new { id = "StoreId" })
+        <br />
+        @Html.Hidden("ProductId", new { id = "ProductId" })
+        Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
     </div>
-    <div style="float:left">     
+    <div style="float:left">
         Ngày Mua: @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
         <input type="submit" value="Tìm kiếm" class="myButton" />
-        <input type="button" value="Xuất excel" id="btnExport"  class="myButton" />
+        <input type="button" value="Xuất excel" id="btnExport" class="myButton" />
     </div>
     <div style="clear:both"></div>
     <hr style="width:100%" />
@@ -173,7 +166,7 @@
             <tr style="width:100%">
                 <td class='inner colwidth head '> Tên sản phẩm </td>
                 <td class='inner colwidth head '> Đơn vị </td>
-                <td class='inner colwidth head '>  Số lượng nhập  </td>
+                <td class='inner colwidth head '>  Số lượng xuất  </td>
                 <td class='inner colwidth head '>  Đơn giá </td>
                 <td class='innerLast colwidth head '>  Thành tiền </td>
             </tr>
@@ -181,7 +174,7 @@
     DateTime ImportDate = DateTime.Now;
     if (Model.ResultList.Count() >= 1)
     {
-        ImportDate = (DateTime)Model.ResultList[0].NGAY_NHAP;
+        ImportDate = (DateTime)Model.ResultList[0].NGAY_XUAT;
 
         <tr>
             <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
@@ -190,9 +183,9 @@
             }
             @foreach (var dbHist in Model.ResultList)
             {
-                if (ImportDate != (DateTime)dbHist.NGAY_NHAP)
+                if (ImportDate != (DateTime)dbHist.NGAY_XUAT)
                 {
-                    ImportDate = (DateTime)dbHist.NGAY_NHAP;
+                    ImportDate = (DateTime)dbHist.NGAY_XUAT;
                     <tr>
                         <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                     </tr>
@@ -208,7 +201,7 @@
                         @dbHist.SO_LUONG.ToString("0,0.00")
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.GIA_VON.ToString("0,0.00")
+                        @dbHist.GIA_XUAT.ToString("0,0.00")
                     </td>
                     <td class="innerLast colwidth">
                         @dbHist.VALUE.ToString("0,0.00")
@@ -225,12 +218,12 @@
             <tr>
                 <td>
                     <div style="text-align:left; padding-top:3px;">
-                        <label>@ViewBag.Count sản phầm </label>
+                        <label>@ViewBag.Count dòng dữ liệu</label>
                     </div>
                 </td>
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
-                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ImportRepoterDetail",
+                        @Html.PagedListPager(Model.ResultList, page => Url.Action("ExportReportDetail",
                          new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
                     </div>
                 </td>
@@ -239,4 +232,3 @@
         </table>
     </div>
 }
-  

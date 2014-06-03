@@ -11,7 +11,7 @@
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
 
 @{
-    ViewBag.Title = "CHUYỂN ĐỖI ĐƠN VỊ TÍNH";
+    ViewBag.Title = "Chuyển đỗi đơn vị tính";
 }
 <link href="~/Content/ConvertUnit.css" rel="stylesheet" />
 @section Scripts
@@ -68,7 +68,15 @@
         // FORMAT NUMBERIC TO DISPLAY INITPAGE E 
     </script>
 }
-<h2>Chuyển đổi đơn vị tính </h2>
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a>
+    > @ViewBag.Title
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
 
 
 @using (Ajax.BeginForm("ConvertUnitOfProducts", "SanPham", new AjaxOptions()

@@ -1,7 +1,7 @@
 ﻿@model SMS.Models.KHACH_HANG
 
 @{
-    ViewBag.Title = "Thêm mới khách hàng";
+    ViewBag.Title = "Thay đổi công nợ";
     List<SelectListItem> theList = new List<SelectListItem>();
     SelectListItem item;
     if (ViewBag.khuVucList != null)
@@ -56,10 +56,27 @@
         }
     </style>
 }
-<h2>Thay đổi công nợ</h2>
+
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> >
+    @if ((int)ViewBag.flg == 1)
+    {
+         <a href="@Url.Action("Index", "KhachHang")"> Danh sách khách hàng </a>
+    }
+   else
+    {
+        <a href="@Url.Action("Warning", "KhachHang")"> Danh sách khách hàng - cần thu nợ </a>
+    }
+    > Thay đổi công nợ
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
+<hr style="width:100%" />
 
 <h3 style="color:red;">@ViewBag.Message</h3>
-<hr style="width:100%" />
 <div>
     @using (Html.BeginForm(new { @name = "updateDebit"}))
     {
@@ -72,12 +89,13 @@
                     @Html.HiddenFor(u => u.EMAIL)
                     @Html.HiddenFor(u => u.MA_KHU_VUC)
                     @Html.HiddenFor(u => u.KIND)
+                    <input type="hidden" value="@ViewBag.flg" name="flg" id="flg" />
                 </div>
                 <div class="left">
                     @Html.LabelFor(u => u.MA_THE_KHACH_HANG)
                 </div>
                 <div class="right">
-                    @Html.Label(Model.MA_KHACH_HANG == null ? "No#" : Model.MA_THE_KHACH_HANG)
+                    @Html.Label(Model.MA_THE_KHACH_HANG == null ? "No#" : Model.MA_THE_KHACH_HANG)
                     @Html.HiddenFor(u => u.MA_THE_KHACH_HANG)
                 </div>
                 <div class="left">
@@ -165,7 +183,15 @@
                 <div>
                     <input type="submit" style="width:100px" value="Lưu" />
                     <span> </span>
-                    <input type="button" style="width:300px" value=">> Trở về danh sách khách hàng >> " onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
+@if ((int)ViewBag.flg == 1)
+{
+     <input type="button" style="width:300px" value=">> Trở về danh sách khách hàng >> " onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
+}
+else
+{
+     <input type="button" style="width:380px" value=">> Trở về danh sách khách hàng - warning >> " onclick="window.location.href='@Url.Action("Warning","KhachHang")'" />
+}
+                   
                 </div>
             </fieldset>
         </div>

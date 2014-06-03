@@ -3,12 +3,35 @@
 @{
     ViewBag.Title = "Thông tin người dùng";
 }
-
-<h2>Thông tin người dùng</h2>
-<br />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+<br />
+<br />
+<br />
+<br />
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("Index", "Home")"> Home </a>
+    > @ViewBag.Title
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
+
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");

@@ -322,6 +322,10 @@ namespace SMS.Controllers
             }
             if (invoice != null && invoice.ACTIVE == "A")
             {
+                if (model.Infor.SO_TIEN_KHACH_TRA == null)
+                {
+                    model.Infor.SO_TIEN_KHACH_TRA = 0;
+                }
                 invoice.SO_TIEN_KHACH_TRA = model.Infor.SO_TIEN_KHACH_TRA;
                 if (model.Infor.SO_TIEN_KHACH_TRA <= (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU))
                 {

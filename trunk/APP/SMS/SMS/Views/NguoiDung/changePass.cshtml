@@ -11,7 +11,7 @@
         }
 
         #contact #fieldset {
-            border: 1px solid #EEEEEE;
+
             padding: 20px;
             border-radius: 3px;
         }
@@ -73,10 +73,35 @@
         }
     </style>
     <meta name="viewport" content="width=device-width" />
-    <title>Thay đổi mật khẩu</title>
 </head>
 <body>
     <div id="contact">
+        @section featured {
+            <section class="featured">
+                <div class="content-wrapper">
+                    <hgroup class="title">
+                        <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                        <br />
+                        <h2> SMS - Store Managemanet System </h2>
+                    </hgroup>
+                </div>
+            </section>
+        }
+        <br />
+        <br />
+        <br />
+        <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+            <a href="@Url.Action("Index", "Home")"> Home </a> 
+            > Thay đổi mật khẩu
+        </div>
+        <br />
+        <hgroup class="title">
+            <h2> @ViewBag.Title</h2>
+        </hgroup>
+        <br />
+        <hr style="width:100%" />
+
+
         @using (Html.BeginForm("changePass", "NguoiDung", FormMethod.Post, new { autocomplete = "off" }))
         {
             <fieldset id="fieldset">

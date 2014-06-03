@@ -4,8 +4,24 @@
     ViewBag.Title = "Thông tin khách hàng";
 }
 
-<h2>Thông tin khách hàng</h2>
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> >
+    @if ((int)ViewBag.flg == 1)
+    {
+         <a href="@Url.Action("Index", "KhachHang")"> Danh sách khách hàng</a>
+    }
+    else
+    {
+        <a href="@Url.Action("Warning", "KhachHang")"> Danh sách khách hàng cần thu nợ</a>
+    }
+    > Thông tin khách hàng
+</div>
 <br />
+<hgroup class="title">
+    <h2> Thông tin khách hàng </h2>
+</hgroup>
+<br />
+
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
@@ -100,7 +116,14 @@
 }
 }
             </table>
-            <input type="button" style="width:300px" value=" >> Trở về danh sách khách hàng >> " onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
+            @if ((int)ViewBag.flg == 1)
+            {
+                <input type="button" style="width:300px" value=" >> Trở về danh sách khách hàng >> " onclick="window.location.href='@Url.Action("Index","KhachHang")'" />    
+            }else
+            {
+                <input type="button" style="width:380px" value=" >> Trở về danh sách khách hàng cần thu nợ >> " onclick="window.location.href='@Url.Action("Warning","KhachHang")'" />
+            }
+            
         </fieldset>
     </div>
     <script>

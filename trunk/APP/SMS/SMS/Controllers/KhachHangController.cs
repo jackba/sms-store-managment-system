@@ -211,8 +211,9 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpdateDebit(int id)
+        public ActionResult UpdateDebit(int id, int? flg)
         {
+            ViewBag.flg = flg;
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"]){
                 ViewBag.Message = "Bạn không có quyền thay đổi công nợ.";
                 return RedirectToAction("Index");
@@ -241,6 +242,7 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult UpdateDebit(Models.KHACH_HANG khachHang)
         {
+
             string a = Request.Form["amount"];
             decimal amount = 0;
             Decimal.TryParse(a, out amount);
@@ -271,7 +273,8 @@ namespace SMS.Controllers
                 ViewBag.amount = amount;
                 ViewBag.newDebit = newDebit;
             }
-           
+
+            int flg = Convert.ToInt32(Request.Form["flg"]);
 
             string note = Request.Form["note"];
             ViewBag.note = note;
@@ -304,7 +307,14 @@ namespace SMS.Controllers
                 debitHist.CREATE_BY = (int)Session["UserId"];
                 db.KHACH_HANG_DEBIT_HIST.Add(debitHist);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (flg == 1)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Warning");
+                }
             }
             var ctx = new SmsContext();
             KHACH_HANG khuVuc = ctx.KHACH_HANG.Find((int)khachHang.MA_KHACH_HANG);
@@ -314,6 +324,8 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult showDebitHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page)
         {
+            int flg = Convert.ToInt32(Request.Form["flg"]);
+            ViewBag.flg = flg;
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 ViewBag.Message = "Bạn không có quyền thay đổi công nợ.";
@@ -382,6 +394,8 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult showOrderHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page)
         {
+            int flg = Convert.ToInt32(Request.Form["flg"]);
+            ViewBag.flg = flg;
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 ViewBag.Message = "Bạn không có quyền thay đổi công nợ.";
@@ -672,8 +686,9 @@ namespace SMS.Controllers
             return View(khachHangModel);
         }
         [HttpGet]
-        public ActionResult Show(int id)
+        public ActionResult Show(int id, int? flg)
         {
+            ViewBag.flg = flg;
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
