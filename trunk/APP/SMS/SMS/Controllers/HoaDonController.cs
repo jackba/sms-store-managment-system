@@ -76,12 +76,6 @@ namespace SMS.Controllers
             InvoicesNoReciveModel model = new InvoicesNoReciveModel();
             model.Invoices = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
-            /*model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
-            model.PageCount = list.Count;
-            ViewBag.CurrentPageIndex = pageIndex;
-            ViewBag.customerName = customerName;
-            ViewBag.salerName = salerName;
-            ViewBag.accountantName = accountantName;*/
             return PartialView("CollectionPartialView", model);
         }
 
@@ -137,20 +131,28 @@ namespace SMS.Controllers
             InvoicesNoReciveModel model = new InvoicesNoReciveModel();
             model.Invoices = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
-            /*model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
-            model.PageCount = list.Count;
-            ViewBag.CurrentPageIndex = pageIndex;
-            ViewBag.customerName = customerName;
-            ViewBag.salerName = salerName;
-            ViewBag.accountantName = accountantName;*/
             return PartialView("CollectionPartialView", model);
         }
 
 
+        [HttpPost]
+        public PartialViewResult IndexPartialView(DateTime? fromdate, DateTime? todate, 
+            int? customerId, string customerName, int? salerId, string salerName,
+            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? currentPageIndex)
+        {
+
+            return PartialView("IndexPartialView");
+        }
+
         public ActionResult Index(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
-            int? accountantId, string accountantName, int? status, int? page)
+            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? page)
         {
+            if (string.IsNullOrEmpty(areaName))
+            {
+                areaId = 0;
+            }
+
             if (string.IsNullOrEmpty(customerName))
             {
                 customerId = 0;
@@ -190,9 +192,11 @@ namespace SMS.Controllers
             }
             var ctx = new SmsContext();
             var list = ctx.SP_GET_HOA_DON_BH(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status)).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status), 
+                Convert.ToInt32(areaId), areaName).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
             var AllValue = ctx.SP_GET_VALUE_ALL_HOA_DON(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status)).FirstOrDefault();
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status), 
+                Convert.ToInt32(areaId), areaName).FirstOrDefault();
             HoaDonBHModel model = new HoaDonBHModel();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;
@@ -209,8 +213,13 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult Index(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? salerId, string salerName,
-            int? accountantId, string accountantName, int? status, int? page, bool? flg)
+            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? page, bool? flg)
         {
+            if (string.IsNullOrEmpty(areaName))
+            {
+                areaId = 0;
+            }
+
             if (string.IsNullOrEmpty(customerName))
             {
                 customerId = 0;
@@ -250,9 +259,11 @@ namespace SMS.Controllers
             }
             var ctx = new SmsContext();
             var list = ctx.SP_GET_HOA_DON_BH(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status)).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status),
+                Convert.ToInt32(areaId), areaName).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
             var AllValue = ctx.SP_GET_VALUE_ALL_HOA_DON(fromdate, todate, Convert.ToInt32(customerId), customerName,
-               Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status)).FirstOrDefault();
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status),
+                Convert.ToInt32(areaId), areaName).FirstOrDefault();
             HoaDonBHModel model = new HoaDonBHModel();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = page == null ? 1 : (int)page;

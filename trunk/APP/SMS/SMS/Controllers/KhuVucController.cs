@@ -15,6 +15,23 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class KhuVucController : Controller
     {
+
+
+        [HttpPost]
+        public JsonResult Find(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedUsers = from x in ctx.KHU_VUC
+                                 where (x.TEN_KHU_VUC.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                 select new
+                                 {
+                                     id = x.MA_KHU_VUC,
+                                     value = x.TEN_KHU_VUC
+                                 };
+            var result = Json(suggestedUsers.Take(5).ToList());
+            return result;
+        }
+
         //
         // GET: /KhuVuc/
         [HttpGet]

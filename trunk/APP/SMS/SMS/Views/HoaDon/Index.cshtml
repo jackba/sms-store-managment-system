@@ -70,6 +70,34 @@
     <script>
         $(document).ready(function () {
 
+            $("#areaName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/KhuVuc/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#areaId').val("");
+                },
+                select: function (event, ui) {
+                    $('#areaName').val(ui.item.label);
+                    $('#areaId').val(ui.item.id);
+                    return false;
+                },
+                minLength: 1
+            });
+
+
+
             $("#customerName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -182,6 +210,15 @@
     <hr style="width:100%" />
     <div style="float:left">
         <table>
+            <tr>
+                <td>
+                    @Html.Hidden("areaId", new { id = "areaId" })
+                    Khu vực:
+                </td>
+                <td>
+                    @Html.TextBox("areaName", ViewBag.customerName as string, new { id = "areaName" })
+                </td>
+            </tr>
             <tr>
                 <td>
                     @Html.Hidden("customerId", new { id = "customerId" })
