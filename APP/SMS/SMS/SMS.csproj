@@ -396,7 +396,16 @@
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
     <Content Include="Content\images\customer.png" />
+    <Content Include="Content\images\ExportDataBlue.jpg" />
+    <Content Include="Content\images\ExportTransfer.jpg" />
+    <Content Include="Content\images\export_text.jpg" />
+    <Content Include="Content\images\import.png" />
+    <Content Include="Content\images\ImportDetailReport.jpg" />
     <Content Include="Content\images\ListPriceProducts.png" />
+    <Content Include="Content\images\loading-2.gif" />
+    <Content Include="Content\images\loading-3.gif" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\loadingColor.gif" />
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
@@ -661,6 +670,8 @@
     <Content Include="Views\Export\Index.cshtml" />
     <Content Include="Views\Export\IndexPartialView.cshtml" />
     <Content Include="Views\Export\Export.cshtml" />
+    <Content Include="Views\Export\ExportList.cshtml" />
+    <Content Include="Views\Export\ExportListPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

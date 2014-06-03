@@ -15,6 +15,15 @@ namespace SMS.Controllers
         //
         // GET: /Export/
 
+        public ActionResult ExportList()
+        {
+            return View();
+        }
+
+        public PartialViewResult ExportListPartialView()
+        {
+            return PartialView("ExportListPartialView");
+        }
 
         [HttpPost]
         public ActionResult Export(ExportModel model)

@@ -19,10 +19,6 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 <div class="grid_7">
-    <a class="dashboard-module" href="@Url.Action("Index", "Kho")">
-        <img width="64" height="64" alt="edit" src="../../Content/images/storage.png"></img>
-        <span>DANH SÁCH KHO</span>
-    </a>
     <a class="dashboard-module" href="@Url.Action("Warning", "SanPham")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Warning.png"></img>
         <span>SẢN PHẦM CẦN NHẬP HÀNG</span>
@@ -32,12 +28,12 @@
         <span>KIỂM TRA TỒN KHO</span>
     </a>
     <a class="dashboard-module" href="@Url.Action("Import", "Home")">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <img width="64" height="64" alt="edit" src="../../Content/images/import.png"></img>
         <span>NHẬP KHO</span>
     </a>
 
     <a class="dashboard-module" href="@Url.Action("Export", "Home")">
-        <img width="64" height="64" alt="edit" src="../../Content/images/Crystal_Clear_write.gif"></img>
+        <img width="64" height="64" alt="edit" src="../../Content/images/ExportDataBlue.jpg"></img>
         <span>XUẤT KHO</span>
     </a>
 
@@ -49,6 +45,10 @@
     <a class="dashboard-module" href="@Url.Action("FifoReport", "QuanLyKho")">
         <img width="64" height="64" alt="edit" src="../../Content/images/FIFO114ds.png"></img>
         <span>BÁO CÁO NHẬP XUẤT TỒN - FIFO</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ImExDetail", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/import-export-icon.png"></img>
+        <span>BÁO CÁO XUẤT - NHẬP</span>
     </a>
 
 </div>

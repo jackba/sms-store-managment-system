@@ -4,9 +4,13 @@
 @{
     ViewBag.Title = "DANH SÁCH HÓA ĐƠN CHƯA THU TIỀN";
 }
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("Export", "Home")"> Quản lý kho - xuất kho </a> > Danh sách hóa đơn chờ xuất kho
+    <br />
+</div>
+<br />
 <hgroup class="title">
-    <h2>Danh sách hóa đơn</h2>
-
+    <h2> Danh sách hóa đơn chờ xuất kho</h2>
 </hgroup>
 
 <h3 style="color:red">@ViewBag.Message</h3>

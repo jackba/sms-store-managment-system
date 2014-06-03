@@ -7,8 +7,25 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
+    @if ((int)ViewBag.Flg == 1)
+    {
+        <a href="@Url.Action("Index", "HoaDon")">  Danh sách hóa đơn </a> 
+    }
+    else if ((int)ViewBag.Flg == 2)
+    {
+        <a href="@Url.Action("Collection", "HoaDon")">  Danh sách hóa đơn chưa thu tiền </a> 
+    }
+    > Chi tiết hóa đơn
+</div>
 
-<h2>Chi tiết hóa đơn bán hàng</h2>
+<br />
+<hgroup class="title">
+    <h2>Chi tiết hóa đơn bán hàng</h2>
+</hgroup>
+
+
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.Info </div>
 <hr style="width:100%" />
@@ -188,7 +205,7 @@
                 {
                     <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","HoaDon")'" />    
                 }
-                else
+                else if ((int)ViewBag.Flg == 2)
                 {
                     <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Collection", "HoaDon")'" />
                 }

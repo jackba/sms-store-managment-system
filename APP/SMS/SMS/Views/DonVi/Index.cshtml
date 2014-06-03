@@ -10,7 +10,15 @@
     ViewBag.Title = "Danh mục đơn vị tính";
 }
 
-<h2>@ViewBag.Title </h2>
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a> 
+    > Danh sách đơn vị tính
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
 
 <hr style="width:100%" />
 

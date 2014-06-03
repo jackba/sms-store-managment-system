@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "BÁO CÁO XUẤT KHO CHI TIẾT";
+    ViewBag.Title = "Báo cáo xuất kho chi tiết";
 }
 @{
     List<SelectListItem> kinds = new List<SelectListItem>();
@@ -51,10 +51,18 @@
     ckind.Text = "Xuất chuyển kho";
     kinds.Add(ckind);
 }
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("Export", "Home")"> Quản lý kho - xuất kho </a>
+    > @ViewBag.Title
+
+    <br />
+</div>
+<br />
 <hgroup class="title">
-    <h2>@ViewBag.Message</h2>
+    <h2> @ViewBag.Title </h2>
 </hgroup>
-<h3>Báo cáo xuất kho chi tiết</h3>
+<h3>@ViewBag.Message</h3>
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />

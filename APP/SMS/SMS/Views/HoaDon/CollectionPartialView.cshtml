@@ -6,7 +6,6 @@
             <tr style="width:100%">
                 <td class='inner colwidth head '> Tên khách hàng </td>
                 <td class='inner colwidth head '> Nhân viên lập hóa đơn </td>
-                <td class='inner colwidth head '>  Nhân viên thu tiền  </td>
                 <td class='inner colwidth head '>  Tồng tiền hóa đơn </td>
                 <td class='innerLast colwidth head '>  Số tiền chiếc khấu </td>
                 <td class='inner colwidth head '>  Thực thu</td>
@@ -35,14 +34,11 @@
                 <tr class="inner column-hscroll alignCenter">
                     <td class="inner colwidth">
                         <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON , flg = 2})" class="button-module">
-                            @dbHist.SO_HOA_DON
+                            @dbHist.TEN_KHACH_HANG
                         </a>
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.TEN_KHACH_HANG
-                    </td>
-                    <td class="inner colwidth">
-                        @dbHist.TEN_NHAN_VIEN_BAN
+                       @dbHist.TEN_NHAN_VIEN_BAN
                     </td>
                     <td class="inner colwidth">
                         @{

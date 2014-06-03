@@ -43,13 +43,16 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/refund.png"></img>
         <span>NHẬN TRẢ HÀNG</span>
     </a>
-    <a class="dashboard-module" href="#">
-        <img width="64" height="64" alt="edit" src="../../Content/images/provider_back.png"></img>
-        <span>TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
-    </a>
+
+    
     @{
         if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
         {
+            <a class="dashboard-module" href="#">
+                <img width="64" height="64" alt="edit" src="../../Content/images/provider_back.png"></img>
+                <span>TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
+            </a>
+        
             <a class="dashboard-module" href="@Url.Action("Warning", "KhachHang")">
                 <img width="64" height="64" alt="edit" src="../../Content/images/cus_warning.png"></img>
                 <span>DANH SÁCH KHÁCH HÀNG - WARNING</span>

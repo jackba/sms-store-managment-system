@@ -1,10 +1,18 @@
 ﻿@model SMS.Models.NHA_SAN_XUAT
 
 @{
-    ViewBag.Title = "Sửa nhà sản xuất";
+    ViewBag.Title = "Sửa thông tin hãng sản xuất";
 }
-<h2>  @ViewBag.Title </h2>
-
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a> > 
+    <a href="@Url.Action("Index", "HangSanXuat")"> Danh sách hãng sản xuất </a>
+    > Sửa thông tin hãng sản xuất
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
 <hr style="width:100%" />
 @using (Html.BeginForm())
 {
