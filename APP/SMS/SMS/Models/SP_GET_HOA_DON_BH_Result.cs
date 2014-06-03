@@ -18,7 +18,6 @@ namespace SMS.Models
         public SP_GET_VALUE_ALL_HOA_DON_Result AllValue { get; set; }
         public long PageCount { get; set; }
     }
-
     public partial class SP_GET_HOA_DON_BH_Result
     {
         public int MA_HOA_DON { get; set; }
