@@ -1,0 +1,170 @@
+﻿@model SMS.Models.HoaDonBHModel
+@using PagedList.Mvc;
+<div>
+        <table width="100%" id="tblExport" name="tblExport">
+            <tr style="width:100%">
+                <td class='inner colwidth head '> Tên khách hàng </td>
+                <td class='inner colwidth head '> Nhân viên lập hóa đơn </td>
+                <td class='inner colwidth head '>  Nhân viên thu tiền  </td>
+                <td class='inner colwidth head '>  Số tiền khách trả </td>
+                <td class='innerLast colwidth head '>  Số tiền khách nợ </td>
+                <td class='inner colwidth head '>  Tổng </td>
+                <td class='innerLast colwidth head '>  Sửa </td>
+                <td class='innerLast colwidth head ' title="Cấp quyền sửa hóa đơn">  Res </td>
+                <td class='innerLast colwidth head '>  Xóa </td>
+            </tr>
+            @{
+    DateTime ImportDate = DateTime.Now;
+    if (Model.HoaDonList != null && Model.HoaDonList.Count() >= 1)
+    {
+        ImportDate = (DateTime)Model.HoaDonList[0].NGAY_BAN;
+
+        <tr>
+            <td class="innerLast colwidth" colspan="9" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+        </tr>
+    }
+            }
+            @foreach (var dbHist in Model.HoaDonList)
+            {
+                if (ImportDate != (DateTime)dbHist.NGAY_BAN)
+                {
+                    ImportDate = (DateTime)dbHist.NGAY_BAN;
+                    <tr>
+                        <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    </tr>
+                }
+                <tr class="inner column-hscroll alignCenter">
+                    <td class="inner colwidth">
+                        <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON, flg = 1 })" class="button-module">
+                            @dbHist.TEN_KHACH_HANG
+                        </a>
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_NGUOI_BAN
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_NV_TT
+                    </td>
+                    <td class="inner colwidth">
+                        @{
+                var amount = "";
+                double all = 0;
+                if (dbHist.SO_TIEN_KHACH_TRA != null)
+                {
+                    amount = Convert.ToDouble(dbHist.SO_TIEN_KHACH_TRA).ToString("0,0.00");
+                    all = Convert.ToDouble(dbHist.SO_TIEN_KHACH_TRA);
+                }
+                        }
+                        @amount
+                    </td>
+                    <td class="innerLast colwidth">
+                        @{
+                var debit = "";
+                debit = Convert.ToDouble(dbHist.SO_TIEN_NO_GOI_DAU).ToString("0,0.00");
+                all += Convert.ToDouble(dbHist.SO_TIEN_NO_GOI_DAU);
+                        }
+                        @debit
+                    </td>
+                    <td class="innerLast colwidth">
+                        @all.ToString("0,0.00")
+                    </td>
+
+                    <td class="innerLast colwidth">
+                        @{
+                if (dbHist.STATUS == 1 && ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (int)dbHist.MA_NHAN_VIEN_BAN == (int)Session["UserId"]))
+                {
+                    <a href="@Url.Action("Edit", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module">
+                        <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                    </a>
+                }
+                        }
+
+                    </td>
+                    <td class="innerLast colwidth">
+                        @{
+                if (dbHist.STATUS == 2 && ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"]))
+                {
+                    <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.MA_HOA_DON, flg = 1 })" class="button-module">
+                        <img width="18" height="18" alt="edit" src="~/Content/images/Converter.jpg"></img>
+                    </a>
+                }
+                        }
+
+                    </td>
+                    <td class="innerLast colwidth">
+                        @{
+                if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] ||
+                    (dbHist.STATUS == 1 && (int)dbHist.MA_NHAN_VIEN_BAN == (int)Session["UserId"])))
+                {
+                    <a href="@Url.Action("Delete", "HoaDon", new { id = @dbHist.MA_HOA_DON })" class="button-module" onclick="return deleteSubmit()">
+                        <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                    </a>
+                }
+                        }
+                    </td>
+                </tr>
+            }
+            <tr class="inner column-hscroll alignCenter">
+                <td class="innerLast colwidth" colspan="3" style="background-color:lightgray">
+                    <strong>
+                        Tổng cộng
+                    </strong>
+                </td>
+                <td class="innerLast colwidth" style="background-color:lightgray">
+                    @{
+    double TotalAll = 0;
+                    }
+                    @if (Model.AllValue != null && Model.AllValue.SO_TIEN_KHACH_TRA != null)
+                    {
+                        double AllAmount = Convert.ToDouble(Model.AllValue.SO_TIEN_KHACH_TRA);
+                        TotalAll = AllAmount;
+                        <strong>
+                            @AllAmount.ToString("0,0.00")
+                        </strong>
+
+                    }
+                </td>
+                <td class="innerLast colwidth" style="background-color:lightgray">
+                    @if (Model.AllValue != null && Model.AllValue.SO_TIEN_NO_GOI_DAU != null)
+                    {
+                        double AllDebit = Convert.ToDouble(Model.AllValue.SO_TIEN_NO_GOI_DAU);
+                        TotalAll += AllDebit;
+                        <strong>
+                            @AllDebit.ToString("0,0.00")
+                        </strong>
+                    }
+                </td>
+                <td class="innerLast colwidth" style="background-color:lightgray">
+                    <strong> @TotalAll.ToString("0,0.00")</strong>
+                </td>
+                <td class="innerLast colwidth" colspan="3" style="background-color:lightgray"></td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <tr>
+                <td>
+                    <div style="text-align:left; padding-top:3px;">
+                        <label>@Model.PageCount hóa đơn</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: right;  padding-top: 3px; ">
+                        @Html.PagedListPager(Model.HoaDonList, currentPageIndex => Url.Action("IndexPagingContent",
+                        new { currentPageIndex}),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+</div>

@@ -134,19 +134,10 @@ namespace SMS.Controllers
             return PartialView("CollectionPartialView", model);
         }
 
-
-        [HttpPost]
-        public PartialViewResult IndexPartialView(DateTime? fromdate, DateTime? todate, 
+         [HttpPost]
+        public PartialViewResult IndexPagingContent(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? salerId, string salerName,
             int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? currentPageIndex)
-        {
-
-            return PartialView("IndexPartialView");
-        }
-
-        public ActionResult Index(DateTime? fromdate, DateTime? todate, 
-            int? customerId, string customerName, int? salerId, string salerName,
-            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? page)
         {
             if (string.IsNullOrEmpty(areaName))
             {
@@ -192,14 +183,14 @@ namespace SMS.Controllers
             }
             var ctx = new SmsContext();
             var list = ctx.SP_GET_HOA_DON_BH(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status), 
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status),
                 Convert.ToInt32(areaId), areaName).OrderByDescending(uh => uh.NGAY_BAN).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_BH_Result>();
             var AllValue = ctx.SP_GET_VALUE_ALL_HOA_DON(fromdate, todate, Convert.ToInt32(customerId), customerName,
-                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status), 
+                Convert.ToInt32(salerId), salerName, Convert.ToInt32(accountantId), accountantName, Convert.ToInt32(status),
                 Convert.ToInt32(areaId), areaName).FirstOrDefault();
             HoaDonBHModel model = new HoaDonBHModel();
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
             model.AllValue = AllValue;
@@ -207,13 +198,13 @@ namespace SMS.Controllers
             ViewBag.customerName = customerName;
             ViewBag.salerName = salerName;
             ViewBag.accountantName = accountantName;
-            return View(model);
+            return PartialView("IndexPartialView", model);
         }
 
         [HttpPost]
-        public ActionResult Index(DateTime? fromdate, DateTime? todate,
+        public PartialViewResult IndexPartialView(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
-            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? page, bool? flg)
+            int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? currentPageIndex)
         {
             if (string.IsNullOrEmpty(areaName))
             {
@@ -266,14 +257,22 @@ namespace SMS.Controllers
                 Convert.ToInt32(areaId), areaName).FirstOrDefault();
             HoaDonBHModel model = new HoaDonBHModel();
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             model.HoaDonList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
             model.AllValue = AllValue;
-            ViewBag.InputKind = Convert.ToInt32(status);
-            return View(model);
+            
+            ViewBag.customerName = customerName;
+            ViewBag.salerName = salerName;
+            ViewBag.accountantName = accountantName;
+            return PartialView("IndexPartialView", model);
         }
 
+        public ActionResult Index()
+        {
+            ViewBag.InputKind = Convert.ToInt32(0);
+            return View();
+        }
         [HttpPost]
         public ActionResult PaymentAndExport(InvoicesModel model)
         {

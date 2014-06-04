@@ -704,5 +704,38 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_THU_TIEN_XUAT_KHO", mA_HOA_DONParameter, mA_NHAN_VIEN_THUC_HIENParameter, sO_TIEN_KHACH_TRAParameter, rETURN_VALUE);
         }
+    
+        public virtual int SP_GET_PHIEU_XUAT_KHO_BAN_LE(Nullable<int> mA_KHO, Nullable<int> mA_NHAN_VIEN_XUAT, string tEN_NHAN_VIEN_XUAT, Nullable<int> mA_KHACH_HANG, string tEN_KHACH_HANG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_NHAN_VIEN_XUATParameter = mA_NHAN_VIEN_XUAT.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN_XUAT", mA_NHAN_VIEN_XUAT) :
+                new ObjectParameter("MA_NHAN_VIEN_XUAT", typeof(int));
+    
+            var tEN_NHAN_VIEN_XUATParameter = tEN_NHAN_VIEN_XUAT != null ?
+                new ObjectParameter("TEN_NHAN_VIEN_XUAT", tEN_NHAN_VIEN_XUAT) :
+                new ObjectParameter("TEN_NHAN_VIEN_XUAT", typeof(string));
+    
+            var mA_KHACH_HANGParameter = mA_KHACH_HANG.HasValue ?
+                new ObjectParameter("MA_KHACH_HANG", mA_KHACH_HANG) :
+                new ObjectParameter("MA_KHACH_HANG", typeof(int));
+    
+            var tEN_KHACH_HANGParameter = tEN_KHACH_HANG != null ?
+                new ObjectParameter("TEN_KHACH_HANG", tEN_KHACH_HANG) :
+                new ObjectParameter("TEN_KHACH_HANG", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_PHIEU_XUAT_KHO_BAN_LE", mA_KHOParameter, mA_NHAN_VIEN_XUATParameter, tEN_NHAN_VIEN_XUATParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
     }
 }

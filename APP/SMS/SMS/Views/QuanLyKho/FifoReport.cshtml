@@ -2,13 +2,21 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "BÁO CÁO GIÁ TRỊ HÀNG XUẤT - TỒN ";
+    ViewBag.Title = "Báo cáo giá trị hàng xuất tồn";
 }
 
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("QuanLyKho", "Home")"> Quản lý kho </a>
+    > @ViewBag.Title
+
+    <br />
+</div>
+<br />
 <hgroup class="title">
-    <h2>@ViewBag.Message</h2>
+    <h2> @ViewBag.Title </h2>
 </hgroup>
-<h3>Báo cáo nhập kho</h3>
+<h3 style="color:red">@ViewBag.Message</h3>
+<h3 style="color:blue">@ViewBag.InforMessage</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
