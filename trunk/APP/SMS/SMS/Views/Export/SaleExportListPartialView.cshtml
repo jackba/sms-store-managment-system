@@ -6,36 +6,38 @@
         <tr style="width:100%">
             <td class='inner colwidth head '> Tên khách hàng </td>
             <td class='inner colwidth head '> Số hóa đơn </td>
-            <td class='inner colwidth head '>  Ngày giao hàng </td>
-            <td class='innerLast colwidth head '>  Địa chỉ giao hàng </td>
+            <td class='inner colwidth head '> Kho </td>
+            <td class='innerLast colwidth head '>  Nhân viên xuất kho </td>
+            <td class='innerLast colwidth head '>  Tên người nhận hàng </td>
+            <td class='innerLast colwidth head '>  Đia chỉ giao hàng </td>
             @if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
             {
-                <td class='innerLast colwidth head '>  Xuất kho </td>
+                <td class='innerLast colwidth head '>  Hủy </td>
             }
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
-            if (Model.WaitingList != null && Model.WaitingList.Count() >= 1)
+            if (Model.SaleExportList != null && Model.SaleExportList.Count() >= 1)
             {
-                ImportDate = (DateTime)Model.WaitingList[0].NGAY_BAN;
+                ImportDate = (DateTime)Model.SaleExportList[0].NGAY_XUAT;
 
                 <tr>
-                    <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
         }
-        @foreach (var dbHist in Model.WaitingList)
+        @foreach (var dbHist in Model.SaleExportList)
         {
-            if (ImportDate != (DateTime)dbHist.NGAY_BAN)
+            if (ImportDate != (DateTime)dbHist.NGAY_XUAT)
             {
-                ImportDate = (DateTime)dbHist.NGAY_BAN;
+                ImportDate = (DateTime)dbHist.NGAY_XUAT;
                 <tr>
-                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    <a href="@Url.Action("Export", "Export", new { @id = @dbHist.MA_HOA_DON, @makho = ViewBag.storeId })" class="button-module">
+                    <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO})" class="button-module">
                         @dbHist.TEN_KHACH_HANG
                     </a>
                 </td>
@@ -43,10 +45,13 @@
                     @dbHist.SO_HOA_DON
                 </td>
                 <td class="inner colwidth">
-                    @if (dbHist.NGAY_GIAO != null)
-                    {
-                        @DateTime.Parse(dbHist.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
-                    }
+                    @dbHist.TEN_KHO
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.TEN_NHAN_VIEN_XK
+                </td>
+                <td class="innerLast colwidth">
+                    @dbHist.TEN_NGUOI_NHAN_HANG
                 </td>
                 <td class="innerLast colwidth">
                     @dbHist.DIA_CHI_GIAO_HANG
@@ -55,11 +60,11 @@
                     @{
             if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
             {
-                <a href="@Url.Action("Export", "Export", new { id = @dbHist.MA_HOA_DON, @makho = ViewBag.storeId })" class="button-module">
-                    <img width="16" height="16" alt="edit" src="~/Content/images/Export.jpg"></img>
+                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }
-                    }
+}
                 </td>
 
             </tr>
@@ -76,7 +81,7 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.WaitingList, currentPageIndex => Url.Action("PagingContent",
+                    @Html.PagedListPager(Model.SaleExportList, currentPageIndex => Url.Action("SaleExportListPagingContent",
                         new { currentPageIndex, SearchString = ViewBag.SearchString }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()

@@ -2,57 +2,19 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "DANH SÁCH HÓA ĐƠN";
+    ViewBag.Title = "Danh sách phiếu xuất kho bán lẻ";
 }
-@{
-    List<SelectListItem> kinds = new List<SelectListItem>();
-    SelectListItem ckind;
-
-
-    ckind = new SelectListItem();
-
-    ckind.Value = "0";
-    ckind.Text = "----------- Chọn loại hóa đơn ----------";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 1)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "1";
-    ckind.Text = "Chưa thanh toán";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 2)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "2";
-    ckind.Text = "Đã thanh toán, chưa xuấ kho";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 3)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "3";
-    ckind.Text = "Đã xuất kho";
-    kinds.Add(ckind);
-
-}
-
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> > Danh sách hóa đơn
-<br />
+    <a href="@Url.Action("Export", "Home")"> Xuất kho </a> > @ViewBag.Title
 </div>
+
 <br />
+
 <hgroup class="title">
-    <h2> Danh sách hóa đơn</h2>
+    <h2>@ViewBag.Title</h2>
 </hgroup>
 <h3 style="color:red">@ViewBag.Message</h3>
+<h3 style="color:blue">@ViewBag.InforMessage</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -69,31 +31,7 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-            $("#areaName").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/KhuVuc/Find", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                    $('#areaId').val("");
-                },
-                select: function (event, ui) {
-                    $('#areaName').val(ui.item.label);
-                    $('#areaId').val(ui.item.id);
-                    return false;
-                },
-                minLength: 1
-            });
+
             $("#customerName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -120,7 +58,7 @@
                 minLength: 1
             });
 
-            $("#salerName").autocomplete({
+            $("#exporterName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
@@ -136,21 +74,21 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
-                    $('#salerId').val("");
+                    $('#exporterId').val("");
                 },
                 select: function (event, ui) {
-                    $('#salerName').val(ui.item.label);
-                    $('#salerId').val(ui.item.id);
+                    $('#exporterName').val(ui.item.label);
+                    $('#exporterId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
 
             });
 
-            $("#accountantName").autocomplete({
+            $("#storeName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/Kho/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -163,16 +101,16 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
-                    $('#accountantId').val("");
+                    $('#storeId').val("");
                 },
                 select: function (event, ui) {
-                    $('#accountantName').val(ui.item.label);
-                    $('#accountantId').val(ui.item.id);
+                    $('#storeName').val(ui.item.label);
+                    $('#storeId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
-            });
-
+            })
+            $('#fromDate').datepicker('setDate', 'today');
             $('#mainForm').submit();
         });
         $(document).ready(function () {
@@ -184,9 +122,9 @@
             });
         });
         function deleteSubmit() {
-            var r = confirm("Bạn muốn xóa hóa đơn này!");
+            var r = confirm("Bạn muốn hủy phiếu xuất kho này?");
             if (r == true) {
-                document.forms["index"].submit();
+                document.forms["mainForm"].submit();
             }
             else {
                 return false;
@@ -202,10 +140,7 @@
     </style>
 
 }
-
-<hr style="width:100%" />
-
-@using (Ajax.BeginForm("IndexPartialView", "HoaDon", new AjaxOptions()
+@using (Ajax.BeginForm("SaleExportListPartialView", "Export", new AjaxOptions()
                             {
                                 HttpMethod = "POST",
                                 InsertionMode = InsertionMode.Replace,
@@ -215,72 +150,56 @@
                            new { @id = "mainForm" }
                       ))
 {
+    <hr style="width:100%" />
     <div style="float:left">
         <table>
             <tr>
                 <td>
-                    @Html.Hidden("areaId", new { id = "areaId" })
-                    Khu vực:
-                </td>
-                <td>
-                    @Html.TextBox("areaName", ViewBag.customerName as string, new { id = "areaName" })
-                </td>
-            </tr>
-            <tr>
-                <td>
                     @Html.Hidden("customerId", new { id = "customerId" })
-                    Khách hàng: 
+                    Khách hàng:
                 </td>
                 <td>
                     @Html.TextBox("customerName", ViewBag.customerName as string, new { id = "customerName" })
                 </td>
             </tr>
             @{
-    if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
-    {   <tr>
+    if ((bool)Session["IsAdmin"])
+    {
+        <tr>
             <td>
-                @Html.Hidden("salerId", new { id = "salerId" })
-                Nhân viên lập hóa đơn:
+                @Html.Hidden("exporterId", new { id = "exporterId" })
+                Nhân viên xuất kho:
             </td>
             <td>
-                @Html.TextBox("salerName", ViewBag.ProductName as string, new { id = "salerName" })
+                @Html.TextBox("exporterName", ViewBag.ExporterName as string, new { id = "exporterName" })
             </td>
-            </tr>
+        </tr>
     }
-        if ((bool)Session["IsAdmin"])
-        {             <tr>
-                       <td>
-                           @Html.Hidden("accountantId", new { id = "accountantId" })
-                           Nhân viên thu tiền:
-                       </td>
-                        <td>
-                            @Html.TextBox("accountantName", ViewBag.ProductName as string, new { id = "accountantName" })
-                        </td>
-                    </tr>
-            
-         }    
-    }
+    if ((bool)Session["IsAdmin"])
+    {
+        <tr>
+            <td>
+                @Html.Hidden("storeId", new { id = "storeId" })
+                Kho - cửa hàng:
+            </td>
+            <td>
+                @Html.TextBox("storeName", ViewBag.StoreName as string, new { id = "storeName" })
+            </td>
+        </tr>
 
+    }
+            }
             <tr>
                 <td>
-                    Trạng thái hóa đơn :
-                </td>
-                <td>
-                    @Html.DropDownList("status", kinds, new { @id = "status", @style = "padding:2px;font-size:1.2em; " })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Ngày Mua:
+                    Ngày xuất kho:
                 </td>
                 <td>
                     @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
-                    <input type="submit" value="Tìm kiếm" class="myButton" />
-                    <input type="button" value="Xuất excel" id="btnExport" class="myButton" />
                 </td>
             </tr>
         </table>
-        </div>
+        <input type="submit" value="Tìm kiếm" class="myButton" />
+    </div>
     <div style="clear:both"></div>
     <hr style="width:100%" />
 }

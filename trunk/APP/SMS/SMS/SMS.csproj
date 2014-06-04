@@ -417,6 +417,7 @@
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
+    <Content Include="Content\images\SaleExportList.png" />
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
@@ -672,6 +673,9 @@
     <Content Include="Views\Export\Export.cshtml" />
     <Content Include="Views\Export\ExportList.cshtml" />
     <Content Include="Views\Export\ExportListPartialView.cshtml" />
+    <Content Include="Views\HoaDon\IndexPartialView.cshtml" />
+    <Content Include="Views\Export\SaleExportList.cshtml" />
+    <Content Include="Views\Export\SaleExportListPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

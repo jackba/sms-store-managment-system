@@ -1827,6 +1827,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
+        <Function Name="SP_GET_PHIEU_XUAT_KHO_BAN_LE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_NHAN_VIEN_XUAT" Type="int" Mode="In" />
+          <Parameter Name="TEN_NHAN_VIEN_XUAT" Type="nvarchar" Mode="In" />
+          <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHACH_HANG" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
         <Function Name="SP_GET_ROLE_OF_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USER_ID" Type="int" Mode="In" />
         </Function>
@@ -4837,6 +4846,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="SO_TIEN_KHACH_TRA" Mode="In" Type="Double" />
             <Parameter Name="RETURN_VALUE" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_PHIEU_XUAT_KHO_BAN_LE">
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_NHAN_VIEN_XUAT" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NHAN_VIEN_XUAT" Mode="In" Type="String" />
+            <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -5889,6 +5907,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_SALE_EXPORT" FunctionName="SmsModel.Store.SP_SALE_EXPORT" />
           <FunctionImportMapping FunctionImportName="SP_THU_TIEN_XUAT_KHO" FunctionName="SmsModel.Store.SP_THU_TIEN_XUAT_KHO" />
+          <FunctionImportMapping FunctionImportName="SP_GET_PHIEU_XUAT_KHO_BAN_LE" FunctionName="SmsModel.Store.SP_GET_PHIEU_XUAT_KHO_BAN_LE" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
