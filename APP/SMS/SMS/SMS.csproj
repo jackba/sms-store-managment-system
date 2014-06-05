@@ -676,6 +676,12 @@
     <Content Include="Views\HoaDon\IndexPartialView.cshtml" />
     <Content Include="Views\Export\SaleExportList.cshtml" />
     <Content Include="Views\Export\SaleExportListPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\FifoReportPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\InventoryPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\ExportReportPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\ExportReportDetailPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\ImportRepoterPartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\ImportRepoterDetailPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

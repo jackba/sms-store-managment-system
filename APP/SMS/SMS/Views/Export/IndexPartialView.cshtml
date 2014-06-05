@@ -2,6 +2,39 @@
 @using PagedList.Mvc;
 
 <div>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.PageCount hóa đơn</label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.WaitingList, currentPageIndex => Url.Action("PagingContent",
+                        new
+                        {
+                            currentPageIndex,
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            customerId = ViewBag.CustomerId,
+                            customerName = ViewBag.customerName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+    </table>
     <table width="100%" id="tblExport" name="tblExport">
         <tr style="width:100%">
             <td class='inner colwidth head '> Tên khách hàng </td>
@@ -77,7 +110,14 @@
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
                     @Html.PagedListPager(Model.WaitingList, currentPageIndex => Url.Action("PagingContent",
-                        new { currentPageIndex, SearchString = ViewBag.SearchString }),
+                        new { currentPageIndex, 
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            customerId = ViewBag.CustomerId,
+                            customerName = ViewBag.customerName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()
         {

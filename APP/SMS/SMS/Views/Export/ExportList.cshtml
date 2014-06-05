@@ -149,9 +149,9 @@
         Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
         <br />
         Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-        @Html.Hidden("StoreId", new { id = "StoreId" })
+        @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
         <br />
-        @Html.Hidden("ProductId", new { id = "ProductId" })
+        @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
         Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
     </div>
     <div style="float:left">

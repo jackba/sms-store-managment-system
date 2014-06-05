@@ -1,5 +1,29 @@
 ﻿@model SMS.Models.GetTonKhoAlertModel
 @using PagedList.Mvc;
+<table width="100%">
+    <tr>
+        <td>
+            <div style="text-align:left; padding-top:3px;">
+                <label>@ViewBag.Count sản phầm </label>
+            </div>
+        </td>
+        <td>
+            <div style="text-align: right;  padding-top: 3px; ">
+                @Html.PagedListPager(Model.WarningList, currentPageIndex => Url.Action("PagingContentWarning",
+                        new { currentPageIndex, SearchString = ViewBag.SearchString }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+            </div>
+        </td>
+    </tr>
+</table>
 
 
 <table width="100%">
