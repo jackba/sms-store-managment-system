@@ -96,8 +96,28 @@
                 </td>
                 <td>
                     <div style="text-align: right;  padding-top: 3px; ">
-                        @Html.PagedListPager(Model.ImportList, page => Url.Action("ImportRepoterDetail",
-                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                        @Html.PagedListPager(Model.ImportList, currentPageIndex => Url.Action("IndexPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            importerId = ViewBag.ImporterId,
+                            importerName = ViewBag.ImporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
                     </div>
                 </td>
             </tr>
