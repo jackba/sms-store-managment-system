@@ -41,6 +41,7 @@ namespace SMS.Controllers
             return View();
         }
 
+
         [HttpPost]
         public PartialViewResult SmsMessage()
         {
