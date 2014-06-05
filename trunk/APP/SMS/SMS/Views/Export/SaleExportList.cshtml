@@ -155,11 +155,11 @@
         <table>
             <tr>
                 <td>
-                    @Html.Hidden("customerId", new { id = "customerId" })
+                    @Html.Hidden("customerId", ViewBag.CustomerId as int?, new { id = "customerId" })
                     Khách hàng:
                 </td>
                 <td>
-                    @Html.TextBox("customerName", ViewBag.customerName as string, new { id = "customerName" })
+                    @Html.TextBox("customerName", ViewBag.CustomerName as string, new { id = "customerName" })
                 </td>
             </tr>
             @{
@@ -167,7 +167,7 @@
     {
         <tr>
             <td>
-                @Html.Hidden("exporterId", new { id = "exporterId" })
+                @Html.Hidden("exporterId", ViewBag.ExporterId as int?, new { id = "exporterId" })
                 Nhân viên xuất kho:
             </td>
             <td>
@@ -179,7 +179,7 @@
     {
         <tr>
             <td>
-                @Html.Hidden("storeId", new { id = "storeId" })
+                @Html.Hidden("storeId", ViewBag.StoreId as int?, new { id = "storeId" })
                 Kho - cửa hàng:
             </td>
             <td>

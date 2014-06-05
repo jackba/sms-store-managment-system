@@ -171,6 +171,14 @@ namespace SMS.Controllers
             ExportModel model = new ExportModel();
             model.SaleExportList = exportList.ToPagedList(pageIndex, pageSize);
             model.PageCount = exportList.Count;
+            ViewBag.StoreId = storeId;
+            ViewBag.StoreName = storeName;
+            ViewBag.CustomerId = customerId;
+            ViewBag.CustomerName = customerName;
+            ViewBag.ExporterId = exporterId;
+            ViewBag.ExporterName = exporterName;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -272,6 +280,14 @@ namespace SMS.Controllers
             ExportModel model = new ExportModel();
             model.SaleExportList = exportList.ToPagedList(pageIndex, pageSize);
             model.PageCount = exportList.Count;
+            ViewBag.StoreId = storeId;
+            ViewBag.StoreName = storeName;
+            ViewBag.CustomerId = customerId;
+            ViewBag.CustomerName = customerName;
+            ViewBag.ExporterId = exporterId;
+            ViewBag.ExporterName = exporterName;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -378,10 +394,12 @@ namespace SMS.Controllers
         {
             if (string.IsNullOrEmpty(customerName))
             {
+                customerName = string.Empty;
                 customerId = 0;
             }
             if (string.IsNullOrEmpty(storeName))
             {
+                storeName = string.Empty;
                 storeId = 0;
             }
             if (fromdate == null)
@@ -415,6 +433,12 @@ namespace SMS.Controllers
             model.WaitingList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
             ViewBag.storeId = storeId;
+            ViewBag.StoreId = storeId;
+            ViewBag.StoreName = storeName;
+            ViewBag.CustomerId = customerId;
+            ViewBag.CustomerName = customerName;
+            ViewBag.Todate = todate;
+            ViewBag.Fromdate = fromdate;
             return PartialView("IndexPartialView", model);
         }
 
@@ -425,10 +449,12 @@ namespace SMS.Controllers
 
             if (string.IsNullOrEmpty(customerName))
             {
+                customerName = string.Empty;
                 customerId = 0;
             }
             if (string.IsNullOrEmpty(storeName))
             {
+                storeName = string.Empty;
                 storeId = 0;
             }
             if (fromdate == null)
@@ -462,7 +488,12 @@ namespace SMS.Controllers
             ExportModel model = new ExportModel();
             model.WaitingList = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
-            ViewBag.storeId = storeId;
+            ViewBag.StoreId = storeId;
+            ViewBag.StoreName = storeName;
+            ViewBag.CustomerId = customerId;
+            ViewBag.CustomerName = customerName;
+            ViewBag.Todate = todate;
+            ViewBag.Fromdate = fromdate;
             return PartialView("IndexPartialView", model);
         }
     }
