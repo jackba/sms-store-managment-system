@@ -102,7 +102,6 @@
                     return false;
                 },
                 minLength: 1
-
             });
 
             $("#StoreName").autocomplete({
@@ -127,12 +126,9 @@
                     $('#StoreId').val(ui.item.id);
                     return false;
                 },
-                minLength: 0
-
-            }).focus(function () {
-                $(this).autocomplete('search', '');
+                minLength: 1
             });
-
+            $('#mainForm').submit();
         });
 
         $(document).ready(function () {
@@ -153,89 +149,81 @@
     </style>
 
 }
-@using (Html.BeginForm("ImportRepoterDetail", "QuanLyKho", FormMethod.Post, new { @id = "index" }))
+@using (Ajax.BeginForm("IndexPartialView", "Import", new AjaxOptions()
 {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
+                           new { @id = "mainForm" }
+                      ))
+{
+    
     <hr style="width:100%" />
-    <div style="float:left">
-        Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        <br />
-        Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-        @Html.Hidden("StoreId", new { id = "StoreId" })
-        <br />
-        @Html.Hidden("ProductId", new { id = "ProductId" })
-        Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
-    </div>
-    <div style="float:left">
-        Ngày Mua: @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
-        <input type="submit" value="Tìm kiếm" class="myButton" />
-    </div>
-    <div style="clear:both"></div>
-    <hr style="width:100%" />
-    <div style="clear:both"></div>
-    <div>
-        <table width="100%">
-            <tr style="width:100%">
-                <td class='inner colwidth head '> Số hóa đơn </td>
-                <td class='inner colwidth head '> Ngày nhập kho </td>
-                <td class='inner colwidth head '>  Người nhập kho  </td>
-                <td class='inner colwidth head '>  Kho nhập </td>
-                <td class='innerLast colwidth head '>  Nhà cung cấp </td>
-                <td class='innerLast colwidth head '>  Sửa </td>
-                <td class='innerLast colwidth head '>  Xóa </td>
-            </tr>
-            @foreach (var dbHist in Model.ImportList)
-            {
-                <tr class="inner column-hscroll alignCenter">
-                    <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
-                        <a href="@Url.Action("ShowDetail", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
-                            @dbHist.SO_HOA_DON
-                        </a>
-                    </td>
-                    <td class="inner colwidth">
-                        @{
-                            DateTime date = (DateTime)@dbHist.NGAY_NHAP;
-                
-                        }
-                        @date.ToString("dd/MM/yyyy")
-                    </td>
-                    <td class="inner colwidth">
-                        @dbHist.TEN_NGUOI_DUNG
-                    </td>
-                    <td class="inner colwidth">
-                        @dbHist.TEN_KHO
-                    </td>
-                    <td class="innerLast colwidth">
-                        @dbHist.TEN_NHA_CUNG_CAP
-                    </td>
-                    <td class='innerLast alignCenter' style="width:50px;">
-                        <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                        </a>
-                    </td>
-                    <td class='innerLast alignCenter' style="width:50px;">
-                        <a href="@Url.Action("Delete", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button class="button-module" onclick="return deleteSubmit()">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                        </a>
-                    </td>
-
-                </tr>
-            }
-        </table>
-        <table width="100%">
+        <table>
             <tr>
                 <td>
-                    <div style="text-align:left; padding-top:3px;">
-                        <label>@Model.PageCount lượt nhập kho </label>
-                    </div>
+                    Loại nhập :
                 </td>
                 <td>
-                    <div style="text-align: right;  padding-top: 3px; ">
-                        @Html.PagedListPager(Model.ImportList, page => Url.Action("ImportRepoterDetail",
-                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-                    </div>
+                    @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
+                </td>
+            </tr> 
+            @if((bool)Session["IsAdmin"])
+            {
+            <tr>
+                <td>
+                    Kho - Cửa hàng :
+                </td>
+                <td>
+                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+                    @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+                </td>
+            </tr> 
+
+            <tr>
+                <td>
+                    Nhân viên nhập kho : 
+                </td>
+                <td>
+                    @Html.TextBox("ImporterName", ViewBag.ImporterName as string, new { id = "ImporterName" })
+                    @Html.Hidden("ImporterName", ViewBag.ImporterId as int?, new { id = "ImporterId" })
+                </td>
+            </tr> 
+            }
+            
+            <tr>
+                <td>
+                    Nhà cung cấp :
+                </td>
+                <td>
+                    @Html.Hidden("ProviderId", ViewBag.ProviderId as int?, new { id = "ProductId" })
+                    @Html.TextBox("ProviderName", ViewBag.ProviderName as string, new { id = "ProviderName" })
                 </td>
             </tr>
+            <tr>
+                <td>
+                    Ngày mua:
+                </td>
+                <td>
+                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
+                   
+                </td>
+            </tr>
+     </table>
 
-        </table>
+    <div style="float:left">
+        <input type="submit" value="Tìm kiếm" class="myButton" />
     </div>
+
+    <div style="clear:both"></div>
 }
+<hr style="width:100%" />
+<div style="clear:both"></div>
+<div style="clear:both"></div>
+<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">
+    <img src="/Content/images/loading-2.gif" />
+</div>
+<div id="mainDiv">
+</div>

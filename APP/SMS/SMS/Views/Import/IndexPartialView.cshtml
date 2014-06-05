@@ -1,0 +1,106 @@
+﻿@model SMS.Models.ImportReportModel
+@using PagedList.Mvc;
+
+<div>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.PageCount lượt nhập kho </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.ImportList, currentPageIndex => Url.Action("IndexPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            importerId = ViewBag.ImporterId,
+                            importerName = ViewBag.ImporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+        <table width="100%">
+            <tr style="width:100%">
+                <td class='inner colwidth head '> Số hóa đơn </td>
+                <td class='inner colwidth head '> Ngày nhập kho </td>
+                <td class='inner colwidth head '>  Người nhập kho  </td>
+                <td class='inner colwidth head '>  Kho nhập </td>
+                <td class='innerLast colwidth head '>  Nhà cung cấp </td>
+                <td class='innerLast colwidth head '>  Sửa </td>
+                <td class='innerLast colwidth head '>  Xóa </td>
+            </tr>
+            @foreach (var dbHist in Model.ImportList)
+            {
+                <tr class="inner column-hscroll alignCenter">
+                    <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
+                        <a href="@Url.Action("ShowDetail", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+                            @dbHist.SO_HOA_DON
+                        </a>
+                    </td>
+                    <td class="inner colwidth">
+                        @{
+                DateTime date = (DateTime)@dbHist.NGAY_NHAP;
+
+                        }
+                        @date.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_NGUOI_DUNG
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TEN_KHO
+                    </td>
+                    <td class="innerLast colwidth">
+                        @dbHist.TEN_NHA_CUNG_CAP
+                    </td>
+                    <td class='innerLast alignCenter' style="width:50px;">
+                        <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                        </a>
+                    </td>
+                    <td class='innerLast alignCenter' style="width:50px;">
+                        <a href="@Url.Action("Delete", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button class=" button-module" onclick="return deleteSubmit()">
+                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </table>
+        <table width="100%">
+            <tr>
+                <td>
+                    <div style="text-align:left; padding-top:3px;">
+                        <label>@Model.PageCount lượt nhập kho </label>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: right;  padding-top: 3px; ">
+                        @Html.PagedListPager(Model.ImportList, page => Url.Action("ImportRepoterDetail",
+                         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>

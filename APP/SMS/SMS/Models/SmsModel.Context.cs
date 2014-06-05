@@ -333,7 +333,7 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_HOA_DON_INFO_Result>("SP_GET_HOA_DON_INFO", mA_HOA_DONParameter);
         }
     
-        public virtual ObjectResult<SP_GET_IMPORT_Result> SP_GET_IMPORT(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAP, Nullable<int> lY_DO_NHAP, Nullable<int> mA_KHO, Nullable<int> mA_NHA_CC)
+        public virtual ObjectResult<SP_GET_IMPORT_Result> SP_GET_IMPORT(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAP, string tEN_NHAN_VIEN_NHAP, Nullable<int> lY_DO_NHAP, Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHA_CC, string tEN_NHA_CUNG_CAP)
         {
             var fROM_DATEParameter = fROM_DATE.HasValue ?
                 new ObjectParameter("FROM_DATE", fROM_DATE) :
@@ -347,6 +347,10 @@ namespace SMS.Models
                 new ObjectParameter("MA_NHAN_VIEN_NHAP", mA_NHAN_VIEN_NHAP) :
                 new ObjectParameter("MA_NHAN_VIEN_NHAP", typeof(int));
     
+            var tEN_NHAN_VIEN_NHAPParameter = tEN_NHAN_VIEN_NHAP != null ?
+                new ObjectParameter("TEN_NHAN_VIEN_NHAP", tEN_NHAN_VIEN_NHAP) :
+                new ObjectParameter("TEN_NHAN_VIEN_NHAP", typeof(string));
+    
             var lY_DO_NHAPParameter = lY_DO_NHAP.HasValue ?
                 new ObjectParameter("LY_DO_NHAP", lY_DO_NHAP) :
                 new ObjectParameter("LY_DO_NHAP", typeof(int));
@@ -355,11 +359,19 @@ namespace SMS.Models
                 new ObjectParameter("MA_KHO", mA_KHO) :
                 new ObjectParameter("MA_KHO", typeof(int));
     
+            var tEN_KHOParameter = tEN_KHO != null ?
+                new ObjectParameter("TEN_KHO", tEN_KHO) :
+                new ObjectParameter("TEN_KHO", typeof(string));
+    
             var mA_NHA_CCParameter = mA_NHA_CC.HasValue ?
                 new ObjectParameter("MA_NHA_CC", mA_NHA_CC) :
                 new ObjectParameter("MA_NHA_CC", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_Result>("SP_GET_IMPORT", fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHAPParameter, lY_DO_NHAPParameter, mA_KHOParameter, mA_NHA_CCParameter);
+            var tEN_NHA_CUNG_CAPParameter = tEN_NHA_CUNG_CAP != null ?
+                new ObjectParameter("TEN_NHA_CUNG_CAP", tEN_NHA_CUNG_CAP) :
+                new ObjectParameter("TEN_NHA_CUNG_CAP", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_Result>("SP_GET_IMPORT", fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHAPParameter, tEN_NHAN_VIEN_NHAPParameter, lY_DO_NHAPParameter, mA_KHOParameter, tEN_KHOParameter, mA_NHA_CCParameter, tEN_NHA_CUNG_CAPParameter);
         }
     
         public virtual ObjectResult<SP_GET_IMPORT_DETAIL_BY_ID_Result> SP_GET_IMPORT_DETAIL_BY_ID(Nullable<int> iMPORT_ID)
