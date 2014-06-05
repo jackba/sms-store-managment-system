@@ -1805,9 +1805,12 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_NHAP" Type="int" Mode="In" />
+          <Parameter Name="TEN_NHAN_VIEN_NHAP" Type="nvarchar" Mode="In" />
           <Parameter Name="LY_DO_NHAP" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_NHA_CC" Type="int" Mode="In" />
+          <Parameter Name="TEN_NHA_CUNG_CAP" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SP_GET_IMPORT_DETAIL_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IMPORT_ID" Type="int" Mode="In" />
@@ -4739,9 +4742,12 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="MA_NHAN_VIEN_NHAP" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NHAN_VIEN_NHAP" Mode="In" Type="String" />
             <Parameter Name="LY_DO_NHAP" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_NHA_CC" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NHA_CUNG_CAP" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_Result)">
           <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />

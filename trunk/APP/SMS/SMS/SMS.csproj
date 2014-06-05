@@ -682,6 +682,7 @@
     <Content Include="Views\QuanLyKho\ExportReportDetailPartialView.cshtml" />
     <Content Include="Views\QuanLyKho\ImportRepoterPartialView.cshtml" />
     <Content Include="Views\QuanLyKho\ImportRepoterDetailPartialView.cshtml" />
+    <Content Include="Views\Import\IndexPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
