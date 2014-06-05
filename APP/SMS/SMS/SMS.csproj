@@ -163,6 +163,7 @@
     <Compile Include="Controllers\SaleReportController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SmsMasterController.cs" />
+    <Compile Include="Controllers\SmsMessageController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -237,6 +238,7 @@
     <Compile Include="Models\SAN_PHAM.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SmsMessageModel.cs" />
     <Compile Include="Models\SmsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -304,6 +306,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_ROLE_OF_USER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_SMS_MESSAGES_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
@@ -406,6 +411,7 @@
     <Content Include="Content\images\loading-3.gif" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loadingColor.gif" />
+    <Content Include="Content\images\Messages.png" />
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
@@ -683,6 +689,8 @@
     <Content Include="Views\QuanLyKho\ImportRepoterPartialView.cshtml" />
     <Content Include="Views\QuanLyKho\ImportRepoterDetailPartialView.cshtml" />
     <Content Include="Views\Import\IndexPartialView.cshtml" />
+    <Content Include="Views\SmsMessage\Index.cshtml" />
+    <Content Include="Views\SmsMessage\IndexPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

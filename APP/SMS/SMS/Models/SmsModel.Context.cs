@@ -749,5 +749,43 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_PHIEU_XUAT_KHO_BAN_LE", mA_KHOParameter, mA_NHAN_VIEN_XUATParameter, tEN_NHAN_VIEN_XUATParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter);
         }
+    
+        public virtual int SP_DELETE_EXPORT_4_SALE(Nullable<int> mA_XUAT_KHO, Nullable<int> mA_NHAN_VIEN_TH, ObjectParameter rETURN_VALUE)
+        {
+            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
+                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
+                new ObjectParameter("MA_XUAT_KHO", typeof(int));
+    
+            var mA_NHAN_VIEN_THParameter = mA_NHAN_VIEN_TH.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN_TH", mA_NHAN_VIEN_TH) :
+                new ObjectParameter("MA_NHAN_VIEN_TH", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_EXPORT_4_SALE", mA_XUAT_KHOParameter, mA_NHAN_VIEN_THParameter, rETURN_VALUE);
+        }
+    
+        public virtual ObjectResult<SP_GET_SMS_MESSAGES_Result> SP_GET_SMS_MESSAGES(Nullable<int> mA_NHOM_NGUOI_DUNG, string tEN_NHOM_NGUOI_DUNG, string nOI_DUNG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_NHOM_NGUOI_DUNGParameter = mA_NHOM_NGUOI_DUNG.HasValue ?
+                new ObjectParameter("MA_NHOM_NGUOI_DUNG", mA_NHOM_NGUOI_DUNG) :
+                new ObjectParameter("MA_NHOM_NGUOI_DUNG", typeof(int));
+    
+            var tEN_NHOM_NGUOI_DUNGParameter = tEN_NHOM_NGUOI_DUNG != null ?
+                new ObjectParameter("TEN_NHOM_NGUOI_DUNG", tEN_NHOM_NGUOI_DUNG) :
+                new ObjectParameter("TEN_NHOM_NGUOI_DUNG", typeof(string));
+    
+            var nOI_DUNGParameter = nOI_DUNG != null ?
+                new ObjectParameter("NOI_DUNG", nOI_DUNG) :
+                new ObjectParameter("NOI_DUNG", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_SMS_MESSAGES_Result>("SP_GET_SMS_MESSAGES", mA_NHOM_NGUOI_DUNGParameter, tEN_NHOM_NGUOI_DUNGParameter, nOI_DUNGParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
     }
 }

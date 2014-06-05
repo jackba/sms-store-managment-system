@@ -1727,6 +1727,11 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <Function Name="GET_TOTAL_DISCOUNT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_DELETE_EXPORT_4_SALE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_XUAT_KHO" Type="int" Mode="In" />
+          <Parameter Name="MA_NHAN_VIEN_TH" Type="int" Mode="In" />
+          <Parameter Name="RETURN_VALUE" Type="int" Mode="InOut" />
+        </Function>
         <Function Name="SP_EXPORT_REPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
@@ -1841,6 +1846,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         </Function>
         <Function Name="SP_GET_ROLE_OF_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USER_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_SMS_MESSAGES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_NHOM_NGUOI_DUNG" Type="int" Mode="In" />
+          <Parameter Name="TEN_NHOM_NGUOI_DUNG" Type="nvarchar" Mode="In" />
+          <Parameter Name="NOI_DUNG" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
         <Function Name="SP_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GET_TON_KHO_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -4861,6 +4873,18 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="SP_DELETE_EXPORT_4_SALE">
+            <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_NHAN_VIEN_TH" Mode="In" Type="Int32" />
+            <Parameter Name="RETURN_VALUE" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_SMS_MESSAGES" ReturnType="Collection(SmsModel.SP_GET_SMS_MESSAGES_Result)">
+            <Parameter Name="MA_NHOM_NGUOI_DUNG" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NHOM_NGUOI_DUNG" Mode="In" Type="String" />
+            <Parameter Name="NOI_DUNG" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -5058,6 +5082,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
           <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
           <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_SMS_MESSAGES_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="ID_NGUOI_GUI" Nullable="true" />
+          <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID_NHOM_NGUOI_NHAN" Nullable="true" />
+          <Property Type="String" Name="TEN_NHOM" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="NGAY_GUI" Nullable="true" />
+          <Property Type="String" Name="NOI_DUNG" Nullable="true" MaxLength="Max" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5914,6 +5947,20 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <FunctionImportMapping FunctionImportName="SP_SALE_EXPORT" FunctionName="SmsModel.Store.SP_SALE_EXPORT" />
           <FunctionImportMapping FunctionImportName="SP_THU_TIEN_XUAT_KHO" FunctionName="SmsModel.Store.SP_THU_TIEN_XUAT_KHO" />
           <FunctionImportMapping FunctionImportName="SP_GET_PHIEU_XUAT_KHO_BAN_LE" FunctionName="SmsModel.Store.SP_GET_PHIEU_XUAT_KHO_BAN_LE" />
+          <FunctionImportMapping FunctionImportName="SP_DELETE_EXPORT_4_SALE" FunctionName="SmsModel.Store.SP_DELETE_EXPORT_4_SALE" />
+          <FunctionImportMapping FunctionImportName="SP_GET_SMS_MESSAGES" FunctionName="SmsModel.Store.SP_GET_SMS_MESSAGES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_SMS_MESSAGES_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_NGUOI_GUI" ColumnName="ID_NGUOI_GUI" />
+                <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
+                <ScalarProperty Name="ID_NHOM_NGUOI_NHAN" ColumnName="ID_NHOM_NGUOI_NHAN" />
+                <ScalarProperty Name="TEN_NHOM" ColumnName="TEN_NHOM" />
+                <ScalarProperty Name="NGAY_GUI" ColumnName="NGAY_GUI" />
+                <ScalarProperty Name="NOI_DUNG" ColumnName="NOI_DUNG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
