@@ -59,6 +59,7 @@ namespace SMS.Models
         public virtual DbSet<V_NHAP_XUAT_DETAIL> V_NHAP_XUAT_DETAIL { get; set; }
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+        public virtual DbSet<V_HOA_DON_DISTICNT> V_HOA_DON_DISTICNT { get; set; }
     
         public virtual int dynTable()
         {
@@ -786,6 +787,35 @@ namespace SMS.Models
                 new ObjectParameter("TO_DATE", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_SMS_MESSAGES_Result>("SP_GET_SMS_MESSAGES", mA_NHOM_NGUOI_DUNGParameter, tEN_NHOM_NGUOI_DUNGParameter, nOI_DUNGParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_HOA_DON_EXPORTED_Result> SP_GET_HOA_DON_EXPORTED(Nullable<int> mA_HOA_DON, string sO_HOA_DON, Nullable<int> mA_KHACH_HANG, string tEN_KHACH_HANG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_HOA_DONParameter = mA_HOA_DON.HasValue ?
+                new ObjectParameter("MA_HOA_DON", mA_HOA_DON) :
+                new ObjectParameter("MA_HOA_DON", typeof(int));
+    
+            var sO_HOA_DONParameter = sO_HOA_DON != null ?
+                new ObjectParameter("SO_HOA_DON", sO_HOA_DON) :
+                new ObjectParameter("SO_HOA_DON", typeof(string));
+    
+            var mA_KHACH_HANGParameter = mA_KHACH_HANG.HasValue ?
+                new ObjectParameter("MA_KHACH_HANG", mA_KHACH_HANG) :
+                new ObjectParameter("MA_KHACH_HANG", typeof(int));
+    
+            var tEN_KHACH_HANGParameter = tEN_KHACH_HANG != null ?
+                new ObjectParameter("TEN_KHACH_HANG", tEN_KHACH_HANG) :
+                new ObjectParameter("TEN_KHACH_HANG", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_HOA_DON_EXPORTED_Result>("SP_GET_HOA_DON_EXPORTED", mA_HOA_DONParameter, sO_HOA_DONParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     }
 }

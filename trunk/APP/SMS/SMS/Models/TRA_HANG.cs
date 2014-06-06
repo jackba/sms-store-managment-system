@@ -33,13 +33,15 @@ namespace SMS.Models
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+        public Nullable<int> MA_HOA_DON { get; set; }
     
         public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
-        public virtual XUAT_KHO XUAT_KHO { get; set; }
         public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
+        public virtual XUAT_KHO XUAT_KHO { get; set; }
+        public virtual HOA_DON HOA_DON { get; set; }
     }
 }

@@ -18,31 +18,28 @@ namespace SMS.Controllers
         // GET: /PhanQuyen/
 
         [HttpGet]
-        public ActionResult Index(int? UserId,  string currentFilter, int? page)
+        public ActionResult Index()
         {
-            var ctx = new SmsContext();
-            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId), currentFilter).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
-            RoleModel model = new RoleModel();       
-            int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
-            model.RoleList = list.ToPagedList(pageIndex, pageSize);
-            model.PageCount = list.Count;
-            ViewBag.CurrentFilter = currentFilter;
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Index(int? UserId,  string currentFilter, int? page, bool? flag)
+        public PartialViewResult IndexPartialView(int? UserId, string SearchString, int? currentPageIndex)
         {
             var ctx = new SmsContext();
-            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId), currentFilter).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
+            if (string.IsNullOrEmpty(SearchString))
+            {
+                SearchString = string.Empty;
+                UserId = 0;
+            }
+            var list = ctx.SP_GET_ALL_ROLE(Convert.ToInt32(UserId), SearchString).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_ALL_ROLE_Result>();
             RoleModel model = new RoleModel();
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = 1;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             model.RoleList = list.ToPagedList(pageIndex, pageSize);
-            ViewBag.CurrentFilter = currentFilter;
+            ViewBag.SearchString = SearchString;
             model.PageCount = list.Count;
-            return View(model);
+            return PartialView("IndexPartialView", model);
         }
 
         [HttpGet]

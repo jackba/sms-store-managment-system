@@ -7,7 +7,7 @@ namespace SMS.Controllers
 {
     public class SystemConstant
     {
-        public const int ROWS = 1;
+        public const int ROWS = 5;
         public const int MAX_ROWS = 999;
         private static System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
         public static DateTime MIN_DATE = getMinDate();
