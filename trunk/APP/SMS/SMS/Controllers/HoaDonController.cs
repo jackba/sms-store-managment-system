@@ -307,17 +307,18 @@ namespace SMS.Controllers
                 returnValue
                 );
             int returnVal = Convert.ToInt32(returnValue.Value);
+            int flg = Convert.ToInt32(Request.Form["flg"]);
             if (returnVal == 0)
             {
                 ViewBag.Message = "Không đủ số lượng để xuất kho. Vui lòng kiểm tra lại hóa đơn.";
                 ViewBag.Status = 0;
-                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = 1, @status = 0 });
+                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = flg, @status = 0 });
             }
             else if (returnVal == -1)
             {
                 ViewBag.Message = "Hóa đơn đã được thu tiền. Không thể thu tiền hóa đơn này";
                 ViewBag.Status = -1;
-                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = 1, @status = -1 });
+                return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = flg, @status = -1 });
             }
             return View();
         }

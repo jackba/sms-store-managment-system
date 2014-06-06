@@ -40,6 +40,9 @@
                 @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG)
                 @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien"})
                 @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
+                <input type="hidden" value="@ViewBag.Flg" id="flg" name="flg"/>
+
+
                 <label> Tên khách hàng</label>
             </div>
             <div class="right">
