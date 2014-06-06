@@ -11,13 +11,17 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class SMS_MESSAGES
     {
         public int ID { get; set; }
         public Nullable<int> ID_NGUOI_GUI { get; set; }
+        [Display(Name = "Nhóm người nhận")]
         public Nullable<int> ID_NHOM_NGUOI_NHAN { get; set; }
         public Nullable<System.DateTime> NGAY_GUI { get; set; }
+
+        [Display(Name = "Nội dung")]
         public string NOI_DUNG { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
