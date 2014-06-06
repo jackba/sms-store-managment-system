@@ -1,0 +1,393 @@
+﻿@model PagedList.IPagedList<SMS.Models.KhachHangModel>
+@using PagedList.Mvc;
+
+<div>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count : Khách hàng </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align:right; padding-top:3px;">
+
+                    @Html.PagedListPager(Model, currentPageIndex => Url.Action("IndexPartialView",
+        new
+        {
+            currentPageIndex,
+            sortOrder = ViewBag.CurrentSort,
+            customerName = ViewBag.customerName,
+            currentFilter = ViewBag.CurrentFilter,
+            customerAmountFrom = ViewBag.customerAmountFrom,
+            customerAmountTo = ViewBag.customerAmountTo,
+            customerDebitFrom = ViewBag.customerDebitFrom,
+            ShowFlag = ViewBag.ShowFlag,
+            customerKind = ViewBag.CusomerKind,
+            customerArea = ViewBag.customerArea
+        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+        <tr>
+            <td class='tablefrozencolumn' width="15%">
+                <div id='divroot' class='root'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='root'>
+                        <tr>
+                            <td class='inner colwidth head ' width="40%">
+                                 @Ajax.ActionLink("Mã khách hàng", "IndexPartialView", new
+                           {
+                               sortOrder = ViewBag.IdSortParm,
+                               customerName = ViewBag.customerName,
+                               currentFilter = ViewBag.CurrentFilter,
+                               customerAmountFrom = ViewBag.customerAmountFrom,
+                               customerAmountTo = ViewBag.customerAmountTo,
+                               customerDebitFrom = ViewBag.customerDebitFrom,
+                               ShowFlag = ViewBag.ShowFlag,
+                               customerKind = ViewBag.CusomerKind,
+                               customerArea = ViewBag.customerArea
+                           },
+                            new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                            UpdateTargetId = "mainDiv"
+                            })
+                            </td>
+                            <td class='inner colwidth head'>
+                                @Ajax.ActionLink("Tên khách hàng", "IndexPartialView", new
+                           {
+                               sortOrder = ViewBag.NameSortParm,
+                               customerName = ViewBag.customerName,
+                               currentFilter = ViewBag.CurrentFilter,
+                               customerAmountFrom = ViewBag.customerAmountFrom,
+                               customerAmountTo = ViewBag.customerAmountTo,
+                               customerDebitFrom = ViewBag.customerDebitFrom,
+                               ShowFlag = ViewBag.ShowFlag,
+                               customerKind = ViewBag.CusomerKind,
+                               customerArea = ViewBag.customerArea
+                           },
+                            new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            }
+                             )
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='divfrozen' class='frozen'>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                <td class='inner frozencol colwidth toprow alignNumberic' width="40%">
+                                    @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                                    {
+                                        if (donvi.KhachHang.NO_GOI_DAU != 0)
+                                        {
+                                            <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                                @donvi.KhachHang.MA_KHACH_HANG
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            @donvi.KhachHang.MA_KHACH_HANG
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @donvi.KhachHang.MA_KHACH_HANG
+                                    }
+                                </td>
+                                <td class='inner frozencol toprow alignText'>
+                                    <a href="@Url.Action("Show", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                        @donvi.KhachHang.TEN_KHACH_HANG
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+            <td class='tablecontent'>
+                <div id='headscroll' class='divhead'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='head'>
+                        <tr>
+                            @{
+                                if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                                {
+                                    <td class='inner column-hscroll head'> Nợ gối đầu </td>
+                                    <td class='inner column-hscroll head'> Doanh số </td>
+
+                                    <td class='inner column-hscroll head' title="Ngày phát sinh nợ"> Ngày p/s nợ </td>
+                                }
+                            }
+                            <td class='inner column-hscroll head'> Mã thẻ </td>
+                            <td class='inner column-hscroll head'> Loại khách hàng </td>
+                            <td class='inner column-hscroll head'> Số điện thoại </td>
+                            <td class='inner column-hscroll head'> Email </td>
+                            <td class='inner column-hscroll head'> Địa chỉ </td>
+                            <td class='inner column-hscroll head'>
+                            
+                                @Ajax.ActionLink("khu vực", "IndexPartialView", new
+                           {
+                               sortOrder = ViewBag.AdminSortParm,
+                               customerName = ViewBag.customerName,
+                               currentFilter = ViewBag.CurrentFilter,
+                               customerAmountFrom = ViewBag.customerAmountFrom,
+                               customerAmountTo = ViewBag.customerAmountTo,
+                               customerDebitFrom = ViewBag.customerDebitFrom,
+                               ShowFlag = ViewBag.ShowFlag,
+                               customerKind = ViewBag.CusomerKind,
+                               customerArea = ViewBag.customerArea
+                           },
+                            new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            }
+                             )
+                            
+                            </td>
+                            @{
+                                if ((bool)Session["IsAdmin"] == true)
+                                {
+                                    <td class='inner head' style="width:70px;">Người tạo</td>
+                                    <td class='inner  head' style="width:70px;">Ngày tạo</td>
+                                    <td class='inner  head' style="width:70px;">Người cập nhật</td>
+                                    <td class='inner  head' style="width:70px;">Ngày cập nhật</td>
+                                }
+
+                                if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                                {
+                                    <td class='inner head' style="width:50px;" title="Thay đổi công nợ">Thay đổi c/n</td>
+                                }
+                                if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
+                                {
+                                    <td class='inner head' style="width:50px;">Sửa</td>
+                                    <td class='inner head' style="width:50px;">Xóa</td>
+                                }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div id='contentscroll' class='content' onscroll='reposHead(this);'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                        @foreach (var donvi in Model)
+                        {
+                            <tr>
+                                @{
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                            {
+                                if (@donvi.KhachHang.NO_GOI_DAU != 0)
+                                {
+                                    <td class='inner column-hscroll alignCenter' style="background-color: LightCoral">
+                                        <a href="@Url.Action("showDebitHist", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                            @donvi.KhachHang.NO_GOI_DAU.ToString("0,0.00")
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class='inner column-hscroll alignCenter'>
+                                        <a href="@Url.Action("showDebitHist", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                            @donvi.KhachHang.NO_GOI_DAU.ToString("0,0.00")
+                                        </a>
+                                    </td>
+
+                                }
+
+                                <td class='inner column-hscroll alignCenter'>
+                                    <a href="@Url.Action("showOrderHist", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                        @donvi.KhachHang.DOANH_SO.ToString("0,0.00")
+                                    </a>
+                                </td>
+
+
+
+                                    <td class='inner column-hscroll alignCenter'>
+                                        @{
+                                if (@donvi.KhachHang.NGAY_PHAT_SINH_NO == null)
+                                {
+                                    @Html.Label("--");
+                                }
+                                else
+                                {
+                                    @DateTime.Parse(@donvi.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                        }
+
+                                    </td>
+                            }
+                                }
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.MA_THE_KHACH_HANG </td>
+                                <td class='inner column-hscroll alignCenter'>
+                                    @{
+                            string kind = "";
+                            if (String.IsNullOrEmpty(@donvi.KhachHang.KIND.ToString()))
+                            {
+                                kind = "--";
+                            }
+                            else
+                            {
+                                if (Int32.Parse(@donvi.KhachHang.KIND.ToString()) == 1)
+                                {
+                                    kind = "Khách hàng Công ty - Công trình";
+                                }
+                                else if (Int32.Parse(@donvi.KhachHang.KIND.ToString()) == 2)
+                                {
+                                    kind = "Khách hàng thân thiết";
+                                }
+                                else
+                                {
+                                    kind = "Khách hàng thường";
+                                }
+                            }
+                                    }
+                                    @kind
+                                </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.SO_DIEN_THOAI </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.EMAIL </td>
+                                <td class='inner column-hscroll alignCenter'> @donvi.KhachHang.DIA_CHI </td>
+                                <td class='inner column-hscroll alignCenter'>
+                                    @{
+                            if (@donvi.KhuVuc == null || String.IsNullOrEmpty(@donvi.KhuVuc.TEN_KHU_VUC))
+                            {
+                                @Html.Label("--")
+                            }
+                            else
+                            {
+                                @donvi.KhuVuc.TEN_KHU_VUC
+
+                            }
+                                    }
+
+                                </td>
+                                @{
+                            if ((bool)Session["IsAdmin"] == true)
+                            {
+                                <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                        @if (@donvi.KhachHang.CREATE_AT != null)
+                                        {
+                                            @DateTime.Parse(@donvi.KhachHang.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                        }
+                                    </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                        @donvi.NguoiCapNhat.TEN_NGUOI_DUNG
+                                    </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                        @if (@donvi.KhachHang.UPDATE_AT != null)
+                                        {
+                                            @DateTime.Parse(@donvi.KhachHang.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                        }
+                                    </td>
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+                            {
+                                if (donvi.KhachHang.NO_GOI_DAU != 0)
+                                {
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG, @flg = 1 })" class="button-module">
+                                            <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="#" class="button-module" onclick="return false;">
+                                            <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                                        </a>
+                                    </td>
+                                }
+                            }
+                            if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
+                            {
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("Edit", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module">
+                                        <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                    </a>
+                                </td>
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("Delete", "KhachHang", new { id = @donvi.KhachHang.MA_KHACH_HANG })" class="button-module" onclick="return deleteSubmit()">
+                                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                        </a>
+                                    </td>
+                            }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class='horizontal-scroll' onscroll='reposHorizontal(this);'>
+                    <div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count : Khách hàng </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align:right; padding-top:3px;">
+
+                                            @Html.PagedListPager(Model, currentPageIndex => Url.Action("IndexPartialView",
+                                new
+                                {
+                                    currentPageIndex,
+                                    sortOrder = ViewBag.CurrentSort,
+                                    customerName = ViewBag.customerName,
+                                    currentFilter = ViewBag.CurrentFilter,
+                                    customerAmountFrom = ViewBag.customerAmountFrom,
+                                    customerAmountTo = ViewBag.customerAmountTo,
+                                    customerDebitFrom = ViewBag.customerDebitFrom,
+                                    ShowFlag = ViewBag.ShowFlag,
+                                    customerKind = ViewBag.CusomerKind,
+                                    customerArea = ViewBag.customerArea
+                                }),
+                                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                                new AjaxOptions()
+                                {
+                                    HttpMethod = "POST",
+                                    InsertionMode = InsertionMode.Replace,
+                                    LoadingElementId = "resultLoadingDiv",
+                                    UpdateTargetId = "mainDiv"
+                                }
+                            ))
+                                        </div>
+            </td>
+        </tr>
+
+    </table>
+</div>

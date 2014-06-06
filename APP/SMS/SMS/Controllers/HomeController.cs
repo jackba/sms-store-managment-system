@@ -75,6 +75,7 @@ namespace SMS.Controllers
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
+            ViewBag.SearchString = SearchString;
             return PartialView("IndexPartialView", model);
         }
 

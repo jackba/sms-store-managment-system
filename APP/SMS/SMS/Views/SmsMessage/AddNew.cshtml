@@ -1,5 +1,47 @@
-﻿@{
-    ViewBag.Title = "AddNew";
+﻿@model SMS.Models.SMS_MESSAGES
+@{
+    ViewBag.Title = "Thêm mới tin nhắn";
 }
 
-<h2>AddNew</h2>
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("QuanTri", "Home")"> Quản trị </a> >
+    <a href="@Url.Action("Index", "SmsMessage")"> Tin nhắn </a>
+    > @ViewBag.Title
+</div>
+<br />
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<br />
+<hr style="width:100%" />
+<h3 style="color:red">
+    @ViewBag.Message
+</h3>
+<h3 style="color:blue">
+    @ViewBag.InforMessage
+</h3>
+@using (Html.BeginForm("AddNew", "SmsMessage", FormMethod.Post, new { enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.LabelFor(u => u.ID_NHOM_NGUOI_NHAN)
+            </div>
+            <div class="required">
+                @Html.DropDownListFor(u => u.ID_NHOM_NGUOI_NHAN, new SelectList(ViewBag.GroupUserList, "MA_NHOM", "TEN_NHOM"), "----- Tất cả các nhóm ----", new { style = "padding:5px;font-size:1.2em" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.NOI_DUNG)
+            </div>
+            <div>
+                @Html.TextAreaFor(u => u.NOI_DUNG)
+            </div>
+            <div>
+                <input type="submit" style="width:100px" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Quay lại" onclick="window.location.href='@Url.Action("Index","SmsMessage")'" />
+            </div>
+        </fieldset>
+    </div>
+}

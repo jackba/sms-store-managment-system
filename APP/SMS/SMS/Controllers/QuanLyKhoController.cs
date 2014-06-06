@@ -166,69 +166,24 @@ namespace SMS.Controllers
             ViewBag.ProductId = ProductId;
             return PartialView("FifoReportPartialView", model);
         }
-        [HttpGet]
-        public ActionResult ImExDetail(int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? page)
-        {
-            var ctx = new SmsContext();
-            ctx.Database.CommandTimeout = 300;
-            if (string.IsNullOrEmpty(StoreName))
-            {
-                StoreId = 0;
-            }
-            if (string.IsNullOrEmpty(ProductName))
-            {
-                ProductId = 0;
-            }
-
-            if (fromDate == null)
-            {
-                fromDate = SystemConstant.MIN_DATE;
-            }
-            else
-            {
-                ViewBag.FromDate = DateTime.Parse(fromDate.ToString()).ToString("dd/MM/yyyy");
-            }
-
-            if (toDate == null)
-            {
-                toDate = SystemConstant.MAX_DATE;
-            }
-            else
-            {
-                ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
-            }
-            var tonkho = ctx.Database.SqlQuery<ImEx>("exec SP_GET_NHAP_XUAT @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
-                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
-                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
-                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
-                new SqlParameter("FROM_DATE", fromDate),
-                new SqlParameter("TO_DATE", toDate)
-                ).ToList<ImEx>().Take(SystemConstant.MAX_ROWS);
-
-            ViewBag.Count = tonkho.Count();
-            IPagedList<ImEx> tk = null;
-            int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
-            tk = tonkho.ToPagedList(pageIndex, pageSize);
-            ViewBag.StoreName = StoreName;
-            ViewBag.ProductName = ProductName;
-            ImExModel model = new ImExModel();
-            model.ResultList = tk;
-            return View(model);
-        }
-
 
         [HttpPost]
-        public ActionResult ImExDetail(int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? page, bool? flag)
+        public PartialViewResult ImExDetailPartialViewResult(int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
             var ctx = new SmsContext();
             ctx.Database.CommandTimeout = 300;
             if (string.IsNullOrEmpty(StoreName))
             {
+                StoreName = string.Empty;
                 StoreId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                StoreId = Convert.ToInt32(Session["MyStore"]);
             }
             if (string.IsNullOrEmpty(ProductName))
             {
+                ProductName = string.Empty;
                 ProductId = 0;
             }
 
@@ -260,16 +215,24 @@ namespace SMS.Controllers
             ViewBag.Count = tonkho.Count();
             IPagedList<ImEx> tk = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             ViewBag.StoreName = StoreName;
             ViewBag.ProductName = ProductName;
+            ViewBag.StoreId = StoreId;
+            ViewBag.ProductId = ProductId;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
             ImExModel model = new ImExModel();
             model.ResultList = tk;
-            return View(model);
+            return PartialView("ImExDetailPartialViewResult", model);
         }
 
-
+        [HttpGet]
+        public ActionResult ImExDetail()
+        {
+            return View();
+        }
         /****************************************************************
          * 
          * 

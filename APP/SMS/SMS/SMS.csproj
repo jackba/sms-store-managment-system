@@ -165,6 +165,7 @@
     <Compile Include="Controllers\SmsMasterController.cs" />
     <Compile Include="Controllers\SmsMessageController.cs" />
     <Compile Include="Controllers\SystemConstant.cs" />
+    <Compile Include="Controllers\TraHangController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -284,6 +285,9 @@
     <Compile Include="Models\SP_GET_HOA_DON_CHUA_TT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_HOA_DON_EXPORTED_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HOA_DON_INFO_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -330,6 +334,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_HOA_DON.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_HOA_DON_DISTICNT.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_IMPORT_DETAIL.cs">
@@ -691,6 +698,14 @@
     <Content Include="Views\Import\IndexPartialView.cshtml" />
     <Content Include="Views\SmsMessage\Index.cshtml" />
     <Content Include="Views\SmsMessage\IndexPartialView.cshtml" />
+    <Content Include="Views\SmsMessage\AddNew.cshtml" />
+    <Content Include="Views\SmsMessage\Edit.cshtml" />
+    <Content Include="Views\QuanLyKho\ImExDetailPartialViewResult.cshtml" />
+    <Content Include="Views\PhanQuyen\IndexPartialView.cshtml" />
+    <Content Include="Views\TraHang\Index.cshtml" />
+    <Content Include="Views\TraHang\IndexPartialView.cshtml" />
+    <Content Include="Views\KhachHang\IndexPartialView.cshtml" />
+    <Content Include="Views\KhachHang\WarningPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,10 +17,11 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class KhachHangController : Controller
     {
-        [HttpGet]
-        public ActionResult Index(string searchString, string customerName, string customerKind, string customerArea,
+        [HttpPost]
+
+        public PartialViewResult IndexPartialView(string searchString, string customerName, string customerKind, string customerArea,
             string customerAmountFrom, string customerAmountTo, string customerDebitFrom,
-            string customerDebitTo, string ShowFlag, string sortOrder, string currentFilter, int? page)
+            string customerDebitTo, string ShowFlag, string sortOrder, string currentFilter, int? currentPageIndex)
         {
             ViewBag.CusomerKind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
             ViewBag.CustomerArea = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
@@ -30,32 +31,36 @@ namespace SMS.Controllers
             ViewBag.customerDebitFrom = customerDebitFrom;
             ViewBag.customerDebitTo = customerDebitTo;
             ViewBag.customerName = customerName;
-            
+
             int kind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
             int areaId = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
             decimal amountFrom = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerAmountFrom)? "0": customerAmountFrom.Replace("'", ""), out amountFrom);
+            decimal.TryParse(string.IsNullOrEmpty(customerAmountFrom) ? "0" : customerAmountFrom.Replace("'", ""), out amountFrom);
             decimal amountTo = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerAmountTo)? "0": customerAmountTo.Replace("'", ""), out amountTo);
+            decimal.TryParse(string.IsNullOrEmpty(customerAmountTo) ? "0" : customerAmountTo.Replace("'", ""), out amountTo);
             decimal debitFrom = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom)? "0": customerDebitFrom.Replace(",", ""), out debitFrom);
+            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom) ? "0" : customerDebitFrom.Replace(",", ""), out debitFrom);
             decimal debitTo = 0;
-            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom)? "0": customerDebitFrom.Replace(",", ""), out debitTo);
+            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom) ? "0" : customerDebitFrom.Replace(",", ""), out debitTo);
             var ctx = new SmsContext();
-            if (!String.IsNullOrEmpty(searchString) && (page == null || page == 0))
+            if (!String.IsNullOrEmpty(searchString) && (currentPageIndex == null || currentPageIndex == 0))
             {
-                page = 1;
+                currentPageIndex = 1;
             }
             else
             {
                 searchString = currentFilter;
+            }
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "id";
             }
             ViewBag.CurrentSort = sortOrder;
             ViewBag.IdSortParm = sortOrder == "id" ? "id_desc" : "id";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
             ViewBag.AdminSortParm = sortOrder == "admin_name" ? "admin_name_desc" : "admin_name";
             var theListContext = (from KhachHang in ctx.KHACH_HANG
-                                  join KhuVuc in ctx.KHU_VUC 
+                                  join KhuVuc in ctx.KHU_VUC
                                   on KhachHang.MA_KHU_VUC equals KhuVuc.MA_KHU_VUC into kv
                                   from kVuc in kv.DefaultIfEmpty()
                                   join u in ctx.NGUOI_DUNG on KhachHang.CREATE_BY equals u.MA_NGUOI_DUNG
@@ -79,14 +84,14 @@ namespace SMS.Controllers
                                   select new KhachHangModel
                                   {
                                       KhachHang = KhachHang,
-                                      KhuVuc = kVuc, 
-                                      NguoiCapNhat = u1, 
+                                      KhuVuc = kVuc,
+                                      NguoiCapNhat = u1,
                                       NguoiTao = u
                                   }).Take(SystemConstant.MAX_ROWS);
             ViewBag.CurrentFilter = searchString;
             IPagedList<KhachHangModel> khachHangs = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.Count = theListContext.Count();
             switch (sortOrder)
@@ -118,7 +123,24 @@ namespace SMS.Controllers
                               select s).ToList<KHU_VUC>();
             ViewBag.khuVucList = khuVucList;
             ViewBag.CustomerAutocomplete = khuVucList.ToArray();
-            return View(khachHangs);
+            return PartialView("IndexPartialView", khachHangs);
+        }
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+           
+            var ctx = new SmsContext();
+            var khuVucList = (from s in ctx.KHU_VUC
+                              where s.ACTIVE == "A"
+                              select s).ToList<KHU_VUC>();
+            ViewBag.khuVucList = khuVucList;
+            ViewBag.CustomerAutocomplete = khuVucList.ToArray();
+            ViewBag.CustomerArea = 0;
+            ViewBag.CusomerKind = 0;
+            ViewBag.ShowFlag = 0;
+
+            return View();
         }
 
 
@@ -322,10 +344,8 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
-        public ActionResult showDebitHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page)
+        public ActionResult showDebitHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page, int? flg)
         {
-            int flg = Convert.ToInt32(Request.Form["flg"]);
-            ViewBag.flg = flg;
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 ViewBag.Message = "Bạn không có quyền thay đổi công nợ.";
@@ -382,6 +402,7 @@ namespace SMS.Controllers
                 KhachHangModel KhachHang = new KhachHangModel();
                 KhachHang.KhachHang = khuVuc;
                 KhachHang.KhachHangHists = khachHangHists;
+                ViewBag.flg = flg;
                 return View(KhachHang);
             }
             else
@@ -578,66 +599,14 @@ namespace SMS.Controllers
                 return View();
             }
         }
-        [HttpGet]
-        public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page)
-        {
-            if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
-            {
-                page = 1;
-            }
-            else
-            {
-                SearchString = currentFilter;
-            }
-            var ctx = new SmsContext();
-            var khList = ctx.Database.SqlQuery<KHACH_HANG_RESULT>(" exec GET_KHACH_HANG_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<KHACH_HANG_RESULT>();
-            ViewBag.DateSortParam = sortOrder == "date_desc" ? "date" : "date_desc";
-            ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
-            ViewBag.DebitSortParm = sortOrder == "debit" ? "debit_desc" : "debit";
-
-            IPagedList<KHACH_HANG_RESULT> khachHangHists = null;
-            int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
-            ViewBag.CurrentPageIndex = pageIndex;
-            ViewBag.Count = khList.Count();
-            switch (sortOrder)
-            {
-                case "date":
-                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "date_desc":
-                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "name":
-                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "name_desc":
-                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.TEN_KHACH_HANG).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "debit":
-                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
-                    break;
-                case "debit_desc":
-                    khachHangHists = khList.OrderByDescending(KhachHangHist => KhachHangHist.NO_GOI_DAU).ToPagedList(pageIndex, pageSize);
-                    break;
-                default:
-                    khachHangHists = khList.OrderBy(KhachHangHist => KhachHangHist.NGAY_PHAT_SINH_NO).ToPagedList(pageIndex, pageSize);
-                    break;
-
-            }
-            ViewBag.debitHist = khachHangHists;
-            KhachHangModel khachHangModel = new KhachHangModel();
-            khachHangModel.WarningList = khachHangHists;
-            ViewBag.CurrentFilter = SearchString;
-            return View(khachHangModel);
-        }
 
         [HttpPost]
-        public ActionResult Warning(string SearchString, string sortOrder, string currentFilter, int? page, bool? submit)
+        public PartialViewResult WarningPartialView(string SearchString, string sortOrder, 
+            string currentFilter, int? currentPageIndex)
         {
-            if (!String.IsNullOrEmpty(SearchString) && (page == null || page == 0))
+            if (!String.IsNullOrEmpty(SearchString) && (currentPageIndex == null || currentPageIndex == 0))
             {
-                page = 1;
+                currentPageIndex = 1;
             }
             else
             {
@@ -651,7 +620,7 @@ namespace SMS.Controllers
 
             IPagedList<KHACH_HANG_RESULT> khachHangHists = null;
             int pageSize = SystemConstant.ROWS;
-            int pageIndex = page == null ? 1 : (int)page;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.Count = khList.Count();
             switch (sortOrder)
@@ -680,11 +649,21 @@ namespace SMS.Controllers
 
             }
             ViewBag.debitHist = khachHangHists;
-            ViewBag.CurrentFilter = SearchString;
             KhachHangModel khachHangModel = new KhachHangModel();
             khachHangModel.WarningList = khachHangHists;
-            return View(khachHangModel);
+            ViewBag.CurrentFilter = SearchString;
+            return PartialView("WarningPartialView", khachHangModel);
         }
+
+
+
+        [HttpGet]
+        public ActionResult Warning()
+        {
+            return View();
+        }
+
+       
         [HttpGet]
         public ActionResult Show(int id, int? flg)
         {
