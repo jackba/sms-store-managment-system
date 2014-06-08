@@ -17,8 +17,25 @@ namespace SMS.Controllers
         //
         // GET: /HoaDon/
 
-        [HttpGet]
 
+        [HttpPost]
+        public JsonResult FindExported(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.HOA_DON
+                                    where (x.SO_HOA_DON.StartsWith(prefixText) 
+                                    && x.ACTIVE.Equals("A") && x.STATUS == 3)
+                                    select new
+                                    {
+                                        id = x.MA_HOA_DON,
+                                        value = x.SO_HOA_DON
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
+
+        [HttpGet]
         public ActionResult Collection(string message)
         {
             ViewBag.Message = message;

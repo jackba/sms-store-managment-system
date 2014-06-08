@@ -39,12 +39,16 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/bill.png"></img>
         <span>DANH SÁCH HÓA ĐƠN</span>
     </a>
-    <a class="dashboard-module" href="#">
+    <a class="dashboard-module" href="@Url.Action("Index", "TraHang")">
         <img width="64" height="64" alt="edit" src="../../Content/images/refund.png"></img>
-        <span>NHẬN TRẢ HÀNG</span>
+        <span>NHẬN TRẢ HÀNG - CÓ HÓA ĐƠN</span>
     </a>
 
-    
+    <a class="dashboard-module" href="#">
+        <img width="64" height="64" alt="edit" src="../../Content/images/refund.png"></img>
+        <span>NHẬN TRẢ HÀNG - KHÔNG HÓA ĐƠN</span>
+    </a>
+
     @{
         if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
         {
