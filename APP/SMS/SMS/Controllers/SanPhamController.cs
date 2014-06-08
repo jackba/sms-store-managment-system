@@ -115,12 +115,12 @@ namespace SMS.Controllers
             fileName += DateTime.Now.ToString("dd-MM-yyyy-HHmmss");
             fileName += ".xls";
             string listProductID = "";
-            string[] arrProductID= new string[]{};
+            string[] arrRowNum= new string[]{};
 
             if (collection.AllKeys.Contains("ListProductID"))
             {
                 listProductID = collection.Get("ListProductID");
-                arrProductID = listProductID.Split(new char[] { ',' });
+                arrRowNum = listProductID.Split(new char[] { ',' });
             }
 
             var products = new System.Data.DataTable("Products");
@@ -129,10 +129,12 @@ namespace SMS.Controllers
             products.Columns.Add("Giá bán", typeof(string));
             products.Columns.Add("Chiết khấu", typeof(string));
             products.Columns.Add("Giá thực", typeof(string));
-            foreach (string id in arrProductID)
+            foreach (string RowNum in arrRowNum)
             {
-                products.Rows.Add(id, collection.Get("TenSanPham_"  + id) , collection.Get("GiaBan_" + id) , 
-                                       collection.Get("ChietKhau_"  + id) , collection.Get("GiaThuc_" + id));
+
+                products.Rows.Add(RowNum.Split(new char[]{'_'})[0], 
+                    collection.Get("TenSanPham_"  + RowNum) , collection.Get("GiaBan_" + RowNum) , 
+                                       collection.Get("ChietKhau_"  + RowNum) , collection.Get("GiaThuc_" + RowNum));
             }
 
             var grid = new GridView();

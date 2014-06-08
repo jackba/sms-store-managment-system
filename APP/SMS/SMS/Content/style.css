@@ -81,7 +81,7 @@ a.button-module span {
     display: block;
 }
 
-table td{
+/*table td{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -91,4 +91,4 @@ td{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
+}*/
