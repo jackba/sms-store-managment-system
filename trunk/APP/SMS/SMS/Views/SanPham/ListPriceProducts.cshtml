@@ -39,8 +39,13 @@ function initalPage() {
                                 discount: item.discount
                             }
                         }))
+                      
                     }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
             });
+            $('#tableSearch #MaSanPham').val('');
+            $('#tableSearch #GiaBan').val('')
+            $('#tableSearch #ChietKhau').val('')
+            $('#tableSearch #GiaThuc').val('')
         },
         select: function (event, ui) {
             CalcRealPrice(ui.item.price, ui.item.discount);
@@ -60,17 +65,18 @@ function initalPage() {
 function addCommaNumberic(ctrlID) {
     $(ctrlID).val($(ctrlID).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
 }
-function saveCurrentType() {
-    var selected = $("input[type='radio']:checked");
-    if (selected.length > 0) {
-        $('#currTypeCustomer').val(selected.val());
-    }
-}
+//function saveCurrentType() {
+//    var selected = $("input[type='radio']:checked");
+//    if (selected.length > 0) {
+//        $('#currTypeCustomer').val(selected.val());
+//    }
+//}
 function changeTypeCustomer(value) {
-    var title = "Xác nhận chuyển loại khách hàng"
-    var content = "Thao tác này có thể xóa hết dữ liệu hiện tại trên danh sách.<br/> Bạn hãy cân nhắc kỹ thao tác này nhé.<br/> Bạn chấp nhận thay đổi loại khách hàng không?";
-    var action = 1;
-    $('#Type' + value).click(fnOpenNormalDialog(title, content, action));
+    //var title = "Xác nhận chuyển loại khách hàng"
+    //var content = "Thao tác này có thể xóa hết dữ liệu hiện tại trên danh sách.<br/> Bạn hãy cân nhắc kỹ thao tác này nhé.<br/> Bạn chấp nhận thay đổi loại khách hàng không?";
+    //var action = 1;
+    //$('#Type' + value).click(fnOpenNormalDialog(title, content, action));
+
 }
 
 function confirmBack() {
@@ -102,33 +108,48 @@ function fnOpenConfirmDialog(title, content) {
     });
 }
 function fnOpenNormalDialog(title, content, action) {
-    if ($("table.tableContentScroll tr").length == 0) {
-        return;
-    }
+    //if ($("table.tableContentScroll tr").length == 0) {
+    //    return;
+    //}
 
     $("#dialogConfirm").html(content);
     switch(action)
     {
-        case 1:  // change type customer
-            $("#dialogConfirm").dialog({
-                resizable: false,
-                modal: true,
-                title: title,
-                height: 200,
-                width: 550,
-                buttons: {
-                    "Đồng ý": function () {
-                        $(this).dialog('close');
-                        callback(true);
-                    },
-                    "Không": function () {
-                        $(this).dialog('close');
-                        callback(false);
-                    }
-                }
-            });
-            break;
-        case 2: // duplicate product item
+        //case 1:  // change type customer
+        //    $("#dialogConfirm").dialog({
+        //        resizable: false,
+        //        modal: true,
+        //        title: title,
+        //        height: 200,
+        //        width: 550,
+        //        buttons: {
+        //            "Đồng ý": function () {
+        //                $(this).dialog('close');
+        //                callback(true);
+        //            },
+        //            "Không": function () {
+        //                $(this).dialog('close');
+        //                callback(false);
+        //            }
+        //        }
+        //    });
+        //    break;
+        //case 2: // duplicate product item
+        //    $("#dialogConfirm").dialog({
+        //        resizable: false,
+        //        modal: true,
+        //        title: title,
+        //        height: 200,
+        //        width: 550,
+        //        buttons: {
+        //            "Đóng": function () {
+        //                $(this).dialog('close');
+        //                $('#tableSearch #TenSanPham').select();
+        //            }
+        //        }
+        //    });
+        //    break
+        case 3: // Not exist product
             $("#dialogConfirm").dialog({
                 resizable: false,
                 modal: true,
@@ -149,29 +170,34 @@ function fnOpenNormalDialog(title, content, action) {
 }
 
 
-function callback(valueReturn) {
-    if (valueReturn) {
-        $("table.tableContentScroll tr").remove();
-        $('#exportExcel').attr("disabled", "disabled");
-        $('#exportExcel').css("background-color", "#ECECEC");
-    } else {
-        $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
-    }
-}
+//function callback(valueReturn) {
+//    if (valueReturn) {
+//        $("table.tableContentScroll tr").remove();
+//        $('#exportExcel').attr("disabled", "disabled");
+//        $('#exportExcel').css("background-color", "#ECECEC");
+//    } else {
+//        $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
+//    }
+//}
     
 
 function addRecord() {
     if ($('#tableSearch #MaSanPham').val() != '') {
-        if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
-            var title = "Xác nhận"
-            var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
-            var action = 2;
-            $('#addRecord').click(fnOpenNormalDialog(title, content, action));
-        } else {
+        //if ($('#tableContent input:hidden[name="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
+        //    var title = "Xác nhận"
+        //    var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
+        //    var action = 2;
+        //    $('#addRecord').click(fnOpenNormalDialog(title, content, action));
+        //} else {
             prependNewRowToTable();
             $('#exportExcel').removeAttr("disabled", "disabled");
             $('#exportExcel').css("background-color", "");
-        }
+        //}
+    } else {
+            var title = "Thông báo"
+            var content = "Sản phẩm không tồn tại. Xin chọn sản phẩm khác thay thế.";
+            var action = 3;
+            $('#addRecord').click(fnOpenNormalDialog(title, content, action));
     }
 
 }
@@ -179,31 +205,37 @@ function prependNewRowToTable() {
     var MaSP = $('#tableSearch #MaSanPham').val();
     var TenSP = $('#tableSearch #TenSanPham').val();
     var newRow = '';
-    newRow += ' <tr class="rowHeight" id=\'' + MaSP + '\'> ';
+    // avoid duplicate
+    var count = $('#tableContent tr').length;
+    var rowNum = MaSP + '_' + count;
+
+    newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
     newRow += '<td style="width:20px;"> ';
     newRow += '  <div class="myCheckBox">';
-    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + $('#tableSearch #MaSanPham').val() + '\');">';
+    newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td  class="colProductNm textLeft"> ';
+
+
     newRow += ' <div  class="colProductNm tooltip truncate">';
     newRow += TenSP;
     newRow += '  <span>' + TenSP + '</span>';
-    newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
-    newRow += '  <input name="TenSanPham_' + MaSP + '" type="hidden" value="' + TenSP + '" />';
+    newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
+    newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
     newRow += '   </div>';
     newRow += ' </td> ';
     newRow += ' <td class="colPrice textRight"> ';
     newRow += $('#tableSearch #GiaBan').val();
-    newRow += '  <input name="GiaBan_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaBan').val() + '" />';
+    newRow += '  <input name="GiaBan_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaBan').val() + '" />';
     newRow += ' </td> ';
     newRow += '  <td  class="colDiscount textRight"> ';
     newRow += $('#tableSearch #ChietKhau').val();
-    newRow += '  <input name="ChietKhau_' + MaSP + '" type="hidden" value="' + $('#tableSearch #ChietKhau').val() + '" />';
+    newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + $('#tableSearch #ChietKhau').val() + '" />';
     newRow += ' </td>  ';
     newRow += '  <td class="colRealPrice textRight"> ';
     newRow += $('#tableSearch #GiaThuc').val();
-    newRow += '  <input name="GiaThuc_' + MaSP + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+    newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
     newRow += ' </td> ';
     newRow += '  </tr> ';
     $('#tableContent').prepend(newRow);
@@ -369,20 +401,20 @@ function RemoveRougeChar(convertString) {
     <br />
     <div style="margin-left: 45px;">
         <input type="radio" name="groupcustomer" id="Type1" checked="checked" value="1" 
-               onmousedown="saveCurrentType();" onchange="    changeTypeCustomer(1);">
+               @*onmousedown="saveCurrentType();"*@ onchange="    changeTypeCustomer(1);">
         <span style="font-size:15px;"> Khách hàng công ty , công trình</span>
     <br />
     <input type="radio" name="groupcustomer" id="Type2" value="2" 
-           onmousedown="saveCurrentType();" onchange="changeTypeCustomer(2);">
+           @*onmousedown="saveCurrentType();"*@ onchange="changeTypeCustomer(2);">
         <span style="font-size:15px;"> Khách hàng thân thiết</span>
     <br />
     <input type="radio" name="groupcustomer" id="Type3" value="3"
-            onmousedown="saveCurrentType();" onchange="changeTypeCustomer(3);">
+            @*onmousedown="saveCurrentType();"*@ onchange="changeTypeCustomer(3);">
         <span style="font-size:15px;"> Khách hàng thường</span>
 </div>
     <div id="dialogConfirm">       
     </div>
-    <input type="hidden" id="currTypeCustomer" />
+    @*<input type="hidden" id="currTypeCustomer" />*@
 </div>
 <div class="mainContainer">
     <table class="tableHeader">     
