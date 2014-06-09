@@ -59,7 +59,7 @@ namespace SMS.Models
         [Display(Name = "Kích thước")]
         [StringLength(100)]
         public string KICH_THUOC { get; set; }
-        
+
 		[Display(Name = "Trọng lượng")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}")]
 		public Nullable<double> CAN_NANG { get; set; }
@@ -67,7 +67,6 @@ namespace SMS.Models
         [Display(Name = "Đặc tả")]
         [StringLength(1000)]
         public string DAC_TA { get; set; }
-        [Required(ErrorMessage = "Hãy nhập đơn vị tính cho sản phẩm.")]
         [Display(Name = "Đơn vị tính")]
         public Nullable<int> MA_DON_VI { get; set; }
         [Display(Name = "Nhà sản xuất")]
@@ -100,6 +99,8 @@ namespace SMS.Models
         [DisplayFormat(DataFormatString = "dd/MM/yyyy", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+         [Display(Name = "Code sản phẩm")]  
+        public string CODE { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
         public virtual ICollection<CHI_TIET_NHAP_KHO> CHI_TIET_NHAP_KHO { get; set; }
