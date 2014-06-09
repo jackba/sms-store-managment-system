@@ -18,9 +18,6 @@
 <script>
 
     $(document).ready(function () {
-        window.onbeforeunload = function () {
-            //TODO: BACK NAVIGATION
-        };
         //show calendar
 
         $('.datePicker').datepicker({
@@ -110,62 +107,6 @@
             minLength: 1
 
         })
-        // Code product
-        $("#CodeSanPham").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
-                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; },
-                    success:
-                        function (data) {
-                            response($.map(data, function (item) {
-                                return {
-                                    lable: item.code,
-                                    value: item.code,
-                                    id: item.id,
-                                    price: item.price,
-                                    discount: item.discount,
-                                    unit: item.unit,
-                                    unitNm: item.unitNm,
-                                    name : item.name
-                                }
-                            }))
-                        },
-                    error:
-                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                });
-                setEmptyFixedField(true);
-            },
-            select: function (event, ui) {
-                setFixedField(ui.item, true);
-
-                hideRelationProduct();
-                createDonViTinh();
-
-                $('#hidUnitRootName').val(ui.item.unitNm);
-
-                $('#hidFactorValue').val('1');
-                return false;
-            },
-            focus: function (event, ui) {
-
-                setRelationProduct(ui.item ,true);
-                setStoreInformation(ui.item);
-                showRelationProduct('ui-id-2');
-                $('#hidFactorValue').val('1');
-            },
-            close: function () {
-                hideRelationProduct();
-            },
-            minLength: 1
-
-        }).keyup(function (e) {
-            if (e.which === 13 || e.which === 27) {
-                $(".ui-menu-item").hide();
-                hideRelationProduct();
-            }
-        });;
         // Product name
         $("#TenSanPham").autocomplete({
             source: function (request, response) {
@@ -183,18 +124,17 @@
                                     price: item.price,
                                     discount: item.discount,
                                     unit: item.unit,
-                                    unitNm: item.unitNm,
-                                    code: item.code
+                                    unitNm: item.unitNm
                                 }
                             }))
                         },
                     error:
                         function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-                setEmptyFixedField(false);
+                setEmptyFixedField();
             },
             select: function (event, ui) {
-                setFixedField(ui.item , false);
+                setFixedField(ui.item);
 
                 hideRelationProduct();
                 createDonViTinh();
@@ -208,7 +148,7 @@
 
                 setRelationProduct(ui.item);
                 setStoreInformation(ui.item);
-                showRelationProduct('ui-id-3');
+                showRelationProduct();
                 $('#hidFactorValue').val('1');
             },
             close: function () {
@@ -257,14 +197,14 @@
         $('#relationProduct').addClass('HideElement');
 
     }
-    function showRelationProduct(idControlAjax) {
+    function showRelationProduct() {
 
         // show relation product
         $('#relationProduct').removeClass('HideElement');
         $('#relationProduct').addClass('relationProductShow');
 
-        var width = $('#' + idControlAjax).width();
-        var offset = $('#'+ idControlAjax).offset();
+        var width = $('#ui-id-2').width();
+        var offset = $('#ui-id-2').offset();
         offset.left = offset.left + width + 10;
         $('#relationProduct').offset({ top: offset.top, left: offset.left })
     }
@@ -294,51 +234,33 @@
     function changeTypeCustomer() {
         $('#kindCustomer').val($('#typeCustomers').val());
     }
-    function setEmptyFixedField(isCode) {
+    function setEmptyFixedField() {
         //$('#MaSanPham').val('');
-        if (isCode == true) {
-            $('#TenSanPham').val('');
-        } else {
-            $('#CodeSanPham').val('');
-        }
         $('#GiaBan').val('');
         $('#ChietKhau').val('');
         $('#GiaThuc').val('');
         $('#typeDonViTinh').empty();
         $('#hidUnitRootName').val('');
     }
-    function setFixedField(item , isCode) {
+    function setFixedField(item) {
         CalcRealPrice(item.price, item.discount);
         addCommaNumberic('#GiaThuc');
         $('#MaSanPham').val(item.id);
-      
-        if (isCode == true) {
-            $('#CodeSanPham').val(item.label);
-            $('#TenSanPham').val(item.name);
-        } else {
-            $('#CodeSanPham').val(item.code);
-            $('#TenSanPham').val(item.label);
-        }
-       
+        $('#TenSanPham').val(item.label);
         $('#GiaBan').val(item.price);
         addCommaNumberic('#GiaBan');
         $('#ChietKhau').val(item.discount);
         addCommaNumberic('#ChietKhau');
     }
-    function setRelationProduct(item /*, isSelected*/ , isCode) {
+    function setRelationProduct(item, isSelected) {
         $('#S_MaSanPham').html(item.id);
-        if (isCode == true) {
-         $('#S_TenSanPham').html(item.name);
+        $('#S_TenSanPham').html(item.label);
+        if (isSelected == true) {
+            setFixedField(item);
+            $('#S_GiaBan').html($('#GiaBan').val());
+            $('#S_ChietKhau').html($('#ChietKhau').val());
+            $('#S_GiaThuc').html($('#GiaThuc').val());
         } else {
-         $('#S_TenSanPham').html(item.label);
-        }
-        
-        //if (isSelected == true) {
-        //    setFixedField(item);
-        //    $('#S_GiaBan').html($('#GiaBan').val());
-        //    $('#S_ChietKhau').html($('#ChietKhau').val());
-        //    $('#S_GiaThuc').html($('#GiaThuc').val());
-        //} else {
             $('#S_GiaBan').html(item.price);
             addCommaNumberic('#S_GiaBan', true);
             $('#S_ChietKhau').html(item.discount);
@@ -346,7 +268,7 @@
             var priceReal = CalcRealPrice(item.price, item.discount, true);
             $('#S_GiaThuc').html(priceReal);
             addCommaNumberic('#S_GiaThuc', true);
-        //}
+        }
     }
     function setRelationCustomer(item, isSelected) {
 
@@ -371,12 +293,12 @@
             dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
             success:
                 function (data) {
-                    $.each(data, function (i, itm) {
-                        $('#store_1').html(itm.TON_KHO_1);
-                        $('#store_2').html(itm.TON_KHO_2);
-                        $('#store_3').html(itm.TON_KHO_3);
-                        $('#store_4').html(itm.TON_KHO_4);
-                        $('#store_5').html(itm.TON_KHO_5);
+                    $.each(data, function (i, item) {
+                        $('#store_1').html(item.TON_KHO_1);
+                        $('#store_2').html(item.TON_KHO_2);
+                        $('#store_3').html(item.TON_KHO_3);
+                        $('#store_4').html(item.TON_KHO_4);
+                        $('#store_5').html(item.TON_KHO_5);
                     });
                 },
             error:
@@ -562,8 +484,8 @@
         if (empty == $('#TenKhachHang').val()) {
             msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
         }
-        if (empty == $('#CodeSanPham').val() || empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
-            msgErr += " + Sản phẩm không tồn tại hoặc chưa nhập. <br/>";
+        if (empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
+            msgErr += " + Tên sản phẩm không tồn tại hoặc chưa nhập. <br/>";
         }
         if (empty == $('#GiaBan').val()) {
             msgErr += " + Giá bán. <br/>";
@@ -1010,7 +932,23 @@
                                 </select>
 
                             </div>
-                          
+                            <!--relationCustomer-->
+                            <div id="relationCustomer">
+                                <div>
+                                    <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
+                                    <br />
+                                    <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
+                                    <br />
+                                    <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
+                                    <br />
+                                    <span><strong>- Email : </strong> </span><span id="S_Email"></span>
+
+                                </div>
+                            </div>
                         </div>
                     </td>
                     <td></td>
@@ -1022,15 +960,6 @@
             <div>
                 <table id="tableSearch" class="tableSearch tableBasic">
                     <tr>
-                        <td>
-                            <input type="hidden" id="Code" />
-                            <div class="titleItem required">Code sản phẩm </div>
-                            <br />
-                            <div>
-                                <input type="text" id="CodeSanPham" style="margin-left: 2px; " />
-                            </div>
-                        </td>
-
                         <td>
                             <input type="hidden" id="MaSanPham" />
                             <div class="titleItem required">Tên sản phẩm </div>
@@ -1046,8 +975,55 @@
                                 <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
                                        class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                             </div>
-                           
-                        
+                            <div id="relationProduct" style="top: 319px; left: 565px;">
+                                <div id="toolTipRelationProduct">
+                                    <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
+                                    <br />
+                                    <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
+                                    <br />
+                                    <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
+                                    <br />
+                                    <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
+                                    <br />
+                                    <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
+                                    <br />
+                                    <span><strong>- Số lượng: </strong> </span>
+                                    @{
+        int j = 0;
+        foreach (var Kho in ViewBag.KhoList)
+        {
+            j++;
+            if (j <= 5)
+            {
+                switch (j)
+                {
+                    case 1:
+                        <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
+                        break;
+                    case 2:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
+                        break;
+                    case 3:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
+                        break;
+                    case 4:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
+                        break;
+                    case 5:
+                    <br />
+                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
+                        break;
+                }
+            }
+        }
+                                    }
+
+                                </div>
+                            </div>
                         </td>
                         <td>
                             <div class="titleItem required">Chiết khấu</div>
@@ -1058,15 +1034,21 @@
                                        style="text-align: right; width: 110px !important;" />
                             </div>
                         </td>
-                       
-                    </tr>
-                    <tr>
                         <td>
                             <div class="titleItem ">Giá sau chiết khấu </div>
                             <br />
                             <div>
                                 <input type="text" id="GiaThuc" maxlength="10"
                                        style=" text-align:right;background: rgb(252, 252, 252);" readonly />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <span class="required" style="font-size:16px;">Kho hàng  </span>
+                                <br />
+                                <select id="typeStore" class="Combobox" ></select>
                             </div>
                         </td>
                         <td>
@@ -1091,15 +1073,6 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div>
-                                <span class="required" style="font-size:16px;">Kho hàng  </span>
-                                <br />
-                                <select id="typeStore" class="Combobox"></select>
-                            </div>
-                        </td>
-                   </tr>
                     <tr>
 
                         <td>
@@ -1132,84 +1105,10 @@
                 </table>
                 <div class="myAction">
                     <input type="button" id="addRecord" value="Thêm sản phẩm" />
-                    <div style="float: right; margin-right: -8px;">
-                        @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
-                        <input type="submit" id="saveBill" style="width: 120px" value="Lưu hóa đơn">
-                        <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới">
-                        <input type="button" id="back" style="width:100px" value="Trở về">
-                        <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
-                    </div>
+                   
                 </div>
             </div>
 
-            <!--Informatio Panel support s-->
-            <!--relationCustomer-->
-            <div id="relationCustomer">
-                <div>
-                    <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
-                    <br />
-                    <span><strong>- Tên khách hàng : </strong> </span><span id="S_TenKhachHang"></span>
-                    <br />
-                    <span><strong>- Mã thẻ : </strong> </span><span id="S_MaTheKhachHang"></span>
-                    <br />
-                    <span><strong>- Địa chỉ : </strong> </span><span id="S_DiaChi"></span>
-                    <br />
-                    <span><strong>- Số điện thoại : </strong> </span><span id="S_SoDienThoai"></span>
-                    <br />
-                    <span><strong>- Email : </strong> </span><span id="S_Email"></span>
-                </div>
-            </div>
-            <!--relationProduct-->
-            <div id="relationProduct" style="top: 319px; left: 565px;">
-                <div id="toolTipRelationProduct">
-                    <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
-                    <br />
-                    <span><strong>- Tên sản phẩm : </strong> </span><span id="S_TenSanPham"></span>
-                    <br />
-                    <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
-                    <br />
-                    <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
-                    <br />
-                    <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
-                    <br />
-                    <span><strong>- Số lượng: </strong> </span>
-      @{
-                        int j = 0;
-                        foreach (var Kho in ViewBag.KhoList)
-                        {
-                            j++;
-                            if (j <= 5)
-                            {
-                                switch (j)
-                                {
-                                    case 1:
-                                        <br />
-                                        <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
-                                        break;
-                                    case 2:
-                                    <br />
-                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
-                                        break;
-                                    case 3:
-                                    <br />
-                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
-                                        break;
-                                    case 4:
-                                    <br />
-                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
-                                        break;
-                                    case 5:
-                                    <br />
-                                    <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
-                                        break;
-                                }
-                            }
-                        }
-            }
-
-                </div>
-            </div>
-            <!--Informatio Panel support e-->
             <!--hidden field start-->
             <div id="dialogConfirm"></div>
             <input type="hidden" id="hidFactorValue" value="1" />
@@ -1224,7 +1123,6 @@
             <!--hidden field end-->
 
         </div>
-       
         <!--list content area-->
         <div class="mainContainer">
             <table class="tableHeader">
@@ -1290,7 +1188,7 @@
             </table>
         </div>
         <hr />
-        <div style="float: right; margin-right: -8px;">
+         <div>
         @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
         <input type="submit" id="saveBill" style="width: 120px" value="Lưu hóa đơn">
         <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới">
