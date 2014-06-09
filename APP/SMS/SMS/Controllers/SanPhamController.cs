@@ -68,6 +68,30 @@ namespace SMS.Controllers
             return result;
         }
 
+
+        [HttpPost]
+        public JsonResult FindSuggestByCode(string prefixText, string typeCustomer)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    join u in ctx.DON_VI_TINH on x.MA_DON_VI equals u.MA_DON_VI
+                                    where (x.CODE.Contains(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        code = x.CODE,
+                                        name = x.TEN_SAN_PHAM,
+                                        unit = x.MA_DON_VI,
+                                        unitNm = u.TEN_DON_VI,
+                                        price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0 :
+                                                    (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
+                                        discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 :
+                                                    (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
         [HttpPost]
         public JsonResult FindSuggestByTypeCustomer(string prefixText, string typeCustomer)
         {
@@ -78,6 +102,7 @@ namespace SMS.Controllers
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
+                                        code = x.CODE,
                                         name = x.TEN_SAN_PHAM,    
                                         unit = x.MA_DON_VI,
                                         unitNm = u.TEN_DON_VI,

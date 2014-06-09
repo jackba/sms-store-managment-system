@@ -20,6 +20,8 @@
     function login() {
         $('#resultLoadingDiv').show();
         $('#mainForm').submit();
+        $('#btnLogin').attr("disabled", "disabled");
+        $('#btnLogin').css("background-color", "#ECECEC");
     }
     /*end format numberic*/
 
@@ -50,7 +52,7 @@
         @Html.ValidationMessageFor(m => m.MAT_KHAU)
                     </li>
                 </ol>
-                <input type="button" onclick="login();" value="Log in" />
+                <input id="btnLogin" type="button" onclick="login();" value="Log in" />
             </fieldset>
         }
         </section>

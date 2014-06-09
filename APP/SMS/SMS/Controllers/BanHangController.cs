@@ -66,6 +66,26 @@ namespace SMS.Controllers
             return result;
         }
 
+
+        //[HttpPost]
+        //public JsonResult FindSuggestByCode(string prefixText, string typeCustomer)
+        //{
+        //    var ctx = new SmsContext();
+        //    var suggestedProducts = from x in ctx.SAN_PHAM
+        //                            where (x.CODE.Contains(prefixText) && x.ACTIVE.Equals("A"))
+        //                            select new
+        //                            {
+        //                                id = x.MA_SAN_PHAM,
+        //                                name = x.TEN_SAN_PHAM,
+        //                                price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0 :
+        //                                            (typeCustomer.Equals("2") ? x.GIA_BAN_2 ?? 0 : x.GIA_BAN_3 ?? 0),
+        //                                discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 :
+        //                                            (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
+        //                            };
+        //    var result = Json(suggestedProducts.Take(10).ToList());
+        //    return result;
+        //}
+
         [HttpPost]
         public JsonResult FindSuggestByTypeCustomer(string prefixText, string typeCustomer)
         {
@@ -238,6 +258,17 @@ namespace SMS.Controllers
             return Content(msgStringBuilder.ToString());
         }
 
+        [HttpGet]
+        public ActionResult EditBill()
+        {
+            var ctx = new SmsContext();
+            var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
+            ViewBag.KhoList = ListKho;
+            ViewBag.UserId = Session["UserId"];
+            ViewBag.MyStore = Session["MyStore"];
+            return View();
+        }
+        
 
         [HttpPost]
         public ActionResult ExportExcel(FormCollection collection)

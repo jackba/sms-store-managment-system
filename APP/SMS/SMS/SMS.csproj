@@ -708,6 +708,7 @@
     <Content Include="Views\TraHang\IndexPartialView.cshtml" />
     <Content Include="Views\KhachHang\IndexPartialView.cshtml" />
     <Content Include="Views\KhachHang\WarningPartialView.cshtml" />
+    <Content Include="Views\BanHang\EditBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
