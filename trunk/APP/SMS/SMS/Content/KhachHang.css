@@ -314,3 +314,17 @@ td.right1
     width:45%;
     height: 30px;
 }
+
+
+table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
