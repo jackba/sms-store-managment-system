@@ -35,63 +35,67 @@
         </tr>
 
     </table>
+    <div>
 
-    <table width="100%">
-        <tr style="width:100%">
-            <td class='inner colwidth head '> Người gửi </td>
-            <td class='inner colwidth head '> Ngày gửi </td>
-            <td class='inner colwidth head '> Nhóm nhận   </td>
-            <td class='inner colwidth head '> Nội dung </td>
-            <td class='innerLast colwidth head '>  Sửa </td>
-            <td class='innerLast colwidth head '>  Xóa </td>
-        </tr>
-        @foreach (var dbHist in Model.MessageList)
-        {
-            <tr class="inner column-hscroll alignCenter">
-                <td class="inner colwidth">
-                    <a href="@Url.Action("Edit", "SmsMessage", new { id = @dbHist.ID })" class="button-module">
-                        @dbHist.TEN_NGUOI_DUNG
-                    </a>
-                </td>
-                <td class="inner colwidth">
-                    @if (@dbHist.NGAY_GUI != null)
-                    {
-                        @DateTime.Parse(dbHist.NGAY_GUI.ToString()).ToString("dd/MM/yyyy")
-                    }
-                </td>
-                <td class="inner colwidth">
-                    @if (string.IsNullOrEmpty(dbHist.TEN_NHOM))
-                    {
-                        @("Tất cả các nhóm")
-                    }else
-                    {
-                         @dbHist.TEN_NHOM
-                    }
-                </td>
-                <td class="inner colwidth">
-                    @dbHist.NOI_DUNG
-                </td>
-                
-                <td class='innerLast alignCenter' style="width:50px;">
-                    @if (dbHist.ID_NGUOI_GUI == (int)Session["UserId"]) 
-                    { 
-                        <a href="@Url.Action("Edit", "SmsMessage", new { id = @dbHist.ID })" class="button-module">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                        </a>
-                    }
-                </td>
-                <td class='innerLast alignCenter' style="width:50px;">
-                    @if (dbHist.ID_NGUOI_GUI == (int)Session["UserId"])
-                    {
-                        <a href="@Url.Action("Delete", "SmsMessage", new { id = @dbHist.ID })" class="button class=" button-module" onclick="return deleteSubmit()">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                        </a>
-                    }
-                </td>
-
+        <table>
+            <tr>
+                <td class='inner colwidth head '> Người gửi </td>
+                <td class='inner colwidth head '> Ngày gửi </td>
+                <td class='inner colwidth head '> Nhóm nhận   </td>
+                <td class='inner head colwidth truncate '> Nội dung </td>
+                <td class='innerLast colwidth head '>  Sửa </td>
+                <td class='innerLast colwidth head '>  Xóa </td>
             </tr>
-        }
-    </table>
+            @foreach (var dbHist in Model.MessageList)
+            {
+                <tr class="inner column-hscroll alignCenter">
+                    <td class="inner colwidth">
+                        <a href="@Url.Action("Edit", "SmsMessage", new { id = @dbHist.ID })" class="button-module">
+                            @dbHist.TEN_NGUOI_DUNG
+                        </a>
+                    </td>
+                    <td class="inner colwidth">
+                        @if (@dbHist.NGAY_GUI != null)
+                        {
+                            @DateTime.Parse(dbHist.NGAY_GUI.ToString()).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td class="inner colwidth">
+                        @if (string.IsNullOrEmpty(dbHist.TEN_NHOM))
+                        {
+                            @("Tất cả các nhóm")
+                        }
+                        else
+                        {
+                            @dbHist.TEN_NHOM
+                        }
+                    </td>
+                    <td class="inner colwidth truncate">
+                        @dbHist.NOI_DUNG
+                    </td>
+
+                    <td class='innerLast alignCenter' style="width:50px;">
+                        @if (dbHist.ID_NGUOI_GUI == (int)Session["UserId"])
+                        {
+                            <a href="@Url.Action("Edit", "SmsMessage", new { id = @dbHist.ID })" class="button-module">
+                                <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                            </a>
+                        }
+                    </td>
+                    <td class='innerLast alignCenter' style="width:50px;">
+                        @if (dbHist.ID_NGUOI_GUI == (int)Session["UserId"])
+                        {
+                            <a href="@Url.Action("Delete", "SmsMessage", new { id = @dbHist.ID })" class="button class=" button-module" onclick="return deleteSubmit()">
+                                <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                            </a>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </table>
+
+    </div>
     <table width="100%">
         <tr>
             <td>

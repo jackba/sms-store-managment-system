@@ -34,6 +34,7 @@ namespace SMS.Models
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+        public Nullable<int> MA_PHIEU_TRA_NCC { get; set; }
     
         public virtual ICollection<CHI_TIET_XUAT_KHO> CHI_TIET_XUAT_KHO { get; set; }
         public virtual HOA_DON HOA_DON { get; set; }
@@ -43,5 +44,6 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual ICollection<TRA_HANG> TRA_HANG { get; set; }
+        public virtual TRA_HANG_NCC TRA_HANG_NCC { get; set; }
     }
 }
