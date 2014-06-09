@@ -133,6 +133,7 @@
         <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__5CA1C101" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_HOA__214BF109" />
         <EntityTypeShape EntityType="SmsModel.V_HOA_DON_DISTICNT" Width="1.5" PointX="7.375" PointY="7.75" />
+        <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_PHI__336AA144" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
