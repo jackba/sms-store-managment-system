@@ -247,6 +247,10 @@ div.divTitle{
 .numberic{
     text-align:right;
 }
+
+.tdNumeric{
+    width:100px;
+}
 .alignText{
     text-align:left;
     text-wrap:normal;
@@ -315,7 +319,6 @@ td.right1
     height: 30px;
 }
 
-
 table td{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -328,3 +331,9 @@ td{
     white-space: nowrap;
 }
 
+
+.truncate{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

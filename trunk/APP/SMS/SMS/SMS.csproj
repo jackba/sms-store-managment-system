@@ -705,10 +705,12 @@
     <Content Include="Views\QuanLyKho\ImExDetailPartialViewResult.cshtml" />
     <Content Include="Views\PhanQuyen\IndexPartialView.cshtml" />
     <Content Include="Views\TraHang\Index.cshtml" />
-    <Content Include="Views\TraHang\IndexPartialView.cshtml" />
     <Content Include="Views\KhachHang\IndexPartialView.cshtml" />
     <Content Include="Views\KhachHang\WarningPartialView.cshtml" />
     <Content Include="Views\BanHang\EditBill.cshtml" />
+    <Content Include="Views\TraHang\ShowDetail.cshtml" />
+    <Content Include="Views\TraHang\IndexPartialView.cshtml" />
+    <Content Include="Views\TraHang\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

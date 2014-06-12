@@ -13,6 +13,19 @@ namespace SMS.Controllers
         //
         // GET: /TraHang/
 
+        public ActionResult Show(int id, string message, string messageInfor)
+        {
+            var ctx = new SmsContext();
+            var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
+            List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
+            InvoicesModel model = new InvoicesModel();
+            model.Infor = invoiceInfor;
+            model.detailList = detailList;
+            ViewBag.Message = message;
+            ViewBag.MessageInfor = messageInfor;
+            return View(model);
+        }
+
         public ActionResult Index(string message, string inforMessage)
         {
             ViewBag.Message = message;
