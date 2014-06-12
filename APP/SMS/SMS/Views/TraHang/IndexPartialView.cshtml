@@ -88,7 +88,7 @@
                     @{
             if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"])
             {
-                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_HOA_DON })" class="button-module" onclick="return deleteSubmit()">
+                <a href="@Url.Action("Show", "TraHang", new { id = @dbHist.MA_HOA_DON })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }

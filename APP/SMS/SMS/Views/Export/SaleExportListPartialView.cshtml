@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 <div>
-    <table width="100%">
+    <table >
         <tr>
             <td>
                 <div style="text-align:left; padding-top:3px;">
@@ -24,15 +24,15 @@
                             fromDate = ViewBag.FromDate,
                             todate = ViewBag.Todate
                         }),
-        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
-        new AjaxOptions()
-        {
-            HttpMethod = "POST",
-            InsertionMode = InsertionMode.Replace,
-            LoadingElementId = "resultLoadingDiv",
-            UpdateTargetId = "mainDiv"
-        }
-    ))
+                        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            InsertionMode = InsertionMode.Replace,
+                            LoadingElementId = "resultLoadingDiv",
+                            UpdateTargetId = "mainDiv"
+                        }
+                    ))
                 </div>
             </td>
         </tr>

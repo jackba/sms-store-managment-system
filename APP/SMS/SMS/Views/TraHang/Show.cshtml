@@ -1,0 +1,421 @@
+﻿@model SMS.Models.InvoicesModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Trả hàng - có mang theo hóa đơn";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("Index", "TraHang")">Trả hàng </a> >
+    > @ViewBag.Title
+</div>
+
+<br />
+<hgroup class="title">
+    <h2>@ViewBag.Title</h2>
+</hgroup>
+<div style="color:red">@ViewBag.Message </div>
+<div style="color:blue">@ViewBag.MessageInfor </div>
+<hr style="width:100%" />
+@using (Html.BeginForm("ShowDetail", "HoaDon", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
+{
+
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div class="left">
+                @Html.HiddenFor(u => u.Infor.MA_HOA_DON)
+                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG)
+                @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien" })
+                @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
+                <input type="hidden" value="@ViewBag.Flg" id="flg" name="flg" />
+
+
+                <label> Tên khách hàng</label>
+            </div>
+            <div class="right">
+                <label>@Model.Infor.TEN_KHACH_HANG</label>
+            </div>
+            <div class="left">
+                <label> Người bán hàng </label>
+            </div>
+            <div class="right">
+                <label> @Model.Infor.TEN_NGUOI_BAN</label>
+            </div>
+            @if (Model.Infor.STATUS >= 2)
+            {
+                <div class="left">
+                    <label> Người thu tiền </label>
+                </div>
+                <div class="right">
+                    @if (!String.IsNullOrEmpty(@Model.Infor.TEN_NV_TT))
+                    {
+                        <label>@Model.Infor.TEN_NV_TT</label>
+                    }
+                    else
+                    {
+                        <label>... </label>
+                    }
+                </div>
+            }
+
+            <div class="left">
+                <label> Ngày giao hàng </label>
+            </div>
+            <div class="right">
+                @if (@Model.Infor.NGAY_GIAO != null)
+                {
+                    <label>@Convert.ToDateTime(@Model.Infor.NGAY_GIAO).ToString("dd/MM/yyyy") </label>
+                }
+                else
+                {
+                    <label>...</label>
+                }
+
+            </div>
+            <div class="left">
+                <label> Địa chỉ giao hàng </label>
+            </div>
+            <div class="right">
+                <label>@Model.Infor.DIA_CHI_GIAO_HANG</label>
+            </div>
+            @if (Model.Infor.STATUS >= 2)
+            {
+                <div class="left">
+                    <label> Số tiền khách trả </label>
+                </div>
+                <div class="right">
+                    @if (Model.Infor.SO_TIEN_KHACH_TRA != null)
+                    {
+                        <label>@Convert.ToDouble(Model.Infor.SO_TIEN_KHACH_TRA).ToString("0,0.00") </label>
+                    }
+                    else
+                    {
+                        <label>0</label>
+                    }
+                </div>
+                <div class="left">
+                    <label> So tiền khách nợ </label>
+                </div>
+                <div class="right">
+                    @if (Model.Infor.SO_TIEN_NO_GOI_DAU != null)
+                    {
+                        <label>@Convert.ToDouble(Model.Infor.SO_TIEN_NO_GOI_DAU).ToString("0,0.00") </label>
+
+                    }
+                    else
+                    {
+                        <label>0</label>
+                    }
+                </div>
+            }
+            <div class="left">
+                <label> Tổng hóa đơn </label>
+            </div>
+            <div class="right">
+                <label> @Model.Infor.TONG_TIEN.ToString("0,0.00") </label>
+            </div>
+            <div class="left">
+                <label> Tổng chiếc khấu </label>
+            </div>
+            <div class="right">
+                <label> @Model.Infor.CHIEC_KHAU.ToString("0,0.00") </label>
+            </div>
+            <div class="left">
+                <label> Thực thu </label>
+            </div>
+            <div class="right">
+                <label>
+                    @{
+    var to = Model.Infor.TONG_TIEN - Model.Infor.CHIEC_KHAU;
+                    }
+                    @to.ToString("0,0.00")
+                </label>
+            </div>
+            <div style="clear:both"></div>
+            <hr style="width:100%" />
+            @if (Model.Infor.STATUS == 3)
+            {
+                <input type="submit" id="returnFirst" style="width:300px" value="Nhận trả hàng" />
+            }
+            <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
+            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","TraHang")'" />
+
+
+            <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+                <tr>
+                    <td class='inner colwidth head ' width="5%;">
+                        <input type="checkbox" id="chckHead" />
+                    </td>
+                    <td class='inner colwidth head ' width="7%">
+                        ID
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Tên sản phầm
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Số lượng
+                    </td>
+                    <td class='innerLast colwidth head ' width="15%">
+                        Đơn vị
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Đơn giá
+                    </td>
+                    <td class='innerLast colwidth head ' width="15%">
+                        Thành tiền
+                    </td>
+                </tr>
+                @{
+            int i = 0;
+            double total = 0;
+            double price = 0;
+            double quantity = 0;
+            double discount = 0;
+            double totalAll = 0;
+                }
+                @foreach (var detail in Model.detailList)
+                {
+                    i += 1;
+                    quantity = Convert.ToDouble(detail.SO_LUONG);
+                    price = Convert.ToDouble(detail.DON_GIA);
+                    discount = Convert.ToDouble(detail.PHAN_TRAM_CHIEC_KHAU);
+                    total = (quantity * price - quantity * price * discount / 100)*90/100;
+                    totalAll += total;
+                    <tr>
+                        <td class="inner colwidth" width="5%;" align="center">
+                            <input type="checkbox" class = "chcktbl" >
+                        </td>
+                        <td class="inner colwidth alignCenter">
+                            @detail.MA_SAN_PHAM
+                        </td>
+
+                        <td class="inner colwidth alignCenter">
+                            <div class="truncate" style="width:350px">
+                                @detail.TEN_SAN_PHAM
+                            </div>
+                            
+                        </td>
+                        <td class="inner colwidth alignCenter">
+                            @Html.TextBoxFor(model => @detail.SO_LUONG, new { @class = "numberic tdNumeric quantity" })
+                        </td>
+                        <td class="inner colwidth alignCenter">
+                            @detail.TEN_DON_VI
+                        </td>
+                        <td class="inner colwidth alignCenter">
+                            @Html.TextBoxFor(model => @detail.DON_GIA, new { @class = "numberic tdNumeric price" })
+                        </td>
+                        <td class="innerLast colwidth total numberic">
+                          @total.ToString("0,0.00")
+                           
+                        </td>
+                    </tr>
+                }
+                <tr style="background-color:lightgray">
+                    <td class="innerLast colwidth" colspan="6">
+                        <strong> Tồng tiền cần thanh toán lại cho khách</strong>
+                    </td>
+                    <td class="innerLast colwidth numberic">
+                        <strong class="allTotal numberic">@totalAll.ToString("0,0.00")</strong>
+                    </td>
+                </tr>
+            </table>
+            <div style="clear:both"></div>
+            <hr style="width:100%" />
+            @if (Model.Infor.STATUS == 3)
+            {
+                <input type="submit" id="returnLast" style="width:300px" value="Nhận trả hàng" />
+            }
+            <input type="button" style="width:200px"  value="Xoá" onclick="deleteCheckedRow()" />
+            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","TraHang")'" />
+
+
+        </fieldset>
+    </div>
+}
+
+
+<script type="text/javascript">
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    }
+
+    function NumbericOnly(ctrl) {
+        $(ctrl).keypress(function (key) {
+            //getting key code of pressed key
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                alert(" You can enter only characters 0 to 9 ");
+                return false;
+            }
+            else return true;
+        });
+
+    }
+
+    function getAllTotal() {
+        var AllTotal = 0;
+        var total = 0;
+        $('td.total').each(function () {
+            $this = $(this);
+            total = $this.text().replace(/,/gi, "");
+            AllTotal += parseFloat(total);
+        });
+
+        var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+        var arParts = String(AllTotal).split(DecimalSeparator);
+        var intPart = arParts[0];
+        var decPart = (arParts.length > 1 ? arParts[1] : '');
+        var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+        var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+        if (decPart.length > 2) {
+            decPart = (decPart + '00').substr(0, 2);
+        }
+        if (arParts.length > 1) {
+            $('strong.allTotal').text(num2 + DecimalSeparator + decPart);
+        } else {
+            $('strong.allTotal').text(num2);
+        }
+    };
+    function formatNumberic() {
+        $('input.numberic').each(function () {
+            var $this = $(this);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
+        });
+    }
+    $(document).ready(function () {               
+        formatNumberic();
+        $('input.numberic').keypress(function (key) {
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                return false;
+            }
+            else return true;
+
+        });
+        $('input.numberic').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                //event.preventDefault();
+                return true;
+            }
+            var $this = $(this);
+            var AmountWithCommas = $this.val();
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $this.val(num2 + DecimalSeparator + decPart);
+            } else {
+                $this.val(num2);
+            }
+        });
+        $('input.price').keyup(function (event) {
+            var $this = $(this);
+            var parent = $this.parent().parent();
+            var price = $('input.quantity', parent).val().replace(/,/gi, "");;
+            var tt = $this.val().replace(/,/gi, "") * price;
+
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(tt).split(DecimalSeparator);
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $('td.total', parent).text(num2 + DecimalSeparator + decPart);
+            } else {
+                $('td.total', parent).text(num2);
+            }
+            getAllTotal();
+        });
+        $('input.quantity').keyup(function (event) {
+            var $this = $(this);
+            var parent = $this.parent().parent();
+            var price = $('input.price', parent).val().replace(/,/gi, "");
+            var tt = $this.val().replace(/,/gi, "") * price;
+
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(tt).split(DecimalSeparator);
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $('td.total', parent).text(num2 + DecimalSeparator + decPart);
+            } else {
+                $('td.total', parent).text(num2);
+            }
+            getAllTotal();
+        });
+    });
+    function deleteCheckedRow() {
+        $('input.chcktbl:checked').each(function () {
+            $(this).parent().parent().remove();
+        });
+        getAllTotal();
+    };
+
+    $('.chcktbl').click(function () {
+        var length = $('.chcktbl:checked').length;
+        if (length > 3) {
+            alert(length);
+            $('.chcktbl:not(:checked)').attr('disabled', true);
+        }
+        else {
+            $('.chcktbl:not(:checked)').attr('disabled', false);
+        }
+    });
+
+    $('#chckHead').click(function () {
+        if (this.checked == false) {
+            $('.chcktbl:checked').attr('checked', false);
+        }
+        else {
+            $('.chcktbl:not(:checked)').attr('checked', true);
+        }
+    });
+    $('#chckHead').click(function () {
+    });
+
+</script>
