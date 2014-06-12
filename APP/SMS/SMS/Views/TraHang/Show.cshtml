@@ -19,17 +19,17 @@
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.MessageInfor </div>
 <hr style="width:100%" />
-@using (Html.BeginForm("ShowDetail", "HoaDon", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
+@using (Html.BeginForm("Show", "TraHang", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
 {
 
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
     <div>
         <fieldset>
             <div class="left">
-                @Html.HiddenFor(u => u.Infor.MA_HOA_DON)
-                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG)
-                @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien" })
-                @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
+                @Html.HiddenFor(model => model.Infor.MA_HOA_DON)
+                @Html.HiddenFor(model => model.Infor.MA_KHACH_HANG)
+                @Html.HiddenFor(model => model.Infor.TONG_TIEN, new { @id = "tongtien" })
+                @Html.HiddenFor(model => model.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
                 <input type="hidden" value="@ViewBag.Flg" id="flg" name="flg" />
 
 
@@ -129,7 +129,7 @@
             <div class="right">
                 <label>
                     @{
-    var to = Model.Infor.TONG_TIEN - Model.Infor.CHIEC_KHAU;
+                            var to = Model.Infor.TONG_TIEN - Model.Infor.CHIEC_KHAU;
                     }
                     @to.ToString("0,0.00")
                 </label>
@@ -169,47 +169,41 @@
                     </td>
                 </tr>
                 @{
-            int i = 0;
-            double total = 0;
-            double price = 0;
-            double quantity = 0;
-            double discount = 0;
-            double totalAll = 0;
+                double totalAll = 0;
+                double total = 0;
+            
                 }
-                @foreach (var detail in Model.detailList)
+                @for (int i = 0; i < Model.detailReturnList.Count; i++)
                 {
-                    i += 1;
-                    quantity = Convert.ToDouble(detail.SO_LUONG);
-                    price = Convert.ToDouble(detail.DON_GIA);
-                    discount = Convert.ToDouble(detail.PHAN_TRAM_CHIEC_KHAU);
-                    total = (quantity * price - quantity * price * discount / 100)*90/100;
+                    var detail = Model.detailReturnList[i];
+                    total = Convert.ToDouble(detail.THANH_TIEN);
                     totalAll += total;
                     <tr>
                         <td class="inner colwidth" width="5%;" align="center">
                             <input type="checkbox" class = "chcktbl" >
                         </td>
                         <td class="inner colwidth alignCenter">
+                            @Html.HiddenFor(model => Model.detailReturnList[i].MA_SAN_PHAM)
+                            @Html.HiddenFor(model => Model.detailReturnList[i].DEL_FLG, new { @class = "delFlg"})
                             @detail.MA_SAN_PHAM
                         </td>
 
                         <td class="inner colwidth alignCenter">
                             <div class="truncate" style="width:350px">
                                 @detail.TEN_SAN_PHAM
-                            </div>
-                            
+                            </div>                            
                         </td>
                         <td class="inner colwidth alignCenter">
-                            @Html.TextBoxFor(model => @detail.SO_LUONG, new { @class = "numberic tdNumeric quantity" })
+                            @Html.TextBoxFor(model => Model.detailReturnList[i].SO_LUONG, new { @class = "numberic tdNumeric quantity" })
                         </td>
                         <td class="inner colwidth alignCenter">
                             @detail.TEN_DON_VI
                         </td>
                         <td class="inner colwidth alignCenter">
-                            @Html.TextBoxFor(model => @detail.DON_GIA, new { @class = "numberic tdNumeric price" })
+                            @Html.TextBoxFor(model => Model.detailReturnList[i].DON_GIA, new { @class = "numberic tdNumeric price" })
                         </td>
                         <td class="innerLast colwidth total numberic">
-                          @total.ToString("0,0.00")
-                           
+                          @detail.THANH_TIEN.ToString("0,0.00")                           
                         </td>
                     </tr>
                 }
@@ -391,7 +385,11 @@
     });
     function deleteCheckedRow() {
         $('input.chcktbl:checked').each(function () {
-            $(this).parent().parent().remove();
+            var flg = $('input.delFlg', $(this).parent().parent());
+            flg.val(1);
+            alert(flg.val());
+            $(this).parent().parent().hide();
+            
         });
         getAllTotal();
     };
