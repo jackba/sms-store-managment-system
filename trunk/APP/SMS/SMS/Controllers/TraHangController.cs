@@ -17,13 +17,22 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
-            List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
+            List<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result> detailList = 
+                ctx.SP_GET_HOA_DON_DETAIL_FOR_RETURN(id).ToList<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result>();
             InvoicesModel model = new InvoicesModel();
             model.Infor = invoiceInfor;
-            model.detailList = detailList;
+            model.detailReturnList = detailList;
             ViewBag.Message = message;
             ViewBag.MessageInfor = messageInfor;
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Show(InvoicesModel model)
+        {
+            var id = model.Infor.MA_HOA_DON;
+            var returnList = model.detailReturnList;
+            return View();
         }
 
         public ActionResult Index(string message, string inforMessage)

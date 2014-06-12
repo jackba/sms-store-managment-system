@@ -9,6 +9,7 @@ namespace SMS.Models
     public class InvoicesModel
     {
         public SP_GET_HOA_DON_INFO_Result Infor { get; set; }
+        public List<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result> detailReturnList { get; set; }
         public List<V_HOA_DON> detailList { get; set; }
     }
 
