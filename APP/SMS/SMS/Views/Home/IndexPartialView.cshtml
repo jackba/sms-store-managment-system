@@ -115,8 +115,7 @@
             <div style="text-align: right;  padding-top: 3px; ">
                 @Html.PagedListPager(Model.WarningList, currentPageIndex => Url.Action("PagingContent",
                         new { currentPageIndex,
-                              
-                        
+                              SearchString = ViewBag.SearchString 
                         }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()
