@@ -8,7 +8,7 @@
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Index", "TraHang")">Trả hàng </a> >
+    <a href="@Url.Action("Index", "TraHang")">Trả hàng </a>
     > @ViewBag.Title
 </div>
 
@@ -137,9 +137,9 @@
             <div style="clear:both"></div>
             <hr style="width:100%" />
             @if (Model.Infor.STATUS == 3)
-            {
-                <input type="submit" id="returnFirst" style="width:300px" value="Nhận trả hàng" />
-            }
+{
+    <input type="button" id="returnFirst" style="width:300px" value="Nhận trả hàng" onclick="return returnSubmit()" />
+}
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
             <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","TraHang")'" />
 
@@ -220,7 +220,7 @@
             <hr style="width:100%" />
             @if (Model.Infor.STATUS == 3)
             {
-                <input type="submit" id="returnLast" style="width:300px" value="Nhận trả hàng" />
+                <input type="button" id="returnLast" style="width:300px" value="Nhận trả hàng" onclick="return returnSubmit();"/>
             }
             <input type="button" style="width:200px"  value="Xoá" onclick="deleteCheckedRow()" />
             <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","TraHang")'" />
@@ -232,6 +232,30 @@
 
 
 <script type="text/javascript">
+
+    function returnSubmit() {
+        var row = 0;
+        var rval = 1;
+        $('input.chcktbl:not(:checked)').each(function () {
+            var quantity = $('input.quantity', $(this).parent().parent()).val();
+            if (quantity == null || quantity == '' || quantity == 0) {
+                rval = 0;
+            }
+            row++;
+        });
+        if (row == 0) {
+            alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
+            return false;
+        }
+        else if (rval == 0) {
+            alert("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+            return false;
+        }else
+        {
+            $('#ShowDetail').submit();
+        }
+    };
+
 
     function RemoveRougeChar(convertString) {
         if (convertString.substring(0, 1) == ",") {
@@ -260,8 +284,12 @@
         var total = 0;
         $('td.total').each(function () {
             $this = $(this);
-            total = $this.text().replace(/,/gi, "");
-            AllTotal += parseFloat(total);
+            $parent = $this.parent();
+            if ($('input.delFlg', $parent).val() != 1)
+            {
+                total = $this.text().replace(/,/gi, "");
+                AllTotal += parseFloat(total);
+            }
         });
 
         var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
@@ -387,7 +415,6 @@
         $('input.chcktbl:checked').each(function () {
             var flg = $('input.delFlg', $(this).parent().parent());
             flg.val(1);
-            alert(flg.val());
             $(this).parent().parent().hide();
             
         });

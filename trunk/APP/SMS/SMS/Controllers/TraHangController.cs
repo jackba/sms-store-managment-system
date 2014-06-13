@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
+using System.Transactions;
 
 namespace SMS.Controllers
 {
@@ -32,7 +33,63 @@ namespace SMS.Controllers
         {
             var id = model.Infor.MA_HOA_DON;
             var returnList = model.detailReturnList;
-            return View();
+            var ctx = new SmsContext();
+            var hoaDon = ctx.V_HOA_DON.Where(u => u.MA_HOA_DON == id).FirstOrDefault();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var hoadon = ctx.HOA_DON.Find(id);
+                    if (hoadon.STATUS == 4)
+                    {
+                        return RedirectToAction("Index", new { @message = "Hóa đơn này ." });
+                    }
+                    hoadon.STATUS = 4;
+                    hoadon.UPDATE_AT = DateTime.Now;
+                    hoadon.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    var phieutra = ctx.TRA_HANG.Create();
+                    phieutra.MA_HOA_DON = id;
+                    phieutra.NGAY_TRA = DateTime.Now;
+                    phieutra.NHAN_VIEN_NHAN = Convert.ToInt32(Session["UserId"]);
+                    phieutra.STATUS = 1;
+                    phieutra.TEN_KHACH_HANG = hoaDon.TEN_KHACH_HANG;
+                    phieutra.CREATE_AT = DateTime.Now;
+                    phieutra.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    phieutra.UPDATE_AT = DateTime.Now;
+                    phieutra.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    phieutra.ACTIVE = "A";
+                    ctx.TRA_HANG.Add(phieutra);
+                    ctx.SaveChanges();
+                    int maPhieuTra = phieutra.MA_TRA_HANG;
+                    CHI_TIET_TRA_HANG chitiet = null;
+                    foreach (var detail in model.detailReturnList)
+                    {
+                        if (Convert.ToInt32(detail.DEL_FLG) != 1)
+                        {
+                            chitiet = ctx.CHI_TIET_TRA_HANG.Create();
+                            chitiet.MA_TRA_HANG = maPhieuTra;
+                            chitiet.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            chitiet.SO_LUONG_TRA = detail.SO_LUONG;
+                            chitiet.GIA_VON = detail.DON_GIA;
+                            chitiet.ACTIVE = "A";
+                            chitiet.CREATE_AT = DateTime.Now;
+                            chitiet.UPDATE_AT = DateTime.Now;
+                            chitiet.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            chitiet.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ctx.CHI_TIET_TRA_HANG.Add(chitiet);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("Index", new { @inforMessage  = "Nhận trả hàng thành công."});
+                }
+                catch (Exception)
+                {                    
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                }
+            }
         }
 
         public ActionResult Index(string message, string inforMessage)
