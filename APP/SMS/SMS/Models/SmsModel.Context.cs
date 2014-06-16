@@ -839,5 +839,30 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual ObjectResult<SP_GET_RETURN_LIST_Result> SP_GET_RETURN_LIST(string tEN_KHACH_HANG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAN, string tEN_NHAN_VIEN)
+        {
+            var tEN_KHACH_HANGParameter = tEN_KHACH_HANG != null ?
+                new ObjectParameter("TEN_KHACH_HANG", tEN_KHACH_HANG) :
+                new ObjectParameter("TEN_KHACH_HANG", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            var mA_NHAN_VIEN_NHANParameter = mA_NHAN_VIEN_NHAN.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN_NHAN", mA_NHAN_VIEN_NHAN) :
+                new ObjectParameter("MA_NHAN_VIEN_NHAN", typeof(int));
+    
+            var tEN_NHAN_VIENParameter = tEN_NHAN_VIEN != null ?
+                new ObjectParameter("TEN_NHAN_VIEN", tEN_NHAN_VIEN) :
+                new ObjectParameter("TEN_NHAN_VIEN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_LIST_Result>("SP_GET_RETURN_LIST", tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHANParameter, tEN_NHAN_VIENParameter);
+        }
     }
 }
