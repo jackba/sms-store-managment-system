@@ -16,7 +16,7 @@ namespace SMS.Models
     public class RefundModel
     {
         public TRA_HANG Infor { get; set; }
-        public List<CHI_TIET_TRA_HANG> Detail { get; set; }
+        public List<SP_GET_REFUND_DETAIL_Result> Detail { get; set; }
         public DateTime? NgayNhapKho { get; set; }
         public int? MaKho { get; set; }
     }

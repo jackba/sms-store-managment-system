@@ -864,5 +864,14 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_LIST_Result>("SP_GET_RETURN_LIST", tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_NHANParameter, tEN_NHAN_VIENParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_REFUND_DETAIL_Result> SP_GET_REFUND_DETAIL(Nullable<int> mA_TRA_HANG)
+        {
+            var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
+                new ObjectParameter("MA_TRA_HANG", mA_TRA_HANG) :
+                new ObjectParameter("MA_TRA_HANG", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_REFUND_DETAIL_Result>("SP_GET_REFUND_DETAIL", mA_TRA_HANGParameter);
+        }
     }
 }
