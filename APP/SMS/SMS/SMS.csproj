@@ -146,6 +146,7 @@
     <Compile Include="App_Start\DecimalModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
+    <Compile Include="Controllers\CustomerRefundController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HangSanXuatController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\CONTROLLER_PERMISSION.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomerReturn.cs" />
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -313,6 +315,12 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_REFUND_DETAIL_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_RETURN_LIST_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_ROLE_OF_USER_Result.cs">
@@ -717,6 +725,11 @@
     <Content Include="Views\TraHang\ShowDetail.cshtml" />
     <Content Include="Views\TraHang\IndexPartialView.cshtml" />
     <Content Include="Views\TraHang\Show.cshtml" />
+    <Content Include="Views\TraHang\ReturnPurchaseList.cshtml" />
+    <Content Include="Views\TraHang\ReturnPurchaseListPartialView.cshtml" />
+    <Content Include="Views\CustomerRefund\ReturnPurchaseList.cshtml" />
+    <Content Include="Views\CustomerRefund\ReturnPurchaseListPartialView.cshtml" />
+    <Content Include="Views\CustomerRefund\ImportRefund.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,6 +14,42 @@ namespace SMS.Controllers
         //
         // GET: /TraHang/
 
+        [HttpPost]
+        public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
+            DateTime? toDate, int? userId, string userName, int? currentPageIndex)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = string.Empty;
+                userId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                userId = Convert.ToInt32(Session["UserId"]);
+            }
+            var ctx = new SmsContext();
+            var resultList = ctx.SP_GET_RETURN_LIST(customerName, fromDate, toDate, userId, userName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_RETURN_LIST_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            CustomerReturn model = new CustomerReturn();
+            model.detailReturnList = resultList.ToPagedList(pageIndex, pageSize);
+            model.Count = resultList.Count;
+            ViewBag.CustomerName = customerName;
+            ViewBag.UserId = userId;
+            ViewBag.UserName = userName;
+            ViewBag.FromDate = fromDate;
+            ViewBag.Todate = toDate;
+            return PartialView("ReturnPurchaseListPartialView", model);
+        }
+
+        public ActionResult ReturnPurchaseList(string message, string messageInfor)
+        {
+            ViewBag.Message = message;
+            ViewBag.MessageInfor = messageInfor;
+            return View();
+        }
+
+
         public ActionResult Show(int id, string message, string messageInfor)
         {
             var ctx = new SmsContext();
