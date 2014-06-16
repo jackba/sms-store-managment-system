@@ -32,5 +32,7 @@ namespace SMS.Models
         public virtual SAN_PHAM SAN_PHAM { get; set; }
         public virtual TRA_HANG TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
+
+        public int? DEL_FLG { get; set; }
     }
 }
