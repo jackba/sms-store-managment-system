@@ -44,18 +44,34 @@ namespace SMS.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult LogIn(Models.NGUOI_DUNG userr)
+        public JsonResult CheckingLogIn(string username, string password)
         {
-            if (IsValid(userr.USER_NAME, userr.MAT_KHAU))
+            if (IsValid(username, password))
             {
-                FormsAuthentication.SetAuthCookie(userr.USER_NAME, false);
-                return RedirectToAction("Index", "Home");
+                return Json(new { Status = "Success" });
             }
             else
             {
-                ModelState.AddModelError("", "Nhập sai user name hoặc mật khẩu");
+                //ModelState.AddModelError("", "Nhập sai User name hoặc mật khẩu");
+                return Json(new { Status = "Error" });
             }
-            return View(userr);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult LogIn(Models.NGUOI_DUNG userr)
+        {
+            //if (IsValid(userr.USER_NAME, userr.MAT_KHAU))
+            //{
+                FormsAuthentication.SetAuthCookie(userr.USER_NAME, false);
+                return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+                //ModelState.AddModelError("", "Nhập sai User name hoặc mật khẩu");
+                
+            //}
+            //return View(userr);
         }
 
         [HttpPost]

@@ -16,16 +16,65 @@
 }
 <script>
     //<![CDATA[
-    
+    $(document).ready(function () {
+        $('input').keyup(function (event) {
+            // press Enter to submit
+            if (event.which === 13) {
+                login();
+            }
+        });
+    });
+
     function login() {
+        $('#msgError').html('');
         $('#resultLoadingDiv').show();
-        $('#mainForm').submit();
         $('#btnLogin').attr("disabled", "disabled");
         $('#btnLogin').css("background-color", "#ECECEC");
+
+        jQuery.ajax({
+            url: "/Account/CheckingLogIn",
+            data: "{ 'username': '" + $('#USER_NAME').val() + "' , 'password': '" + $("#MAT_KHAU").val() + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            dataFilter: function (data) { return data; },
+            success:
+                function (data) {
+                    if (data.Status == "Error") {
+                        $('#btnLogin').removeAttr("disabled", "disabled");
+                        $('#btnLogin').css("background-color", "");
+                        $('#resultLoadingDiv').hide();
+                        // show error message
+                        if (($('#USER_NAME').val() == '' || $('#USER_NAME').val() == null)
+                            && ( $('#MAT_KHAU').val() == '' || $('#MAT_KHAU').val() == null)) {
+                            $('#msgError').html('Vui lòng nhập User name và Mật khẩu.');
+                        } else if ($('#USER_NAME').val() == '' || $('#USER_NAME').val() == null) {
+                            $('#msgError').html('Vui lòng nhập User name.');
+                        } else if ($('#MAT_KHAU').val() == '' || $('#MAT_KHAU').val() == null) {
+                            $('#msgError').html('Vui lòng nhập Mật khẩu.');
+                        } else {
+                            $('#msgError').html('User name hoặc Mật khẩu không đúng.');
+                        }
+
+                    }
+                    else if (data.Status == "Success") {
+                        $('#msgError').html('');
+                        $('#resultLoadingDiv').hide();
+                        $('#mainForm').submit();
+                    }
+
+                },
+            error:
+               function (XMLHttpRequest, textStatus, errorThrown) {
+                   $('#resultLoadingDiv').hide();
+                   alert(textStatus);
+               }
+        });
+
+
+      
     }
     /*end format numberic*/
 
-    //]]>  
+    //]]>
 </script>
             <hgroup class="title">
             <h2>@ViewBag.Message</h2>
@@ -35,21 +84,25 @@
         <h2>Đăng nhập hệ thống</h2>
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "mainForm" }))
         {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
+    @*@Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)*@
+            <div class="validation-summary-errors">
+            <ul>
+                <li id="msgError"></li>
+            </ul>
+            </div>
     <fieldset>
                 <legend>Log in Form</legend>
                 <ol>
                     <li>
         @Html.LabelFor(m => m.USER_NAME)
         @Html.TextBoxFor(m => m.USER_NAME)
-        @Html.ValidationMessageFor(m => m.USER_NAME)
+        @*@Html.ValidationMessageFor(m => m.USER_NAME)*@
                     </li>
                     <li>
         @Html.LabelFor(m => m.MAT_KHAU)
         @Html.PasswordFor(m => m.MAT_KHAU)
-        @Html.ValidationMessageFor(m => m.MAT_KHAU)
+        @*@Html.ValidationMessageFor(m => m.MAT_KHAU)*@
                     </li>
                 </ol>
                 <input id="btnLogin" type="button" onclick="login();" value="Log in" />
