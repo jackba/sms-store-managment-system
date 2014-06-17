@@ -356,6 +356,9 @@
     <Compile Include="Models\V_IMPORT_DETAIL.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_MA_TRA_HANG.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_NHAP_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -363,6 +366,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_TRA_NHAP_TRA_NCC.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_XUAT_KHO.cs">
@@ -730,6 +736,7 @@
     <Content Include="Views\CustomerRefund\ReturnPurchaseList.cshtml" />
     <Content Include="Views\CustomerRefund\ReturnPurchaseListPartialView.cshtml" />
     <Content Include="Views\CustomerRefund\ImportRefund.cshtml" />
+    <Content Include="Views\CustomerRefund\ReturnToProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

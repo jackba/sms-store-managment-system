@@ -21,4 +21,12 @@ namespace SMS.Models
         public int? MaKho { get; set; }
     }
 
+    public class ReturnToProviderModel
+    {
+        public TRA_HANG Infor { get; set; }
+        public List<SP_GET_REFUND_DETAIL_Result> Detail { get; set; }
+        public DateTime? ReturnDate { get; set; }
+        public int? ProviderId { get; set; }
+        public string Note { get; set; }
+    }
 }
