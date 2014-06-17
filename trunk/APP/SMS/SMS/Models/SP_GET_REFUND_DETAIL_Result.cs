@@ -13,9 +13,10 @@ namespace SMS.Models
     
     public partial class SP_GET_REFUND_DETAIL_Result
     {
-        public Nullable<int> MA_TRA_HANG { get; set; }
+        public int MA_TRA_HANG { get; set; }
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public double SO_LUONG_TRA { get; set; }
+        public double SO_LUONG_TON { get; set; }
         public double GIA_VON { get; set; }
         public double TONG_TIEN { get; set; }
         public string TEN_SAN_PHAM { get; set; }

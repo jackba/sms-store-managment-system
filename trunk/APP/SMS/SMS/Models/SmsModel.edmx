@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -531,6 +531,14 @@ warning 6002: The table/view 'SMS.dbo.V_IMPORT_DETAIL' does not have a primary k
           <Property Name="GIA_VON" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_MA_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_MA_TRA_HANG">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'SMS.dbo.V_NHAP_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_NHAP_KHO">
           <Key>
@@ -570,6 +578,17 @@ warning 6002: The table/view 'SMS.dbo.V_NHAP_XUAT_KHO' does not have a primary k
           <Property Name="SO_LUONG_NHAP" Type="float" Nullable="false" />
           <Property Name="SO_LUONG_XUAT" Type="float" Nullable="false" />
           <Property Name="SO_LUONG_TON" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SMS.dbo.V_TRA_NHAP_TRA_NCC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TRA_NHAP_TRA_NCC">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+            <PropertyRef Name="SO_LUONG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="int" Nullable="false" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1737,7 +1756,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="dynTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="F_CHECK_REMAIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
@@ -1787,10 +1805,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="MA_XUAT_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_TH" Type="int" Mode="In" />
           <Parameter Name="RETURN_VALUE" Type="int" Mode="InOut" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_EXPORT_REPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
@@ -2090,6 +2104,11 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
     [V_IMPORT_DETAIL].[GIA_VON] AS [GIA_VON]
     FROM [dbo].[V_IMPORT_DETAIL] AS [V_IMPORT_DETAIL]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_MA_TRA_HANG" EntityType="Self.V_MA_TRA_HANG" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_MA_TRA_HANG].[MA_TRA_HANG] AS [MA_TRA_HANG]
+    FROM [dbo].[V_MA_TRA_HANG] AS [V_MA_TRA_HANG]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_NHAP_KHO" EntityType="Self.V_NHAP_KHO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [V_NHAP_KHO].[MA_NHAP_KHO] AS [MA_NHAP_KHO], 
@@ -2118,6 +2137,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
     [V_NHAP_XUAT_KHO].[SO_LUONG_XUAT] AS [SO_LUONG_XUAT], 
     [V_NHAP_XUAT_KHO].[SO_LUONG_TON] AS [SO_LUONG_TON]
     FROM [dbo].[V_NHAP_XUAT_KHO] AS [V_NHAP_XUAT_KHO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_TRA_NHAP_TRA_NCC" EntityType="Self.V_TRA_NHAP_TRA_NCC" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_TRA_NHAP_TRA_NCC].[MA_TRA_HANG] AS [MA_TRA_HANG], 
+    [V_TRA_NHAP_TRA_NCC].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_TRA_NHAP_TRA_NCC].[SO_LUONG] AS [SO_LUONG]
+    FROM [dbo].[V_TRA_NHAP_TRA_NCC] AS [V_TRA_NHAP_TRA_NCC]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_XUAT_KHO" EntityType="Self.V_XUAT_KHO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2515,7 +2541,8 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3075,6 +3102,8 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="MA_HOA_DON" Type="Int32" />
+          <Property Name="IMPORT_FLG" Type="Boolean" />
+          <Property Name="RETURN_FLG" Type="Boolean" />
           <NavigationProperty Name="CHI_TIET_TRA_HANG" Relationship="Self.FK__CHI_TIET___MA_TR__693CA210" FromRole="TRA_HANG" ToRole="CHI_TIET_TRA_HANG" />
           <NavigationProperty Name="HOA_DON" Relationship="Self.FK__TRA_HANG__MA_HOA__308E3499" FromRole="TRA_HANG" ToRole="HOA_DON" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__TRA_HANG__CREATE__66603565" FromRole="TRA_HANG" ToRole="NGUOI_DUNG" />
@@ -3083,8 +3112,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NHAP_KHO" Relationship="Self.FK__NHAP_KHO__MA_PHI__73BA3083" FromRole="TRA_HANG" ToRole="NHAP_KHO" />
           <NavigationProperty Name="TRA_HANG_NCC" Relationship="Self.FK__TRA_HANG___MA_PH__503BEA1C" FromRole="TRA_HANG" ToRole="TRA_HANG_NCC" />
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__TRA_HANG__MA_XUA__6477ECF3" FromRole="TRA_HANG" ToRole="XUAT_KHO" />
-          <Property Name="IMPORT_FLG" Type="Boolean" />
-          <Property Name="RETURN_FLG" Type="Boolean" />
         </EntityType>
         <EntityType Name="TRA_HANG_NCC">
           <Key>
@@ -3230,6 +3257,12 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Name="SO_LUONG" Type="Double" />
           <Property Name="GIA_VON" Type="Double" />
         </EntityType>
+        <EntityType Name="V_MA_TRA_HANG">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="V_NHAP_KHO">
           <Key>
             <PropertyRef Name="MA_NHAP_KHO" />
@@ -3264,6 +3297,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Name="SO_LUONG_NHAP" Type="Double" Nullable="false" />
           <Property Name="SO_LUONG_XUAT" Type="Double" Nullable="false" />
           <Property Name="SO_LUONG_TON" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="V_TRA_NHAP_TRA_NCC">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+            <PropertyRef Name="SO_LUONG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="Int32" Nullable="false" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="V_XUAT_KHO">
           <Key>
@@ -4459,9 +4501,11 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySet Name="V_HOA_DON" EntityType="Self.V_HOA_DON" />
           <EntitySet Name="V_HOA_DON_DISTICNT" EntityType="Self.V_HOA_DON_DISTICNT" />
           <EntitySet Name="V_IMPORT_DETAIL" EntityType="Self.V_IMPORT_DETAIL" />
+          <EntitySet Name="V_MA_TRA_HANG" EntityType="Self.V_MA_TRA_HANG" />
           <EntitySet Name="V_NHAP_KHO" EntityType="Self.V_NHAP_KHO" />
           <EntitySet Name="V_NHAP_XUAT_DETAIL" EntityType="Self.V_NHAP_XUAT_DETAIL" />
           <EntitySet Name="V_NHAP_XUAT_KHO" EntityType="Self.V_NHAP_XUAT_KHO" />
+          <EntitySet Name="V_TRA_NHAP_TRA_NCC" EntityType="Self.V_TRA_NHAP_TRA_NCC" />
           <EntitySet Name="V_XUAT_KHO" EntityType="Self.V_XUAT_KHO" />
           <AssociationSet Name="FK__CHI_TIET___CREAT__5070F446" Association="Self.FK__CHI_TIET___CREAT__5070F446">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
@@ -4847,14 +4891,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
-          <FunctionImport Name="dynTable" />
           <FunctionImport Name="GET_HOA_DON" ReturnType="Collection(SmsModel.GET_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GET_KHACH_HANG_ALERT">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SmsModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -4865,10 +4908,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
             <Parameter Name="MA_NHAN_VIEN_TH" Mode="In" Type="Int32" />
             <Parameter Name="RETURN_VALUE" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_EXPORT_REPORT" ReturnType="Collection(SmsModel.SP_EXPORT_REPORT_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
@@ -4899,7 +4938,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="USER_FULL_NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_DON_VI_TINH" ReturnType="Collection(SmsModel.SP_GET_DON_VI_TINH_Result)">
-          <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HD_DETAIL_FOR_EXPORT" ReturnType="Collection(SmsModel.SP_GET_HD_DETAIL_FOR_EXPORT_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -4942,7 +4981,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_DETAIL_FOR_RETURN" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result)">
-          <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
+            <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_EXPORTED" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_EXPORTED_Result)">
             <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
@@ -4953,7 +4992,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_INFO" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_INFO_Result)">
-          <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
+            <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -4967,7 +5006,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_NHA_CUNG_CAP" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_Result)">
-          <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
+            <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -4975,7 +5014,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY_BY_STORE_ID" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_BY_STORE_ID_Result)">
-          <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_NHAP_XUAT" ReturnType="Collection(SmsModel.SP_GET_NHAP_XUAT_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -4993,8 +5032,18 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_REFUND_DETAIL" ReturnType="Collection(SmsModel.SP_GET_REFUND_DETAIL_Result)">
+            <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_RETURN_LIST" ReturnType="Collection(SmsModel.SP_GET_RETURN_LIST_Result)">
+            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="MA_NHAN_VIEN_NHAN" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_NHAN_VIEN" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SP_GET_ROLE_OF_USER" ReturnType="Collection(SmsModel.SP_GET_ROLE_OF_USER_Result)">
-          <Parameter Name="USER_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USER_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_SMS_MESSAGES" ReturnType="Collection(SmsModel.SP_GET_SMS_MESSAGES_Result)">
             <Parameter Name="MA_NHOM_NGUOI_DUNG" Mode="In" Type="Int32" />
@@ -5005,13 +5054,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO" />
           <FunctionImport Name="SP_GET_TON_KHO_ALERT">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_ALL">
-          <Parameter Name="NAME" Mode="In" Type="String" />
+            <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_BY_ID">
-          <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
+            <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_VALUE_ALL_HOA_DON" ReturnType="Collection(SmsModel.SP_GET_VALUE_ALL_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5073,16 +5122,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GET_RETURN_LIST" ReturnType="Collection(SmsModel.SP_GET_RETURN_LIST_Result)">
-            <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
-            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
-            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
-            <Parameter Name="MA_NHAN_VIEN_NHAN" Mode="In" Type="Int32" />
-            <Parameter Name="TEN_NHAN_VIEN" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="SP_GET_REFUND_DETAIL" ReturnType="Collection(SmsModel.SP_GET_REFUND_DETAIL_Result)">
-          <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
@@ -5290,6 +5329,26 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
         </ComplexType>
+        <ComplexType Name="SP_GET_REFUND_DETAIL_Result">
+          <Property Type="Int32" Name="MA_TRA_HANG" Nullable="false" />
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="Double" Name="SO_LUONG_TRA" Nullable="false" />
+          <Property Type="Double" Name="SO_LUONG_TON" Nullable="false" />
+          <Property Type="Double" Name="GIA_VON" Nullable="false" />
+          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_RETURN_LIST_Result">
+          <Property Type="Int32" Name="MA_TRA_HANG" Nullable="false" />
+          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="NGAY_TRA" Nullable="true" />
+          <Property Type="Int16" Name="STATUS" Nullable="true" />
+          <Property Type="Int32" Name="NHAN_VIEN_NHAN" Nullable="true" />
+          <Property Type="Boolean" Name="IMPORT_FLG" Nullable="true" />
+          <Property Type="Boolean" Name="RETURN_FLG" Nullable="true" />
+          <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="SP_GET_ROLE_OF_USER_Result">
           <Property Type="Boolean" Name="IS_ADMIN" Nullable="true" />
           <Property Type="Boolean" Name="IS_METADATA_MANAGER" Nullable="true" />
@@ -5326,23 +5385,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
           <Property Type="Double" Name="VALUE" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="SP_GET_RETURN_LIST_Result">
-          <Property Type="Int32" Name="MA_TRA_HANG" Nullable="false" />
-          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="NGAY_TRA" Nullable="true" />
-          <Property Type="Int16" Name="STATUS" Nullable="true" />
-          <Property Type="Int32" Name="NHAN_VIEN_NHAN" Nullable="true" />
-          <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="SP_GET_REFUND_DETAIL_Result">
-          <Property Type="Int32" Name="MA_TRA_HANG" Nullable="true" />
-          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
-          <Property Type="Double" Name="SO_LUONG_TRA" Nullable="false" />
-          <Property Type="Double" Name="GIA_VON" Nullable="false" />
-          <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
-          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5750,8 +5792,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySetMapping Name="TRA_HANG">
             <EntityTypeMapping TypeName="SmsModel.TRA_HANG">
               <MappingFragment StoreEntitySet="TRA_HANG">
-                <ScalarProperty Name="RETURN_FLG" ColumnName="RETURN_FLG" />
-                <ScalarProperty Name="IMPORT_FLG" ColumnName="IMPORT_FLG" />
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
                 <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
@@ -5765,6 +5805,8 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
+                <ScalarProperty Name="IMPORT_FLG" ColumnName="IMPORT_FLG" />
+                <ScalarProperty Name="RETURN_FLG" ColumnName="RETURN_FLG" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5882,6 +5924,13 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="V_MA_TRA_HANG">
+            <EntityTypeMapping TypeName="SmsModel.V_MA_TRA_HANG">
+              <MappingFragment StoreEntitySet="V_MA_TRA_HANG">
+                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="V_NHAP_KHO">
             <EntityTypeMapping TypeName="SmsModel.V_NHAP_KHO">
               <MappingFragment StoreEntitySet="V_NHAP_KHO">
@@ -5917,6 +5966,15 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="V_TRA_NHAP_TRA_NCC">
+            <EntityTypeMapping TypeName="SmsModel.V_TRA_NHAP_TRA_NCC">
+              <MappingFragment StoreEntitySet="V_TRA_NHAP_TRA_NCC">
+                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="V_XUAT_KHO">
             <EntityTypeMapping TypeName="SmsModel.V_XUAT_KHO">
               <MappingFragment StoreEntitySet="V_XUAT_KHO">
@@ -5930,7 +5988,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="dynTable" FunctionName="SmsModel.Store.dynTable" />
           <FunctionImportMapping FunctionImportName="GET_HOA_DON" FunctionName="SmsModel.Store.GET_HOA_DON">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.GET_HOA_DON_Result">
@@ -5954,7 +6011,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_DELETE_EXPORT_4_SALE" FunctionName="SmsModel.Store.SP_DELETE_EXPORT_4_SALE" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SmsModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="SP_EXPORT_REPORT" FunctionName="SmsModel.Store.SP_EXPORT_REPORT">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_EXPORT_REPORT_Result">
@@ -6220,6 +6276,34 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_REFUND_DETAIL" FunctionName="SmsModel.Store.SP_GET_REFUND_DETAIL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_REFUND_DETAIL_Result">
+                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="SO_LUONG_TRA" ColumnName="SO_LUONG_TRA" />
+                <ScalarProperty Name="SO_LUONG_TON" ColumnName="SO_LUONG_TON" />
+                <ScalarProperty Name="GIA_VON" ColumnName="GIA_VON" />
+                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_RETURN_LIST" FunctionName="SmsModel.Store.SP_GET_RETURN_LIST">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_RETURN_LIST_Result">
+                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="NGAY_TRA" ColumnName="NGAY_TRA" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="NHAN_VIEN_NHAN" ColumnName="NHAN_VIEN_NHAN" />
+                <ScalarProperty Name="IMPORT_FLG" ColumnName="IMPORT_FLG" />
+                <ScalarProperty Name="RETURN_FLG" ColumnName="RETURN_FLG" />
+                <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_GET_ROLE_OF_USER" FunctionName="SmsModel.Store.SP_GET_ROLE_OF_USER">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_GET_ROLE_OF_USER_Result">
@@ -6286,31 +6370,6 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <FunctionImportMapping FunctionImportName="SP_SALE_EXPORT" FunctionName="SmsModel.Store.SP_SALE_EXPORT" />
           <FunctionImportMapping FunctionImportName="SP_THU_TIEN_XUAT_KHO" FunctionName="SmsModel.Store.SP_THU_TIEN_XUAT_KHO" />
           <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SmsModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
-          <FunctionImportMapping FunctionImportName="SP_GET_RETURN_LIST" FunctionName="SmsModel.Store.SP_GET_RETURN_LIST">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.SP_GET_RETURN_LIST_Result">
-                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
-                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
-                <ScalarProperty Name="NGAY_TRA" ColumnName="NGAY_TRA" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="NHAN_VIEN_NHAN" ColumnName="NHAN_VIEN_NHAN" />
-                <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="SP_GET_REFUND_DETAIL" FunctionName="SmsModel.Store.SP_GET_REFUND_DETAIL">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SmsModel.SP_GET_REFUND_DETAIL_Result">
-                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
-                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
-                <ScalarProperty Name="SO_LUONG_TRA" ColumnName="SO_LUONG_TRA" />
-                <ScalarProperty Name="GIA_VON" ColumnName="GIA_VON" />
-                <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
-                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
-                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

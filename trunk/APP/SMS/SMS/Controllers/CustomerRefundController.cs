@@ -20,6 +20,72 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        public ActionResult ReturnToProvider(ReturnToProviderModel model)
+        {
+            var ctx = new SmsContext();
+            var refund = ctx.TRA_HANG.Find(model.Infor.MA_TRA_HANG);
+            if (refund.RETURN_FLG != null && (bool)refund.RETURN_FLG)
+            {
+                return RedirectToAction("ReturnPurchaseList", new { @message = "Phiếu trả hàng này đã được lập phiếu trả cho nhà cung cấp, vui lòng liên hệ admin." });
+            }
+             using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var returnToProvider = ctx.TRA_HANG_NCC.Create();
+                    returnToProvider.MA_PHIEU_TRA = refund.MA_TRA_HANG;
+                    returnToProvider.NGUOI_LAP_PHIEU = Convert.ToInt32(Session["UserId"]);
+                    returnToProvider.MA_NHA_CUNG_CAP = Convert.ToInt32(model.ProviderId);
+                    returnToProvider.GHI_CHU = model.Note;
+                    returnToProvider.NGAY_LAP_PHIEU = model.ReturnDate;
+                    returnToProvider.CREATE_AT = DateTime.Now;
+                    returnToProvider.UPDATE_AT = DateTime.Now;
+                    returnToProvider.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnToProvider.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnToProvider.ACTIVE = "A";
+
+                    ctx.TRA_HANG_NCC.Add(returnToProvider);
+                    ctx.SaveChanges();
+
+                    refund.RETURN_FLG = true;
+                    TRA_HANG_NCC_CHI_TIET ct;
+                    foreach (var detail in model.Detail)
+                    {
+                        if (detail.DEL_FLG == 1 || detail.SO_LUONG_TRA < detail.SO_LUONG_TON)
+                        {
+                            refund.RETURN_FLG = true;
+                        }
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.TRA_HANG_NCC_CHI_TIET.Create();
+                            ct.MA_PHIEU_TRA_NCC = returnToProvider.ID;
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.SO_LUONG = detail.SO_LUONG_TRA;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.ACTIVE = "A";
+                            ctx.TRA_HANG_NCC_CHI_TIET.Add(ct);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    refund.UPDATE_AT = DateTime.Now;
+                    refund.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    transaction.Complete();
+                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Lập phiếu trả hàng đến nhà cung cấp thành công." });
+                }
+                catch(Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ReturnPurchaseList", new { @message = "Lập phiếu trả hàng đến nhà cung cấp thất bại, vui lòng liên hệ admin." });
+                }
+             }
+        }
+
+
+        [HttpPost]
         public ActionResult ImportRefund(RefundModel model)
         {
             var ctx = new SmsContext();
@@ -32,10 +98,7 @@ namespace SMS.Controllers
             {
                 try
                 {
-                    refund.IMPORT_FLG = true;
-                    refund.UPDATE_AT = DateTime.Now;
-                    refund.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                    ctx.SaveChanges();
+                   
 
                     var import = ctx.NHAP_KHO.Create();
                     import.MA_KHO = model.MaKho;
@@ -52,9 +115,14 @@ namespace SMS.Controllers
                     ctx.NHAP_KHO.Add(import);
                     ctx.SaveChanges();
 
+                    refund.IMPORT_FLG = true; 
                     CHI_TIET_NHAP_KHO importDetail;
                     foreach (var detail in model.Detail)
                     {
+                        if (detail.DEL_FLG == 1 || detail.SO_LUONG_TRA < detail.SO_LUONG_TON)
+                        {
+                            refund.IMPORT_FLG = false; 
+                        }
                         if (detail.DEL_FLG != 1)
                         {
                             importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
@@ -71,7 +139,14 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                     }
+
+                   
+                    refund.UPDATE_AT = DateTime.Now;
+                    refund.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+
                     transaction.Complete();
+
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhập kho - nhận trả hàng thành công." });
                 }
                 catch (Exception)
@@ -100,6 +175,24 @@ namespace SMS.Controllers
             }
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             ViewBag.Kho = stores;
+            return View(model);
+        }
+
+
+        public ActionResult ReturnToProvider(int id)
+        {
+            var ctx = new SmsContext();
+            var refund = ctx.TRA_HANG.Find(id);
+            if (refund.ACTIVE != "A")
+            {
+                return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Không tìm thấy phiếu trả hàng nào tương ứng." });
+            }
+            var refundDetail = ctx.SP_GET_REFUND_DETAIL(id).ToList<SP_GET_REFUND_DETAIL_Result>();
+            ReturnToProviderModel model = new ReturnToProviderModel();
+            model.Infor = refund;
+            model.Detail = refundDetail;
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            ViewBag.Providers = providers;
             return View(model);
         }
 

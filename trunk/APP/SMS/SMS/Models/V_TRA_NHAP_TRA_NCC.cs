@@ -10,16 +10,12 @@
 namespace SMS.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_GET_RETURN_LIST_Result
+    public partial class V_TRA_NHAP_TRA_NCC
     {
         public int MA_TRA_HANG { get; set; }
-        public string TEN_KHACH_HANG { get; set; }
-        public Nullable<System.DateTime> NGAY_TRA { get; set; }
-        public Nullable<short> STATUS { get; set; }
-        public Nullable<int> NHAN_VIEN_NHAN { get; set; }
-        public Nullable<bool> IMPORT_FLG { get; set; }
-        public Nullable<bool> RETURN_FLG { get; set; }
-        public string TEN_NGUOI_DUNG { get; set; }
+        public Nullable<int> MA_SAN_PHAM { get; set; }
+        public double SO_LUONG { get; set; }
     }
 }
