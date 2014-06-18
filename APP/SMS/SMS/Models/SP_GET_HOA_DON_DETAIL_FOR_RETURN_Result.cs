@@ -17,8 +17,9 @@ namespace SMS.Models
         public string TEN_SAN_PHAM { get; set; }
         public string TEN_DON_VI { get; set; }
         public double SO_LUONG { get; set; }
+        public double SO_LUONG_BAN { get; set; }
         public double DON_GIA { get; set; }
         public double THANH_TIEN { get; set; }
-        public int DEL_FLG { get; set; }
+        public int? DEL_FLG { get; set; }
     }
 }
