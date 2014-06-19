@@ -147,7 +147,7 @@ namespace SMS.Controllers
         public ActionResult SaveBill(FormCollection collection)
         {
             int MaHD = -1;
-            string SoHD = DateTime.Now.ToString("ddMMyyyyHHmmss");
+            string SoHD = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             
             string listRowNum = "";
             string[] arrRowNum = new string[] { };
@@ -245,9 +245,11 @@ namespace SMS.Controllers
 
                     transaction.Complete();   
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     Transaction.Current.Rollback();
+                    msgStringBuilder.Append(ex.Message);
+                    return Content(msgStringBuilder.ToString());
                 }
             }
 

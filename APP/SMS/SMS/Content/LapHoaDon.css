@@ -363,3 +363,9 @@ td.colTotalValue {
   visibility: hidden;
 }
 /*hide button close in dialog e*/
+div.colum3{
+    margin-left:-115px;
+}
+hr.mydashed{
+    border: dashed 1px rgb(167, 167, 231);
+}
