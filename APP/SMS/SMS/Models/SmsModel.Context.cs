@@ -875,5 +875,38 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual ObjectResult<SP_GET_LIST_RETURN_TO_PROVIDERS_Result> SP_GET_LIST_RETURN_TO_PROVIDERS(Nullable<int> pROVIDER_ID, string pROVIDER_NAME, Nullable<int> fLAG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> uSER_ID, string uSER_FULL_NAME)
+        {
+            var pROVIDER_IDParameter = pROVIDER_ID.HasValue ?
+                new ObjectParameter("PROVIDER_ID", pROVIDER_ID) :
+                new ObjectParameter("PROVIDER_ID", typeof(int));
+    
+            var pROVIDER_NAMEParameter = pROVIDER_NAME != null ?
+                new ObjectParameter("PROVIDER_NAME", pROVIDER_NAME) :
+                new ObjectParameter("PROVIDER_NAME", typeof(string));
+    
+            var fLAGParameter = fLAG.HasValue ?
+                new ObjectParameter("FLAG", fLAG) :
+                new ObjectParameter("FLAG", typeof(int));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            var uSER_IDParameter = uSER_ID.HasValue ?
+                new ObjectParameter("USER_ID", uSER_ID) :
+                new ObjectParameter("USER_ID", typeof(int));
+    
+            var uSER_FULL_NAMEParameter = uSER_FULL_NAME != null ?
+                new ObjectParameter("USER_FULL_NAME", uSER_FULL_NAME) :
+                new ObjectParameter("USER_FULL_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_LIST_RETURN_TO_PROVIDERS_Result>("SP_GET_LIST_RETURN_TO_PROVIDERS", pROVIDER_IDParameter, pROVIDER_NAMEParameter, fLAGParameter, fROM_DATEParameter, tO_DATEParameter, uSER_IDParameter, uSER_FULL_NAMEParameter);
+        }
     }
 }
