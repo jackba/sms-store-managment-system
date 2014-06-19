@@ -17,6 +17,21 @@ namespace SMS.Controllers
         //
         // GET: /NhaCungCap/
 
+        [HttpPost]
+        public JsonResult FindSuggest(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.NHA_CUNG_CAP
+                                    where (x.TEN_NHA_CUNG_CAP.ToLower().Contains(prefixText.ToLower()) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_NHA_CUNG_CAP,
+                                        value = x.TEN_NHA_CUNG_CAP
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {

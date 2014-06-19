@@ -1,8 +1,8 @@
-﻿@model SMS.Models.ExportRepotModel
+﻿@model SMS.Models.HoaDonBHModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Báo cáo xuất kho";
+    ViewBag.Title = "Danh sách các phiếu trả hàng - nhà cung cấp";
 }
 @{
     List<SelectListItem> kinds = new List<SelectListItem>();
@@ -11,67 +11,39 @@
 
     ckind = new SelectListItem();
 
-    ckind.Value = "-1";
-    ckind.Text = "----------- Chọn loại xuất kho ----------";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 0)
-    {
-        ckind.Selected = true;
-    }
     ckind.Value = "0";
-    ckind.Text = "Xuất bán hàng";
+    ckind.Text = "----------- Tất cả các loại trả hàng----------";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 1)
+    if ((int)ViewBag.Flag == 1)
     {
         ckind.Selected = true;
     }
     ckind.Value = "1";
-    ckind.Text = "Xuất hủy";
+    ckind.Text = "Trả hàng từ hàng trả của khách hàng";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 2)
+    if ((int)ViewBag.Flag == 2)
     {
         ckind.Selected = true;
     }
     ckind.Value = "2";
-    ckind.Text = "Xuất dùng nội bộ";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 3)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "3";
-    ckind.Text = "Xuất chuyển kho";
-    kinds.Add(ckind);
-    
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 4)
-    {
-        ckind.Selected = true;
-    }
-    ckind.Value = "4";
-    ckind.Text = "Xuất trả cho nhà cung cấp";
+    ckind.Text = "Trả hàng trực tiếp";
     kinds.Add(ckind);
 }
-
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Export", "Home")"> Quản lý kho - xuất kho </a>
-    > @ViewBag.Title
-
-    <br />
+    <a href="@Url.Action("Return", "Home")"> Xử lý trả hàng </a> > @ViewBag.Title
 </div>
+
 <br />
+
 <hgroup class="title">
-    <h2> @ViewBag.Title </h2>
+    <h2>@ViewBag.Title</h2>
 </hgroup>
-    <h3>@ViewBag.Message</h3>
+<h3 style="color:red">@ViewBag.Message</h3>
+<h3 style="color:blue">@ViewBag.InforMessage</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -87,10 +59,11 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-            $("#ProductName").autocomplete({
+
+            $("#providerName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/NhaCungCap/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -103,21 +76,20 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
-                    $('#ProductId').val("");
+                    $('#providerId').val("");
                 },
                 select: function (event, ui) {
-                    $('#ProductName').val(ui.item.label);
-                    $('#ProductId').val(ui.item.id);
+                    $('#providerName').val(ui.item.label);
+                    $('#providerId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
-
             });
 
-            $("#StoreName").autocomplete({
+            $("#userFullName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/Kho/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -130,17 +102,18 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
+                    $('#userId').val("");
                 },
                 select: function (event, ui) {
-                    $('#StoreName').val(ui.item.label);
-                    $('#StoreId').val(ui.item.id);
+                    $('#userFullName').val(ui.item.label);
+                    $('#userId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
             });
+            $('#fromDate').datepicker('setDate', 'today');
             $('#mainForm').submit();
         });
-
         $(document).ready(function () {
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -149,6 +122,15 @@
                 yearRange: "-60:+0"
             });
         });
+        function deleteSubmit() {
+            var r = confirm("Bạn muốn hủy phiếu trả hàng này?");
+            if (r == true) {
+                document.forms["mainForm"].submit();
+            }
+            else {
+                return false;
+            }
+        }
     </script>
     <style type="text/css">
         .required:after {
@@ -159,7 +141,7 @@
     </style>
 
 }
-@using (Ajax.BeginForm("ExportReportPartialView", "QuanLyKho", new AjaxOptions()
+@using (Ajax.BeginForm("ListOfToProviderPartialView", "TraHang", new AjaxOptions()
                             {
                                 HttpMethod = "POST",
                                 InsertionMode = InsertionMode.Replace,
@@ -171,25 +153,50 @@
 {
     <hr style="width:100%" />
     <div style="float:left">
-        Loại &nbspxuất : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        <br />
-        @if((bool)Session["IsAdmin"])
-        {
-            <div>
-            Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-            @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
-            </div>
-        }
-        @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
-        Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
-    </div>
-    <div style="float:left">
-        Ngày Mua: @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
+        <table>
+            @if ((bool)Session["IsAdmin"])
+            {
+                <tr>
+                <td>
+                    @Html.Hidden("userId", ViewBag.UserId as int?, new { id = "userId" })
+                    Khách hàng:
+                </td>
+                <td>
+                    @Html.TextBox("userFullName", ViewBag.UserFullName as string, new { id = "userFullName" })
+                </td>
+            </tr>
+            }
+
+            <tr>
+                <td>
+                    @Html.Hidden("providerId", ViewBag.ProviderId as int?, new { id = "providerId" })
+                    Số hóa đơn:
+                </td>
+                <td>
+                    @Html.TextBox("providerName", ViewBag.ProviderName as string, new { id = "providerName" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Loại trả hàng 
+                </td>
+                <td>
+                    @Html.DropDownList("flag", kinds, new { @id = "flag", @style = "padding:2px;font-size:1.2em; " })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ngày bán hàng:
+                </td>
+                <td>
+                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", @id = "fromDate" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", @id = "toDate" })
+                </td>
+            </tr>
+        </table>
         <input type="submit" value="Tìm kiếm" class="myButton" />
     </div>
     <div style="clear:both"></div>
     <hr style="width:100%" />
-    <div style="clear:both"></div>
 }
 <div style="clear:both"></div>
 <div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">

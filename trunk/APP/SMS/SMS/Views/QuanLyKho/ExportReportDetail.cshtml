@@ -50,6 +50,15 @@
     ckind.Value = "3";
     ckind.Text = "Xuất chuyển kho";
     kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 4)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "4";
+    ckind.Text = "Xuất trả cho nhà cung cấp";
+    kinds.Add(ckind);
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("Export", "Home")"> Quản lý kho - xuất kho </a>
