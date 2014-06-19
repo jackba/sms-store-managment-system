@@ -30,14 +30,20 @@
             yearRange: "-60:+0"
         });
 
-        $('#divHr').hide();
 
         $("#addRecord").click(function () {
             addRecord();
         });
 
         $("#saveBill").click(function () {
-            saveListRowNum();
+            var msgErr = checkInput(true);
+            if ('' == msgErr) {
+                saveListRowNum();
+                return true;
+            } else {
+                showMsgErr(msgErr,true);
+                return false;
+            }
         });
 
 
@@ -89,6 +95,7 @@
                         function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
                 $('#kindCustomer').val('3');
+                $('#MaKhachHang').val('');
             },
             select: function (event, ui) {
                 $('#kindCustomer').val(ui.item.kind);
@@ -359,7 +366,7 @@
         if (isSelected == true) {
             $('#MaKhachHang').val(item.id);
             $('#TenKhachHang').val(item.label);
-            $('#DiaChi').html(item.address);
+            $('#DiaChi').val(item.address);
         }
 
     }
@@ -451,6 +458,7 @@
                             break;
                         case 2:
                             reset();
+                            $('#TenKhachHang').focus();
                             break;
                     }
 
@@ -517,27 +525,29 @@
         }
     }
     function addRecord() {
+ 
 
         $('#contentMsgErr').empty();
         $('#divErr').hide();
-        var msgErr = checkInput();
+        var msgErr = checkInput(false);
         if ('' == msgErr) {
-            //if ($('#tableContent input:hidden[value="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0){
-            //    var title = "Xác nhận"
-            //    var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
-            //    var action = 2;
-            //    $('#addRecord').click(fnOpenNormalDialog(title, content, action));
-            //} else {
-            prependNewRowToTable();
-            resetFieldAfterAdding();
-            $('#saveBill').removeAttr("disabled", "disabled");
-            $('#saveBill').css("background-color", "");
-            CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
+            if ($('#tableContent input:hidden[name="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0) {
+                var title = "Thông tin"
+                var content = "Đã tồn tại sản phẩm này trong danh sách bên dưới.<br/> Hãy kiểm tra lại danh sách bên dưới hoặc thêm sản phẩm khác ";
+                var action = 2;
+                $('#addRecord').click(fnOpenNormalDialog(title, content, action));
+            } else {
+                prependNewRowToTable();
+                resetFieldAfterAdding();
+                $('#saveBill').removeAttr("disabled", "disabled");
+                $('#saveBill').css("background-color", "");
+                CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
 
-            $('#hidUnitRootName').val('');
-            $('#suggestUnit').html('');
-            $('#suggestUnit').hide();
-            //}
+                $('#hidUnitRootName').val('');
+                $('#suggestUnit').html('');
+                $('#suggestUnit').hide();
+                $('#TenSanPham').focus();
+            }
         } else {
             showMsgErr(msgErr,true);
         }
@@ -552,27 +562,16 @@
         } else {
             result = totalAll - totalRow;
         }
+        result = roundToTwo(result);
         $('#hidTotalAllMoney').val(result);
         addCommaNumberic('#hidTotalAllMoney');
         $('#totalAll').html($('#hidTotalAllMoney').val());
     }
-    function checkInput() {
+    function checkInput(isSubmit) {
         var msgErr = '';
         var empty = '';
         if (empty == $('#TenKhachHang').val()) {
             msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
-        }
-        if (empty == $('#CodeSanPham').val() || empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
-            msgErr += " + Sản phẩm không tồn tại hoặc chưa nhập. <br/>";
-        }
-        if (empty == $('#GiaBan').val()) {
-            msgErr += " + Giá bán. <br/>";
-        }
-        if (empty == $('#ChietKhau').val()) {
-            msgErr += " + Chiết khấu. <br/>";
-        }
-        if (empty == $('#SoLuong').val()) {
-            msgErr += " + Số lượng <br/>";
         }
         if (empty == $('#NgayBan').val()) {
             msgErr += " + Ngày bán <br/>";
@@ -588,16 +587,34 @@
         if (empty == $('#DiaChi').val()) {
             msgErr += " + Địa chỉ <br/>";
         }
+
+        if (isSubmit == false) {
+            if (empty == $('#CodeSanPham').val() || empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
+                msgErr += " + Sản phẩm không tồn tại hoặc chưa nhập. <br/>";
+            }
+            if (empty == $('#GiaBan').val()) {
+                msgErr += " + Giá bán. <br/>";
+            }
+            if (empty == $('#ChietKhau').val()) {
+                msgErr += " + Chiết khấu. <br/>";
+            }
+            if (empty == $('#SoLuong').val() || '0' ==  $('#SoLuong').val()) {
+                msgErr += " + Số lượng <br/>";
+            }
+        }
+
         return msgErr;
     }
     function showMsgErr(msgErr, isShowTitle) {
+        $('#divInfo').empty();
+        $('#divInfo').hide();
+        $('#contentMsgErr').empty();
         if (isShowTitle == true) {
             $('#titleMsgErr').show();
         } else {
             $('#titleMsgErr').hide();
         }
         $('#contentMsgErr').append(msgErr);
-        $('#divHr').show();
         $('#divErr').show();
     }
     /*compare 2 date : date1 , date2 with n day
@@ -612,6 +629,7 @@
     }
 
     function resetFieldAfterAdding() {
+        $('#tableSearch #CodeSanPham').val('');
         $('#tableSearch #TenSanPham').val('');
         $('#tableSearch #MaSanPham').val('');
         $('#tableSearch #GiaBan').val('');
@@ -643,6 +661,7 @@
         newRow += ' <div  class="colProductNm tooltip truncate">';
         newRow += TenSP;
         newRow += '  <span>' + TenSP + '</span>';
+        newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
         newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
         newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
         newRow += '   </div>';
@@ -714,6 +733,7 @@
         $('#hidCount1Row').val(count1Row);
         addCommaNumberic('#hidCount1Row');
         // total row added
+        result = roundToTwo(result);
         $('#hidTotalRowAdded').val(result);
         addCommaNumberic('#hidTotalRowAdded');
 
@@ -744,13 +764,13 @@
     }
     function CalcRealPrice(price, discount, isReturn) {
         $('#contentMsgErr').empty();
-        $('#divHr').hide();
         var result = '';
         if (price == 0 || discount == 0) {
             result = price;
         } else {
-            result = roundToTwo(price - ((price * discount) / 100));
+            result = price - ((price * discount) / 100);
         }
+        result = roundToTwo(result);
         if (result < 0) {
             showMsgErr(" Giá trị của chiết khấu quá lớn so với giá gốc của sản phẩm <br/> Hãy nhập lại giá trị chiết khấu.", false)
             return false;
@@ -834,6 +854,7 @@
         var content = "Quá trình tạo mới hóa đơn có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?"
         if ($("table.tableContentScroll tr").length == 0) {
             reset();
+            $('#TenKhachHang').focus();
         } else {
             fnOpenConfirmDialog(title, content, 2);
         }
@@ -940,22 +961,34 @@
     /*end format numberic*/
 
     function saveBillSuccess() {
+       
         $('#divErr').hide();
         $('#divInfo').show();
-        $('#divHr').show();
     }
     function saveBillFailure() {
+        $('#divInfo').empty();
         $('#divInfo').hide();
         $('#divErr').show();
-        $('#divHr').show();
+    }
+
+    function disableEnterKey(e) {
+        var key;
+
+        if (window.event)
+            key = window.event.keyCode;     //IE
+        else
+            key = e.which;     //firefox
+
+        if (key == 13)
+            return false;
+        else
+            return true;
     }
 </script>
 }
-<hr />
-<!--Message-->
 <div id="msgId">
     <div id="divInfo" style="display: none; color: blue">
-       
+
     </div>
     <div id="divErr" style="display:none; " class="validation-summary-errors">
         <div id="titleMsgErr">
@@ -965,10 +998,10 @@
 
         </div>
     </div>
-    <div id="divHr">
-        <hr />
-    </div>
+
 </div>
+<hr class="mydashed" />
+<!--Message-->
 
 <fieldset>
     @using (Ajax.BeginForm("SaveBill", "BanHang", null,
@@ -989,7 +1022,7 @@
                         <div class="titleItem required">Tên khách hàng </div>
                         <br />
                         <div>
-                            <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" />
+                            <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" onkeypress="return disableEnterKey(event);" />
                             <input type="hidden" name="MaKhachHang" id="MaKhachHang" />
                             <input type="hidden" name="UserId" value="@ViewBag.UserId" />
                             <input type="hidden" id="MyStore" value="@ViewBag.MyStore" />
@@ -1016,10 +1049,39 @@
                     <td></td>
                     <td></td>
                 </tr>
+                <tr>
 
+                    <td>
+                        <div class="titleItem required">Ngày bán</div>
+                        <br />
+                        <div>
+                            <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
+                                   class="datePicker alignCenter " onkeypress="return disableEnterKey(event);" />
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div class="titleItem required">Ngày giao hàng</div>
+                        <br />
+                        <div>
+                            <input type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
+                                   class="datePicker alignCenter" onkeypress="return disableEnterKey(event);" />
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="titleItem required">Địa chỉ giao hàng</div>
+                        <br />
+                        <div>
+                            <textarea name="DiaChi" id="DiaChi" rows="2" cols="3" class="alignText" maxlength="300"></textarea>
+                        </div>
+                    </td>
+                </tr>
             </table>
             <!--input information product-->
             <div>
+                <hr class="mydashed" />
                 <table id="tableSearch" class="tableSearch tableBasic">
                     <tr>
                         <td>
@@ -1027,7 +1089,7 @@
                             <div class="titleItem required">Code sản phẩm </div>
                             <br />
                             <div>
-                                <input type="text" id="CodeSanPham" style="margin-left: 2px; " />
+                                <input type="text" id="CodeSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event);" />
                             </div>
                         </td>
 
@@ -1036,39 +1098,43 @@
                             <div class="titleItem required">Tên sản phẩm </div>
                             <br />
                             <div>
-                                <input type="text" id="TenSanPham" style="margin-left: 2px; " />
+                                <input type="text" id="TenSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event);" />
                             </div>
                         </td>
+                       
+                       
+                    </tr>
+                    <tr>
                         <td>
                             <div class="titleItem required">Giá bán</div>
                             <br />
                             <div>
-                                <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();"
+                                <input type="text" id="GiaBan" maxlength="10" onblur="return UpdateRealPrice();" onkeypress="return disableEnterKey(event);"
                                        class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                             </div>
-                           
-                        
+
+
                         </td>
                         <td>
                             <div class="titleItem required">Chiết khấu</div>
                             <br />
                             <div>
-                                <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();"
+                                <input type="text" id="ChietKhau" maxlength="5" onblur="return UpdateRealPrice();" onkeypress="return disableEnterKey(event);"
                                        class="numberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);"
                                        style="text-align: right; width: 110px !important;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="titleItem colum3">Giá sau chiết khấu </div>
+                            <br />
+                            <div class="colum3">
+                                <input type="text" id="GiaThuc" maxlength="10" onkeypress="return disableEnterKey(event);"
+                                       style=" text-align:right;background: rgb(252, 252, 252);" readonly />
                             </div>
                         </td>
                        
                     </tr>
                     <tr>
-                        <td>
-                            <div class="titleItem ">Giá sau chiết khấu </div>
-                            <br />
-                            <div>
-                                <input type="text" id="GiaThuc" maxlength="10"
-                                       style=" text-align:right;background: rgb(252, 252, 252);" readonly />
-                            </div>
-                        </td>
                         <td>
                             <div>
                                 <span class="required" style="font-size:16px;">Đơn vị tính </span>
@@ -1080,56 +1146,31 @@
                             <div class="titleItem required">Số lượng</div>
                             <br />
                             <div>
-                                <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;" value="1"
+                                <input type="text" id="SoLuong" maxlength="7" style="width: 110px !important;" value="1" onkeypress="return disableEnterKey(event);"
                                        class="numberic alignNumberic" onkeydown="NumbericOnly(this);" onkeyup="FormatNumberic_KeyUp(this);" />
                             </div>
                         </td>
                         <td>
-                            <div id="suggestUnit"  style="display: none; color: blue;
-                                   background-color: lightsteelblue; font-weight: bolder; margin-top: 14px;">
-                                <!--suggest unit-->
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div>
+                            <div class="colum3">
                                 <span class="required" style="font-size:16px;">Kho hàng  </span>
                                 <br />
                                 <select id="typeStore" class="Combobox"></select>
                             </div>
                         </td>
+                       
                    </tr>
                     <tr>
-
                         <td>
-                            <div class="titleItem required">Ngày bán</div>
-                            <br />
-                            <div>
-                                <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
-                                       class="datePicker alignCenter " />
-                            </div>
-                        </td>
-                        <td colspan="2">
-                            <div class="titleItem required">Ngày giao hàng</div>
-                            <br />
-                            <div>
-                                <input type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
-                                       class="datePicker alignCenter" />
-                            </div>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="titleItem required">Địa chỉ giao hàng</div>
-                            <br />
-                            <div>
-                                <textarea name="DiaChi" id="DiaChi" rows="3" cols="3" class="alignText" maxlength="300"></textarea>
+                            <div id="suggestUnit" style="display: none; color: rgb(94, 111, 201); 
+                                          font-weight: bolder; margin-top: -2px; margin-bottom: 3px;">
+                                <!--suggest unit-->
                             </div>
                         </td>
                     </tr>
+
+                   
                 </table>
+                <hr class="mydashed" />
                 <div class="myAction">
                     <input type="button" id="addRecord" value="Thêm sản phẩm" />
                     <div style="float: right; margin-right: -8px;">
