@@ -29,4 +29,11 @@ namespace SMS.Models
         public int? ProviderId { get; set; }
         public string Note { get; set; }
     }
+
+    public class List2ProviderModel
+    {
+        public IPagedList<SP_GET_LIST_RETURN_TO_PROVIDERS_Result> Detail { get; set; }
+        public int Count { get; set; }
+    }
+
 }

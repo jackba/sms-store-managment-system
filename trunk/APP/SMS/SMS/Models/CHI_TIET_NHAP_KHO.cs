@@ -29,5 +29,7 @@ namespace SMS.Models
         public virtual NHAP_KHO NHAP_KHO { get; set; }
         public virtual SAN_PHAM SAN_PHAM { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string TEN_DON_VI { get; set; }
     }
 }
