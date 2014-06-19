@@ -137,6 +137,28 @@
         </fieldset>
     </div>
     <script>
+        jQuery(document).ready(function ($) {
+            textboxes = $("input:text");
+            if ($.browser.mozilla) {
+                $(textboxes).keypress(checkForEnter);
+            } else {
+                $(textboxes).keydown(checkForEnter);
+            }
+
+            function checkForEnter(event) {
+                if (event.keyCode == 13) {
+                    currentTextboxNumber = textboxes.index(this);
+                    if (textboxes[currentTextboxNumber + 1] != null) {
+                        nextTextbox = textboxes[currentTextboxNumber + 1];
+                        nextTextbox.select();
+                    }
+
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
         function reset() {
             document.getElementById("TEN_NGUOI_DUNG").val("");
             document.getElementById("NGAY_SINH").val("");
