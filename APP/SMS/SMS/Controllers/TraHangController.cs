@@ -14,6 +14,54 @@ namespace SMS.Controllers
         //
         // GET: /TraHang/
 
+        public ActionResult ListOfToProvider(string message, string inforMessage)
+        {
+            var ctx = new SmsContext();
+            ViewBag.Flag = 0;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ListOfToProviderPartialView(int? providerId, string providerName, int? userId, 
+            string userFullName, DateTime? fromDate, DateTime? toDate, int?flag, int?  currentPageIndex)
+        {
+            var ctx = new SmsContext();
+            if (string.IsNullOrEmpty(providerName))
+            {
+                providerName = string.Empty;
+                providerId = 0;
+            }
+            if (string.IsNullOrEmpty(userFullName))
+            {
+                userId = 0;
+                userFullName = string.Empty;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                userId = Convert.ToInt32(Session["UserId"]);
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            ViewBag.Flag = Convert.ToInt32(flag);
+            ViewBag.ProviderId = providerId;
+            List2ProviderModel model = new List2ProviderModel();
+            var detail = ctx.SP_GET_LIST_RETURN_TO_PROVIDERS(Convert.ToInt32(providerId),
+                providerName, Convert.ToInt32(flag), fromDate, toDate, Convert.ToInt32(userId), userFullName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_LIST_RETURN_TO_PROVIDERS_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            model.Detail = detail.ToPagedList(pageIndex, pageSize);
+            model.Count = detail.Count;
+            return PartialView("ListOfToProviderPartialView", model);
+        }
+
         [HttpPost]
         public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
             DateTime? toDate, int? userId, string userName, int? currentPageIndex)

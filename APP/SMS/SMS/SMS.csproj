@@ -311,6 +311,9 @@
     <Compile Include="Models\SP_GET_INVENTORY_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_LIST_RETURN_TO_PROVIDERS_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -427,6 +430,7 @@
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
+    <Content Include="Content\images\Chargeback.png" />
     <Content Include="Content\images\customer.png" />
     <Content Include="Content\images\ExportDataBlue.jpg" />
     <Content Include="Content\images\ExportTransfer.jpg" />
@@ -451,6 +455,7 @@
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\SaleExportList.png" />
+    <Content Include="Content\Import.css" />
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
@@ -737,6 +742,9 @@
     <Content Include="Views\CustomerRefund\ReturnPurchaseListPartialView.cshtml" />
     <Content Include="Views\CustomerRefund\ImportRefund.cshtml" />
     <Content Include="Views\CustomerRefund\ReturnToProvider.cshtml" />
+    <Content Include="Views\TraHang\ListOfToProvider.cshtml" />
+    <Content Include="Views\TraHang\ListOfToProviderPartialView.cshtml" />
+    <Content Include="Views\Import\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

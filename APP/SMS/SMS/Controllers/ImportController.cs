@@ -14,6 +14,30 @@ namespace SMS.Controllers
     {
         //
         // GET: /Import/
+        [HttpPost]
+        public ActionResult Import(ImportModel model)
+        {
+            var detail = model.Detail;
+            return View();
+        }
+
+        public ActionResult Import()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            ViewBag.Stores = stores;
+            ImportModel model = new ImportModel();
+            if(!(bool)Session["IsAdmin"]){
+                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Providers = providers;
+            model.Units = units;
+            ViewBag.InputKind = -1;
+            return View(model);
+        }
 
         [HttpPost]
         public PartialViewResult IndexPartialView(DateTime? fromDate, DateTime? toDate, int? importerId, string importerName,

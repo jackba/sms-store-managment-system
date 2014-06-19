@@ -185,6 +185,7 @@
                         <td class="inner colwidth alignCenter">
                             @Html.HiddenFor(model => Model.detailReturnList[i].MA_SAN_PHAM)
                             @Html.HiddenFor(model => Model.detailReturnList[i].DEL_FLG, new { @class = "delFlg"})
+                            @Html.HiddenFor(model => Model.detailReturnList[i].SO_LUONG_BAN, new { @class = "Untill" })
                             @detail.MA_SAN_PHAM
                         </td>
 
@@ -238,11 +239,20 @@
         var rval = 1;
         $('input.chcktbl:not(:checked)').each(function () {
             var quantity = $('input.quantity', $(this).parent().parent()).val();
+            var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
             if (quantity == null || quantity == '' || quantity == 0) {
                 rval = 0;
+            } else {
+                if (untillQuantity < quantity) {
+                    checkFlg = 1;
+                }
             }
             row++;
         });
+        if (checkFlg == 1) {
+            alert("Số lượng trả không chính xác, có thể nhiều hơn số lượng đã mua. Vui lòng kiểm tra lại.");
+            return false;
+        }
         if (row == 0) {
             alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
             return false;
@@ -412,35 +422,40 @@
         });
     });
     function deleteCheckedRow() {
+        var rows = 0; 
         $('input.chcktbl:checked').each(function () {
             var flg = $('input.delFlg', $(this).parent().parent());
+            if(flg.val() == null || flg.val() == '' || flg.val() == 0){
+                rows ++;
+            }
             flg.val(1);
             $(this).parent().parent().hide();
             
         });
+        if(rows ==0){
+            alert("Vui lòng chọn dòng để xóa.");
+        }
         getAllTotal();
     };
 
     $('.chcktbl').click(function () {
         var length = $('.chcktbl:checked').length;
-        if (length > 3) {
-            alert(length);
-            $('.chcktbl:not(:checked)').attr('disabled', true);
+        var max = $('.chcktbl').length;
+        if (length == max) {
+            $('#chckHead').prop('checked', true);
         }
         else {
-            $('.chcktbl:not(:checked)').attr('disabled', false);
+            $('#chckHead').prop('checked', false);
         }
     });
 
     $('#chckHead').click(function () {
         if (this.checked == false) {
-            $('.chcktbl:checked').attr('checked', false);
+            $('input.chcktbl:checked').prop('checked', false);
         }
         else {
-            $('.chcktbl:not(:checked)').attr('checked', true);
+            $('input.chcktbl:not(:checked)').prop('checked', true);
         }
-    });
-    $('#chckHead').click(function () {
     });
 
 </script>

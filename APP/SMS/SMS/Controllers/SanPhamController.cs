@@ -68,6 +68,38 @@ namespace SMS.Controllers
             return result;
         }
 
+        [HttpPost]
+        public JsonResult FindSuggestName(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        value = x.TEN_SAN_PHAM, 
+                                        code = x.CODE
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult FindSuggestByCd(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    where (x.CODE.ToLower().Contains(prefixText.ToLower()) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        value = x.CODE,
+                                        name = x.TEN_SAN_PHAM
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
 
         [HttpPost]
         public JsonResult FindSuggestByCode(string prefixText, string typeCustomer)

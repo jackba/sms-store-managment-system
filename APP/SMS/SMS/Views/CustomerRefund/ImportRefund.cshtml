@@ -367,35 +367,40 @@
         });
     });
     function deleteCheckedRow() {
+        var rows = 0; 
         $('input.chcktbl:checked').each(function () {
             var flg = $('input.delFlg', $(this).parent().parent());
+            if(flg.val() == null || flg.val() == '' || flg.val() == 0){
+                rows ++;
+            }
             flg.val(1);
             $(this).parent().parent().hide();
-
+            
         });
+        if(rows ==0){
+            alert("Vui lòng chọn dòng để xóa.");
+        }
         getAllTotal();
     };
 
     $('.chcktbl').click(function () {
         var length = $('.chcktbl:checked').length;
-        if (length > 3) {
-            alert(length);
-            $('.chcktbl:not(:checked)').attr('disabled', true);
+        var max = $('.chcktbl').length;
+        if (length == max) {
+            $('#chckHead').prop('checked', true);
         }
         else {
-            $('.chcktbl:not(:checked)').attr('disabled', false);
+            $('#chckHead').prop('checked', false);
         }
     });
 
     $('#chckHead').click(function () {
         if (this.checked == false) {
-            $('.chcktbl:checked').attr('checked', false);
+            $('input.chcktbl:checked').prop('checked', false);
         }
         else {
-            $('.chcktbl:not(:checked)').attr('checked', true);
+            $('input.chcktbl:not(:checked)').prop('checked', true);
         }
-    });
-    $('#chckHead').click(function () {
     });
 
 </script>

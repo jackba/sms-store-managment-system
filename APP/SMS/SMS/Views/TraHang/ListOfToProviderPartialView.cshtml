@@ -1,4 +1,4 @@
-﻿@model SMS.Models.CustomerReturn
+﻿@model SMS.Models.List2ProviderModel
 @using PagedList.Mvc;
 
 <div>
@@ -11,12 +11,12 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.detailReturnList, currentPageIndex => Url.Action("ReturnPurchaseListPartialView",
+                    @Html.PagedListPager(Model.Detail, currentPageIndex => Url.Action("ListOfToProviderPartialView",
                         new
                         {
                             currentPageIndex,
-                            userId = ViewBag.UserId,
-                            userName = ViewBag.UserName,
+                            billId = ViewBag.BillId,
+                            billCode = ViewBag.BillCode,
                             customerId = ViewBag.CustomerId,
                             customerName = ViewBag.CustomerName,
                             fromDate = ViewBag.FromDate,
@@ -38,73 +38,78 @@
 
     <table width="100%" id="tblExport" name="tblExport">
         <tr style="width:100%">
-            <td class='inner colwidth head '> STT </td>
-            <td class='inner colwidth head '> Tên khách hàng </td>
-            <td class='inner colwidth head '> Ngày trả hàng </td>
-            <td class='innerLast colwidth head '>  Tên Nhân viên nhận hàng </td>
-            @if ((bool)Session["IsStoremanager"] || (bool)Session["IsAdmin"])
+            <td class='inner colwidth head '> Số phiếu trả </td>
+            <td class='inner colwidth head '> Nhà cung cấp </td>
+            <td class='innerLast colwidth head '>  Nhân viên lập phiếu </td>
+            <td class='innerLast colwidth head '>  Ghi chú </td>
+            @if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
             {
-                <td class='innerLast colwidth head '>  Nhập lại kho </td>
-                <td class='innerLast colwidth head '>  Trả hàng NCC </td>
+                <td class='innerLast colwidth head '>  Sửa </td>
+                <td class='innerLast colwidth head '>  Hủy </td>
             }
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
-            if (Model.detailReturnList != null && Model.detailReturnList.Count() >= 1)
+            if (Model.Detail != null && Model.Detail.Count() >= 1)
             {
-                ImportDate = (DateTime)Model.detailReturnList[0].NGAY_TRA;
+                ImportDate = (DateTime)Model.Detail[0].NGAY_LAP_PHIEU;
 
                 <tr>
                     <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
         }
-        @{
-            int i = 0;
-        }
-        @foreach (var dbHist in Model.detailReturnList)
+        @foreach (var dbHist in Model.Detail)
         {
-            i++;
-            if (ImportDate != (DateTime)dbHist.NGAY_TRA)
+            if (ImportDate != (DateTime)dbHist.NGAY_LAP_PHIEU)
             {
-                ImportDate = (DateTime)dbHist.NGAY_TRA;
+                ImportDate = (DateTime)dbHist.NGAY_LAP_PHIEU;
                 <tr>
                     <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    @i
+                    @dbHist.MA_PHIEU_TRA
                 </td>
                 <td class="inner colwidth">
-                    @dbHist.TEN_KHACH_HANG
+                    @dbHist.TEN_NHA_CUNG_CAP
                 </td>
                 <td class="inner colwidth">
-                    @DateTime.Parse(dbHist.NGAY_TRA.ToString()).ToString("dd/MM/yyyy")
+                    @dbHist.TEN_NGUOI_LAP_PHIEU
                 </td>
-                <td class="inner colwidth">
-                    @dbHist.TEN_NGUOI_DUNG
+                <td class="innerLast colwidth">
+                    <div style="width:100%" class="truncate">
+                        @dbHist.GHI_CHU
+                    </div>                    
                 </td>
                 <td class="innerLast colwidth">
                     @{
-            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+            if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
             {
-                <a href="@Url.Action("ImportRefund", "CustomerRefund", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
-                    <img width="16" height="16" alt="edit" src="~/Content/images/import.png"></img>
+                if (dbHist.MA_PHIEU_TRA == null)
+                {
+                     <a href="@Url.Action("EditReturn2Provider", "TraHang", new { id = @dbHist.MA_PHIEU_TRA })" class="button-module">
+                        <img width="16" height="16" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                    </a>
+                }
+               
+            }
+                    }
+                </td>
+
+                <td class="innerLast colwidth">
+                    @{
+            if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
+            {
+                <a href="@Url.Action("DeleteReturn2Provider", "TraHang", new { id = @dbHist.MA_PHIEU_TRA })" class="button-module">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }
                     }
                 </td>
-                <td class="innerLast colwidth">
-                    @{
-            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
-            {
-                <a href="@Url.Action("ReturnToProvider", "CustomerRefund", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
-                    <img width="16" height="16" alt="edit" src="~/Content/images/Chargeback.png"></img>
-                </a>
-            }
-                    }
-                </td>
+
+
             </tr>
         }
 
@@ -119,12 +124,12 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.detailReturnList, currentPageIndex => Url.Action("ReturnPurchaseListPartialView",
+                    @Html.PagedListPager(Model.Detail, currentPageIndex => Url.Action("ListOfToProviderPartialView",
                         new
                         {
                             currentPageIndex,
-                            userId = ViewBag.UserId,
-                            userName = ViewBag.UserName,
+                            billId = ViewBag.BillId,
+                            billCode = ViewBag.BillCode,
                             customerId = ViewBag.CustomerId,
                             customerName = ViewBag.CustomerName,
                             fromDate = ViewBag.FromDate,
