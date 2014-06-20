@@ -179,18 +179,21 @@
             return false;
         }
         
-        $('input.chcktbl:not(:checked)').each(function () {
-            var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-            var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
+        $('input.chcktbl').each(function () {
+            var flg = $('input.delFlg', $(this).parent().parent()).val();
+            if (flg != 1) {
+                var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
             
-            if (quantity == null || quantity == '' || quantity == 0) {
-                rval = 0;
-            }else{
-                if(untillQuantity < quantity){
-                    checkFlg = 1;
+                if (quantity == null || quantity == '' || quantity == 0) {
+                    rval = 0;
+                }else{
+                    if(untillQuantity < quantity){
+                        checkFlg = 1;
+                    }
                 }
+                row++;
             }
-            row++;
         });
 
         if(checkFlg == 1){

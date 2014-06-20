@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
 using SMS.App_Start;
+using System.Transactions;
 
 namespace SMS.Controllers
 {
@@ -14,11 +15,82 @@ namespace SMS.Controllers
     {
         //
         // GET: /Import/
+        public ActionResult ListOfImportBill()
+        {
+            return View();
+        }
+
+        public ActionResult ExportTransfer()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            TransferModel model = new TransferModel();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.ExportInfor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Units = units;
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult Import(ImportModel model)
         {
-            var detail = model.Detail;
-            return View();
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var infor = ctx.NHAP_KHO.Create();
+                    infor.MA_KHO = model.Infor.MA_KHO;
+                    infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
+                    infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
+                    infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
+                    infor.SO_HOA_DON = model.Infor.SO_HOA_DON;
+                    infor.CREATE_AT = DateTime.Now;
+                    infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.ACTIVE = "A";
+                    infor.GHI_CHU = model.Infor.GHI_CHU;
+                    infor.LY_DO_NHAP = 0; // nhập mua hàng
+                    ctx.NHAP_KHO.Add(infor);
+                    ctx.SaveChanges();
+
+                    CHI_TIET_NHAP_KHO importDetail;
+                    foreach (var detail in model.Detail)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
+                            importDetail.ACTIVE = "A";
+                            importDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            importDetail.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            importDetail.HE_SO = detail.HE_SO;
+                            importDetail.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            importDetail.MA_DON_VI = detail.MA_DON_VI;
+                            importDetail.MA_NHAP_KHO = infor.MA_NHAP_KHO;
+                            importDetail.CREATE_AT = DateTime.Now;
+                            importDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            importDetail.UPDATE_AT = DateTime.Now;
+                            importDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            importDetail.GIA_VON = detail.GIA_VON/detail.HE_SO;
+                            importDetail.DON_GIA_TEMP = detail.GIA_VON;
+                            ctx.CHI_TIET_NHAP_KHO.Add(importDetail);
+                            ctx.SaveChanges();
+                        }                        
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("Index", new { @inforMessage = "Nhận trả hàng thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                }
+            }
         }
 
         public ActionResult Import()

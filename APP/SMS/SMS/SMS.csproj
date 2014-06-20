@@ -144,6 +144,7 @@
     <Compile Include="App_Start\CustomActionFilter.cs" />
     <Compile Include="App_Start\DateTimeModelBinder .cs" />
     <Compile Include="App_Start\DecimalModelBinder.cs" />
+    <Compile Include="App_Start\DoubleModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
     <Compile Include="Controllers\CustomerRefundController.cs" />
@@ -455,6 +456,8 @@
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\SaleExportList.png" />
+    <Content Include="Content\images\widthLogo.jpg" />
+    <Content Include="Content\Export.css" />
     <Content Include="Content\Import.css" />
     <Content Include="Content\LapHoaDon.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
@@ -608,6 +611,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\widthLogo.jpg" />
     <Content Include="Models\SmsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmsModel.edmx</DependentUpon>
@@ -745,6 +749,8 @@
     <Content Include="Views\TraHang\ListOfToProvider.cshtml" />
     <Content Include="Views\TraHang\ListOfToProviderPartialView.cshtml" />
     <Content Include="Views\Import\Import.cshtml" />
+    <Content Include="Views\Import\ListOfImportBill.cshtml" />
+    <Content Include="Views\Import\ExportTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

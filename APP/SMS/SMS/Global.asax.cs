@@ -18,6 +18,8 @@ namespace SMS
         {
             AreaRegistration.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
+            ModelBinders.Binders.Add(typeof(double), new DoubleModelBinder());
+            ModelBinders.Binders.Add(typeof(double?), new NullableDoubleModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new NullableDateTimeBinder());
             WebApiConfig.Register(GlobalConfiguration.Configuration);
