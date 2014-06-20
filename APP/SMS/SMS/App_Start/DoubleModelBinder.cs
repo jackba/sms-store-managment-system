@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SMS.App_Start
 {
-    public class DecimalModelBinder : IModelBinder  
+    public class DoubleModelBinder : IModelBinder
     {
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -17,7 +20,7 @@ namespace SMS.App_Start
             object actualValue = null;
             try
             {
-                actualValue = Convert.ToDecimal(
+                actualValue = Convert.ToDouble(
                     valueResult.AttemptedValue.Replace(",", ""),
                     CultureInfo.CurrentCulture
                 );
@@ -31,8 +34,7 @@ namespace SMS.App_Start
             return actualValue;
         }
     }
-
-    public class NullableDecimalModelBinder : IModelBinder
+    public class NullableDoubleModelBinder : IModelBinder
     {
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -41,13 +43,13 @@ namespace SMS.App_Start
             {
                 if (string.IsNullOrEmpty(valueResult.AttemptedValue))
                 {
-                    return 0m;
+                    return 0;
                 }
                 var modelState = new ModelState { Value = valueResult };
                 object actualValue = null;
                 try
                 {
-                    actualValue = Convert.ToDecimal(
+                    actualValue = Convert.ToDouble(
                         valueResult.AttemptedValue.Replace(",", ""),
                         CultureInfo.CurrentCulture
                     );
@@ -59,13 +61,13 @@ namespace SMS.App_Start
 
                 bindingContext.ModelState.Add(bindingContext.ModelName, modelState);
                 return actualValue;
-            }else
+            }
+            else
             {
-                return 0m;
+                return 0;
             }
             
         }
+
     }
-
 }
-
