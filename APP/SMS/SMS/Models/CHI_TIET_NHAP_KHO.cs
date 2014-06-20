@@ -36,5 +36,6 @@ namespace SMS.Models
         public string CODE { get; set; }
         public double THANH_TIEN { get; set; }
         public int? DEL_FLG { get; set; }
+        public int? HE_SO { get; set; }
     }
 }
