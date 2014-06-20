@@ -22,4 +22,14 @@ namespace SMS.Models
         public List<NHA_CUNG_CAP> Providers { get; set; }
         public List<CHI_TIET_NHAP_KHO> Detail { get; set; }
     }
+
+    public class TransferModel
+    {
+        public NHAP_KHO ImportInfor { get; set; }
+        public List<KHO> Stores { get; set; }
+        public XUAT_KHO ExportInfor { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+        public List<CHI_TIET_XUAT_KHO> ExportDetail { get; set; }
+        public List<CHI_TIET_NHAP_KHO> ImportDetail { get; set; }
+    }
 }
