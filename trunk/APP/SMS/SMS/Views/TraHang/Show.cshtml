@@ -237,17 +237,21 @@
     function returnSubmit() {
         var row = 0;
         var rval = 1;
-        $('input.chcktbl:not(:checked)').each(function () {
-            var quantity = $('input.quantity', $(this).parent().parent()).val();
-            var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
-            if (quantity == null || quantity == '' || quantity == 0) {
-                rval = 0;
-            } else {
-                if (untillQuantity < quantity) {
-                    checkFlg = 1;
+        var checkFlg = 0;
+        $('input.chcktbl').each(function () {
+            var flg = $('input.delFlg', $(this).parent().parent()).val();
+            if (flg != 1) {
+                var quantity = $('input.quantity', $(this).parent().parent()).val();
+                var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
+                if (quantity == null || quantity == '' || quantity == 0) {
+                    rval = 0;
+                } else {
+                    if (untillQuantity < quantity) {
+                        checkFlg = 1;
+                    }
                 }
+                row++;
             }
-            row++;
         });
         if (checkFlg == 1) {
             alert("Số lượng trả không chính xác, có thể nhiều hơn số lượng đã mua. Vui lòng kiểm tra lại.");
