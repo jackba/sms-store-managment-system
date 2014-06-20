@@ -38,6 +38,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MA_DON_VI" Type="int" />
           <Property Name="SO_LUONG_TEMP" Type="float" />
+          <Property Name="DON_GIA_TEMP" Type="float" />
         </EntityType>
         <EntityType Name="CHI_TIET_TRA_HANG">
           <Key>
@@ -2603,6 +2604,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__CHI_TIET___UPDAT__7A672E12" FromRole="CHI_TIET_NHAP_KHO" ToRole="NGUOI_DUNG" />
           <Property Name="MA_DON_VI" Type="Int32" />
           <Property Name="SO_LUONG_TEMP" Type="Double" />
+          <Property Name="DON_GIA_TEMP" Type="Double" />
         </EntityType>
         <EntityType Name="CHI_TIET_TRA_HANG">
           <Key>
@@ -5454,6 +5456,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <EntitySetMapping Name="CHI_TIET_NHAP_KHO">
             <EntityTypeMapping TypeName="SmsModel.CHI_TIET_NHAP_KHO">
               <MappingFragment StoreEntitySet="CHI_TIET_NHAP_KHO">
+                <ScalarProperty Name="DON_GIA_TEMP" ColumnName="DON_GIA_TEMP" />
                 <ScalarProperty Name="SO_LUONG_TEMP" ColumnName="SO_LUONG_TEMP" />
                 <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
                 <ScalarProperty Name="MA_NHAP_KHO" ColumnName="MA_NHAP_KHO" />

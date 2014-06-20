@@ -26,6 +26,7 @@ namespace SMS.Models
         public int ID { get; set; }
         public Nullable<int> MA_DON_VI { get; set; }
         public Nullable<double> SO_LUONG_TEMP { get; set; }
+        public Nullable<double> DON_GIA_TEMP { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NHAP_KHO NHAP_KHO { get; set; }
@@ -36,6 +37,6 @@ namespace SMS.Models
         public string CODE { get; set; }
         public double THANH_TIEN { get; set; }
         public int? DEL_FLG { get; set; }
-        public int? HE_SO { get; set; }
+        public double? HE_SO { get; set; }
     }
 }
