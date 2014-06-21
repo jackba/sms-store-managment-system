@@ -126,7 +126,7 @@ table.tableContentScroll tr:nth-child(odd) {
 }
 /*header s*/
 .colProductNmHeader{
-    width: 210px;
+    width: 184px;
 }
 
 .colStoreHeader{
@@ -147,7 +147,7 @@ table.tableContentScroll tr:nth-child(odd) {
 /*header e*/
 /*content s*/
 .colProductNm {
-    width: 210px;
+    width: 184px;
     padding-left: 2px !important;
 }
 
