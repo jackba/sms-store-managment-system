@@ -30,28 +30,41 @@
             yearRange: "-60:+0"
         });
 
+        $('#TenKhachHang').focus();
+
+        setDisableControl('updateRecord', true);
+        setDisableControl('clearUpdateRecord', true);
 
         $("#addRecord").click(function () {
             addRecord();
         });
 
-        $("#saveBill").click(function () {
-            var msgErr = checkInput(true);
-            if ('' == msgErr) {
-                saveListRowNum();
-                return true;
-            } else {
-                showMsgErr(msgErr,true);
-                return false;
-            }
+        $("#updateRecord").click(function () {
+            updateRecord();
         });
 
+        $("#clearUpdateRecord").click(function () {
+            clearUpdateRecord();
+        });
 
-        $("#createNewBill").click(function () {
+        $("#saveBill_top").click(function () {
+            return btnSaveClick();
+        });
+        $("#saveBill_bottom").click(function () {
+            return btnSaveClick();
+        });
+
+        $("#createNewBill_top").click(function () {
+            createNewBill();
+        });
+        $("#createNewBill_bottom").click(function () {
             createNewBill();
         });
 
-        $("#back").click(function () {
+        $("#back_top").click(function () {
+            confirmBack();
+        });
+        $("#back_bottom").click(function () {
             confirmBack();
         });
 
@@ -65,8 +78,8 @@
         $('#typeStore').html(createStore());
         //$('#typeStore').val($('#MyStore').val());
         /*disabled export excel*/
-        $('#saveBill').attr("disabled", "disabled");
-        $('#saveBill').css("background-color", "#ECECEC");
+        setDisableControl('saveBill_top', true);
+        setDisableControl('saveBill_bottom', true);
 
         /**AUTOCOMPLETE**/
         // Customer name
@@ -257,7 +270,28 @@
         });
         //format numberic end
     });
-
+    function btnSaveClick() {
+        var msgErr = checkInputFields(true);
+        if ('' == msgErr) {
+            saveListRowNum();
+            return true;
+        } else {
+            showMsgErr(msgErr, true);
+            return false;
+        }
+    }
+    function setDisableControl(idControl, isDisable) {
+        var control = $('#' + idControl);
+        if (control != null) {
+            if (isDisable == true) {
+                control.attr("disabled", "disabled");
+                control.css("background-color", "#ECECEC");
+            } else {
+                control.removeAttr("disabled", "disabled");
+                control.css("background-color", "");
+            }
+        }
+    }
     function hideRelationProduct(){
         // hide relation product
         $('#relationProduct').removeClass('relationProductShow');
@@ -518,18 +552,17 @@
     function callback(valueReturn) {
         if (valueReturn) {
             $("table.tableContentScroll tr").remove();
-            $('#saveBill').attr("disabled", "disabled");
-            $('#saveBill').css("background-color", "#ECECEC");
+            setDisableControl('saveBill_top', true);
+            setDisableControl('saveBill_bottom', true);
         } else {
             $('input:radio[value="' + $('#currTypeCustomer').val() + '"]').prop('checked', true);
         }
     }
     function addRecord() {
- 
 
         $('#contentMsgErr').empty();
         $('#divErr').hide();
-        var msgErr = checkInput(false);
+        var msgErr = checkInputFields(false);
         if ('' == msgErr) {
             if ($('#tableContent input:hidden[name="' + $('#tableSearch #MaSanPham').val() + '"]').length > 0) {
                 var title = "Thông tin"
@@ -538,15 +571,16 @@
                 $('#addRecord').click(fnOpenNormalDialog(title, content, action));
             } else {
                 prependNewRowToTable();
-                resetFieldAfterAdding();
-                $('#saveBill').removeAttr("disabled", "disabled");
-                $('#saveBill').css("background-color", "");
+                clearInputSP();
+                setDisableControl('saveBill_top', false);
+                setDisableControl('saveBill_bottom', false);
+
                 CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
 
                 $('#hidUnitRootName').val('');
                 $('#suggestUnit').html('');
                 $('#suggestUnit').hide();
-                $('#TenSanPham').focus();
+                $('#CodeSanPham').focus();
             }
         } else {
             showMsgErr(msgErr,true);
@@ -567,28 +601,28 @@
         addCommaNumberic('#hidTotalAllMoney');
         $('#totalAll').html($('#hidTotalAllMoney').val());
     }
-    function checkInput(isSubmit) {
+    function checkInputFields(isSubmit) {
         var msgErr = '';
         var empty = '';
-        if (empty == $('#TenKhachHang').val()) {
-            msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
-        }
-        if (empty == $('#NgayBan').val()) {
-            msgErr += " + Ngày bán <br/>";
-        }
-        if (empty == $('#NgayGiao').val()) {
-            msgErr += " + Ngày giao <br/>";
-        }
-        if (empty != $('#NgayBan').val() && empty != $('#NgayGiao').val()) {
-            if (compareDate($('#NgayBan').val(), $('#NgayGiao').val(), 0) > 0) {
-                msgErr += " + Ngày bán hàng lớn hơn ngày giao hàng. <br/>";
+        if (isSubmit == true) {
+            if (empty == $('#TenKhachHang').val()) {
+                msgErr += " + Tên khách hàng không tồn tại hoặc chưa nhập. <br/>";
             }
-        }
-        if (empty == $('#DiaChi').val()) {
-            msgErr += " + Địa chỉ <br/>";
-        }
-
-        if (isSubmit == false) {
+            if (empty == $('#NgayBan').val()) {
+                msgErr += " + Ngày bán <br/>";
+            }
+            if (empty == $('#NgayGiao').val()) {
+                msgErr += " + Ngày giao <br/>";
+            }
+            if (empty != $('#NgayBan').val() && empty != $('#NgayGiao').val()) {
+                if (compareDate($('#NgayBan').val(), $('#NgayGiao').val(), 0) > 0) {
+                    msgErr += " + Ngày bán hàng lớn hơn ngày giao hàng. <br/>";
+                }
+            }
+            if (empty == $('#DiaChi').val()) {
+                msgErr += " + Địa chỉ <br/>";
+            }
+        } else {
             if (empty == $('#CodeSanPham').val() || empty == $('#MaSanPham').val() || empty == $('#TenSanPham').val()) {
                 msgErr += " + Sản phẩm không tồn tại hoặc chưa nhập. <br/>";
             }
@@ -628,18 +662,8 @@
         }
     }
 
-    function resetFieldAfterAdding() {
-        $('#tableSearch #CodeSanPham').val('');
-        $('#tableSearch #TenSanPham').val('');
-        $('#tableSearch #MaSanPham').val('');
-        $('#tableSearch #GiaBan').val('');
-        $('#tableSearch #ChietKhau').val('');
-        $('#tableSearch #GiaThuc').val('');
-        $('#tableSearch #typeDonViTinh').empty();
-        $('#tableSearch #SoLuong').val('1');
-
-    }
-    function prependNewRowToTable() {
+    function prependNewRowToTable(unitRootName) {
+        var CodeSP = $('#tableSearch #CodeSanPham').val();
         var MaSP = $('#tableSearch #MaSanPham').val();
         var TenSP = $('#tableSearch #TenSanPham').val();
         var ChietKhau = $('#tableSearch #ChietKhau').val();
@@ -652,16 +676,21 @@
 
         var newRow = '';
         newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
-        newRow += '<td style="width:22px;"> ';
+        newRow += '<td style="width:48px;"> ';
         newRow += '  <div class="colDelete">';
         newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
+        //newRow += '   </div>';
+        //newRow += '  <div>';
+        newRow += '  <input type="radio" id="Radio_' + rowNum + '" style=" width: 20px!important;" name="groupBill" onchange="updateInputFields(\'' + rowNum + '\');"> ';
         newRow += '   </div>';
+        newRow += '  ';
         newRow += ' </td> ';
         newRow += ' <td  class="colProductNm textLeft"> ';
         newRow += ' <div  class="colProductNm tooltip truncate">';
         newRow += TenSP;
         newRow += '  <span>' + TenSP + '</span>';
         newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
+        newRow += '  <input name="CodeSanPham_' + rowNum + '" type="hidden" value="' + CodeSP + '" />';
         newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
         newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
         newRow += '   </div>';
@@ -672,9 +701,10 @@
         newRow += ' </td> ';
         newRow += '  <td  class="colPrice textRight"> ';
         newRow += ' <div  class="colPrice tooltip truncate">';
-        newRow +=   $('#tableSearch #GiaThuc').val();
-        newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
+        newRow += $('#tableSearch #GiaThuc').val();
+        newRow += '  <input name="GiaBan_' + rowNum + '" type="hidden" value="' + GiaBan + '" />';
         newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + ChietKhau + '" />';
+        newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + $('#tableSearch #GiaThuc').val() + '" />';
         newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
         newRow += '   </div>';
         newRow += ' </td>  ';
@@ -685,7 +715,12 @@
         newRow += ' </td> ';
 
         newRow += '  <td class="colUnit textCenter"> ';
-        newRow += $('#hidUnitRootName').val(); /*$('#typeDonViTinh :selected').text()*/
+        if (unitRootName != null) {
+            newRow += unitRootName;
+        } else {
+            newRow += $('#hidUnitRootName').val(); /*$('#typeDonViTinh :selected').text()*/
+        }
+        newRow += '  <input name="UnitRoot_' + rowNum + '" type="hidden" value="' + $('#hidUnitRootName').val() + '" />';
         newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
         newRow += ' </td> ';
 
@@ -697,6 +732,96 @@
 
         newRow += '  </tr> ';
         $('#tableContent').prepend(newRow);
+
+    }
+    var unitRootName = null;
+    var rowNumCurrent = null;
+    function updateInputFields(rowNum) {
+        setDisableControl('addRecord', true);
+        setDisableControl('updateRecord', false);
+        setDisableControl('clearUpdateRecord', false);
+        //update field record from grid to input fields.
+        $('#CodeSanPham').val($('#tableContent input:hidden[name="CodeSanPham_' + rowNum + '"]').val());
+        $('#MaSanPham').val($('#tableContent input:hidden[name="MaSanPham_' + rowNum + '"]').val());
+        $('#TenSanPham').val($('#tableContent input:hidden[name="TenSanPham_' + rowNum + '"]').val());
+        $('#GiaBan').val($('#tableContent input:hidden[name="GiaBan_' + rowNum + '"]').val());
+        $('#ChietKhau').val($('#tableContent input:hidden[name="ChietKhau_' + rowNum + '"]').val());
+        $('#GiaThuc').val($('#tableContent input:hidden[name="GiaThuc_' + rowNum + '"]').val());
+        createDonViTinh();
+        $('#typeDonViTinh').val($('#tableContent input:hidden[name="MaDonViTinh_' + rowNum + '"]').val());
+        unitRootName = $('#tableContent input:hidden[name="UnitRoot_' + rowNum + '"]').val()
+        //$('#typeDonViTinh :selected').text()
+        $('#SoLuong').val($('#tableContent input:hidden[name="SoLuong_' + rowNum + '"]').val());
+        $('#typeStore').val($('#tableContent input:hidden[name="MaKho_' + rowNum + '"]').val());
+        // readonly fields key.
+        $('#CodeSanPham').attr("readonly", true);
+        $('#CodeSanPham').css("background", "rgb(219,219,219)");
+        $('#TenSanPham').attr("readonly", true);
+        $('#TenSanPham').css("background", "rgb(219,219,219)");
+
+        $('#GiaBan').select();
+
+        rowNumCurrent = rowNum;
+    }
+    function updateRecord() {
+        $('#contentMsgErr').empty();
+        $('#divErr').hide();
+        var msgErr = checkInputFields(false);
+        if ('' == msgErr) {
+            // remove old record
+            if (rowNumCurrent != null) {
+                deleteRow(rowNumCurrent);
+            }
+            // add again
+            prependNewRowToTable(unitRootName);
+            clearInputSP();
+            setDisableControl('saveBill_top', false);
+            setDisableControl('saveBill_bottom', false);
+
+            CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
+
+            $('#hidUnitRootName').val('');
+            $('#suggestUnit').html('');
+            $('#suggestUnit').hide();
+            $('#CodeSanPham').focus();
+            clearUpdateRecord();
+            // setTimeout highlight
+
+           
+        } else {
+            showMsgErr(msgErr, true);
+        }
+        
+    }
+    function clearUpdateRecord() {
+        setDisableControl('addRecord', false);
+        setDisableControl('updateRecord', true);
+        setDisableControl('clearUpdateRecord', true);
+
+        clearInputSP();
+        $('#CodeSanPham').attr("readonly", false);
+        $('#CodeSanPham').css("background", "white");
+        $('#TenSanPham').attr("readonly", false);
+        $('#TenSanPham').css("background", "white");
+
+        $('#hidRadioEdit').click();
+        
+
+        rowNumCurrent = null;
+        unitRootName = null;
+        $('#CodeSanPham').focus();
+    }
+    function clearInputSP() {
+        $('#CodeSanPham').val('');
+        $('#TenSanPham').val('');
+        $('#MaSanPham').val('');
+        $('#GiaBan').val('');
+        $('#ChietKhau').val('');
+        $('#GiaThuc').val('');
+
+        $('#typeDonViTinh').empty();
+        $('#SoLuong').val('1');
+        $('#typeStore option:eq(0)').attr('selected', 'selected');
 
     }
     function CalcFactorOfProduct() {
@@ -827,12 +952,11 @@
 
         $('#' + rowId).remove();
         if ($("table.tableContentScroll tr").length == 0) {
-            $('#saveBill').attr("disabled", "disabled");
-            $('#saveBill').css("background-color", "#ECECEC");
+            setDisableControl('saveBill_top', true);
+            setDisableControl('saveBill_bottom', true);
         } else {
-            $('#saveBill').removeAttr("disabled", "disabled");
-            $('#saveBill').css("background-color", "");
-
+            setDisableControl('saveBill_top', false);
+            setDisableControl('saveBill_bottom', false);
         }
     }
     function saveListRowNum() {
@@ -880,29 +1004,31 @@
 
         //reset content prev
         $("table.tableContentScroll tr").remove();
-        $('#saveBill').attr("disabled", "disabled");
-        $('#saveBill').css("background-color", "#ECECEC");
+        setDisableControl('saveBill_top', true);
+        setDisableControl('saveBill_bottom', true);
         //reset field input prev
+        // KHACH HANG
         $('#TenKhachHang').val('');
         $('#MaKhachHang').val('');
         $('#kindCustomer').val('');
 
         $('#typeCustomers').val('3');
 
+        $('#NgayBan').datepicker('setDate', 'today');
+        $('#NgayGiao').datepicker('setDate', 'today + 3');
+        $('#DiaChi').val('');
+        // SAN PHAM
+        $('#CodeSanPham').val('');
         $('#TenSanPham').val('');
         $('#MaSanPham').val('');
         $('#GiaBan').val('');
         $('#ChietKhau').val('');
         $('#GiaThuc').val('');
 
-        $('#typeStore option:eq(0)').attr('selected', 'selected');
         $('#typeDonViTinh').empty();
         $('#SoLuong').val('');
+        $('#typeStore option:eq(0)').attr('selected', 'selected');
 
-        $('#NgayBan').datepicker('setDate', 'today');
-        $('#NgayGiao').datepicker('setDate', 'today + 3');
-
-        $('#DiaChi').val('');
         //hidden field
         $('#hidFactorValue').val('1');
         $('#hidTotalRowAdded').val('1');
@@ -964,11 +1090,15 @@
        
         $('#divErr').hide();
         $('#divInfo').show();
+        setDisableControl('saveBill_top', true);
+        setDisableControl('saveBill_bottom', true);
     }
     function saveBillFailure() {
         $('#divInfo').empty();
         $('#divInfo').hide();
         $('#divErr').show();
+        setDisableControl('saveBill_top', false);
+        setDisableControl('saveBill_bottom', false);
     }
 
     function disableEnterKey(e) {
@@ -1129,7 +1259,7 @@
                             <br />
                             <div class="colum3">
                                 <input type="text" id="GiaThuc" maxlength="10" onkeypress="return disableEnterKey(event);"
-                                       style=" text-align:right;background: rgb(252, 252, 252);" readonly />
+                                       style=" text-align:right;background: rgb(219, 219, 219);" readonly />
                             </div>
                         </td>
                        
@@ -1173,12 +1303,14 @@
                 <hr class="mydashed" />
                 <div class="myAction">
                     <input type="button" id="addRecord" value="Thêm sản phẩm" />
+                    <input type="button" id="updateRecord" value="Cập nhật " />
+                    <input type="button" id="clearUpdateRecord" value="Hủy cập nhật" />
                     <div style="float: right; margin-right: -8px;">
                         @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
-                        <input type="submit" id="saveBill" style="width: 120px" value="Lưu hóa đơn">
-                        <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới">
-                        <input type="button" id="back" style="width:100px" value="Trở về">
-                        <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
+                        <input type="submit" id="saveBill_top" style="width: 120px" value="Lưu hóa đơn">
+                        <input type="button" id="createNewBill_top" style="width: 100px" value="Tạo mới">
+                        <input type="button" id="back_top" style="width:100px" value="Trở về">
+                        
                     </div>
                 </div>
             </div>
@@ -1262,6 +1394,7 @@
             <input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
             <input type="hidden" id="ListRowNum" name="ListRowNum" value="" />
             <input type="hidden" id="hidUnitRootName" value="">
+             <input type="radio" id="hidRadioEdit" style=" display:none" name="groupBill" /> ';
             <!--hidden field end-->
 
         </div>
@@ -1271,7 +1404,7 @@
             <table class="tableHeader">
                 <tbody>
                     <tr>
-                        <th style="width: 25px; padding: 0.5em 0em 0em 0em !important; ">
+                        <th style="width: 54px; padding: 0.5em 0em 0em 0em !important; ">
                             <div class="colDelete">
                                 <img src="/Content/images/delete-20.png" style="display:none;">
                             </div>
@@ -1333,9 +1466,9 @@
         <hr />
         <div style="float: right; margin-right: -8px;">
         @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
-        <input type="submit" id="saveBill" style="width: 120px" value="Lưu hóa đơn">
-        <input type="button" id="createNewBill" style="width: 100px" value="Tạo mới">
-        <input type="button" id="back" style="width:100px" value="Trở về">
+        <input type="submit" id="saveBill_bottom" style="width: 120px" value="Lưu hóa đơn">
+            <input type="button" id="createNewBill_bottom" style="width: 100px" value="Tạo mới">
+            <input type="button" id="back_bottom" style="width:100px" value="Trở về">
         <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
          </div>
 

@@ -110,7 +110,7 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             ObjectResult<SP_GET_DON_VI_TINH_Result> resultDonViTinh = ctx.SP_GET_DON_VI_TINH(int.Parse(maSP));
-            var result = Json(resultDonViTinh.Take(10).ToList());
+            var result = Json(resultDonViTinh.Take(100).ToList());
             return result;
         }
 
