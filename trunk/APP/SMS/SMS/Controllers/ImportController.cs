@@ -80,6 +80,7 @@ namespace SMS.Controllers
                     exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
                     exInfor.GHI_CHU = infor.GHI_CHU;
                     exInfor.NGAY_XUAT = infor.NGAY_XUAT;
+                    exInfor.LY_DO_XUAT = 3; // xuất chuyển kho
                     exInfor.CREATE_AT = DateTime.Now;
                     exInfor.UPDATE_AT = DateTime.Now;
                     exInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
