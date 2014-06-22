@@ -751,6 +751,8 @@
     <Content Include="Views\Import\Import.cshtml" />
     <Content Include="Views\Import\ListOfImportBill.cshtml" />
     <Content Include="Views\Import\ExportTransfer.cshtml" />
+    <Content Include="Views\Import\ListTransfer.cshtml" />
+    <Content Include="Views\Import\ListExportTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

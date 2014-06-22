@@ -235,6 +235,11 @@ namespace SMS.Controllers
                 db.SaveChanges();
                 return Redirect("Index");
             }
+            //Ma Kho
+            BindKho();
+
+            //Ma Nhom
+            BindNhomNguoiDung();
             return View();
         }
 
