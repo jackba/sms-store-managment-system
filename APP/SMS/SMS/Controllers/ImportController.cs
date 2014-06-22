@@ -7,12 +7,45 @@ using SMS.Models;
 using PagedList;
 using SMS.App_Start;
 using System.Transactions;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace SMS.Controllers
 {
     [CustomActionFilter]
     public class ImportController : Controller
     {
+
+        [HttpPost]
+        public JsonResult getInventory(string storeId, string productId)
+        {
+            var ctx = new SmsContext();
+            var StoreIdParam = new SqlParameter
+            {
+                ParameterName = "STORE_ID",
+                Value = Convert.ToInt32(storeId)
+            };
+
+            var ProductIdParam = new SqlParameter
+            {
+                ParameterName = "PRODUC_ID",
+                Value = Convert.ToInt32(productId)
+            };
+
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VAL",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+
+            var tonkho = ctx.Database.SqlQuery<Object>("exec SP_GET_TON_KHO_BY_STORE_ID_AND_PRODUCT_ID @STORE_ID, @PRODUC_ID, @RETURN_VAL OUT ",
+                StoreIdParam, ProductIdParam, returnValue).ToList<Object>().Take(SystemConstant.MAX_ROWS);
+            var rv = returnValue.Value == DBNull.Value? 0: Convert.ToDouble(returnValue.Value);
+            var result = Json(rv);
+            return result;
+        }
+
         //
         // GET: /Import/
         public ActionResult ListOfImportBill()
@@ -20,6 +53,82 @@ namespace SMS.Controllers
             return View();
         }
 
+        public ActionResult ListExportTransfer()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ExportTransfer(TransferModel model)
+        {
+            var ctx = new SmsContext();
+            var infor = model.ExportInfor;
+            var details = model.ExportDetail;
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var exInfor = ctx.XUAT_KHO.Create();
+                    if (infor.SAVE_FLG == 1)
+                    {
+                        exInfor.ACTIVE = "W"; // waiting
+                    }else
+                    {
+                        exInfor.ACTIVE = "A"; 
+                    }
+                    exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
+                    exInfor.GHI_CHU = infor.GHI_CHU;
+                    exInfor.NGAY_XUAT = infor.NGAY_XUAT;
+                    exInfor.CREATE_AT = DateTime.Now;
+                    exInfor.UPDATE_AT = DateTime.Now;
+                    exInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    exInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    exInfor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
+                    ctx.XUAT_KHO.Add(exInfor);
+                    ctx.SaveChanges();
+
+                    CHI_TIET_XUAT_KHO ct;
+
+                    foreach (var detail in details)
+                    {
+                        if(detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.CHI_TIET_XUAT_KHO.Create();
+                            if(infor.SAVE_FLG == 1)
+                            {
+                                ct.ACTIVE = "W";
+                            }else
+                            {
+                                ct.ACTIVE = "A";
+                            }
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.MA_XUAT_KHO = exInfor.MA_XUAT_KHO;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            ct.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            ct.GIA_XUAT = 0;
+                            ctx.CHI_TIET_XUAT_KHO.Add(ct);
+                            ctx.SaveChanges();
+
+                        }
+                        
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ListExportTransfer", new { @inforMessage = "Lưu thành công" });
+                }
+                catch (Exception ex)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
+                }
+            }
+            return View();
+        }
         public ActionResult ExportTransfer()
         {
             var ctx = new SmsContext();

@@ -93,9 +93,10 @@
     </table>
     <hr />
     <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
-    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" id="rowIndex" value="0" />
+    @Html.HiddenFor(u => u.ExportInfor.SAVE_FLG, new { id = "saveFlg"})
     <div style="clear:both"></div>
     <table id="detailTable" name="detailTable" width="100%">
         <thead>
@@ -145,42 +146,135 @@
         </tfoot>
     </table>
     <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
-     <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return returnSubmit()" />
+     <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <script>
-        function returnSubmit() {
-            var row = 0;
-            var rval = 1;
-            var pval = 1;
-            var ppval = 1;
-            var checkFlg = 0;
-            if ($("#importDate").val() == null || $("#importDate").val().trim() == "") {
-                alert("Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.");
+
+        function checkEnough(storeId, ProductId, quantity, convertor) {
+            if (storeId != null && ProductId != null && quantity != null && convertor != null) {
+                $.ajax({
+                    url: "/Import/getInventory",
+                    data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var inventorNumber = data;
+                        if (data < quantity * convertor) {
+                            return false;
+                        } else {
+                            return true;
+                        };
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+
+            }
+        }
+
+        function saveAndExport() {
+            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
                 return false;
             }
-            if ($("#providerId option:selected").val() == null || $("#providerId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn nhà cung cấp");
+            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho xuất");
                 return false;
             }
-            if ($("#storeId option:selected").val() == null || $("#storeId option:selected").val().trim() == "") {
+            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
                 alert("Vui lòng chọn kho nhập");
                 return false;
             }
+            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
+                return false;
+            }
+            
+            var row = 0;
+            var rval = 1;
+            var ppval = 1;
+            var checkFlg = 0;
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
                 if (flg != 1) {
                     var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    quantity = parseFloat(quantity);
+                    convertor = parseFloat(convertor);
+                    if (quantity == null || quantity == '' || quantity == 0) {
+                        rval = 0;
+                    } 
+                    if (productId == null || productId == '' || productId == 0) {
+                        ppval = 0;
+                    } else {
+                        if (!checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor)) {
+                            checkFlg = 1;
+                        }
+                    }
+                    row++;
+                }
+            });
+            
+            if (ppval == 0) {
+                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            if (row == 0) {
+                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            else if (rval == 0) {
+                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
+                return false;
+            } 
+            if (checkFlg == 1) {
+                var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
+                if (r == true) {
+                    $('#saveFlg').val(1);
+                    $('#index').submit();
+                }
+                else {
+                    return false;
+                }
+            }
+            $('#index').submit();
+        }
+
+
+
+        function returnSubmit() {
+            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
+                return false;
+            }
+            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho xuất");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho nhập");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
+                return false;
+            }
+            var row = 0;
+            var rval = 1;
+            var ppval = 1;
+            $('input.chcktbl').each(function () {
+                var flg = $('input.delFlg', $(this).parent().parent()).val();
+                if (flg != 1) {
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    quantity = parseFloat(quantity);
+                    convertor = parseFloat(convertor);
                     if (quantity == null || quantity == '' || quantity == 0) {
                         rval = 0;
                     }
-                    if (price == null || price == '' || price == 0) {
-                        pval = 0;
-                    }
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;
-                    }
+                    } 
                     row++;
                 }
             });
@@ -189,43 +283,41 @@
                 alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
                 return false;
             }
-
-            if (pval == 0) {
-                alert("Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.");
-                return false;
-            }
-
             if (row == 0) {
                 alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
                 return false;
             }
             else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.");
+                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
                 return false;
-            } else {
-                $('#index').submit();
             }
+            $('#saveFlg').val(1);
+            $('#index').submit();
         };
 
-        $('.chcktbl').click(function () {
-            var length = $('.chcktbl:checked').length;
-            var max = $('.chcktbl').length;
-            if (length == max) {
-                $('#chckHead').prop('checked', true);
-            }
-            else {
-                $('#chckHead').prop('checked', false);
-            }
-        });
+        function tableCheck() {
+            $('.chcktbl').click(function () {
+                var length = $('.chcktbl:checked').length;
+                var max = $('.chcktbl').length;
+                if (length == max) {
+                    $('#chckHead').prop('checked', true);
+                }
+                else {
+                    $('#chckHead').prop('checked', false);
+                }
+            });
+        }
 
-        $('#chckHead').click(function () {
-            if (this.checked == false) {
-                $('input.chcktbl:checked').prop('checked', false);
-            }
-            else {
-                $('input.chcktbl:not(:checked)').prop('checked', true);
-            }
-        });
+        function headerCheck() {
+            $('#chckHead').click(function () {
+                if (this.checked == false) {
+                    $('input.chcktbl:checked').prop('checked', false);
+                }
+                else {
+                    $('input.chcktbl:not(:checked)').prop('checked', true);
+                }
+            });
+        }
 
         function deleteCheckedRow() {
             var rows = 0;
@@ -343,6 +435,8 @@
             }
         }
 
+
+        
         function unitOnchange() {
             $("select.unit").change(function (event) {
                 var $this = $(this);
@@ -429,25 +523,6 @@
 
         function quantityKeyPress() {
             $('input.quantity').keyup(function (event) {
-                var $this = $(this);
-                var parent = $this.parent().parent();
-                var price = $('input.price', parent).val().replace(/,/gi, "");
-                var tt = $this.val().replace(/,/gi, "") * price;
-
-                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-                var arParts = String(tt).split(DecimalSeparator);
-                var intPart = arParts[0];
-                var decPart = (arParts.length > 1 ? arParts[1] : '');
-                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                if (decPart.length > 2) {
-                    decPart = (decPart + '00').substr(0, 2);
-                }
-                if (arParts.length > 1) {
-                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
-                } else {
-                    $('td input.total', parent).val(num2);
-                }
                 getAllTotal();
             });
         }
@@ -553,7 +628,7 @@
         function getAllTotal() {
             var AllTotal = 0;
             var total = 0;
-            $('td input.total').each(function () {
+            $('td input.quantity').each(function () {
                 $this = $(this);
                 $parent = $this.parent().parent();
                 if ($('input.delFlg', $parent).val() != 1) {
@@ -586,8 +661,9 @@
             productAutocomplete();
             productCodeAutocomplete();
             quantityKeyPress();
-            priceKeyPress();
             unitOnchange();
+            tableCheck();
+            headerCheck();
         });
 
 
@@ -619,8 +695,9 @@
             productCodeAutocomplete();
             getNumberOfRow();
             quantityKeyPress();
-            priceKeyPress();
             unitOnchange();
+            tableCheck();
+            headerCheck();
         };
     </script>
 }

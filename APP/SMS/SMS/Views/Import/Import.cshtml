@@ -102,6 +102,7 @@
     <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" id="rowIndex" value="0"/>
+    
     <div style="clear:both"></div>
     <table id="detailTable" name = "detailTable" width="100%">
         <thead>
@@ -221,25 +222,30 @@
             }
         };
 
-        $('.chcktbl').click(function () {
-            var length = $('.chcktbl:checked').length;
-            var max = $('.chcktbl').length;
-            if (length == max) {
-                $('#chckHead').prop('checked', true);
-            }
-            else {
-                $('#chckHead').prop('checked', false);
-            }
-        });
-
-        $('#chckHead').click(function () {
-            if (this.checked == false) {
-                $('input.chcktbl:checked').prop('checked', false);
-            }
-            else {
-                $('input.chcktbl:not(:checked)').prop('checked', true);
-            }
-        });
+        function tableCheck() {
+            $('.chcktbl').click(function () {
+                var length = $('.chcktbl:checked').length;
+                var max = $('.chcktbl').length;
+                if (length == max) {
+                    $('#chckHead').prop('checked', true);
+                }
+                else {
+                    $('#chckHead').prop('checked', false);
+                }
+            });
+        }
+        
+        function headerCheck() {
+            $('#chckHead').click(function () {
+                if (this.checked == false) {
+                    $('input.chcktbl:checked').prop('checked', false);
+                }
+                else {
+                    $('input.chcktbl:not(:checked)').prop('checked', true);
+                }
+            });
+        }
+        
 
         function deleteCheckedRow() {
             var rows = 0;
@@ -598,6 +604,7 @@
         };
 
         $(document).ready(function () {
+            
             formatNumberic();
             numberOnly();
             productAutocomplete();    
@@ -605,6 +612,8 @@
             quantityKeyPress();
             priceKeyPress();
             unitOnchange();
+            tableCheck();
+            headerCheck();
         });
 
 
@@ -642,6 +651,8 @@
             quantityKeyPress();
             priceKeyPress();
             unitOnchange();
+            tableCheck();
+            headerCheck();
         };
     </script>
 }
