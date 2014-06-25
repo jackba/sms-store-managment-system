@@ -318,6 +318,9 @@
     <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_PHIEU_CHUYEN_KHO_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -753,6 +756,7 @@
     <Content Include="Views\Import\ExportTransfer.cshtml" />
     <Content Include="Views\Import\ListTransfer.cshtml" />
     <Content Include="Views\Import\ListExportTransfer.cshtml" />
+    <Content Include="Views\Import\ListWaitingImport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

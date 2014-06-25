@@ -5,14 +5,32 @@
     ViewBag.Title = "Danh sách hóa đơn nhập kho";
 }
 @{
+    
+    List<SelectListItem> theImportStoreList = new List<SelectListItem>();
+    SelectListItem item;
+    if (ViewBag.Stores != null)
+    {
+        foreach (var donvi in ViewBag.Stores)
+        {
+            item = new SelectListItem();
+            item.Value = donvi.MA_KHO + "";
+            item.Text = donvi.TEN_KHO;
+            if ((int)ViewBag.ExportStoreId == donvi.MA_KHO)
+            {
+                item.Selected = true;
+            }
+            theImportStoreList.Add(item);
+        }
+    }
+    
     List<SelectListItem> kinds = new List<SelectListItem>();
     SelectListItem ckind;
 
 
     ckind = new SelectListItem();
 
-    ckind.Value = "-1";
-    ckind.Text = "----------- Chọn loại nhập kho ----------";
+    ckind.Value = "0";
+    ckind.Text = "----------- Chọn trạng thái của phiếu chuyển kho ----------";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -20,8 +38,8 @@
     {
         ckind.Selected = true;
     }
-    ckind.Value = "0";
-    ckind.Text = "Nhập mua hàng";
+    ckind.Value = "1";
+    ckind.Text = "Đang chờ xuất kho";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -29,8 +47,8 @@
     {
         ckind.Selected = true;
     }
-    ckind.Value = "1";
-    ckind.Text = "Nhập lại hàng trả";
+    ckind.Value = "2";
+    ckind.Text = "Đã xuất - đang chờ nhập kho";
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
@@ -38,17 +56,8 @@
     {
         ckind.Selected = true;
     }
-    ckind.Value = "2";
-    ckind.Text = "Kiểm kho";
-    kinds.Add(ckind);
-
-    ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 3)
-    {
-        ckind.Selected = true;
-    }
     ckind.Value = "3";
-    ckind.Text = "Nhập chuyển kho";
+    ckind.Text = "Đã nhập kho";
     kinds.Add(ckind);
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
@@ -167,35 +176,33 @@
                 Loại nhập :
             </td>
             <td>
-                @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
+                @Html.DropDownList("status", kinds, new { @id = "status", @style = "padding:2px;font-size:1.2em; " })
             </td>
         </tr>
         @if ((bool)Session["IsAdmin"])
         {
             <tr>
                 <td>
-                    Kho - Cửa hàng :
+                    Kho - Cửa hàng xuất:
                 </td>
                 <td>
-                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-                    @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+                    @Html.DropDownList("exportStoreId", theImportStoreList, "Chọn kho", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required", @disabled = "disabled" })
                 </td>
             </tr>
-
+                    
             <tr>
                 <td>
-                    Nhân viên nhập kho :
+                    Cửa hàng nhập:
                 </td>
                 <td>
-                    @Html.TextBox("ImporterName", ViewBag.ImporterName as string, new { id = "ImporterName" })
-                    @Html.Hidden("ImporterName", ViewBag.ImporterId as int?, new { id = "ImporterId" })
+                    
                 </td>
             </tr>
         }
 
         <tr>
             <td>
-                Nhà cung cấp :
+                Nhân viên xuất :
             </td>
             <td>
                 @Html.Hidden("ProviderId", ViewBag.ProviderId as int?, new { id = "ProductId" })
@@ -204,7 +211,7 @@
         </tr>
         <tr>
             <td>
-                Ngày mua:
+                Ngày xuất:
             </td>
             <td>
                 @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
