@@ -55,7 +55,14 @@ namespace SMS.Controllers
 
         public ActionResult ListExportTransfer()
         {
+            var 
             return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ListExportTransferPartialView()
+        {
+            return PartialView();
         }
 
         [HttpPost]

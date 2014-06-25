@@ -14,7 +14,7 @@ namespace SMS.App_Start
             var valueResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
             if (string.IsNullOrEmpty(valueResult.AttemptedValue))
             {
-                return 0m;
+                return 0;
             }
             var modelState = new ModelState { Value = valueResult };
             object actualValue = null;
@@ -68,6 +68,5 @@ namespace SMS.App_Start
             }
             
         }
-
     }
 }

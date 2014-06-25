@@ -158,7 +158,7 @@
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var inventorNumber = data;
-                        if (data < quantity * convertor) {
+                        if (data < (quantity * convertor)) {
                             return false;
                         } else {
                             return true;
@@ -206,7 +206,7 @@
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;
                     } else {
-                        if (!checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor)) {
+                        if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
                             checkFlg = 1;
                         }
                     }
