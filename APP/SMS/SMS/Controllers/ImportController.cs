@@ -55,14 +55,59 @@ namespace SMS.Controllers
 
         public ActionResult ListExportTransfer()
         {
-            var 
+            var ctx = new SmsContext();
+            ViewBag.InputKind = 0;
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            if (!(bool)Session["IsAdmin"])
+            {
+                ViewBag.ExportStoreId = Session["MyStore"];
+            }else
+            {
+                ViewBag.ExportStoreId = 1;
+            }
+            ViewBag.Stores = stores;
+            return View();
+        }
+
+        public ActionResult ListWaitingImport()
+        {
+            var ctx = new SmsContext();
+            ViewBag.Status = 0;
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A");
+            ViewBag.Stores = stores;
             return View();
         }
 
         [HttpPost]
-        public PartialViewResult ListExportTransferPartialView()
+        public PartialViewResult ListExportTransferPartialView(int? status, int? exportStoreId,
+            int? importStoreId, int? userId, string userFullName, DateTime? fromDate, DateTime? todate, int? currentPageIndex)
         {
-            return PartialView();
+            if (string.IsNullOrEmpty(userFullName))
+            {
+                userFullName = string.Empty;
+                userId = 0;
+            }
+            if ((bool)Session["IsAdmin"])
+            {
+                userId = Convert.ToInt32(Session["UserId"]);
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (todate == null)
+            {
+                todate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
+                Convert.ToInt32(importStoreId), fromDate, todate, Convert.ToInt32(userId), userFullName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_PHIEU_CHUYEN_KHO_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            ListExportTransferModel model = new ListExportTransferModel();
+            model.TheList = theList.ToPagedList(pageIndex, pageSize);
+            model.Count = theList.Count;
+            return PartialView("ListExportTransferPartialView", model);
         }
 
         [HttpPost]
@@ -135,7 +180,6 @@ namespace SMS.Controllers
                     return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
-            return View();
         }
         public ActionResult ExportTransfer()
         {

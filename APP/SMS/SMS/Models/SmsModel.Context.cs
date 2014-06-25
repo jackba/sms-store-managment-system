@@ -908,5 +908,51 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_LIST_RETURN_TO_PROVIDERS_Result>("SP_GET_LIST_RETURN_TO_PROVIDERS", pROVIDER_IDParameter, pROVIDER_NAMEParameter, fLAGParameter, fROM_DATEParameter, tO_DATEParameter, uSER_IDParameter, uSER_FULL_NAMEParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_PHIEU_CHUYEN_KHO_Result> SP_GET_PHIEU_CHUYEN_KHO(Nullable<int> sTATUS, Nullable<int> mA_KHO_CHUYEN, Nullable<int> mA_KHO_NHAN, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_CHUYEN, string tEN_NHAN_VIEN_CHUYEN)
+        {
+            var sTATUSParameter = sTATUS.HasValue ?
+                new ObjectParameter("STATUS", sTATUS) :
+                new ObjectParameter("STATUS", typeof(int));
+    
+            var mA_KHO_CHUYENParameter = mA_KHO_CHUYEN.HasValue ?
+                new ObjectParameter("MA_KHO_CHUYEN", mA_KHO_CHUYEN) :
+                new ObjectParameter("MA_KHO_CHUYEN", typeof(int));
+    
+            var mA_KHO_NHANParameter = mA_KHO_NHAN.HasValue ?
+                new ObjectParameter("MA_KHO_NHAN", mA_KHO_NHAN) :
+                new ObjectParameter("MA_KHO_NHAN", typeof(int));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            var mA_NHAN_VIEN_CHUYENParameter = mA_NHAN_VIEN_CHUYEN.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN_CHUYEN", mA_NHAN_VIEN_CHUYEN) :
+                new ObjectParameter("MA_NHAN_VIEN_CHUYEN", typeof(int));
+    
+            var tEN_NHAN_VIEN_CHUYENParameter = tEN_NHAN_VIEN_CHUYEN != null ?
+                new ObjectParameter("TEN_NHAN_VIEN_CHUYEN", tEN_NHAN_VIEN_CHUYEN) :
+                new ObjectParameter("TEN_NHAN_VIEN_CHUYEN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_CHUYEN_KHO_Result>("SP_GET_PHIEU_CHUYEN_KHO", sTATUSParameter, mA_KHO_CHUYENParameter, mA_KHO_NHANParameter, fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_CHUYENParameter, tEN_NHAN_VIEN_CHUYENParameter);
+        }
+    
+        public virtual int SP_GET_TON_KHO_BY_STORE_ID_AND_PRODUCT_ID(Nullable<int> sTORE_ID, Nullable<int> pRODUC_ID, ObjectParameter rETURN_VAL)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var pRODUC_IDParameter = pRODUC_ID.HasValue ?
+                new ObjectParameter("PRODUC_ID", pRODUC_ID) :
+                new ObjectParameter("PRODUC_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_TON_KHO_BY_STORE_ID_AND_PRODUCT_ID", sTORE_IDParameter, pRODUC_IDParameter, rETURN_VAL);
+        }
     }
 }

@@ -32,4 +32,10 @@ namespace SMS.Models
         public List<CHI_TIET_XUAT_KHO> ExportDetail { get; set; }
         public List<CHI_TIET_NHAP_KHO> ImportDetail { get; set; }
     }
+
+    public class ListExportTransferModel
+    {
+        public IPagedList<SP_GET_PHIEU_CHUYEN_KHO_Result> TheList { get; set; }
+        public int Count { get; set; }
+    }
 }
