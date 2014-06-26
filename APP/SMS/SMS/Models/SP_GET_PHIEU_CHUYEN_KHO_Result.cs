@@ -23,5 +23,6 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
         public Nullable<int> MA_NHAN_VIEN_XUAT { get; set; }
         public string TEN_NHAN_VIEN_XUAT { get; set; }
+        public Nullable<int> STATUS { get; set; }
     }
 }
