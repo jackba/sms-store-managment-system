@@ -1777,6 +1777,10 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <Function Name="F_CHECK_REMAIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
+        <Function Name="F_GET_CONVERTOR" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="MA_DON_VI" Type="int" Mode="In" />
+        </Function>
         <Function Name="F_GET_EXPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
@@ -1851,6 +1855,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <Function Name="SP_GET_ALL_ROLE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USER_ID" Type="int" Mode="In" />
           <Parameter Name="USER_FULL_NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_XUAT_KHO" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_GET_DON_VI_TINH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
@@ -5218,6 +5225,9 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID" ReturnType="Collection(SmsModel.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result)">
+          <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN" ReturnType="Collection(SmsModel.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result)">
             <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -5518,6 +5528,16 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Int32" Name="MA_NHAN_VIEN_XUAT" Nullable="true" />
           <Property Type="String" Name="TEN_NHAN_VIEN_XUAT" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="STATUS" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CODE" Nullable="true" MaxLength="30" />
+          <Property Type="Double" Name="SO_LUONG" Nullable="true" />
+          <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
+          <Property Type="Double" Name="SO_LUONG_TEMP" Nullable="true" />
+          <Property Type="Double" Name="HE_SO" Nullable="true" />
+          <Property Type="Int32" Name="DEL_FLG" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6555,6 +6575,20 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
                 <ScalarProperty Name="MA_NHAN_VIEN_XUAT" ColumnName="MA_NHAN_VIEN_XUAT" />
                 <ScalarProperty Name="TEN_NHAN_VIEN_XUAT" ColumnName="TEN_NHAN_VIEN_XUAT" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN" FunctionName="SmsModel.Store.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="SO_LUONG_TEMP" ColumnName="SO_LUONG_TEMP" />
+                <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
+                <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

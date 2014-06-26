@@ -273,6 +273,9 @@
     <Compile Include="Models\SP_GET_ALL_ROLE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -316,6 +319,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_PHIEU_CHUYEN_KHO_Result.cs">
@@ -610,11 +616,11 @@
     <Content Include="bin\SMS.dll.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Images\widthLogo.jpg" />
     <EntityDeploy Include="Models\SmsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Images\widthLogo.jpg" />
     <Content Include="Models\SmsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmsModel.edmx</DependentUpon>
@@ -757,6 +763,9 @@
     <Content Include="Views\Import\ListTransfer.cshtml" />
     <Content Include="Views\Import\ListExportTransfer.cshtml" />
     <Content Include="Views\Import\ListWaitingImport.cshtml" />
+    <Content Include="Views\Import\ListExportTransferPartialView.cshtml" />
+    <Content Include="Views\Import\Edit.cshtml" />
+    <Content Include="Views\Import\EditExportTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
