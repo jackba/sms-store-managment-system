@@ -945,5 +945,14 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result>("SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID", mA_XUAT_KHOParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Nullable<int> mA_XUAT_KHO)
+        {
+            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
+                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
+                new ObjectParameter("MA_XUAT_KHO", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>("SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN", mA_XUAT_KHOParameter);
+        }
     }
 }

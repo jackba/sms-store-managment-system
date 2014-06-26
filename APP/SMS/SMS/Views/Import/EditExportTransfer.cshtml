@@ -1,0 +1,727 @@
+﻿@model SMS.Models.EditTransferModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lập phiếu xuất chuyển kho";
+}
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("Export", "Home")"> Xuất kho </a> > @ViewBag.Title
+</div>
+
+<br />
+<hgroup class="title">
+    <h2>
+        @ViewBag.Title
+    </h2>
+</hgroup>
+<hr />
+<h3>@ViewBag.Message</h3>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Export.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+        //Stop Form Submission of Enter Key Press
+        $(document).ready(function () {
+            $('.datePicker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+@using (Html.BeginForm("EditExportTransfer", "Import", FormMethod.Post, new { @id = "index" }))
+{
+    <table>
+        <tr>
+            <td>
+                Kho xuất :
+            </td>
+            <td class="required">
+                @if ((bool)Session["IsAdmin"])
+                {
+                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Kho Nhận :
+            </td>
+            <td class="required">
+                @Html.DropDownListFor(u => u.Infor.MA_KHO_NHAN, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Ngày xuất :
+            </td>
+            <td class="required">
+                @Html.TextBoxFor(u => u.Infor.NGAY_XUAT, "{0:d}", new { @class = "datePicker ", @id = "exportDate" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ghi chú :
+            </td>
+            <td>
+                @Html.TextAreaFor(u => u.Infor.GHI_CHU)
+                @Html.HiddenFor(u => u.Infor.STATUS)
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
+    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    <input type="hidden" id="rowIndex" value="@(Model.ExportDetail.Count - 1)" />
+    @Html.HiddenFor(u => u.Infor.SAVE_FLG, new { id = "saveFlg" })
+    <div style="clear:both"></div>
+    <table id="detailTable" name="detailTable" width="100%">
+        <thead>
+            <tr class="inner column-hscroll alignCenter">
+                <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
+                <td class='inner colwidth head '> CODE </td>
+                <td class='inner colwidth head '> Sản phẩm </td>
+                <td class='inner colwidth head '> Số lượng </td>
+                <td class='innerLast colwidth head '> Đơn vị </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ExportDetail != null)
+            {
+              for (int i = 0; i < Model.ExportDetail.Count; i++ )
+            {
+                <tr>
+                    <td class='inner alignCenter colwidth' width="5%;">
+                        <input type="checkbox" class="chcktbl">
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl" })
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.HiddenFor(u => u.ExportDetail[i].MA_SAN_PHAM, new { @class = "productId " })
+                        @Html.HiddenFor(u => u.ExportDetail[i].DEL_FLG, new { @class = "delFlg" })
+                        @Html.HiddenFor(u => u.ExportDetail[i].HE_SO, new { @class = "convertor" })
+                        @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl" })
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
+                    </td>
+                    <td class="innerLast colwidth">
+                        @Html.HiddenFor(u => u.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
+                        @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })                       
+                    </td>
+                </tr>
+            }  
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="4"> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
+                    <input type="button" value="Thêm dòng" onclick="addRow()" />
+                </td>
+            </tr>
+            <tr>
+                <td class='innerLast colwidth  ' colspan="2" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong>Tổng hóa đơn</strong> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
+            </tr>
+        </tfoot>
+    </table>                       
+    <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
+    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    <script>
+
+        function checkEnough(storeId, ProductId, quantity, convertor) {
+            if (storeId != null && ProductId != null && quantity != null && convertor != null) {
+                $.ajax({
+                    url: "/Import/getInventory",
+                    data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var inventorNumber = data;
+                        if (data < (quantity * convertor)) {
+                            return false;
+                        } else {
+                            return true;
+                        };
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+
+            }
+        }
+
+        function saveAndExport() {
+            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
+                return false;
+            }
+            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho xuất");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho nhập");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
+                return false;
+            }
+
+            var row = 0;
+            var rval = 1;
+            var ppval = 1;
+            var checkFlg = 0;
+            $('input.chcktbl').each(function () {
+                var flg = $('input.delFlg', $(this).parent().parent()).val();
+                if (flg != 1) {
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    quantity = parseFloat(quantity);
+                    convertor = parseFloat(convertor);
+                    if (quantity == null || quantity == '' || quantity == 0) {
+                        rval = 0;
+                    }
+                    if (productId == null || productId == '' || productId == 0) {
+                        ppval = 0;
+                    } else {
+                        if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
+                            checkFlg = 1;
+                        }
+                    }
+                    row++;
+                }
+            });
+
+            if (ppval == 0) {
+                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            if (row == 0) {
+                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            else if (rval == 0) {
+                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            if (checkFlg == 1) {
+                var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
+                if (r == true) {
+                    $('#saveFlg').val(1);
+                    $('#index').submit();
+                }
+                else {
+                    return false;
+                }
+            }
+            $('#index').submit();
+        }
+
+
+
+        function returnSubmit() {
+            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
+                return false;
+            }
+            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho xuất");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
+                alert("Vui lòng chọn kho nhập");
+                return false;
+            }
+            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
+                return false;
+            }
+            var row = 0;
+            var rval = 1;
+            var ppval = 1;
+            $('input.chcktbl').each(function () {
+                var flg = $('input.delFlg', $(this).parent().parent()).val();
+                if (flg != 1) {
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    quantity = parseFloat(quantity);
+                    convertor = parseFloat(convertor);
+                    if (quantity == null || quantity == '' || quantity == 0) {
+                        rval = 0;
+                    }
+                    if (productId == null || productId == '' || productId == 0) {
+                        ppval = 0;
+                    }
+                    row++;
+                }
+            });
+
+            if (ppval == 0) {
+                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            if (row == 0) {
+                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            else if (rval == 0) {
+                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
+                return false;
+            }
+            $('#saveFlg').val(1);
+            $('#index').submit();
+        };
+
+        function tableCheck() {
+            $('.chcktbl').click(function () {
+                var length = $('.chcktbl:checked').length;
+                var max = $('.chcktbl').length;
+                if (length == max) {
+                    $('#chckHead').prop('checked', true);
+                }
+                else {
+                    $('#chckHead').prop('checked', false);
+                }
+            });
+        }
+
+        function headerCheck() {
+            $('#chckHead').click(function () {
+                if (this.checked == false) {
+                    $('input.chcktbl:checked').prop('checked', false);
+                }
+                else {
+                    $('input.chcktbl:not(:checked)').prop('checked', true);
+                }
+            });
+        }
+
+        function deleteCheckedRow() {
+            var rows = 0;
+            $('input.chcktbl:checked').each(function () {
+                var flg = $('input.delFlg', $(this).parent().parent());
+                if (flg.val() == null || flg.val() == '' || flg.val() == 0) {
+                    rows++;
+                }
+                flg.val(1);
+                $(this).parent().parent().hide();
+
+            });
+            if (rows == 0) {
+                alert("Vui lòng chọn dòng để xóa.");
+            }
+            getNumberOfRow();
+            getAllTotal();
+        };
+
+        function RemoveRougeChar(convertString) {
+            if (convertString.substring(0, 1) == ",") {
+                return convertString.substring(1, convertString.length)
+            }
+            return convertString;
+        }
+
+        function NumbericOnly(ctrl) {
+            $(ctrl).keypress(function (key) {
+                //getting key code of pressed key
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    alert(" You can enter only characters 0 to 9 ");
+                    return false;
+                }
+                else return true;
+            });
+
+        }
+
+        function formatNumberic() {
+            $('input.numberic').each(function () {
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        }
+
+        function numberOnly() {
+            $('input.numberic').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    return false;
+                }
+                else return true;
+
+            });
+            $('input.numberic').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        };
+
+
+        function GetFactorOfProduct(productId, unitId, convertor) {
+            if (unitId != null && unitId != 'undefined') {
+                $.ajax({
+                    url: "/BanHang/FindFactorOfProduct",
+                    data: "{ 'maSP': '" + productId + "' , 'unitNo' : '" + unitId + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        convertor.val(data.heso);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            }
+        }
+
+        function unitChange() {
+            $("input.unitTemp").each(function () {
+                var $this = $(this);
+                var value = $this.val();
+                var parent = $this.parent().parent();
+                var unitId = $('select.unit', parent).val(value);
+            });
+        }
+
+        function productIdChange() {
+            $("input.productId").each(function () {
+                var $this = $(this);
+                createDonViTinh($this);
+            });
+        }
+
+        function unitOnchange() {
+            $("select.unit").change(function (event) {
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                var productId = $('input.productId', parent).val();
+                var unitId = $('select.unit :selected').val();
+                var convertor = $('input.convertor', parent);
+                if (productId != null && productId != '' && unitId != null && unitId != '') {
+                    GetFactorOfProduct(productId, unitId, convertor);
+                }
+            });
+        }
+
+        function productCodeAutocomplete() {
+            $("input.code").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggestByCd", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        name: item.name,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    var $this = $(this);
+                    var parent = $this.parent().parent();
+                    $('input.productId', parent).val("");
+                    $('input.productname', parent).val("");
+                    $('input.convertor', parent).val("1");
+                },
+                select: function (event, ui) {
+                    var $th = $(this);
+                    var pa = $th.parent().parent();
+                    if (!checkDuplicate(ui.item.id)) {
+                        $th.val(ui.item.label);
+                        $('input.productId', pa).val(ui.item.id);
+                        $('input.productname', pa).val(ui.item.name);
+                        createDonViTinh($th);
+                        $('input.convertor', pa).val("1");
+                    } else {
+                        alert("Sản phẩm này đã có trong danh sách");
+                        $th.val("");
+                        $('input.productId', pa).val("");
+                        $('input.productname', pa).val("");
+                        $('input.convertor', pa).val("1");
+                    }
+                    return false;
+                },
+                minLength: 1
+            });
+        }
+
+        function priceKeyPress() {
+            $('input.price').keyup(function (event) {
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                var price = $('input.quantity', parent).val().replace(/,/gi, "");
+                var tt = $this.val().replace(/,/gi, "") * price;
+
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(tt).split(DecimalSeparator);
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $('td input.total', parent).val(num2);
+                }
+                getAllTotal();
+            });
+        }
+
+        function quantityKeyPress() {
+            $('input.quantity').keyup(function (event) {
+                getAllTotal();
+            });
+        }
+
+        function checkDuplicate(val) {
+            var flg = false;
+            $('td input.productId').each(function () {
+                if ($('input.delFlg', $(this).parent().parent()).val() != 1) {
+                    var checkVal = $(this).val();
+                    if (val == checkVal) {
+                        flg = true;
+                    }
+                }
+            })
+            return flg;
+        }
+
+        function productAutocomplete() {
+            $("input.productname").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggestName", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        code: item.code,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    var $this = $(this);
+                    var parent = $this.parent().parent();
+                    $('input.productId', parent).val("");
+                    $('input.code', parent).val("");
+                    $('input.convertor', parent).val("1");
+                },
+                select: function (event, ui) {
+                    var $th = $(this);
+                    var pa = $th.parent().parent();
+                    if (!checkDuplicate(ui.item.id)) {
+                        $th.val(ui.item.label);
+                        $('input.productId', pa).val(ui.item.id);
+                        $('input.code', pa).val(ui.item.code);
+                        $('input.convertor', pa).val("1");
+                        createDonViTinh($th);
+                    } else {
+                        alert("Sản phầm này đã được nhập.");
+                        $th.val("");
+                        $('input.productId', pa).val("");
+                        $('input.code', pa).val("");
+                        $('input.convertor', pa).val("1");
+                    }
+                    return false;
+                },
+                minLength: 1
+            });
+        }
+
+        function createDonViTinh(obj) {
+            var result = '';
+            var $th = obj;
+            var pr = $th.parent().parent();
+            var productId = $('input.productId', pr).val();
+            $.ajax({
+                url: "/BanHang/FindDonViTinhByMaSP",
+                data: "{'maSP' : '" + productId + "'}",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success:
+                    function (data) {
+                        var $this = obj;
+                        var parent = $this.parent().parent();
+                        var un = $('select.unit', parent);
+                        $('select.unit', parent).empty();
+                        $.each(data, function (i, item) {
+                            var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
+                            $(opt).appendTo(un);
+                        });
+                    },
+                error:
+                    function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+        }
+
+        function getNumberOfRow() {
+            var row = 0;
+            $('td input.quantity').each(function () {
+                var $this = $(this);
+                var $parent = $this.parent().parent();
+                if ($('input.delFlg', $parent).val() != 1) {
+                    row++;
+                }
+            });
+            $('strong.frows').text(row);
+        };
+
+
+
+        function getAllTotal() {
+            var AllTotal = 0;
+            var total = 0;
+            $('td input.quantity').each(function () {
+                $this = $(this);
+                $parent = $this.parent().parent();
+                if ($('input.delFlg', $parent).val() != 1) {
+                    total = $this.val().replace(/,/gi, "");
+                    if (total != null && total != '') {
+                        AllTotal += parseFloat(total);
+                    }
+                }
+            });
+
+            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+            var arParts = String(AllTotal).split(DecimalSeparator);
+            var intPart = arParts[0];
+            var decPart = (arParts.length > 1 ? arParts[1] : '');
+            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            if (decPart.length > 2) {
+                decPart = (decPart + '00').substr(0, 2);
+            }
+            if (arParts.length > 1) {
+                $('strong.fall').text(num2 + DecimalSeparator + decPart);
+            } else {
+                $('strong.fall').text(num2);
+            }
+        };
+
+        $(document).ready(function () {
+            formatNumberic();
+            numberOnly();
+            productAutocomplete();
+            productCodeAutocomplete();
+            quantityKeyPress();
+            unitChange();
+            productIdChange();
+            unitOnchange();
+            tableCheck();
+            headerCheck();
+        });
+
+
+
+
+        function addRow() {
+            var row = parseInt($("#rowIndex").val()) + 1;
+            $('#detailTable > tbody:last').append('<tr> ' +
+                '<td class="inner alignCenter colwidth" width="5%;">' +
+                '<input type="checkbox" class="chcktbl"> </td>' +
+                '<td class="inner colwidth">' +
+                '<input name="ExportDetail[' + row + '].CODE" class="code codebtl ui-autocomplete-input" id="ExportDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+                '</td>' +
+                '<td class="inner colwidth">' +
+                '<input name="ExportDetail[' + row + '].DEL_FLG" class="delFlg" id="ExportDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
+                '<input name="ExportDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ExportDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
+                '<input name="ExportDetail[' + row + '].HE_SO" class="convertor" id="ExportDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+                '<input name="ExportDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="ExportDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+                '<td class="inner colwidth">' +
+                '<input name="ExportDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="ExportDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+                '<td class="innerLast colwidth">' +
+                '<select name="ExportDetail[' + row + '].MA_DON_VI" class="unit textbtl" id="ExportDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+                '<option value="">---------</option></select> </td>' +
+                '</tr>');
+            $("#rowIndex").val(row);
+            $('input.code', $('#detailTable > tbody:last')).focus();
+            numberOnly();
+            productAutocomplete();
+            productCodeAutocomplete();
+            getNumberOfRow();
+            quantityKeyPress();
+            unitOnchange();
+            tableCheck();
+            headerCheck();
+        };
+    </script>
+}

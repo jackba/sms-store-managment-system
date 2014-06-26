@@ -53,22 +53,46 @@ namespace SMS.Controllers
             return View();
         }
 
-        public ActionResult ListExportTransfer()
+        public ActionResult ListExportTransfer(string message, string inforMessage)
         {
             var ctx = new SmsContext();
-            ViewBag.InputKind = 0;
+            ViewBag.InputKind = -1;
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             if (!(bool)Session["IsAdmin"])
             {
                 ViewBag.ExportStoreId = Session["MyStore"];
-            }else
-            {
-                ViewBag.ExportStoreId = 1;
             }
             ViewBag.Stores = stores;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
             return View();
         }
+        public ActionResult EditExportTransfer(int id)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
+            EditTransferModel model = new EditTransferModel();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Units = units;
+            model.Infor = infor;
+            var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
+            model.ExportDetail = detail;
+            return View(model);
+        }
 
+
+        [HttpPost]
+        public ActionResult EditExportTransfer(EditTransferModel model)
+        {
+            var details = model.ExportDetail;
+            return View();
+        }
         public ActionResult ListWaitingImport()
         {
             var ctx = new SmsContext();
@@ -87,7 +111,7 @@ namespace SMS.Controllers
                 userFullName = string.Empty;
                 userId = 0;
             }
-            if ((bool)Session["IsAdmin"])
+            if (!(bool)Session["IsAdmin"])
             {
                 userId = Convert.ToInt32(Session["UserId"]);
             }
@@ -107,6 +131,13 @@ namespace SMS.Controllers
             ListExportTransferModel model = new ListExportTransferModel();
             model.TheList = theList.ToPagedList(pageIndex, pageSize);
             model.Count = theList.Count;
+            ViewBag.Status = status;
+            ViewBag.UserId = userId;
+            ViewBag.UserFullName = userFullName;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = todate;
+            ViewBag.ImportStoreId = importStoreId;
+            ViewBag.ExportStoreId = exportStoreId;
             return PartialView("ListExportTransferPartialView", model);
         }
 

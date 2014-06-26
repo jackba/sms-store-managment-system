@@ -1,8 +1,8 @@
-﻿@model SMS.Models.ImportReportModel
+﻿@model SMS.Models.ListExportTransferModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Danh sách hóa đơn nhập kho";
+    ViewBag.Title = "Danh sách phiếu xuất chuyển kho";
 }
 @{
     
@@ -15,7 +15,7 @@
             item = new SelectListItem();
             item.Value = donvi.MA_KHO + "";
             item.Text = donvi.TEN_KHO;
-            if ((int)ViewBag.ExportStoreId == donvi.MA_KHO)
+            if (ViewBag.ExportStoreId != null && (int)ViewBag.ExportStoreId == donvi.MA_KHO)
             {
                 item.Selected = true;
             }
@@ -70,7 +70,8 @@
 <hgroup class="title">
     <h2> @ViewBag.Title </h2>
 </hgroup>
-<h3>@ViewBag.Message</h3>
+<h3 style="color:red">@ViewBag.Message</h3>
+<h3 style="color:blue">@ViewBag.InforMessage</h3>
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
@@ -79,7 +80,6 @@
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
-<br />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -87,10 +87,10 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-            $("#ProductName").autocomplete({
+            $("#userFullName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -103,72 +103,48 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
-                    $('#ProductId').val("");
+                    $('#userId').val("");
                 },
                 select: function (event, ui) {
-                    $('#ProductName').val(ui.item.label);
-                    $('#ProductId').val(ui.item.id);
+                    $('#userFullName').val(ui.item.label);
+                    $('#userId').val(ui.item.id);
                     return false;
                 },
                 minLength: 1
             });
-
-            $("#StoreName").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/Kho/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                },
-                select: function (event, ui) {
-                    $('#StoreName').val(ui.item.label);
-                    $('#StoreId').val(ui.item.id);
-                    return false;
-                },
-                minLength: 1
-            });
-            $('#mainForm').submit();
-        });
-
-        $(document).ready(function () {
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "-60:+0"
             });
+            $('#mainForm').submit();
+
         });
     </script>
-    <style type="text/css">
-        .required:after {
-            content: "*";
-            font-weight: bold;
-            color: red;
-        }
-    </style>
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+</style>
 
 }
-@using (Ajax.BeginForm("IndexPartialView", "Import", new AjaxOptions()
-{
-    HttpMethod = "POST",
-    InsertionMode = InsertionMode.Replace,
-    LoadingElementId = "resultLoadingDiv",
-    UpdateTargetId = "mainDiv"
-},
+
+
+    
+
+@using (Ajax.BeginForm("ListExportTransferPartialView", "Import", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
                            new { @id = "mainForm" }
                       ))
 {
-
     <hr style="width:100%" />
     <table>
         <tr>
@@ -176,37 +152,43 @@
                 Loại nhập :
             </td>
             <td>
-                @Html.DropDownList("status", kinds, new { @id = "status", @style = "padding:2px;font-size:1.2em; " })
+                @Html.DropDownList("status", kinds, new { @id = "status", style = "padding:5px;font-size:1.2em" })
             </td>
         </tr>
-        @if ((bool)Session["IsAdmin"])
-        {
+        
             <tr>
                 <td>
                     Kho - Cửa hàng xuất:
                 </td>
                 <td>
-                    @Html.DropDownList("exportStoreId", theImportStoreList, "Chọn kho", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required", @disabled = "disabled" })
+                    @if (!(bool)Session["IsAdmin"])
+                    {
+                        @Html.DropDownList("exportStoreId", theImportStoreList, "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @disabled = "disabled" })
+                    }
+                    else
+                    {
+                        @Html.DropDownList("exportStoreId", theImportStoreList, "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em" })
+                    }
                 </td>
             </tr>
                     
             <tr>
                 <td>
-                    Cửa hàng nhập:
+                    Cửa hàng nhận:
                 </td>
                 <td>
-                    
+                    @Html.DropDownList("importStoreId", new SelectList(ViewBag.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", @style = "padding:5px;font-size:1.2em" })
                 </td>
             </tr>
-        }
+        
 
         <tr>
             <td>
                 Nhân viên xuất :
             </td>
             <td>
-                @Html.Hidden("ProviderId", ViewBag.ProviderId as int?, new { id = "ProductId" })
-                @Html.TextBox("ProviderName", ViewBag.ProviderName as string, new { id = "ProviderName" })
+                @Html.Hidden("userId", ViewBag.ProviderId as int?, new { id = "userId" })
+                @Html.TextBox("userFullName", ViewBag.ProviderName as string, new { id = "userFullName" })
             </td>
         </tr>
         <tr>

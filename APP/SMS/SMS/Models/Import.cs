@@ -39,7 +39,7 @@ namespace SMS.Models
         public SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result Infor { get; set; }
         public List<KHO> Stores { get; set; }
         public List<DON_VI_TINH> Units { get; set; }
-        public List<CHI_TIET_XUAT_KHO> ExportDetail { get; set; }
+        public List<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> ExportDetail { get; set; }
     }
     public class ListExportTransferModel
     {
