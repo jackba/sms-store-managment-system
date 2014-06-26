@@ -26,6 +26,7 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
         public Nullable<int> MA_KHO_XUAT { get; set; }
         public int ID { get; set; }
+        public Nullable<double> GIA_BAN_TRUOC_CK { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual HOA_DON HOA_DON { get; set; }
