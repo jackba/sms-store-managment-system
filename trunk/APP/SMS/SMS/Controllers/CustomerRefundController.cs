@@ -66,6 +66,8 @@ namespace SMS.Controllers
                             ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                             ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                             ct.ACTIVE = "A";
+                            //ct.DON_GIA = 
+                            ct.DON_GIA = detail.GIA_VON;
                             ctx.TRA_HANG_NCC_CHI_TIET.Add(ct);
                             ctx.SaveChanges();
                         }

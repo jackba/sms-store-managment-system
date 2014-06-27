@@ -28,6 +28,7 @@ namespace SMS.Models
         public DateTime? ReturnDate { get; set; }
         public int? ProviderId { get; set; }
         public string Note { get; set; }
+        public int price { get; set; }
     }
 
     public class List2ProviderModel

@@ -34,4 +34,15 @@ namespace SMS.Models
         public int storeId { get; set; }
         public long PageCount { get; set; }
     }
+
+    public class ExportModelXuatHuy
+    {
+        public int StoreId { get; set; }
+        public int ProviderId { get; set; }
+        public XUAT_KHO Infor { get; set; }
+        public List<KHO> Stores { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+        //public List<NHA_CUNG_CAP> Providers { get; set; }
+        public List<CHI_TIET_XUAT_KHO> Detail { get; set; }
+    }
 }
