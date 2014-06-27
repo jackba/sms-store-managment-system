@@ -54,13 +54,24 @@
                         @dbHist.TEN_DON_VI
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.SO_LUONG.ToString("0,0.00")
+                        @if (dbHist.SO_LUONG != null)
+                        {
+                            @Convert.ToDouble(dbHist.SO_LUONG).ToString("0,0.00")
+                        }                        
                     </td>
                     <td class="inner colwidth">
-                        @dbHist.GIA_XUAT.ToString("0,0.00")
+                        @if (dbHist.GIA_XUAT != null)
+                        {
+                            @Convert.ToDouble(dbHist.GIA_XUAT).ToString("0,0.00")
+                        }
+                        
+                       
                     </td>
                     <td class="innerLast colwidth">
-                        @dbHist.VALUE.ToString("0,0.00")
+                        @if (dbHist.VALUE != null)
+                        {
+                            @Convert.ToDouble(dbHist.VALUE).ToString("0,0.00")
+                        }
                     </td>
                 </tr>
             }

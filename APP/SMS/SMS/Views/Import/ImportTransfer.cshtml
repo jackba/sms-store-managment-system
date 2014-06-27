@@ -1,13 +1,13 @@
-﻿@model SMS.Models.EditTransferModel
+﻿@model SMS.Models.ImportTransferModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Lập phiếu xuất chuyển kho";
+    ViewBag.Title = "Nhập kho";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Export", "Home")"> Xuất kho </a> >
-    <a href="@Url.Action("ListExportTransfer", "Import")"> Danh sách phiếu chuyển kho </a> > 
-     @ViewBag.Title
+    <a href="@Url.Action("Import", "Home")"> Nhập kho </a> >
+    <a href="@Url.Action("ListWaitingImport", "Import")"> Danh sách phiếu chuyển kho </a> >
+    @ViewBag.Title
 </div>
 
 <br />
@@ -54,18 +54,13 @@
     <table>
         <tr>
             <td>
-                @Html.HiddenFor(u => u.Infor.MA_XUAT_KHO);
+                @Html.HiddenFor(u => u.Infor.MA_XUAT_KHO)
                 Kho xuất :
             </td>
             <td class="required">
-                @if ((bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
-                else
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
+                
+                @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
+                
             </td>
         </tr>
         <tr>
@@ -73,16 +68,16 @@
                 Kho Nhận :
             </td>
             <td class="required">
-                @Html.DropDownListFor(u => u.Infor.MA_KHO_NHAN, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                @Html.DropDownListFor(u => u.Infor.MA_KHO_NHAN, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @disabled = "disabled", @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
             </td>
         </tr>
 
         <tr>
             <td>
-                Ngày xuất :
+                Ngày nhập :
             </td>
             <td class="required">
-                @Html.TextBoxFor(u => u.Infor.NGAY_XUAT, "{0:dd/MM/yyyy}", new { @class = "datePicker ", @id = "exportDate" })
+                @Html.TextBoxFor(u => u.ImportInfor.NGAY_NHAP, "{0:dd/MM/yyyy}", new { @class = "datePicker ", @id = "exportDate" })
             </td>
         </tr>
         <tr>
@@ -96,16 +91,14 @@
         </tr>
     </table>
     <hr />
-    <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
-    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
-    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    <input type="submit" value="Lưu" style="width:200px;" />
+    <input type="button" value="Trở về danh sách hóa đơn" style="width:200px;"  />
     <input type="hidden" id="rowIndex" value="@(Model.ExportDetail.Count - 1)" />
     @Html.HiddenFor(u => u.Infor.SAVE_FLG, new { id = "saveFlg" })
     <div style="clear:both"></div>
     <table id="detailTable" name="detailTable" width="100%">
         <thead>
             <tr class="inner column-hscroll alignCenter">
-                <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
                 <td class='inner colwidth head '> CODE </td>
                 <td class='inner colwidth head '> Sản phẩm </td>
                 <td class='inner colwidth head '> Số lượng </td>
@@ -115,50 +108,40 @@
         <tbody>
             @if (Model.ExportDetail != null)
             {
-              for (int i = 0; i < Model.ExportDetail.Count; i++ )
-            {
-                <tr>
-                    <td class='inner alignCenter colwidth' width="5%;">
-                        <input type="checkbox" class="chcktbl">
-                    </td>
-                    <td class='inner colwidth '>
-                        @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl" })
-                    </td>
-                    <td class='inner colwidth '>
-                        @Html.HiddenFor(u => u.ExportDetail[i].MA_SAN_PHAM, new { @class = "productId " })
-                        @Html.HiddenFor(u => u.ExportDetail[i].DEL_FLG, new { @class = "delFlg" })
-                        @Html.HiddenFor(u => u.ExportDetail[i].HE_SO, new { @class = "convertor" })
-                        @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl" })
-                    </td>
-                    <td class='inner colwidth '>
-                        @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
-                    </td>
-                    <td class="innerLast colwidth">
-                        @Html.HiddenFor(u => u.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                        @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })                       
-                    </td>
-                </tr>
-            }  
-        }
+                for (int i = 0; i < Model.ExportDetail.Count; i++)
+                {
+                    <tr>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl", @disabled = "disabled" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.HiddenFor(u => u.ExportDetail[i].MA_SAN_PHAM, new { @class = "productId ", @disabled = "disabled" })
+                            @Html.HiddenFor(u => u.ExportDetail[i].DEL_FLG, new { @class = "delFlg" })
+                            @Html.HiddenFor(u => u.ExportDetail[i].HE_SO, new { @class = "convertor" })
+                            @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl", @disabled = "disabled" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic", @disabled = "disabled" })
+                        </td>
+                        <td class="innerLast colwidth">
+                            @Html.HiddenFor(u => u.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
+                            @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl", @disabled = "disabled" })
+                        </td>
+                    </tr>
+                }
+            }
         </tbody>
         <tfoot>
             <tr>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="4"> </td>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
-                    <input type="button" value="Thêm dòng" onclick="addRow()" />
-                </td>
-            </tr>
-            <tr>
-                <td class='innerLast colwidth  ' colspan="2" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
+                <td class='innerLast colwidth' style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong>Tổng hóa đơn</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
             </tr>
         </tfoot>
-    </table>                       
-    <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
-    <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
-    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    </table>
+    <input type="submit" value="Lưu" style="width:200px;" />
+    <input type="button" value="Trở về danh sách hóa đơn" style="width:200px;"  />
     <script>
 
         function checkEnough(storeId, ProductId, quantity, convertor) {
@@ -689,8 +672,7 @@
             unitChange();
             productIdChange();
             unitOnchange();
-            tableCheck();
-            headerCheck();
+            getAllTotal();
         });
 
 
@@ -723,8 +705,6 @@
             getNumberOfRow();
             quantityKeyPress();
             unitOnchange();
-            tableCheck();
-            headerCheck();
         };
     </script>
 }

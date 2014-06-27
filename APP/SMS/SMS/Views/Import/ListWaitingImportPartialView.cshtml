@@ -11,14 +11,12 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ListExportTransferPartialView",
+                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ListWaitingImportPartialView",
                         new
                         {
                             currentPageIndex,
                             importStoreId = ViewBag.ImportStoreId,
                             exportStoreId = ViewBag.ExportStoreId,
-                            userId = ViewBag.UserId,
-                            userFullName = ViewBag.UserFullName,
                             status = ViewBag.Status,
                             fromDate = ViewBag.FromDate,
                             todate = ViewBag.Todate
@@ -39,28 +37,27 @@
     </table>
 
     <table width="100%">
-        <tr style="width:100%">            
+        <tr style="width:100%">
             <td class='inner colwidth head '> Tên kho xuất </td>
             <td class='inner colwidth head '> Tên kho nhận </td>
             <td class='inner colwidth head '> Ngày xuất </td>
             <td class='inner colwidth head '>  Người xuất kho kho  </td>
             <td class='inner colwidth head '>  Trạng thái </td>
             <td class='inner colwidth head '>  Ghi chú </td>
-            <td class='innerLast colwidth head '>  Sửa </td>
-            <td class='innerLast colwidth head '>  Xóa </td>
+            <td class='innerLast colwidth head '>  Nhập kho </td>
         </tr>
         @foreach (var dbHist in Model.TheList)
         {
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth" title="Xem chi tiết hóa đơn xuất kho">
-                        @dbHist.TEN_KHO_XUAT
+                    @dbHist.TEN_KHO_XUAT
                 </td>
                 <td class="inner colwidth">
                     @dbHist.TEN_KHO_NHAN
                 </td>
                 <td class="inner colwidth">
                     @{
-                        DateTime date = (DateTime)@dbHist.NGAY_XUAT;
+            DateTime date = (DateTime)@dbHist.NGAY_XUAT;
 
                     }
                     @date.ToString("dd/MM/yyyy")
@@ -75,33 +72,25 @@
                     }
                     else if (dbHist.STATUS == 2)
                     {
-                         @("Đã xuất kho - đang chờ nhận")
-                    }else if (dbHist.STATUS == 3)
+                        @("Đã xuất kho - đang chờ nhận")
+                    }
+                    else if (dbHist.STATUS == 3)
                     {
-                         @("Đã nhận")
+                        @("Đã nhận")
                     }
                 </td>
                 <td class="inner colwidth">
                     <div class="truncate" style="width:200px">@dbHist.GHI_CHU </div>
-                    
-                </td>
-                <td class='innerLast alignCenter' style="width:50px;">
-                    @if (((bool)(Session["IsAdmin"]) || (bool)Session["IsStoremanager"]) && @dbHist.STATUS <= 2)
-                    {
-                        <a href="@Url.Action("EditExportTransfer", "Import", new { id = @dbHist.MA_XUAT_KHO })" class="button-module">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                        </a>
-                    }
-                </td>
-                <td class='innerLast alignCenter' style="width:50px;">
-                    @if (((bool)(Session["IsAdmin"]) || (bool)Session["IsStoremanager"]) && @dbHist.STATUS <= 2)
-                    {
-                        <a href="@Url.Action("Delete", "Import", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                        </a>
-                    }
-                </td>
 
+                </td>
+                <td class='innerLast alignCenter' style="width:50px;">
+                    @if (((bool)(Session["IsAdmin"]) || (bool)Session["IsStoremanager"]) && @dbHist.STATUS == 2)
+                    {
+                        <a href="@Url.Action("ImportTransfer", "Import", new { id = @dbHist.MA_XUAT_KHO })" class="button-module">
+                            <img width="18" height="18" alt="edit" src="~/Content/images/import.png"></img>
+                        </a>
+                    }
+                </td>
             </tr>
         }
     </table>
@@ -114,14 +103,12 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ListExportTransferPartialView",
+                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ListWaitingImportPartialView",
                         new
                         {
                             currentPageIndex,
                             importStoreId = ViewBag.ImportStoreId,
                             exportStoreId = ViewBag.ExportStoreId,
-                            userId = ViewBag.UserId,
-                            userFullName = ViewBag.UserFullName,
                             status = ViewBag.Status,
                             fromDate = ViewBag.FromDate,
                             todate = ViewBag.Todate

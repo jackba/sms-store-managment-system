@@ -34,7 +34,7 @@
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 0)
+    if ((int)ViewBag.InputKind == 1)
     {
         ckind.Selected = true;
     }
@@ -43,7 +43,7 @@
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 1)
+    if ((int)ViewBag.InputKind == 2)
     {
         ckind.Selected = true;
     }
@@ -52,7 +52,7 @@
     kinds.Add(ckind);
 
     ckind = new SelectListItem();
-    if ((int)ViewBag.InputKind == 2)
+    if ((int)ViewBag.InputKind == 3)
     {
         ckind.Selected = true;
     }
@@ -61,7 +61,7 @@
     kinds.Add(ckind);
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Import", "Home")"> Quản lý kho - nhập kho </a>
+    <a href="@Url.Action("Export", "Home")"> Quản lý kho - xuất kho </a>
     > @ViewBag.Title
 
     <br />
