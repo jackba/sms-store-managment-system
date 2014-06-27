@@ -96,8 +96,14 @@
                     <td class='inner colwidth head ' width="15%">
                         Số lượng
                     </td>
-                    <td class='innerLast colwidth head ' width="15%">
+                    <td class='inner colwidth head ' width="15%">
                         Đơn vị
+                    </td>
+                    <td class='inner colwidth head ' width="15%">
+                        Đơn giá
+                    </td>
+                    <td class='innerLast colwidth head ' width="15%">
+                        Thành tiền
                     </td>
                 </tr>
                 @{
@@ -129,14 +135,20 @@
                         <td class="inner colwidth alignCenter">
                             @Html.TextBoxFor(model => Model.Detail[i].SO_LUONG_TRA, new { @class = "numberic tdNumeric quantity" })
                         </td>
-                        <td class="innerLast colwidth alignCenter">
+                        <td class="inner colwidth alignCenter">
                             @detail.TEN_DON_VI
                             @Html.HiddenFor(model => Model.Detail[i].GIA_VON, new { @class = "numberic tdNumeric price" })
+                        </td>
+                        <td class="inner colwidth alignCenter">
+                            @Html.TextBoxFor(model => Model.Detail[i].GIA_VON, new { @class = "numberic tdNumeric quantity" })
+                        </td>
+                        <td class="innerLast colwidth alignCenter">
+                            @Html.TextBoxFor(model => Model.Detail[i].TONG_TIEN, new { @class = "numberic tdNumeric quantity", @disabled = "disabled"})
                         </td>
                     </tr>
                 }
                 <tr style="background-color:lightgray">
-                    <td class="innerLast colwidth" colspan="4">
+                    <td class="innerLast colwidth" colspan="6">
                         <strong> Tồng số lượng của tất cả mặt hàng</strong>
                     </td>
                     <td class="innerLast colwidth numberic">
