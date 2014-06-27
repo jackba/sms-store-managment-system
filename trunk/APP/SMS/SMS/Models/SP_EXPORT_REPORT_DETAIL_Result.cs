@@ -18,7 +18,7 @@ namespace SMS.Models
         public string TEN_SAN_PHAM { get; set; }
         public string TEN_DON_VI { get; set; }
         public double SO_LUONG { get; set; }
-        public Nullable<double> GIA_XUAT { get; set; }
+        public double GIA_XUAT { get; set; }
         public double VALUE { get; set; }
     }
 }

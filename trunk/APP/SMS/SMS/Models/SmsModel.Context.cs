@@ -219,6 +219,15 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE", uSER_IDParameter, uSER_FULL_NAMEParameter);
         }
     
+        public virtual ObjectResult<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Nullable<int> mA_XUAT_KHO)
+        {
+            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
+                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
+                new ObjectParameter("MA_XUAT_KHO", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>("SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN", mA_XUAT_KHOParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_DON_VI_TINH_Result> SP_GET_DON_VI_TINH(Nullable<int> mA_SAN_PHAM)
         {
             var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
@@ -587,6 +596,15 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_CHUYEN_KHO_Result>("SP_GET_PHIEU_CHUYEN_KHO", sTATUSParameter, mA_KHO_CHUYENParameter, mA_KHO_NHANParameter, fROM_DATEParameter, tO_DATEParameter, mA_NHAN_VIEN_CHUYENParameter, tEN_NHAN_VIEN_CHUYENParameter);
         }
     
+        public virtual ObjectResult<SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result> SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Nullable<int> mA_XUAT_KHO)
+        {
+            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
+                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
+                new ObjectParameter("MA_XUAT_KHO", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result>("SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID", mA_XUAT_KHOParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result> SP_GET_PHIEU_XUAT_KHO_BAN_LE(Nullable<int> mA_KHO, Nullable<int> mA_NHAN_VIEN_XUAT, string tEN_NHAN_VIEN_XUAT, Nullable<int> mA_KHACH_HANG, string tEN_KHACH_HANG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
@@ -935,24 +953,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result> SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Nullable<int> mA_XUAT_KHO)
-        {
-            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
-                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
-                new ObjectParameter("MA_XUAT_KHO", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result>("SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID", mA_XUAT_KHOParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Nullable<int> mA_XUAT_KHO)
-        {
-            var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
-                new ObjectParameter("MA_XUAT_KHO", mA_XUAT_KHO) :
-                new ObjectParameter("MA_XUAT_KHO", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>("SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN", mA_XUAT_KHOParameter);
         }
     }
 }
