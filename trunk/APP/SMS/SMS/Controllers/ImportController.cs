@@ -53,6 +53,30 @@ namespace SMS.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult ImportTransfer(ImportTransferModel model)
+        {
+            var a = model.ExportDetail;
+            return View();
+        }
+        public ActionResult ImportTransfer(int id)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
+            ImportTransferModel model = new ImportTransferModel();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Units = units;
+            model.Infor = infor;
+            var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
+            model.ExportDetail = detail;
+            return View(model);
+        }
         public ActionResult ListExportTransfer(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -67,6 +91,51 @@ namespace SMS.Controllers
             ViewBag.InforMessage = inforMessage;
             return View();
         }
+
+        public ActionResult ListWaitingImport(string message, string inforMessage)
+        {
+            var ctx = new SmsContext();
+            ViewBag.InputKind = 0;
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A");
+            ViewBag.Stores = stores;
+            if (!(bool)Session["IsAdmin"])
+            {
+                ViewBag.ImportStoreId = Session["MyStore"];
+            }
+            ViewBag.Stores = stores;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ListWaitingImportPartialView(int? status, int? exportStoreId,
+            int? importStoreId, DateTime? fromDate, DateTime? todate, int? currentPageIndex)
+        {
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (todate == null)
+            {
+                todate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
+                Convert.ToInt32(importStoreId), fromDate, todate, Convert.ToInt32(0), string.Empty).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_PHIEU_CHUYEN_KHO_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            ListExportTransferModel model = new ListExportTransferModel();
+            model.TheList = theList.ToPagedList(pageIndex, pageSize);
+            model.Count = theList.Count;
+            ViewBag.Status = status;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = todate;
+            ViewBag.ImportStoreId = importStoreId;
+            ViewBag.ExportStoreId = exportStoreId;
+            return PartialView("ListWaitingImportPartialView", model);
+        }
+
         public ActionResult EditExportTransfer(int id)
         {
             var ctx = new SmsContext();
@@ -90,17 +159,84 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult EditExportTransfer(EditTransferModel model)
         {
-            var details = model.ExportDetail;
-            return View();
-        }
-        public ActionResult ListWaitingImport()
-        {
             var ctx = new SmsContext();
-            ViewBag.Status = 0;
-            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A");
-            ViewBag.Stores = stores;
-            return View();
+            var details = model.ExportDetail;
+            var infor = model.Infor;
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try{
+                    var exInfor = ctx.XUAT_KHO.Find(infor.MA_XUAT_KHO);
+                    if (infor.SAVE_FLG == 1)
+                    {
+                        exInfor.ACTIVE = "W"; // waiting
+                    }
+                    else
+                    {
+                        exInfor.ACTIVE = "A";
+                    }
+                    exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
+                    exInfor.GHI_CHU = infor.GHI_CHU;
+                    exInfor.NGAY_XUAT = infor.NGAY_XUAT;
+                    exInfor.LY_DO_XUAT = 3; // xuất chuyển kho
+                    exInfor.CREATE_AT = DateTime.Now;
+                    exInfor.UPDATE_AT = DateTime.Now;
+                    exInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    exInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    exInfor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    var oldDetails = ctx.CHI_TIET_XUAT_KHO.Where(u => u.MA_XUAT_KHO == infor.MA_XUAT_KHO).ToList<CHI_TIET_XUAT_KHO>();
+                    foreach (var oldDetail in oldDetails)
+                    {
+                        oldDetail.ACTIVE = "I";
+                        oldDetail.CREATE_AT = DateTime.Now;
+                        oldDetail.UPDATE_AT = DateTime.Now;
+                        oldDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        oldDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                        ctx.SaveChanges();
+                    }
+
+                    CHI_TIET_XUAT_KHO ct;
+                    foreach (var detail in details)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.CHI_TIET_XUAT_KHO.Create();
+                            if (infor.SAVE_FLG == 1)
+                            {
+                                ct.ACTIVE = "W";
+                            }
+                            else
+                            {
+                                ct.ACTIVE = "A";
+                            }
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.MA_XUAT_KHO = exInfor.MA_XUAT_KHO;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            ct.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            ct.GIA_XUAT = 0;
+                            ctx.CHI_TIET_XUAT_KHO.Add(ct);
+                            ctx.SaveChanges();
+                        }
+                    }
+
+                    transaction.Complete();
+                    return RedirectToAction("ListExportTransfer", new { @inforMessage = "Lưu thành công" });
+                }
+                catch (Exception ex)
+                {
+                    
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
+                }
+            }
         }
+        
 
         [HttpPost]
         public PartialViewResult ListExportTransferPartialView(int? status, int? exportStoreId,

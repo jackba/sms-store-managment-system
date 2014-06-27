@@ -41,6 +41,17 @@ namespace SMS.Models
         public List<DON_VI_TINH> Units { get; set; }
         public List<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> ExportDetail { get; set; }
     }
+
+
+    public class ImportTransferModel
+    {
+        public SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result Infor { get; set; }
+        public NHAP_KHO ImportInfor { get; set; }
+        public List<KHO> Stores { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+        public List<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> ExportDetail { get; set; }
+    }
+
     public class ListExportTransferModel
     {
         public IPagedList<SP_GET_PHIEU_CHUYEN_KHO_Result> TheList { get; set; }

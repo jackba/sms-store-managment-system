@@ -446,6 +446,7 @@
     <Content Include="Content\images\ExportTransfer.jpg" />
     <Content Include="Content\images\export_text.jpg" />
     <Content Include="Content\images\import.png" />
+    <Content Include="Content\images\import1.png" />
     <Content Include="Content\images\ImportDetailReport.jpg" />
     <Content Include="Content\images\ListPriceProducts.png" />
     <Content Include="Content\images\loading-2.gif" />
@@ -465,6 +466,7 @@
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\SaleExportList.png" />
+    <Content Include="Content\images\shopping-list.png" />
     <Content Include="Content\images\widthLogo.jpg" />
     <Content Include="Content\Export.css" />
     <Content Include="Content\Import.css" />
@@ -766,6 +768,8 @@
     <Content Include="Views\Import\ListExportTransferPartialView.cshtml" />
     <Content Include="Views\Import\Edit.cshtml" />
     <Content Include="Views\Import\EditExportTransfer.cshtml" />
+    <Content Include="Views\Import\ListWaitingImportPartialView.cshtml" />
+    <Content Include="Views\Import\ImportTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
