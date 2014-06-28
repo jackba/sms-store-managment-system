@@ -11,9 +11,36 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    public class HoaDonBanHang
+    {
+        public KhachHangInfo KH_Info { get; set; }
+        public List<ChiTiet_HoaDon> lstChiTietHoaDon { get; set; }
+
+    }
+    public class KhachHangInfo{
+        public int Ma_HD { get; set; }
+        public int? Ma_KH {get;set;}
+        public string Ten_KH {get;set;}
+        public DateTime? Ngay_Ban {get;set;}
+        public DateTime? Ngay_Giao {get;set;}
+        public string Dia_Chi {get;set;}
+    }
+    public class ChiTiet_HoaDon{
+        public string Code_SP { get; set; } 
+        public int? Ma_SP {get;set;}
+        public string Ten_SP { get; set; } 
+        public double? Gia_Ban { get; set; }
+        public double? Phan_Tram_CK{get;set;}
+        public double? Gia_Thuc{get;set;}
+        public double? So_Luong{get;set;}
+        public int? Ma_Kho_Xuat{get;set;}
+        public string Ten_Kho_Xuat { get; set; }
+        public int Ma_Don_Vi{ get; set; }
+        public string Ten_Don_Vi { get; set; }
+    }
     public partial class HOA_DON
     {
+      
         public HOA_DON()
         {
             this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
@@ -21,7 +48,7 @@ namespace SMS.Models
             this.TRA_HANG = new HashSet<TRA_HANG>();
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
         }
-    
+            
         public int MA_HOA_DON { get; set; }
         public string SO_HOA_DON { get; set; }
         public Nullable<int> MA_KHACH_HANG { get; set; }

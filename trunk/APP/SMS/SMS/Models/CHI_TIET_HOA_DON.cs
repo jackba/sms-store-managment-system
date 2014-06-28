@@ -14,6 +14,11 @@ namespace SMS.Models
     
     public partial class CHI_TIET_HOA_DON
     {
+        public CHI_TIET_HOA_DON()
+        {
+
+        }
+      
         public Nullable<int> MA_HOA_DON { get; set; }
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public Nullable<double> SO_LUONG { get; set; }

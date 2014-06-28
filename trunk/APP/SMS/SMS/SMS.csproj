@@ -470,7 +470,7 @@
     <Content Include="Content\images\widthLogo.jpg" />
     <Content Include="Content\Export.css" />
     <Content Include="Content\Import.css" />
-    <Content Include="Content\LapHoaDon.css" />
+    <Content Include="Content\HoaDonBanHang.css" />
     <Content Include="Content\BaoGiaSanPham.css" />
     <Content Include="Content\css\grid.css" />
     <Content Include="Content\css\style.css" />
@@ -697,7 +697,7 @@
     <Content Include="Views\QuanLyKho\ExportReportDetail.cshtml" />
     <Content Include="Views\QuanLyKho\ImExDetail.cshtml" />
     <Content Include="Views\QuanLyKho\FifoReport.cshtml" />
-    <Content Include="Views\BanHang\LapHoaDon.cshtml" />
+    <Content Include="Views\BanHang\HoaDonBanHang.cshtml" />
     <Content Include="Views\NguoiDung\changePass.cshtml" />
     <Content Include="Views\PhanQuyen\AddNew.cshtml" />
     <Content Include="Views\PhanQuyen\Edit.cshtml" />
@@ -747,7 +747,6 @@
     <Content Include="Views\TraHang\Index.cshtml" />
     <Content Include="Views\KhachHang\IndexPartialView.cshtml" />
     <Content Include="Views\KhachHang\WarningPartialView.cshtml" />
-    <Content Include="Views\BanHang\EditBill.cshtml" />
     <Content Include="Views\TraHang\ShowDetail.cshtml" />
     <Content Include="Views\TraHang\IndexPartialView.cshtml" />
     <Content Include="Views\TraHang\Show.cshtml" />
