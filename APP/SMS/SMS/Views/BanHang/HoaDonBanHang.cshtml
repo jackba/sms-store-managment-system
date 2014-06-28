@@ -1,9 +1,17 @@
-﻿@{
-    ViewBag.Title = "Lập hóa đơn bán hàng";
+﻿@model SMS.Models.HoaDonBanHang
+@{
+    if (0 < ViewBag.MaHoaDon)
+    {
+        ViewBag.Title = "Chỉnh sửa hóa đơn bán hàng";
+    }
+    else 
+    {
+        ViewBag.Title = "Lập hóa đơn bán hàng";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/LapHoaDon.css" rel="stylesheet" />
+<link href="~/Content/HoaDonBanHang.css" rel="stylesheet" />
 @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
 <h2>@ViewBag.Title</h2>
 @section Scripts
@@ -16,7 +24,9 @@
 <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
 
 <script>
-
+    var unitRootName = null;
+    var rowNumCurrent = null;
+    // ONLOAD WINDOW
     $(document).ready(function () {
         window.onbeforeunload = function () {
             //TODO: BACK NAVIGATION
@@ -218,7 +228,7 @@
 
                 hideRelationProduct();
                 createDonViTinh();
-               
+
                 $('#hidUnitRootName').val(ui.item.unitNm);
 
                 $('#hidFactorValue').val('1');
@@ -269,7 +279,111 @@
             e.preventDefault();
         });
         //format numberic end
+        //MODE UPDATE
+        var model = @Html.Raw(Json.Encode(Model));
+        if ($('#KH_Info_Ma_HD').val() != null && $('#KH_Info_Ma_HD').val() != '' && $('#KH_Info_Ma_HD').val != 'undefined') {
+            $('#MaKhachHang').val($('#KH_Info_Ma_HD').val());
+            $('#TenKhachHang').val($('#KH_Info_Ten_KH').val());
+            $('#NgayBan').datepicker(new Date($('#KH_Info_Ngay_Ban').val()));
+            $('#NgayGiao').datepicker(new Date($('#KH_Info_Ngay_Giao').val()));
+            $('#DiaChi').val($('#KH_Info_Dia_Chi').val());
+            
+
+            // render table
+            var rowChiTiet = null;
+            for(var i = 0 ; i < model.lstChiTietHoaDon.length; i++){
+                rowChiTiet = model.lstChiTietHoaDon[i];
+                createRowModeUpdate(rowChiTiet);
+
+                CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
+
+                $('#hidUnitRootName').val('');
+                $('#suggestUnit').html('');
+                $('#suggestUnit').hide();
+               
+            }
+        }
     });
+
+    // FUNCTION EXECUTE
+    function createRowModeUpdate(rowChiTiet){
+        var CodeSP = rowChiTiet.Code_SP;
+        var MaSP = rowChiTiet.Ma_SP;
+        var TenSP = rowChiTiet.Ten_SP;
+        var GiaBan = rowChiTiet.Gia_Ban;
+        var ChietKhau = rowChiTiet.Phan_Tram_CK;
+        var GiaThuc = rowChiTiet.Gia_Thuc;
+        var SoLuong = rowChiTiet.So_Luong;
+        var MaKhoXuat = rowChiTiet.Ma_Kho_Xuat;
+        var TenKhoXuat= rowChiTiet.Ten_Kho_Xuat;
+        var MaDonVi = rowChiTiet.Ma_Don_Vi;
+        var TenDonVi = rowChiTiet.Ten_Don_Vi;
+
+
+
+        var count = $('#tableContent tr').length;
+        var rowNum = MaSP + '_' + count;
+
+
+     
+
+        var newRow = '';
+        newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
+        newRow += '<td style="width:48px;"> ';
+        newRow += '  <div class="colDelete">';
+        newRow += '  <img src="/Content/images/delete-20.png" style="cursor: pointer;" onclick="deleteRow(\'' + rowNum + '\');">';
+        //newRow += '   </div>';
+        //newRow += '  <div>';
+        newRow += '  <input type="radio" id="Radio_' + rowNum + '" style=" width: 20px!important;" name="groupBill" onchange="updateInputFields(\'' + rowNum + '\');"> ';
+        newRow += '   </div>';
+        newRow += '  ';
+        newRow += ' </td> ';
+        newRow += ' <td  class="colProductNm textLeft"> ';
+        newRow += ' <div  class="colProductNm tooltip truncate">';
+        newRow += TenSP;
+        newRow += '  <span>' + TenSP + '</span>';
+        newRow += '  <input name="' + MaSP + '" type="hidden" value="' + MaSP + '" />';
+        newRow += '  <input name="CodeSanPham_' + rowNum + '" type="hidden" value="' + CodeSP + '" />';
+        newRow += '  <input name="MaSanPham_' + rowNum + '" type="hidden" value="' + MaSP + '" />';
+        newRow += '  <input name="TenSanPham_' + rowNum + '" type="hidden" value="' + TenSP + '" />';
+        newRow += '   </div>';
+        newRow += ' </td> ';
+        newRow += ' <td class="colStore textLeft"> ';
+        newRow +=  TenKhoXuat
+        newRow += '  <input name="MaKho_' + rowNum + '" type="hidden" value="' + MaKhoXuat + '" />';
+        newRow += ' </td> ';
+        newRow += '  <td  class="colPrice textRight"> ';
+        newRow += ' <div  class="colPrice tooltip truncate">';
+        newRow += GiaThuc ;
+        newRow += '  <input name="GiaBan_' + rowNum + '" type="hidden" value="' + GiaBan + '" />';
+        newRow += '  <input name="ChietKhau_' + rowNum + '" type="hidden" value="' + ChietKhau + '" />';
+        newRow += '  <input name="GiaThuc_' + rowNum + '" type="hidden" value="' + GiaThuc + '" />';
+        newRow += '  <span> Đây là giá sau khi đã được chiết khấu.<br/> + Chiết khấu : ' + ChietKhau + '%.<br/> + Giá gốc : ' + GiaBan + '.</span>';
+        newRow += '   </div>';
+        newRow += ' </td>  ';
+
+        CalcTotalMoney1RowRenderModeUpdate(SoLuong,GiaThuc);
+
+        newRow += '  <td class="colAmount textRight"> ';
+        newRow += $('#hidCount1Row').val();
+        newRow += '  <input name="SoLuong_' + rowNum + '" type="hidden" value="' + $('#hidCount1Row').val() + '" />';
+        newRow += ' </td> ';
+
+        newRow += '  <td class="colUnit textCenter"> ';
+        newRow += TenDonVi;
+        newRow += '  <input name="UnitRoot_' + rowNum + '" type="hidden" value="' + TenDonVi + '" />';
+        newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + MaDonVi + '" />';
+        newRow += ' </td> ';
+
+        newRow += '  <td class="colTotal textRight"> ';
+        newRow += $('#hidTotalRowAdded').val()
+        newRow += '  <input name="ThanhTien_' + rowNum + '" type="hidden" value="' + $('#hidTotalRowAdded').val() + '" />';
+        newRow += ' </td> ';
+        newRow += '  </tr> ';
+        $('#tableContent').prepend(newRow);
+    }
+
+
     function btnSaveClick() {
         var msgErr = checkInputFields(true);
         if ('' == msgErr) {
@@ -352,7 +466,7 @@
         CalcRealPrice(item.price, item.discount);
         addCommaNumberic('#GiaThuc');
         $('#MaSanPham').val(item.id);
-      
+
         if (isCode == true) {
             $('#CodeSanPham').val(item.label);
             $('#TenSanPham').val(item.name);
@@ -360,7 +474,7 @@
             $('#CodeSanPham').val(item.code);
             $('#TenSanPham').val(item.label);
         }
-       
+
         $('#GiaBan').val(item.price);
         addCommaNumberic('#GiaBan');
         $('#ChietKhau').val(item.discount);
@@ -369,24 +483,24 @@
     function setRelationProduct(item /*, isSelected*/ , isCode) {
         $('#S_MaSanPham').html(item.id);
         if (isCode == true) {
-         $('#S_TenSanPham').html(item.name);
+            $('#S_TenSanPham').html(item.name);
         } else {
-         $('#S_TenSanPham').html(item.label);
+            $('#S_TenSanPham').html(item.label);
         }
-        
+
         //if (isSelected == true) {
         //    setFixedField(item);
         //    $('#S_GiaBan').html($('#GiaBan').val());
         //    $('#S_ChietKhau').html($('#ChietKhau').val());
         //    $('#S_GiaThuc').html($('#GiaThuc').val());
         //} else {
-            $('#S_GiaBan').html(item.price);
-            addCommaNumberic('#S_GiaBan', true);
-            $('#S_ChietKhau').html(item.discount);
-            addCommaNumberic('#GiaBan',true);
-            var priceReal = CalcRealPrice(item.price, item.discount, true);
-            $('#S_GiaThuc').html(priceReal);
-            addCommaNumberic('#S_GiaThuc', true);
+        $('#S_GiaBan').html(item.price);
+        addCommaNumberic('#S_GiaBan', true);
+        $('#S_ChietKhau').html(item.discount);
+        addCommaNumberic('#GiaBan',true);
+        var priceReal = CalcRealPrice(item.price, item.discount, true);
+        $('#S_GiaThuc').html(priceReal);
+        addCommaNumberic('#S_GiaThuc', true);
         //}
     }
     function setRelationCustomer(item, isSelected) {
@@ -717,10 +831,11 @@
         newRow += '  <td class="colUnit textCenter"> ';
         if (unitRootName != null) {
             newRow += unitRootName;
+            newRow += '  <input name="UnitRoot_' + rowNum + '" type="hidden" value="' + unitRootName + '" />';
         } else {
             newRow += $('#hidUnitRootName').val(); /*$('#typeDonViTinh :selected').text()*/
+            newRow += '  <input name="UnitRoot_' + rowNum + '" type="hidden" value="' + $('#hidUnitRootName').val() + '" />';
         }
-        newRow += '  <input name="UnitRoot_' + rowNum + '" type="hidden" value="' + $('#hidUnitRootName').val() + '" />';
         newRow += '  <input name="MaDonViTinh_' + rowNum + '" type="hidden" value="' + $('#typeDonViTinh :selected').val() + '" />';
         newRow += ' </td> ';
 
@@ -734,8 +849,7 @@
         $('#tableContent').prepend(newRow);
 
     }
-    var unitRootName = null;
-    var rowNumCurrent = null;
+
     function updateInputFields(rowNum) {
         setDisableControl('addRecord', true);
         setDisableControl('updateRecord', false);
@@ -748,6 +862,7 @@
         $('#ChietKhau').val($('#tableContent input:hidden[name="ChietKhau_' + rowNum + '"]').val());
         $('#GiaThuc').val($('#tableContent input:hidden[name="GiaThuc_' + rowNum + '"]').val());
         createDonViTinh();
+        //TODO : check again.
         $('#typeDonViTinh').val($('#tableContent input:hidden[name="MaDonViTinh_' + rowNum + '"]').val());
         unitRootName = $('#tableContent input:hidden[name="UnitRoot_' + rowNum + '"]').val()
         //$('#typeDonViTinh :selected').text()
@@ -787,11 +902,11 @@
             clearUpdateRecord();
             // setTimeout highlight
 
-           
+
         } else {
             showMsgErr(msgErr, true);
         }
-        
+
     }
     function clearUpdateRecord() {
         setDisableControl('addRecord', false);
@@ -805,7 +920,7 @@
         $('#TenSanPham').css("background", "white");
 
         $('#hidRadioEdit').click();
-        
+
 
         rowNumCurrent = null;
         unitRootName = null;
@@ -827,22 +942,44 @@
     function CalcFactorOfProduct() {
         $('#suggestUnit').html('');
         $('#suggestUnit').hide();
-        
+
         var unitNo = $('#typeDonViTinh :selected').val();
         var productNo = $('#tableSearch #MaSanPham').val();
         GetFactorOfProduct(productNo, unitNo);
-      
+
     }
     function showSuggestUnit() {
         var unitName = $('#typeDonViTinh :selected').text();
 
-        
+
         $('#hidFactorValueSuggestUnit').val($('#hidFactorValue').val());
         addCommaNumberic('#hidFactorValueSuggestUnit');
 
         var buffer = "* 1 " + unitName + " = " + $('#hidFactorValueSuggestUnit').val() + " " + $('#hidUnitRootName').val();
         $('#suggestUnit').append(buffer);
         $('#suggestUnit').show();
+    }
+    function CalcTotalMoney1RowRenderModeUpdate(count1Row, realPrice) {
+        var result = 0;
+        //var count1Row = 0;
+        //var factor = $('#hidFactorValue').val();
+
+        //var count = removeCommas($('#tableSearch #SoLuong').val());
+        //var realPrice = removeCommas($('#tableSearch #GiaThuc').val());
+        //count1Row = count * factor;
+        result = count1Row * realPrice;
+        // count sp 1 row voi don vi unit root
+
+        $('#hidCount1Row').val(count1Row);
+        addCommaNumberic('#hidCount1Row');
+        // total row added
+        result = roundToTwo(result);
+        $('#hidTotalRowAdded').val(result);
+        addCommaNumberic('#hidTotalRowAdded');
+
+        result = $('#hidTotalRowAdded').val();
+
+        return result;
     }
     function CalcTotalMoney1Row() {
         var result = 0;
@@ -854,7 +991,7 @@
         count1Row = count * factor;
         result = count1Row * realPrice;
         // count sp 1 row voi don vi unit root
-        
+
         $('#hidCount1Row').val(count1Row);
         addCommaNumberic('#hidCount1Row');
         // total row added
@@ -954,10 +1091,12 @@
         if ($("table.tableContentScroll tr").length == 0) {
             setDisableControl('saveBill_top', true);
             setDisableControl('saveBill_bottom', true);
+            clearUpdateRecord();
         } else {
             setDisableControl('saveBill_top', false);
             setDisableControl('saveBill_bottom', false);
         }
+       
     }
     function saveListRowNum() {
         var listRowNum = '';
@@ -1087,7 +1226,7 @@
     /*end format numberic*/
 
     function saveBillSuccess() {
-       
+
         $('#divErr').hide();
         $('#divInfo').show();
         setDisableControl('saveBill_top', true);
@@ -1132,9 +1271,16 @@
 </div>
 <hr class="mydashed" />
 <!--Message-->
+<!--Hidden field use for mode UPDATE-->
+@Html.HiddenFor(u => u.KH_Info.Ma_HD)
+@Html.HiddenFor(u => u.KH_Info.Ma_KH, new { @id="MaKhachHang" , @name="MaKhachHang" })
+@Html.HiddenFor(u => u.KH_Info.Ten_KH)
+@Html.HiddenFor(u => u.KH_Info.Ngay_Ban)
+@Html.HiddenFor(u => u.KH_Info.Ngay_Giao)
+@Html.HiddenFor(u => u.KH_Info.Dia_Chi)
 
 <fieldset>
-    @using (Ajax.BeginForm("SaveBill", "BanHang", null,
+    @using (Ajax.BeginForm("SaveBill", "BanHang", new { MaHoaDon = ViewBag.MaHoaDon},
      new AjaxOptions()
      {
          UpdateTargetId = "divInfo",
@@ -1153,7 +1299,7 @@
                         <br />
                         <div>
                             <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" onkeypress="return disableEnterKey(event);" />
-                            <input type="hidden" name="MaKhachHang" id="MaKhachHang" />
+                            @*<input type="hidden" name="MaKhachHang" id="MaKhachHang" />*@
                             <input type="hidden" name="UserId" value="@ViewBag.UserId" />
                             <input type="hidden" id="MyStore" value="@ViewBag.MyStore" />
                             <input type="hidden" id="kindCustomer" />
@@ -1347,37 +1493,37 @@
                     <br />
                     <span><strong>- Số lượng: </strong> </span>
       @{
-                        int j = 0;
-                        foreach (var Kho in ViewBag.KhoList)
-                        {
-                            j++;
-                            if (j <= 5)
-                            {
-                                switch (j)
-                                {
-                                    case 1:
+        int j = 0;
+        foreach (var Kho in ViewBag.KhoList)
+        {
+            j++;
+            if (j <= 5)
+            {
+                switch (j)
+                {
+                    case 1:
                                         <br />
                                         <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_1"> </span>
-                                        break;
-                                    case 2:
+                        break;
+                    case 2:
                                     <br />
                                     <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_2">  </span>
-                                        break;
-                                    case 3:
+                        break;
+                    case 3:
                                     <br />
                                     <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_3"> </span>
-                                        break;
-                                    case 4:
+                        break;
+                    case 4:
                                     <br />
                                     <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_4">  </span>
-                                        break;
-                                    case 5:
+                        break;
+                    case 5:
                                     <br />
                                     <span><strong>  + @Kho.TEN_KHO : </strong> </span><span id="store_5">  </span>
-                                        break;
-                                }
-                            }
-                        }
+                        break;
+                }
+            }
+        }
             }
 
                 </div>
@@ -1394,7 +1540,7 @@
             <input type="hidden" name="hidTotalAllMoney" id="hidTotalAllMoney" value="0" />
             <input type="hidden" id="ListRowNum" name="ListRowNum" value="" />
             <input type="hidden" id="hidUnitRootName" value="">
-             <input type="radio" id="hidRadioEdit" style=" display:none" name="groupBill" /> ';
+             <input type="radio" id="hidRadioEdit" style=" display:none" name="groupBill" /> 
             <!--hidden field end-->
 
         </div>
