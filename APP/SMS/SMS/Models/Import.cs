@@ -23,6 +23,12 @@ namespace SMS.Models
         public List<CHI_TIET_NHAP_KHO> Detail { get; set; }
     }
 
+    public class ReturnNoBillModel
+    {
+        public TRA_HANG ReturnInfor { get; set; }
+        public List<CHI_TIET_TRA_HANG> ReturnDetail { get; set; }
+    }
+
     public class TransferModel
     {
         public NHAP_KHO ImportInfor { get; set; }

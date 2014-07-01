@@ -2053,6 +2053,14 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
+        <Function Name="SP_IMPORT_TRANSFER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_PHIEU_CHUYEN" Type="int" Mode="In" />
+          <Parameter Name="NGAY_NHAP" Type="date" Mode="In" />
+          <Parameter Name="MA_NHAN_VIEN" Type="int" Mode="In" />
+          <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="GHI_CHU" Type="nvarchar" Mode="In" />
+          <Parameter Name="RETURN_VALUE" Type="int" Mode="InOut" />
+        </Function>
         <Function Name="SP_SALE_EXPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
@@ -5214,6 +5222,14 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="SP_IMPORT_TRANSFER">
+            <Parameter Name="MA_PHIEU_CHUYEN" Mode="In" Type="Int32" />
+            <Parameter Name="NGAY_NHAP" Mode="In" Type="DateTime" />
+            <Parameter Name="MA_NHAN_VIEN" Mode="In" Type="Int32" />
+            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="GHI_CHU" Mode="In" Type="String" />
+            <Parameter Name="RETURN_VALUE" Mode="InOut" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_SALE_EXPORT">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
             <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
@@ -5407,6 +5423,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="TEN_KHO" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="TEN_NHA_CUNG_CAP" Nullable="true" MaxLength="100" />
+          <Property Type="Int16" Name="LY_DO_NHAP" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GET_IMPORT_DETAIL_BY_ID_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
@@ -6389,6 +6406,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
                 <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
                 <ScalarProperty Name="TEN_KHO" ColumnName="TEN_KHO" />
                 <ScalarProperty Name="TEN_NHA_CUNG_CAP" ColumnName="TEN_NHA_CUNG_CAP" />
+                <ScalarProperty Name="LY_DO_NHAP" ColumnName="LY_DO_NHAP" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -6593,6 +6611,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_IMPORT_REPORTER_SUM" FunctionName="SmsModel.Store.SP_IMPORT_REPORTER_SUM" />
+          <FunctionImportMapping FunctionImportName="SP_IMPORT_TRANSFER" FunctionName="SmsModel.Store.SP_IMPORT_TRANSFER" />
           <FunctionImportMapping FunctionImportName="SP_SALE_EXPORT" FunctionName="SmsModel.Store.SP_SALE_EXPORT" />
           <FunctionImportMapping FunctionImportName="SP_THU_TIEN_XUAT_KHO" FunctionName="SmsModel.Store.SP_THU_TIEN_XUAT_KHO" />
           <FunctionImportMapping FunctionImportName="STMA_GET_GIA_TRI_HANG_BAN_TON" FunctionName="SmsModel.Store.STMA_GET_GIA_TRI_HANG_BAN_TON" />
