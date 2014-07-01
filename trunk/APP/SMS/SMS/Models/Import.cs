@@ -26,6 +26,7 @@ namespace SMS.Models
     public class ReturnNoBillModel
     {
         public TRA_HANG ReturnInfor { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
         public List<CHI_TIET_TRA_HANG> ReturnDetail { get; set; }
     }
 

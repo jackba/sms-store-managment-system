@@ -979,5 +979,14 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual ObjectResult<SP_GET_PRODUC_4_RETURN_Result> SP_GET_PRODUC_4_RETURN(string tEN_SAN_PHAM)
+        {
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PRODUC_4_RETURN_Result>("SP_GET_PRODUC_4_RETURN", tEN_SAN_PHAMParameter);
+        }
     }
 }
