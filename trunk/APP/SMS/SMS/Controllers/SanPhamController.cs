@@ -100,6 +100,24 @@ namespace SMS.Controllers
             return result;
         }
 
+        [HttpPost]
+        public JsonResult FindSuggestForReturn(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    where ((x.CODE.ToLower().Contains(prefixText.ToLower())
+                                    || x.TEN_SAN_PHAM.ToLower().Contains(prefixText.ToLower())) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        code = x.CODE,
+                                        name = x.TEN_SAN_PHAM,
+                                        price = (x.GIA_BAN_3 == null ? 0 : x.GIA_BAN_3*90/100)
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
 
         [HttpPost]
         public JsonResult FindSuggestByCode(string prefixText, string typeCustomer)

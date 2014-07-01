@@ -132,6 +132,7 @@
             }).focus(function () {
                 $(this).autocomplete('search', '');
             });
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $('#mainForm').submit();
         });
 
