@@ -27,12 +27,17 @@ namespace SMS.Models
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
         public int ID { get; set; }
+        public Nullable<int> MA_DON_VI { get; set; }
+        public Nullable<double> SO_LUONG_TEMP { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual SAN_PHAM SAN_PHAM { get; set; }
         public virtual TRA_HANG TRA_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
-
         public int? DEL_FLG { get; set; }
+        public float? HE_SO { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public string CODE { get; set; }
+        public float? THANH_TIEN { get; set; }
     }
 }
