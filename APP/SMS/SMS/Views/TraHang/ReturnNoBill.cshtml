@@ -1,13 +1,11 @@
-﻿@model SMS.Models.ImportTransferModel
+﻿@model SMS.Models.ReturnNoBillModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Nhập kho";
+    ViewBag.Title = "Nhận trả hàng không hóa đơn.";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Import", "Home")"> Nhập kho </a> >
-    <a href="@Url.Action("ListWaitingImport", "Import")"> Danh sách phiếu chuyển kho </a> >
-    @ViewBag.Title
+    <a href="@Url.Action("Return", "Home")"> Xử lú trả hàng </a> > @ViewBag.Title
 </div>
 
 <br />
@@ -20,7 +18,7 @@
 <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/Export.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
 <script src="~/Content/js/jquery-1.9.1.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -49,224 +47,127 @@
     </style>
 
 }
-@using (Html.BeginForm("ImportTransfer", "Import", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("ReturnNoBill", "TraHang", FormMethod.Post, new { @id = "index" }))
 {
     <table>
         <tr>
             <td>
-                @Html.HiddenFor(u => u.Infor.MA_XUAT_KHO)
-                @Html.HiddenFor(u => u.Infor.MA_KHO_NHAN)
-                @Html.HiddenFor(u => u.Infor.MA_KHO_XUAT)
-                Kho xuất :
+                Tên khách hàng :
             </td>
             <td class="required">
-                
-                @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                
+                @Html.TextBoxFor(u => u.ReturnInfor.TEN_KHACH_HANG, new { @id = "customerName"})
             </td>
         </tr>
         <tr>
             <td>
-                Kho Nhận :
+                Ngày trả hàng :
             </td>
             <td class="required">
-                @Html.DropDownListFor(u => u.Infor.MA_KHO_NHAN, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @disabled = "disabled", @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Ngày nhập :
-            </td>
-            <td class="required">
-                @Html.TextBoxFor(u => u.ImportInfor.NGAY_NHAP, "{0:dd/MM/yyyy}", new { @class = "datePicker ", @id = "importDate", @name = "importDate" })
+               @Html.TextBoxFor(u => u.ReturnInfor.NGAY_TRA, "{0:dd/MM/yyyy}", new { @class = "datePicker ", @id = "returnDate" })
             </td>
         </tr>
         <tr>
             <td>
                 Ghi chú :
             </td>
-            <td>
-                @Html.TextAreaFor(u => u.ImportInfor.GHI_CHU)
-                @Html.HiddenFor(u => u.Infor.STATUS)
+            <td >
+               @Html.TextAreaFor(u => u.ReturnInfor.GHI_CHU)
             </td>
-        </tr>
+        </tr>        
     </table>
     <hr />
-    <input type="submit" value="Lưu" style="width:200px;" />
-    <input type="button" value="Trở về danh sách hóa đơn" style="width:300px;"  />
-    <input type="hidden" id="rowIndex" value="@(Model.ExportDetail.Count - 1)" />
-    @Html.HiddenFor(u => u.Infor.SAVE_FLG, new { id = "saveFlg" })
+    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    <input type="hidden" id="rowIndex" value="0" />
+
     <div style="clear:both"></div>
     <table id="detailTable" name="detailTable" width="100%">
         <thead>
             <tr class="inner column-hscroll alignCenter">
+                <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
                 <td class='inner colwidth head '> CODE </td>
                 <td class='inner colwidth head '> Sản phẩm </td>
                 <td class='inner colwidth head '> Số lượng </td>
-                <td class='innerLast colwidth head '> Đơn vị </td>
+                <td class='inner colwidth head '> Đơn vị </td>
+                <td class='inner colwidth head '> Đơn giá </td>
+                <td class='innerLast colwidth head '> Thành tiền </td>
             </tr>
         </thead>
+
         <tbody>
-            @if (Model.ExportDetail != null)
-            {
-                for (int i = 0; i < Model.ExportDetail.Count; i++)
-                {
-                    <tr>
-                        <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl", @disabled = "disabled" })
-                        </td>
-                        <td class='inner colwidth '>
-                            @Html.HiddenFor(u => u.ExportDetail[i].MA_SAN_PHAM, new { @class = "productId ", @disabled = "disabled" })
-                            @Html.HiddenFor(u => u.ExportDetail[i].DEL_FLG, new { @class = "delFlg" })
-                            @Html.HiddenFor(u => u.ExportDetail[i].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl", @disabled = "disabled" })
-                        </td>
-                        <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic", @disabled = "disabled" })
-                        </td>
-                        <td class="innerLast colwidth">
-                            @Html.HiddenFor(u => u.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                            @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl", @disabled = "disabled" })
-                        </td>
-                    </tr>
-                }
-            }
+            <tr>
+                <td class='inner alignCenter colwidth' width="5%;">
+                    <input type="checkbox" class="chcktbl">
+                </td>
+                <td class='inner colwidth '>
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].CODE, new { @class = "code codebtl" })
+                </td>
+                <td class='inner colwidth '>
+                    @Html.HiddenFor(u => u.ReturnDetail[0].MA_SAN_PHAM, new { @class = "productId " })
+                    @Html.HiddenFor(u => u.ReturnDetail[0].DEL_FLG, new { @class = "delFlg" })
+                    @Html.HiddenFor(u => u.ReturnDetail[0].HE_SO, new { @class = "convertor" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].TEN_SAN_PHAM, new { @class = "productname namebtl" })
+                </td>
+                <td class='inner colwidth '>
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
+                </td>
+                <td class="inner colwidth">
+                    @Html.DropDownListFor(u => u.ReturnDetail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
+                </td>
+                <td class='inner colwidth '>
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].GIA_VON, new { @class = "price textbtl numberic" })
+                </td>
+                <td class='innerLast colwidth '>
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].THANH_TIEN, new { @class = "total textbtl numberic", @readOnly = true, @disabled = "disabled" })
+                </td>
+            </tr>
         </tbody>
         <tfoot>
             <tr>
-                <td class='innerLast colwidth' style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="6"> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
+                    <input type="button" value="Thêm dòng" onclick="addRow()" />
+                </td>
+            </tr>
+            <tr>
+                <td class='innerLast colwidth  ' colspan="3" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong>Tổng hóa đơn</strong> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="2"> <strong>Tổng hóa đơn</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
             </tr>
         </tfoot>
     </table>
-    <input type="submit" value="Lưu" style="width:200px;" />
-    <input type="button" value="Trở về danh sách hóa đơn" style="width:300px;"  />
+    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <script>
-
-        function checkEnough(storeId, ProductId, quantity, convertor) {
-            if (storeId != null && ProductId != null && quantity != null && convertor != null) {
-                $.ajax({
-                    url: "/Import/getInventory",
-                    data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
-                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        var inventorNumber = data;
-                        if (data < (quantity * convertor)) {
-                            return false;
-                        } else {
-                            return true;
-                        };
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                });
-
-            }
-        }
-
-        function saveAndExport() {
-            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
-                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
-                return false;
-            }
-            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho xuất");
-                return false;
-            }
-            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho nhập");
-                return false;
-            }
-            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
-                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
-                return false;
-            }
-
+        function returnSubmit() {
             var row = 0;
             var rval = 1;
+            var pval = 1;
             var ppval = 1;
             var checkFlg = 0;
+
+            if ($("#returnDate").val() == null || $("#returnDate").val().trim() == "") {
+                alert("Chưa nhập ngày trả hàng. Vui lòng chọn ngày trả hàng.");
+                return false;
+            }
+
+            if ($("#customerName").val() == null || $("#customerName").val().trim() == "") {
+                alert("Chưa nhập tên khách hàng. Vui lòng nhập tên khách hàng.");
+                return false;
+            }
+            
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
                 if (flg != 1) {
                     var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                    quantity = parseFloat(quantity);
-                    convertor = parseFloat(convertor);
                     if (quantity == null || quantity == '' || quantity == 0) {
                         rval = 0;
                     }
-                    if (productId == null || productId == '' || productId == 0) {
-                        ppval = 0;
-                    } else {
-                        if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
-                            checkFlg = 1;
-                        }
-                    }
-                    row++;
-                }
-            });
-
-            if (ppval == 0) {
-                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
-                return false;
-            }
-            if (row == 0) {
-                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-                return false;
-            }
-            else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
-                return false;
-            }
-            if (checkFlg == 1) {
-                var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
-                if (r == true) {
-                    $('#saveFlg').val(1);
-                    $('#index').submit();
-                }
-                else {
-                    return false;
-                }
-            }
-            $('#index').submit();
-        }
-
-
-
-        function returnSubmit() {
-            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
-                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
-                return false;
-            }
-            if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho xuất");
-                return false;
-            }
-            if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho nhập");
-                return false;
-            }
-            if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
-                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
-                return false;
-            }
-            var row = 0;
-            var rval = 1;
-            var ppval = 1;
-            $('input.chcktbl').each(function () {
-                var flg = $('input.delFlg', $(this).parent().parent()).val();
-                if (flg != 1) {
-                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                    quantity = parseFloat(quantity);
-                    convertor = parseFloat(convertor);
-                    if (quantity == null || quantity == '' || quantity == 0) {
-                        rval = 0;
+                    if (price == null || price == '' || price == 0) {
+                        pval = 0;
                     }
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;
@@ -279,16 +180,22 @@
                 alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
                 return false;
             }
+
+            if (pval == 0) {
+                alert("Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.");
+                return false;
+            }
+
             if (row == 0) {
                 alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
                 return false;
             }
             else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
+                alert("Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.");
                 return false;
+            } else {
+                $('#index').submit();
             }
-            $('#saveFlg').val(1);
-            $('#index').submit();
         };
 
         function tableCheck() {
@@ -314,6 +221,7 @@
                 }
             });
         }
+
 
         function deleteCheckedRow() {
             var rows = 0;
@@ -431,22 +339,6 @@
             }
         }
 
-        function unitChange() {
-            $("input.unitTemp").each(function () {
-                var $this = $(this);
-                var value = $this.val();
-                var parent = $this.parent().parent();
-                var unitId = $('select.unit', parent).val(value);
-            });
-        }
-
-        function productIdChange() {
-            $("input.productId").each(function () {
-                var $this = $(this);
-                createDonViTinh($this);
-            });
-        }
-
         function unitOnchange() {
             $("select.unit").change(function (event) {
                 var $this = $(this);
@@ -464,16 +356,17 @@
             $("input.code").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggestByCd", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
                                 response($.map(data, function (item) {
                                     return {
-                                        label: item.value,
+                                        label: item.code,
                                         name: item.name,
-                                        value: item.value,
-                                        id: item.id
+                                        code: item.code,
+                                        id: item.id,
+                                        price: item.price
                                     }
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -482,6 +375,7 @@
                     var parent = $this.parent().parent();
                     $('input.productId', parent).val("");
                     $('input.productname', parent).val("");
+                    $('input.price', parent).val("");
                     $('input.convertor', parent).val("1");
                 },
                 select: function (event, ui) {
@@ -491,6 +385,7 @@
                         $th.val(ui.item.label);
                         $('input.productId', pa).val(ui.item.id);
                         $('input.productname', pa).val(ui.item.name);
+                        $('input.price', pa).val(ui.item.price);
                         createDonViTinh($th);
                         $('input.convertor', pa).val("1");
                     } else {
@@ -499,6 +394,7 @@
                         $('input.productId', pa).val("");
                         $('input.productname', pa).val("");
                         $('input.convertor', pa).val("1");
+                        $('input.price', pa).val("");
                     }
                     return false;
                 },
@@ -533,6 +429,25 @@
 
         function quantityKeyPress() {
             $('input.quantity').keyup(function (event) {
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                var price = $('input.price', parent).val().replace(/,/gi, "");
+                var tt = $this.val().replace(/,/gi, "") * price;
+
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(tt).split(DecimalSeparator);
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $('td input.total', parent).val(num2);
+                }
                 getAllTotal();
             });
         }
@@ -540,7 +455,7 @@
         function checkDuplicate(val) {
             var flg = false;
             $('td input.productId').each(function () {
-                if ($('input.delFlg', $(this).parent().parent()).val() != 1) {
+                if ($('input.delFlg', $(this).parent()).val() != 1) {
                     var checkVal = $(this).val();
                     if (val == checkVal) {
                         flg = true;
@@ -554,15 +469,16 @@
             $("input.productname").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggestName", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
                                 response($.map(data, function (item) {
                                     return {
-                                        label: item.value,
-                                        value: item.value,
+                                        label: item.name,
+                                        value: item.name,
                                         code: item.code,
+                                        price:item.price,
                                         id: item.id
                                     }
                                 }))
@@ -572,6 +488,7 @@
                     var parent = $this.parent().parent();
                     $('input.productId', parent).val("");
                     $('input.code', parent).val("");
+                    $('input.price', parent).val("");
                     $('input.convertor', parent).val("1");
                 },
                 select: function (event, ui) {
@@ -581,6 +498,7 @@
                         $th.val(ui.item.label);
                         $('input.productId', pa).val(ui.item.id);
                         $('input.code', pa).val(ui.item.code);
+                        $('input.price', pa).val(ui.item.price);
                         $('input.convertor', pa).val("1");
                         createDonViTinh($th);
                     } else {
@@ -588,6 +506,7 @@
                         $th.val("");
                         $('input.productId', pa).val("");
                         $('input.code', pa).val("");
+                        $('input.price', pa).val("");
                         $('input.convertor', pa).val("1");
                     }
                     return false;
@@ -638,7 +557,7 @@
         function getAllTotal() {
             var AllTotal = 0;
             var total = 0;
-            $('td input.quantity').each(function () {
+            $('td input.total').each(function () {
                 $this = $(this);
                 $parent = $this.parent().parent();
                 if ($('input.delFlg', $parent).val() != 1) {
@@ -666,16 +585,16 @@
         };
 
         $(document).ready(function () {
-            $("#importDate").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             formatNumberic();
             numberOnly();
             productAutocomplete();
             productCodeAutocomplete();
             quantityKeyPress();
-            unitChange();
-            productIdChange();
+            priceKeyPress();
             unitOnchange();
-            getAllTotal();
+            tableCheck();
+            headerCheck();
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
         });
 
 
@@ -687,18 +606,22 @@
                 '<td class="inner alignCenter colwidth" width="5%;">' +
                 '<input type="checkbox" class="chcktbl"> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="ExportDetail[' + row + '].CODE" class="code codebtl ui-autocomplete-input" id="ExportDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+                '<input name="ReturnDetail[' + row + '].CODE" class="code codebtl ui-autocomplete-input" id="ReturnDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
                 '</td>' +
                 '<td class="inner colwidth">' +
-                '<input name="ExportDetail[' + row + '].DEL_FLG" class="delFlg" id="ExportDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
-                '<input name="ExportDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ExportDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
-                '<input name="ExportDetail[' + row + '].HE_SO" class="convertor" id="ExportDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-                '<input name="ExportDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="ExportDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+                '<input name="ReturnDetail[' + row + '].DEL_FLG" class="delFlg" id="ReturnDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
+                '<input name="ReturnDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ReturnDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
+                '<input name="ReturnDetail[' + row + '].HE_SO" class="convertor" id="ReturnDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+                '<input name="ReturnDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="ReturnDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="ExportDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="ExportDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
-                '<td class="innerLast colwidth">' +
-                '<select name="ExportDetail[' + row + '].MA_DON_VI" class="unit textbtl" id="ExportDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+                '<input name="ReturnDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="ReturnDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+                '<td class="inner colwidth">' +
+                '<select name="ReturnDetail[' + row + '].MA_DON_VI" class="unit textbtl" id="ReturnDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
                 '<option value="">---------</option></select> </td>' +
+                '<td class="inner colwidth">' +
+                '<input name="ReturnDetail[' + row + '].GIA_VON" class="price textbtl numberic" id="ReturnDetail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+                '<td class="innerLast colwidth">' +
+                '<input name="ReturnDetail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtl numberic" id="ReturnDetail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
                 '</tr>');
             $("#rowIndex").val(row);
             $('input.code', $('#detailTable > tbody:last')).focus();
@@ -707,7 +630,10 @@
             productCodeAutocomplete();
             getNumberOfRow();
             quantityKeyPress();
+            priceKeyPress();
             unitOnchange();
+            tableCheck();
+            headerCheck();
         };
     </script>
 }

@@ -74,14 +74,22 @@
                         @dbHist.TEN_NHA_CUNG_CAP
                     </td>
                     <td class='innerLast alignCenter' style="width:50px;">
-                        <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+                        @if (((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]) && @dbHist.LY_DO_NHAP != 1  && @dbHist.LY_DO_NHAP != 3)
+                        {
+                            <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
                             <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
                         </a>
+                        }
+                        
                     </td>
                     <td class='innerLast alignCenter' style="width:50px;">
-                        <a href="@Url.Action("Delete", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button class=" button-module" onclick="return deleteSubmit()">
+                        @if(((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]))
+                        {
+                            <a href="@Url.Action("Delete", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button class="button-module" onclick="return deleteSubmit()">
                             <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                        </a>
+                            </a>
+                        }
+                        
                     </td>
 
                 </tr>

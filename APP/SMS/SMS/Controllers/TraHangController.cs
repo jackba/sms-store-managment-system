@@ -14,6 +14,68 @@ namespace SMS.Controllers
         //
         // GET: /TraHang/
 
+        public ActionResult ReturnNoBill()
+        {
+            var ctx = new SmsContext();
+            ReturnNoBillModel model = new ReturnNoBillModel();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            model.Units = units;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ReturnNoBill(ReturnNoBillModel model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var returnInfor = ctx.TRA_HANG.Create();
+                    returnInfor.GHI_CHU = model.ReturnInfor.GHI_CHU;
+                    returnInfor.NGAY_TRA = model.ReturnInfor.NGAY_TRA;
+                    returnInfor.TEN_KHACH_HANG = model.ReturnInfor.TEN_KHACH_HANG;
+                    returnInfor.CREATE_AT = DateTime.Now;
+                    returnInfor.UPDATE_AT = DateTime.Now;
+                    returnInfor.NHAN_VIEN_NHAN = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.ACTIVE = "A";
+                    ctx.TRA_HANG.Add(returnInfor);
+                    ctx.SaveChanges();
+
+                    foreach (var detail in model.ReturnDetail)
+                    {
+                        CHI_TIET_TRA_HANG ct;
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.CHI_TIET_TRA_HANG.Create();
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            ct.SO_LUONG_TRA = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            ct.GIA_VON = detail.GIA_VON / detail.HE_SO;
+                            ct.ACTIVE = "A";
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_TRA_HANG = returnInfor.MA_TRA_HANG;
+                            ctx.CHI_TIET_TRA_HANG.Add(ct);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                }
+            }
+        }
+
         public ActionResult ListOfToProvider(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -166,12 +228,12 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
-                    return RedirectToAction("Index", new { @inforMessage  = "Nhận trả hàng thành công."});
+                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
                 }
                 catch (Exception)
                 {                    
                     Transaction.Current.Rollback();
-                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
         }

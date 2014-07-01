@@ -56,9 +56,61 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult ImportTransfer(ImportTransferModel model)
         {
-            var a = model.ExportDetail;
-            return View();
+            var ctx = new SmsContext();
+            if (model.Infor.STATUS == 3)
+            {
+                return RedirectToAction("ListWaitingImport", new { @message = "Phiếu chuyển đã được nhập kho, vui lòng kiểm tra lại" });
+            }
+            var StoreIdParam = new SqlParameter
+            {
+                ParameterName = "MA_KHO",
+                Value = Convert.ToInt32(model.Infor.MA_KHO_NHAN)
+            };
+
+            var ImportDateParam = new SqlParameter
+            {
+                ParameterName = "NGAY_NHAP",
+                Value = Convert.ToDateTime(model.ImportInfor.NGAY_NHAP)
+            };
+
+            var NoteParam = new SqlParameter
+            {
+                ParameterName = "GHI_CHU",
+                Value = string.IsNullOrEmpty(model.ImportInfor.GHI_CHU) ? string.Empty : model.ImportInfor.GHI_CHU
+            };
+
+            var UserParam = new SqlParameter
+            {
+                ParameterName = "MA_NHAN_VIEN",
+                Value = Convert.ToInt32(Session["UserId"])
+            };
+
+            var IdParam = new SqlParameter
+            {
+                ParameterName = "MA_PHIEU_CHUYEN",
+                Value = Convert.ToInt32(model.Infor.MA_XUAT_KHO)
+            };
+
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VALUE",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+
+
+            var tonkho = ctx.Database.SqlQuery<Object>("exec SP_IMPORT_TRANSFER @MA_PHIEU_CHUYEN, @NGAY_NHAP, @MA_NHAN_VIEN, @MA_KHO, @GHI_CHU , @RETURN_VALUE OUT ",
+                IdParam, ImportDateParam, UserParam, StoreIdParam, NoteParam, returnValue).ToList<Object>().Take(SystemConstant.MAX_ROWS);
+            var rv = returnValue.Value == DBNull.Value ? 0 : Convert.ToDouble(returnValue.Value);
+            if (rv > 0)
+            {
+                return RedirectToAction("ListWaitingImport", new { @inforMessage = "Lưu thành công" });
+            }else
+            {
+                return RedirectToAction("ListWaitingImport", new { @message = "Nhập kho thất bại, vui lòng kiểm tra lại" });
+            }
         }
+
         public ActionResult ImportTransfer(int id)
         {
             var ctx = new SmsContext();
