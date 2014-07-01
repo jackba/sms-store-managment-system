@@ -904,6 +904,31 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_IMPORT_REPORTER_SUM", kINDParameter, mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
+        public virtual int SP_IMPORT_TRANSFER(Nullable<int> mA_PHIEU_CHUYEN, Nullable<System.DateTime> nGAY_NHAP, Nullable<int> mA_NHAN_VIEN, Nullable<int> mA_KHO, string gHI_CHU, ObjectParameter rETURN_VALUE)
+        {
+            var mA_PHIEU_CHUYENParameter = mA_PHIEU_CHUYEN.HasValue ?
+                new ObjectParameter("MA_PHIEU_CHUYEN", mA_PHIEU_CHUYEN) :
+                new ObjectParameter("MA_PHIEU_CHUYEN", typeof(int));
+    
+            var nGAY_NHAPParameter = nGAY_NHAP.HasValue ?
+                new ObjectParameter("NGAY_NHAP", nGAY_NHAP) :
+                new ObjectParameter("NGAY_NHAP", typeof(System.DateTime));
+    
+            var mA_NHAN_VIENParameter = mA_NHAN_VIEN.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN", mA_NHAN_VIEN) :
+                new ObjectParameter("MA_NHAN_VIEN", typeof(int));
+    
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var gHI_CHUParameter = gHI_CHU != null ?
+                new ObjectParameter("GHI_CHU", gHI_CHU) :
+                new ObjectParameter("GHI_CHU", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_IMPORT_TRANSFER", mA_PHIEU_CHUYENParameter, nGAY_NHAPParameter, mA_NHAN_VIENParameter, mA_KHOParameter, gHI_CHUParameter, rETURN_VALUE);
+        }
+    
         public virtual int SP_SALE_EXPORT(Nullable<int> mA_KHO, Nullable<int> mA_HOA_DON, Nullable<int> mA_NHAN_VIEN_THUC_HIEN, string tEN_KHACH_HANG, ObjectParameter rETURN_VALUE)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
