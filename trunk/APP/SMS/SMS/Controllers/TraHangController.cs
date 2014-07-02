@@ -124,6 +124,16 @@ namespace SMS.Controllers
             return PartialView("ListOfToProviderPartialView", model);
         }
 
+        public ViewResult ShowReturnBill(int id)
+        {
+            return View();
+        }
+
+        public ViewResult EditGetReturn(int id)
+        {
+            return View();
+        }
+
         [HttpPost]
         public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
             DateTime? toDate, int? userId, string userName, int? currentPageIndex)
