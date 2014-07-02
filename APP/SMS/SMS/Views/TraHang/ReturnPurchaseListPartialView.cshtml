@@ -42,10 +42,9 @@
             <td class='inner colwidth head '> Tên khách hàng </td>
             <td class='inner colwidth head '> Ngày trả hàng </td>
             <td class='innerLast colwidth head '>  Tên Nhân viên nhận hàng </td>
-            @if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"])
-            {
+                <td class='innerLast colwidth head '>  Sửa </td>
                 <td class='innerLast colwidth head '>  Hủy </td>
-            }
+            
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
@@ -54,7 +53,7 @@
                 ImportDate = (DateTime)Model.detailReturnList[0].NGAY_TRA;
 
                 <tr>
-                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
         }
@@ -68,7 +67,7 @@
             {
                 ImportDate = (DateTime)dbHist.NGAY_TRA;
                 <tr>
-                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
             <tr class="inner column-hscroll alignCenter">
@@ -85,15 +84,24 @@
                     @dbHist.TEN_NGUOI_DUNG
                 </td>
                 <td class="innerLast colwidth">
-                    @{
-                        if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"])
+                    @if(((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"]) && @dbHist.MA_HOA_DON  == 0)
                         {
                             <a href="@Url.Action("Show", "TraHang", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
-                                <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
+                                <img width="16" height="16" alt="edit" src="~/Content/images/edit.png"></img>
                             </a>
                         }
-                     }
                 </td>
+                <td class="innerLast colwidth">
+                    @{
+            if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"])
+            {
+                <a href="@Url.Action("Show", "TraHang", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
+                </a>
+            }
+                    }
+                </td>
+
             </tr>
         }
 
