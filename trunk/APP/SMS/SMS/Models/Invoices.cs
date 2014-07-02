@@ -19,5 +19,8 @@ namespace SMS.Models
         public long PageCount { get; set; }
     }
 
+    public class ReturnBillModel
+    {
 
+    }
 }

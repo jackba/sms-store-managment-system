@@ -21,5 +21,6 @@ namespace SMS.Models
         public Nullable<bool> IMPORT_FLG { get; set; }
         public Nullable<bool> RETURN_FLG { get; set; }
         public string TEN_NGUOI_DUNG { get; set; }
+        public int MA_HOA_DON { get; set; }
     }
 }
