@@ -21,6 +21,7 @@ namespace SMS.Models
 
     public class ReturnBillModel
     {
-
+        public SP_GET_RETURN_INFO_BY_ID_Result Infor { get; set; }
+        public List<SP_GET_RETURN_DETAIL_BY_ID_Result> Detail { get; set; }
     }
 }
