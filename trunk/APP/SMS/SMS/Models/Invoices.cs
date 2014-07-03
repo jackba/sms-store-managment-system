@@ -21,6 +21,7 @@ namespace SMS.Models
 
     public class ReturnBillModel
     {
+        public List<DON_VI_TINH> Units { get; set; }
         public SP_GET_RETURN_INFO_BY_ID_Result Infor { get; set; }
         public List<SP_GET_RETURN_DETAIL_BY_ID_Result> Detail { get; set; }
     }

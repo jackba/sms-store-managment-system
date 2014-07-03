@@ -1,5 +1,109 @@
-﻿@{
-    ViewBag.Title = "ShowReturnBill";
+﻿@model SMS.Models.ReturnBillModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Chi tiết hóa đơn trả hàng";
 }
 
-<h2>ShowReturnBill</h2>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
+        <a href="@Url.Action("ReturnPurchaseList", "TraHang")">  Danh sách trả hàng </a>
+    > @ViewBag.Title
+</div>
+<br />
+<hgroup class="title">
+    <h2>@ViewBag.Title</h2>
+</hgroup>
+<hr style="width:100%" />
+<table style="width:100%" border="1">
+    <tr>
+        <td style="background-color:lightblue; width:30%" class="innerLast">
+            <strong>
+                Tên khách hàng
+            </strong>            
+        </td>
+        <td style="width:67%" class="innerLast">
+            @Model.Infor.TEN_KHACH_HANG
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightblue; width:30%" class="innerLast">
+            <strong>
+                Ngày trả hàng
+            </strong>           
+        </td>
+        <td style="width:67%" class="innerLast">
+            @DateTime.Parse(@Model.Infor.NGAY_TRA.ToString()).ToString("dd/MM/yyyy")
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightblue; width:30%" class="innerLast">
+            <strong>
+                Nhân viên nhận hàng
+            </strong>
+        </td>
+        <td style="width:67%" class="innerLast">
+            @Model.Infor.TEN_NGUOI_DUNG
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color:lightblue; width:30%" class="innerLast">
+            <strong>
+                Loại nhận hàng
+            </strong>
+        </td>
+        <td style="width:67%" class="innerLast">
+            @if (Model.Infor.MA_HOA_DON != null)
+            {
+                @("Nhận hàng có hóa đơn")
+            }else
+            {
+                @("Nhận hàng không hóa đơn")
+            }
+        </td>
+    </tr>
+</table>
+<hr style="width:100%" />
+<table width="100%" id="tblExport" name="tblExport">
+    <tr style="width:100%">
+        <td class='inner colwidth head '> STT </td>
+        <td class='inner colwidth head '> Tên sản phẩm </td>
+        <td class='innerLast colwidth head '>  Đơn vị </td>
+        <td class='inner colwidth head '> Số lượng </td>       
+        <td class='innerLast colwidth head '>  Đơn giá </td>
+        <td class='innerLast colwidth head '>  Thành tiền </td>
+    </tr>
+    @{
+        var i = 0;
+        double quantity =0;
+        double price = 0;
+        double total = 0;
+        double totalAll = 0;
+    }
+    @foreach (var detail in Model.Detail)
+    {
+        i++;
+        quantity = Convert.ToDouble(detail.SO_LUONG);
+        price = Convert.ToDouble(detail.DON_GIA);
+        total = quantity*price;
+        totalAll += total;
+        <tr style="width:100%">
+            <td class="innerLast colwidth alignCenter">
+                @i
+            </td>
+            <td class="innerLast colwidth alignText"> @detail.TEN_SAN_PHAM</td>
+            <td class="innerLast colwidth alignText"> @detail.TEN_DON_VI</td>
+            <td class="innerLast colwidth alignNumberic"> @quantity.ToString("#,###.##")</td>
+            <td class="innerLast colwidth alignNumberic"> @price.ToString("#,###.##")</td>
+            <td class="innerLast colwidth alignNumberic"> @total.ToString("#,###.##")</td>
+        </tr>
+    }
+    <tr>
+        <td style="background-color:lightgray" colspan="5" class="innerLast"></td>
+        <td style="background-color:lightgray"  class="innerLast colwidth alignNumberic"> @totalAll.ToString("#,###.##")</td>
+    </tr>
+</table>

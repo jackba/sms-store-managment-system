@@ -656,6 +656,24 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_REFUND_DETAIL_Result>("SP_GET_REFUND_DETAIL", mA_TRA_HANGParameter);
         }
     
+        public virtual ObjectResult<SP_GET_RETURN_DETAIL_BY_ID_Result> SP_GET_RETURN_DETAIL_BY_ID(Nullable<int> mA_TRA_HANG)
+        {
+            var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
+                new ObjectParameter("MA_TRA_HANG", mA_TRA_HANG) :
+                new ObjectParameter("MA_TRA_HANG", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_DETAIL_BY_ID_Result>("SP_GET_RETURN_DETAIL_BY_ID", mA_TRA_HANGParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_RETURN_INFO_BY_ID_Result> SP_GET_RETURN_INFO_BY_ID(Nullable<int> mA_TRA_HANG)
+        {
+            var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
+                new ObjectParameter("MA_TRA_HANG", mA_TRA_HANG) :
+                new ObjectParameter("MA_TRA_HANG", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_INFO_BY_ID_Result>("SP_GET_RETURN_INFO_BY_ID", mA_TRA_HANGParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_RETURN_LIST_Result> SP_GET_RETURN_LIST(string tEN_KHACH_HANG, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAN, string tEN_NHAN_VIEN)
         {
             var tEN_KHACH_HANGParameter = tEN_KHACH_HANG != null ?
@@ -987,24 +1005,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<SP_GET_RETURN_DETAIL_BY_ID_Result> SP_GET_RETURN_DETAIL_BY_ID(Nullable<int> mA_TRA_HANG)
-        {
-            var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
-                new ObjectParameter("MA_TRA_HANG", mA_TRA_HANG) :
-                new ObjectParameter("MA_TRA_HANG", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_DETAIL_BY_ID_Result>("SP_GET_RETURN_DETAIL_BY_ID", mA_TRA_HANGParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_RETURN_INFO_BY_ID_Result> SP_GET_RETURN_INFO_BY_ID(Nullable<int> mA_TRA_HANG)
-        {
-            var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
-                new ObjectParameter("MA_TRA_HANG", mA_TRA_HANG) :
-                new ObjectParameter("MA_TRA_HANG", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RETURN_INFO_BY_ID_Result>("SP_GET_RETURN_INFO_BY_ID", mA_TRA_HANGParameter);
         }
     }
 }

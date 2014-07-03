@@ -72,8 +72,11 @@
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    @i
-                </td>
+                    <a href="@Url.Action("ShowReturnBill", "TraHang", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
+                        @i
+                        </a>
+                        
+</td>
                 <td class="inner colwidth">
                     @dbHist.TEN_KHACH_HANG
                 </td>
@@ -86,7 +89,7 @@
                 <td class="innerLast colwidth">
                     @if(((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsSaler"]) && @dbHist.MA_HOA_DON  == 0)
                         {
-                            <a href="@Url.Action("Show", "TraHang", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
+                            <a href="@Url.Action("EditGetReturn", "TraHang", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
                                 <img width="16" height="16" alt="edit" src="~/Content/images/edit.png"></img>
                             </a>
                         }

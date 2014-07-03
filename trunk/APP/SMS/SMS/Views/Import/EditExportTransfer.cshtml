@@ -630,6 +630,8 @@
                             var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
                             $(opt).appendTo(un);
                         });
+                        var unitId = $('input.unitTemp', parent).val();
+                        $('select.unit', parent).val(unitId);
                     },
                 error:
                     function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
