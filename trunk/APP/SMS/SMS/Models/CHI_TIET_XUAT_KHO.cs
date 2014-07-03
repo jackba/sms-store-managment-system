@@ -27,18 +27,17 @@ namespace SMS.Models
         public int ID { get; set; }
         public Nullable<int> MA_DON_VI { get; set; }
         public Nullable<double> SO_LUONG_TEMP { get; set; }
+        public Nullable<double> DON_GIA_TEMP { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual SAN_PHAM SAN_PHAM { get; set; }
         public virtual XUAT_KHO XUAT_KHO { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
-
         public string TEN_SAN_PHAM { get; set; }
         public string TEN_DON_VI { get; set; }
         public string CODE { get; set; }
         public double THANH_TIEN { get; set; }
         public int? DEL_FLG { get; set; }
         public double? HE_SO { get; set; }
-
     }
 }
