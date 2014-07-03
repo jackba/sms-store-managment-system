@@ -336,6 +336,12 @@
     <Compile Include="Models\SP_GET_REFUND_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_RETURN_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_RETURN_INFO_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_RETURN_LIST_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -773,6 +779,8 @@
     <Content Include="Views\Import\ListWaitingImportPartialView.cshtml" />
     <Content Include="Views\Import\ImportTransfer.cshtml" />
     <Content Include="Views\TraHang\ReturnNoBill.cshtml" />
+    <Content Include="Views\TraHang\EditGetReturn.cshtml" />
+    <Content Include="Views\TraHang\ShowReturnBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

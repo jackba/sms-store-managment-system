@@ -54,6 +54,7 @@ namespace SMS.Controllers
                             ct.MA_DON_VI = detail.MA_DON_VI;
                             ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
                             ct.SO_LUONG_TRA = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            ct.DON_GIA_TEMP = detail.GIA_VON;
                             ct.GIA_VON = detail.GIA_VON / detail.HE_SO;
                             ct.ACTIVE = "A";
                             ct.CREATE_AT = DateTime.Now;
@@ -126,14 +127,78 @@ namespace SMS.Controllers
 
         public ViewResult ShowReturnBill(int id)
         {
-            return View();
+            var ctx = new SmsContext();
+            ReturnBillModel model = new ReturnBillModel();
+            var infor = ctx.SP_GET_RETURN_INFO_BY_ID(id).FirstOrDefault();
+            var detail = ctx.SP_GET_RETURN_DETAIL_BY_ID(id).ToList<SP_GET_RETURN_DETAIL_BY_ID_Result>();
+            model.Infor = infor;
+            model.Detail = detail;
+            return View(model);
         }
 
         public ViewResult EditGetReturn(int id)
         {
-            return View();
+            var ctx = new SmsContext();
+            ReturnBillModel model = new ReturnBillModel();
+            var infor = ctx.SP_GET_RETURN_INFO_BY_ID(id).FirstOrDefault();
+            var detail = ctx.SP_GET_RETURN_DETAIL_BY_ID(id).ToList<SP_GET_RETURN_DETAIL_BY_ID_Result>();
+            model.Infor = infor;
+            model.Detail = detail;
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            model.Units = units;
+            return View(model);
         }
 
+        [HttpPost]
+        public ActionResult EditGetReturn(ReturnBillModel model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var returnInfor = ctx.TRA_HANG.Find(model.Infor.MA_TRA_HANG);
+                    returnInfor.GHI_CHU = model.Infor.GHI_CHU;
+                    returnInfor.NGAY_TRA = model.Infor.NGAY_TRA;
+                    returnInfor.TEN_KHACH_HANG = model.Infor.TEN_KHACH_HANG;
+                    returnInfor.UPDATE_AT = DateTime.Now;
+                    returnInfor.NHAN_VIEN_NHAN = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.ACTIVE = "A";
+                    ctx.SaveChanges();
+                    ctx.CHI_TIET_TRA_HANG.RemoveRange(ctx.CHI_TIET_TRA_HANG.Where(u => u.MA_TRA_HANG == returnInfor.MA_TRA_HANG));
+                    foreach (var detail in model.Detail)
+                    {
+                        CHI_TIET_TRA_HANG ct;
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.CHI_TIET_TRA_HANG.Create();
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG;
+                            ct.SO_LUONG_TRA = detail.SO_LUONG * detail.HE_SO;
+                            ct.GIA_VON = detail.DON_GIA / detail.HE_SO;
+                            ct.DON_GIA_TEMP = detail.DON_GIA;
+                            ct.ACTIVE = "A";
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_TRA_HANG = returnInfor.MA_TRA_HANG;
+                            ctx.CHI_TIET_TRA_HANG.Add(ct);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                }
+            }
+        }
         [HttpPost]
         public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
             DateTime? toDate, int? userId, string userName, int? currentPageIndex)
