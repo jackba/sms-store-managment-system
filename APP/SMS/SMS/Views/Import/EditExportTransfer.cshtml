@@ -134,7 +134,7 @@
                         @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
                     </td>
                     <td class="innerLast colwidth">
-                        @Html.HiddenFor(u => u.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
+                        @Html.Hidden("unitTemp", Model.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
                         @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })                       
                     </td>
                 </tr>

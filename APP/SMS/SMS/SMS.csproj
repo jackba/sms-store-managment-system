@@ -303,7 +303,13 @@
     <Compile Include="Models\SP_GET_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_IMPORT_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_IMPORT_INFOR_BY_ID_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_IMPORT_Result.cs">
@@ -457,6 +463,8 @@
     <Content Include="Content\images\import.png" />
     <Content Include="Content\images\import1.png" />
     <Content Include="Content\images\ImportDetailReport.jpg" />
+    <Content Include="Content\images\list1.jpg" />
+    <Content Include="Content\images\list2.jpg" />
     <Content Include="Content\images\ListPriceProducts.png" />
     <Content Include="Content\images\loading-2.gif" />
     <Content Include="Content\images\loading-3.gif" />
@@ -465,6 +473,7 @@
     <Content Include="Content\images\Messages.png" />
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
+    <Content Include="Content\images\refund1.gif" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
@@ -781,6 +790,9 @@
     <Content Include="Views\TraHang\ReturnNoBill.cshtml" />
     <Content Include="Views\TraHang\EditGetReturn.cshtml" />
     <Content Include="Views\TraHang\ShowReturnBill.cshtml" />
+    <Content Include="Views\Export\XuatHuy.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

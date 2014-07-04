@@ -5472,6 +5472,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+          <Property Type="String" Name="CODE" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
           <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
@@ -6517,6 +6518,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <FunctionImportMapping FunctionImportName="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" FunctionName="SmsModel.Store.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
                 <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
                 <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
