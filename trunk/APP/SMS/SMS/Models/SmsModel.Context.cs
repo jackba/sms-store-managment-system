@@ -479,6 +479,24 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_DETAIL_BY_ID_Result>("SP_GET_IMPORT_DETAIL_BY_ID", iMPORT_IDParameter);
         }
     
+        public virtual ObjectResult<SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result> SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT(Nullable<int> mA_NHAP_KHO)
+        {
+            var mA_NHAP_KHOParameter = mA_NHAP_KHO.HasValue ?
+                new ObjectParameter("MA_NHAP_KHO", mA_NHAP_KHO) :
+                new ObjectParameter("MA_NHAP_KHO", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result>("SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT", mA_NHAP_KHOParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_IMPORT_INFOR_BY_ID_Result> SP_GET_IMPORT_INFOR_BY_ID(Nullable<int> mA_NHAP_KHO)
+        {
+            var mA_NHAP_KHOParameter = mA_NHAP_KHO.HasValue ?
+                new ObjectParameter("MA_NHAP_KHO", mA_NHAP_KHO) :
+                new ObjectParameter("MA_NHAP_KHO", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_INFOR_BY_ID_Result>("SP_GET_IMPORT_INFOR_BY_ID", mA_NHAP_KHOParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_INVENTORY_Result> SP_GET_INVENTORY(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?

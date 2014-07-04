@@ -1935,6 +1935,12 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
         <Function Name="SP_GET_IMPORT_DETAIL_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IMPORT_ID" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_NHAP_KHO" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_IMPORT_INFOR_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_NHAP_KHO" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_GET_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
@@ -5117,6 +5123,12 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_Result)">
             <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result)">
+            <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_IMPORT_INFOR_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_INFOR_BY_ID_Result)">
+            <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
@@ -5459,6 +5471,29 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="SO_LUONG" Nullable="true" />
+          <Property Type="Double" Name="DON_GIA" Nullable="true" />
+          <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="HE_SO" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_IMPORT_INFOR_BY_ID_Result">
+          <Property Type="Int32" Name="MA_NHAP_KHO" Nullable="false" />
+          <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="NGAY_NHAP" Nullable="true" />
+          <Property Type="Int32" Name="MA_NHAN_VIEN_NHAP" Nullable="true" />
+          <Property Type="String" Name="TEN_NV_NHAP" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="MA_NHA_CUNG_CAP" Nullable="true" />
+          <Property Type="String" Name="TEN_NHA_CUNG_CAP" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="MA_KHO" Nullable="true" />
+          <Property Type="Int16" Name="LY_DO_NHAP" Nullable="true" />
+          <Property Type="Int32" Name="MA_PHIEU_TRA" Nullable="true" />
+          <Property Type="String" Name="GHI_CHU" Nullable="true" MaxLength="1000" />
+          <Property Type="Int32" Name="MA_PHIEU_XUAT" Nullable="true" />
+        </ComplexType>
         <ComplexType Name="SP_GET_INVENTORY_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="false" />
           <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
@@ -5553,6 +5588,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
           <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
           <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
+          <Property Type="Double" Name="HE_SO" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_GET_RETURN_INFO_BY_ID_Result">
           <Property Type="Int32" Name="MA_TRA_HANG" Nullable="false" />
@@ -6478,6 +6514,37 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" FunctionName="SmsModel.Store.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="DON_GIA" ColumnName="DON_GIA" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_IMPORT_INFOR_BY_ID" FunctionName="SmsModel.Store.SP_GET_IMPORT_INFOR_BY_ID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_IMPORT_INFOR_BY_ID_Result">
+                <ScalarProperty Name="MA_NHAP_KHO" ColumnName="MA_NHAP_KHO" />
+                <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
+                <ScalarProperty Name="NGAY_NHAP" ColumnName="NGAY_NHAP" />
+                <ScalarProperty Name="MA_NHAN_VIEN_NHAP" ColumnName="MA_NHAN_VIEN_NHAP" />
+                <ScalarProperty Name="TEN_NV_NHAP" ColumnName="TEN_NV_NHAP" />
+                <ScalarProperty Name="MA_NHA_CUNG_CAP" ColumnName="MA_NHA_CUNG_CAP" />
+                <ScalarProperty Name="TEN_NHA_CUNG_CAP" ColumnName="TEN_NHA_CUNG_CAP" />
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+                <ScalarProperty Name="LY_DO_NHAP" ColumnName="LY_DO_NHAP" />
+                <ScalarProperty Name="MA_PHIEU_TRA" ColumnName="MA_PHIEU_TRA" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <ScalarProperty Name="MA_PHIEU_XUAT" ColumnName="MA_PHIEU_XUAT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_GET_INVENTORY" FunctionName="SmsModel.Store.SP_GET_INVENTORY">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_GET_INVENTORY_Result">
@@ -6610,6 +6677,7 @@ warning 6002: The table/view 'SMS.dbo.V_XUAT_KHO' does not have a primary key de
                 <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
                 <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
                 <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
