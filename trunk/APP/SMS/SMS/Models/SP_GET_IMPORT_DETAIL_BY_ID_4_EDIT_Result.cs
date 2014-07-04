@@ -13,6 +13,7 @@ namespace SMS.Models
     
     public partial class SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result
     {
+        public string CODE { get; set; }
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public string TEN_SAN_PHAM { get; set; }
         public Nullable<double> SO_LUONG { get; set; }
@@ -20,5 +21,7 @@ namespace SMS.Models
         public Nullable<int> MA_DON_VI { get; set; }
         public string TEN_DON_VI { get; set; }
         public double HE_SO { get; set; }
+        public int? DEL_FLG { get; set; }
+        public float? THANH_TIEN { get; set; }
     }
 }

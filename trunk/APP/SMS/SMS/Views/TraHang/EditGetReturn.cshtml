@@ -5,7 +5,8 @@
     ViewBag.Title = "Nhận trả hàng không hóa đơn.";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Return", "Home")"> Xử lú trả hàng </a> > @ViewBag.Title
+    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> > 
+    <a href="@Url.Action("ReturnPurchaseList", "TraHang")"> Danh sách phiếu trả hàng </a> >@ViewBag.Title
 </div>
 
 <br />
@@ -119,7 +120,7 @@
                     @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "quantity textbtl numberic" })
                 </td>
                 <td class="inner colwidth">
-                    @Html.HiddenFor(u => u.Detail[i].MA_DON_VI, new { @class = "unitTemp"})
+                    @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
                     @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
                 </td>
                 <td class='inner colwidth '>
@@ -699,6 +700,8 @@
             unitOnchange();
             unitChange();
             productIdChange();        
+            getAllTotal();
+            getNumberOfRow();
         });
 
 
