@@ -40,7 +40,6 @@ namespace SMS.Models
     }
     public partial class HOA_DON
     {
-      
         public HOA_DON()
         {
             this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
@@ -48,7 +47,7 @@ namespace SMS.Models
             this.TRA_HANG = new HashSet<TRA_HANG>();
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
         }
-            
+    
         public int MA_HOA_DON { get; set; }
         public string SO_HOA_DON { get; set; }
         public Nullable<int> MA_KHACH_HANG { get; set; }
@@ -67,7 +66,6 @@ namespace SMS.Models
         public Nullable<double> SO_TIEN_KHACH_TRA { get; set; }
         public Nullable<double> SO_TIEN_NO_GOI_DAU { get; set; }
         public Nullable<int> MA_NHAN_VIEN_THU_TIEN { get; set; }
-        public Nullable<double> GIA_BAN_TRUOC_CK { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }

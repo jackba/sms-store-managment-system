@@ -104,8 +104,11 @@
                     </a>
                 </td>
 
-                <td class="innerLast colwidth">
-                    @DateTime.Parse(@dbHist.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
+                <td class="innerLast colwidth">@if (@dbHist.NGAY_PHAT_SINH_NO != null)
+                                               {
+                                                   @DateTime.Parse(@dbHist.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
+                                               }
+                    
                 </td>
                 @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
                 {
