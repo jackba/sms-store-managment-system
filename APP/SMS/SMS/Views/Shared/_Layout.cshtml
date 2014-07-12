@@ -34,8 +34,19 @@
             if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
         }
         document.onkeypress = stopRKey;
-    </script>
+        function changeTab(currentTab) {
+            var curTab = $(currentTab);
 
+            //remove another
+            curTab.addClass('currentTab');
+        }
+    </script>
+    <style type="text/css">
+        .currentTab {
+            color: rgb(236, 4, 88);
+            border: 1px dotted;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -60,7 +71,7 @@
                     {
                      <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Home", "Index", "Home", new { @onclick = "changeTab(this);" })</li>
                             @if(Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
                             {
                                 <li>@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home")</li>
@@ -70,14 +81,14 @@
                                 <li>@Html.ActionLink("Bán Hàng", "BanHang", "Home")</li>
                             }
                             <li>@Html.ActionLink("Danh Mục", "DanhMuc", "Home")</li>
-@if(Convert.ToBoolean(Session["IsAdmin"]))
+                          @if(Convert.ToBoolean(Session["IsAdmin"]))
                             {
                             <li>@Html.ActionLink("Quản Trị", "QuanTri", "Home")</li>
-                            }
+                          }
                             <li>@Html.ActionLink("Người Dùng", "Show", "Account")</li>
                         </ul>
                     </nav>
-                    }
+                     }
                 </div>
             </div>
         </header>

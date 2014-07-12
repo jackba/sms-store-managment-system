@@ -287,7 +287,7 @@
             $('#NgayBan').datepicker(new Date($('#KH_Info_Ngay_Ban').val()));
             $('#NgayGiao').datepicker(new Date($('#KH_Info_Ngay_Giao').val()));
             $('#DiaChi').val($('#KH_Info_Dia_Chi').val());
-            
+
 
             // render table
             var rowChiTiet = null;
@@ -300,7 +300,7 @@
                 $('#hidUnitRootName').val('');
                 $('#suggestUnit').html('');
                 $('#suggestUnit').hide();
-               
+
             }
         }
     });
@@ -325,7 +325,7 @@
         var rowNum = MaSP + '_' + count;
 
 
-     
+
 
         var newRow = '';
         newRow += ' <tr class="rowHeight" id=\'' + rowNum + '\'> ';
@@ -1096,7 +1096,7 @@
             setDisableControl('saveBill_top', false);
             setDisableControl('saveBill_bottom', false);
         }
-       
+
     }
     function saveListRowNum() {
         var listRowNum = '';
@@ -1240,18 +1240,78 @@
         setDisableControl('saveBill_bottom', false);
     }
 
-    function disableEnterKey(e) {
+    function disableEnterKey(e, itemAllowEnter) {
         var key;
 
-        if (window.event)
+        if (window.event){
             key = window.event.keyCode;     //IE
-        else
+        }
+        else{
             key = e.which;     //firefox
+        }
 
-        if (key == 13)
-            return false;
-        else
+        if (key == 13){
+            if(null != itemAllowEnter){
+                callbackEnterPress(itemAllowEnter);
+            }else{
+                return false;
+
+            }
+        }
+        else{
             return true;
+        }
+    }
+    function callbackEnterPress(itemAllowEnter){
+        switch (itemAllowEnter)
+        {
+            case 1: // code product
+                $.ajax({
+                    url: "/SanPham/FindSuggestByCode",
+                    data: "{ 'prefixText': '"+ $('#CodeSanPham').val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    success:
+                        function (data) {
+                            if(null != data && data.length > 0){
+                                setFixedField(data[0], true);
+
+                                hideRelationProduct();
+                                createDonViTinh();
+
+                                $('#hidUnitRootName').val(data[0].unitNm);
+
+                                $('#hidFactorValue').val('1');
+                                return false;
+                            }                               
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                break;
+            case 2: // name product              
+                $.ajax({
+                    url: "/SanPham/FindSuggestByTypeCustomer",
+                    data: "{ 'prefixText': '" + $('#TenSanPham').val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    success:
+                        function (data) {
+                            if(null != data && data.length > 0){
+                                setFixedField(data[0] , false);
+
+                                hideRelationProduct();
+                                createDonViTinh();
+
+                                $('#hidUnitRootName').val(data[0].unitNm);
+
+                                $('#hidFactorValue').val('1');
+                                return false;
+                            }                               
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                break;
+        }
     }
 </script>
 }
@@ -1365,7 +1425,7 @@
                             <div class="titleItem required">Code sản phẩm </div>
                             <br />
                             <div>
-                                <input type="text" id="CodeSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event);" />
+                                <input type="text" id="CodeSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event, 1);" />
                             </div>
                         </td>
 
@@ -1374,7 +1434,7 @@
                             <div class="titleItem required">Tên sản phẩm </div>
                             <br />
                             <div>
-                                <input type="text" id="TenSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event);" />
+                                <input type="text" id="TenSanPham" style="margin-left: 2px; " onkeypress="return disableEnterKey(event, 2);" />
                             </div>
                         </td>
                        

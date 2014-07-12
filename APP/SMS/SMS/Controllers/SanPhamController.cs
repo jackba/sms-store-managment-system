@@ -89,7 +89,7 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var suggestedProducts = from x in ctx.SAN_PHAM
-                                    where (x.CODE.ToLower().Contains(prefixText.ToLower()) && x.ACTIVE.Equals("A"))
+                                    where (x.CODE.ToLower().StartsWith(prefixText.ToLower()) && x.ACTIVE.Equals("A"))
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
@@ -105,8 +105,8 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var suggestedProducts = from x in ctx.SAN_PHAM
-                                    where ((x.CODE.ToLower().Contains(prefixText.ToLower())
-                                    || x.TEN_SAN_PHAM.ToLower().Contains(prefixText.ToLower())) && x.ACTIVE.Equals("A"))
+                                    where ((x.CODE.ToLower().StartsWith(prefixText.ToLower())
+                                    || x.TEN_SAN_PHAM.ToLower().StartsWith(prefixText.ToLower())) && x.ACTIVE.Equals("A"))
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
@@ -125,11 +125,12 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var suggestedProducts = from x in ctx.SAN_PHAM
                                     join u in ctx.DON_VI_TINH on x.MA_DON_VI equals u.MA_DON_VI
-                                    where (x.CODE.Contains(prefixText) && x.ACTIVE.Equals("A"))
+                                    where (x.CODE.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
                                     select new
                                     {
                                         id = x.MA_SAN_PHAM,
                                         code = x.CODE,
+                                        label = x.CODE,
                                         name = x.TEN_SAN_PHAM,
                                         unit = x.MA_DON_VI,
                                         unitNm = u.TEN_DON_VI,
@@ -153,7 +154,8 @@ namespace SMS.Controllers
                                     {
                                         id = x.MA_SAN_PHAM,
                                         code = x.CODE,
-                                        name = x.TEN_SAN_PHAM,    
+                                        name = x.TEN_SAN_PHAM,
+                                        label = x.TEN_SAN_PHAM,    
                                         unit = x.MA_DON_VI,
                                         unitNm = u.TEN_DON_VI,
                                         price = typeCustomer.Equals("1") ? x.GIA_BAN_1 ?? 0: 
