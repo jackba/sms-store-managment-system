@@ -170,6 +170,7 @@ namespace SMS.Controllers
                                  {
                                      id = x.MA_KHACH_HANG,
                                      name = x.TEN_KHACH_HANG,
+                                     label = x.TEN_KHACH_HANG,
                                      cardNo = x.MA_THE_KHACH_HANG,
                                      address = x.DIA_CHI,
                                      fone = x.SO_DIEN_THOAI,
