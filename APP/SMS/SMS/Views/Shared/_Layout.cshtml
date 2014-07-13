@@ -27,6 +27,82 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
+        $(document).ready(function () {
+            var pathname = window.location.pathname;
+            if (pathname.indexOf("Home/Index") > 0) {
+                $('#Index').addClass('current');
+            } else if (
+                (pathname.indexOf("Home/QuanLyKho") > 0) ||
+                (pathname.indexOf("SanPham/Warning") > 0) ||
+                (pathname.indexOf("QuanLyKho/Inventory") > 0) ||
+                (pathname.indexOf("Home/Import") > 0) ||
+                (pathname.indexOf("Import/Import") > 0) ||
+                (pathname.indexOf("Import/ListWaitingImport") > 0) ||
+                (pathname.indexOf("Import/Index") > 0) ||
+                (pathname.indexOf("Import/ImportRepoter") > 0) ||
+                (pathname.indexOf("Import/ImportRepoterDetail") > 0) ||
+                (pathname.indexOf("Home/Export") > 0) ||
+                (pathname.indexOf("Export/Index") > 0) ||
+                (pathname.indexOf("Export/SaleExportList") > 0) ||
+                (pathname.indexOf("Import/ExportTransfer") > 0) ||
+                (pathname.indexOf("Import/ListExportTransfer") > 0) ||
+                (pathname.indexOf("Export/XuatHuy") > 0) ||
+                (pathname.indexOf("QuanLyKho/ExportReport") > 0) ||
+                (pathname.indexOf("QuanLyKho/ExportReportDetail") > 0) ||
+                (pathname.indexOf("Home/Return") > 0) ||
+                (pathname.indexOf("CustomerRefund/ReturnPurchaseList") > 0) ||
+                (pathname.indexOf("TraHang/ListOfToProvider") > 0) ||
+                (pathname.indexOf("QuanLyKho/FifoReport") > 0) ||
+                (pathname.indexOf("QuanLyKho/ImExDetail") > 0)
+                ) {
+                $('#QuanLyKho').addClass('current');
+            } else if (
+                (pathname.indexOf("Home/BanHang") > 0) ||
+                (pathname.indexOf("KhachHang/Index") > 0) ||
+                (pathname.indexOf("KhachHang/AddNew") > 0) ||
+                (pathname.indexOf("BanHang/HoaDonBanHang") > 0) ||
+                (pathname.indexOf("HoaDon/Collection") > 0) ||
+                (pathname.indexOf("HoaDon/Index") > 0) ||
+                (pathname.indexOf("TraHang/Index") > 0) ||
+                (pathname.indexOf("TraHang/ReturnNoBill") > 0) ||
+                (pathname.indexOf("TraHang/ReturnPurchaseList") > 0) ||
+                (pathname.indexOf("KhachHang/Warning") > 0)          
+                ){
+                $('#BanHang').addClass('current');
+            } else if (
+                (pathname.indexOf("Home/DanhMuc") > 0 )||
+                (pathname.indexOf("DonVi/Index") > 0) ||
+                (pathname.indexOf("DonVi/AddNew") > 0) ||
+                (pathname.indexOf("KhuVuc/Index") > 0) ||
+                (pathname.indexOf("KhuVuc/AddNew") > 0) ||
+                (pathname.indexOf("HangSanXuat/Index") > 0) ||
+                (pathname.indexOf("HangSanXuat/AddNew") > 0) ||
+                (pathname.indexOf("Kho/Index") > 0) ||
+                (pathname.indexOf("Kho/AddNew") > 0) ||
+                (pathname.indexOf("SanPham/Index") > 0) ||
+                (pathname.indexOf("SanPham/AddNew") > 0) ||
+                (pathname.indexOf("SanPham/ConvertUnitOfProducts") > 0) ||
+                (pathname.indexOf("SanPham/AddNewConvertUnitOfProducts") > 0) ||
+                (pathname.indexOf("SanPham/ListPriceProducts")> 0)
+                ) {
+                $('#DanhMuc').addClass('current');
+            } else if (
+                (pathname.indexOf("Home/QuanTri") > 0)||
+                (pathname.indexOf("NguoiDung/Index") > 0) ||
+                (pathname.indexOf("NguoiDung/AddNew") > 0) ||
+                (pathname.indexOf("SmsMaster/Index") > 0)||
+                (pathname.indexOf("PhanQuyen/Index") > 0) ||
+                (pathname.indexOf("PhanQuyen/AddNew") > 0) ||
+                (pathname.indexOf("NhaCungCap/Index") > 0) ||
+                (pathname.indexOf("NhaCungCap/AddNew") > 0) ||
+                (pathname.indexOf("SmsMessage/Index") > 0) ||
+                (pathname.indexOf("SmsMessage/AddNew") > 0)
+                ){
+                $('#QuanTri').addClass('current');
+            } else if (pathname.indexOf("Account/Show") > 0) {
+                $('#Show').addClass('current');
+            }
+        });
         //Stop Form Submission of Enter Key Press
         function stopRKey(evt) {
             var evt = (evt) ? evt : ((event) ? event : null);
@@ -34,17 +110,21 @@
             if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
         }
         document.onkeypress = stopRKey;
-        function changeTab(currentTab) {
-            var curTab = $(currentTab);
-
-            //remove another
-            curTab.addClass('currentTab');
-        }
+       
     </script>
     <style type="text/css">
-        .currentTab {
-            color: rgb(236, 4, 88);
-            border: 1px dotted;
+        a.current {
+            background-position: left bottom;
+            text-decoration: none;
+            color: rgb(236, 4, 88) !important;
+            outline: 2px dotted #ef4e07;
+        }        
+
+        a.menuClass:hover, a.menuClass:active {
+            background-position: left bottom;
+            text-decoration: none;
+            color: rgb(236, 4, 88) !important;
+            outline: 2px dotted #ef4e07;
         }
     </style>
 </head>
@@ -70,23 +150,23 @@
                     @if (Request.IsAuthenticated)
                     {
                      <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home", new { @onclick = "changeTab(this);" })</li>
-                            @if(Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
+                         <ul id="menu" >
+                             <li  >@Html.ActionLink("Home", "Index", "Home", null, new {@class="menuClass" , @id="Index" })</li>
+                             @if (Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
                             {
-                                <li>@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home")</li>
+                                <li >@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home", null, new { @class = "menuClass", @id = "QuanLyKho" })</li>
                             }
-                            @if(Convert.ToBoolean(Session["IsSaler"]) ||  Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
+                                @if (Convert.ToBoolean(Session["IsSaler"]) || Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
                             {
-                                <li>@Html.ActionLink("Bán Hàng", "BanHang", "Home")</li>
+                                <li >@Html.ActionLink("Bán Hàng", "BanHang", "Home", null, new { @class = "menuClass", @id = "BanHang" })</li>
                             }
-                            <li>@Html.ActionLink("Danh Mục", "DanhMuc", "Home")</li>
-                          @if(Convert.ToBoolean(Session["IsAdmin"]))
+                            <li >@Html.ActionLink("Danh Mục", "DanhMuc", "Home", null, new { @class = "menuClass", @id = "DanhMuc" })</li>
+                            @if (Convert.ToBoolean(Session["IsAdmin"]))
                             {
-                            <li>@Html.ActionLink("Quản Trị", "QuanTri", "Home")</li>
-                          }
-                            <li>@Html.ActionLink("Người Dùng", "Show", "Account")</li>
-                        </ul>
+                                <li >@Html.ActionLink("Quản Trị", "QuanTri", "Home", null, new { @class = "menuClass", @id = "QuanTri" })</li>
+                            }
+                             <li >@Html.ActionLink("Người Dùng", "Show", "Account", null, new { @class = "menuClass", @id = "Show" })</li>
+                         </ul>
                     </nav>
                      }
                 </div>
