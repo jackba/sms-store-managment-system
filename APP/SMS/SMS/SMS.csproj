@@ -336,6 +336,9 @@
     <Compile Include="Models\SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_PRICE_BY_UNIT_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_PRODUC_4_RETURN_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>

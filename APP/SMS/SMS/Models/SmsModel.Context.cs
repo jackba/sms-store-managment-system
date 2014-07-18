@@ -656,6 +656,19 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result>("SP_GET_PHIEU_XUAT_KHO_BAN_LE", mA_KHOParameter, mA_NHAN_VIEN_XUATParameter, tEN_NHAN_VIEN_XUATParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
+        public virtual ObjectResult<SP_GET_PRICE_BY_UNIT_Result> SP_GET_PRICE_BY_UNIT(Nullable<int> mA_SAN_PHAM, Nullable<int> mA_DON_VI)
+        {
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var mA_DON_VIParameter = mA_DON_VI.HasValue ?
+                new ObjectParameter("MA_DON_VI", mA_DON_VI) :
+                new ObjectParameter("MA_DON_VI", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PRICE_BY_UNIT_Result>("SP_GET_PRICE_BY_UNIT", mA_SAN_PHAMParameter, mA_DON_VIParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_PRODUC_4_RETURN_Result> SP_GET_PRODUC_4_RETURN(string tEN_SAN_PHAM)
         {
             var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?

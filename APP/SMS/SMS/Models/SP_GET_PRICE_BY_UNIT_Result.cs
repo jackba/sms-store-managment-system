@@ -11,7 +11,7 @@ namespace SMS.Models
 {
     using System;
     
-    public partial class SP_GET_DON_VI_TINH_Result
+    public partial class SP_GET_PRICE_BY_UNIT_Result
     {
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public Nullable<int> MA_DON_VI { get; set; }

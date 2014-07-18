@@ -186,6 +186,26 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult FindFactorOfProduct1(int maSP, int unitNo)
+        {
+            var ctx = new SmsContext();
+            var result = ctx.SP_GET_PRICE_BY_UNIT(maSP, unitNo).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            var jresult = Json(new { heso = result.HE_SO, 
+                                     gia_ban_1 = result.GIA_BAN_1,
+                                     gia_ban_2 = result.GIA_BAN_2,
+                                     gia_ban_3 = result.GIA_BAN_3,
+                                     chiec_khau_1 = result.CHIEC_KHAU_1,
+                                     chiec_khau_2 = result.CHIEC_KHAU_2,
+                                     chiec_khau_3 = result.CHIEC_KHAU_3,
+            });
+            return jresult;
+        }
+
+        [HttpPost]
         public JsonResult CheckingProductInAllStore(string maSP)
         {
             var ctx = new SmsContext();
