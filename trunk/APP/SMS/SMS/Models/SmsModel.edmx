@@ -22,6 +22,9 @@
           <Property Name="MA_KHO_XUAT" Type="int" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GIA_BAN_TRUOC_CK" Type="float" />
+          <Property Name="DON_GIA_TEMP" Type="float" />
+          <Property Name="SO_LUONG_TEMP" Type="float" />
+          <Property Name="MA_DON_VI" Type="int" />
         </EntityType>
         <EntityType Name="CHI_TIET_NHAP_KHO">
           <Key>
@@ -94,6 +97,12 @@
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
+          <Property Name="GIA_BAN_1" Type="float" />
+          <Property Name="GIA_BAN_2" Type="float" />
+          <Property Name="GIA_BAN_3" Type="float" />
+          <Property Name="CHIEC_KHAU_1" Type="float" />
+          <Property Name="CHIEC_KHAU_2" Type="float" />
+          <Property Name="CHIEC_KHAU_3" Type="float" />
         </EntityType>
         <EntityType Name="CONTROLLER_PERMISSION">
           <Key>
@@ -1986,6 +1995,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
+        <Function Name="SP_GET_PRICE_BY_UNIT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="MA_DON_VI" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_GET_PRODUC_4_RETURN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
@@ -2646,6 +2659,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="MA_KHO_XUAT" Type="Int32" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GIA_BAN_TRUOC_CK" Type="Double" />
+          <Property Name="DON_GIA_TEMP" Type="Double" />
+          <Property Name="SO_LUONG_TEMP" Type="Double" />
+          <Property Name="MA_DON_VI" Type="Int32" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__CHI_TIET___CREAT__5070F446" FromRole="CHI_TIET_HOA_DON" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="HOA_DON" Relationship="Self.FK__CHI_TIET___MA_HO__4E88ABD4" FromRole="CHI_TIET_HOA_DON" ToRole="HOA_DON" />
           <NavigationProperty Name="KHO" Relationship="Self.FK__CHI_TIET___MA_KH__03F0984C" FromRole="CHI_TIET_HOA_DON" ToRole="KHO" />
@@ -2735,6 +2751,12 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
           <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="GIA_BAN_1" Type="Double" />
+          <Property Name="GIA_BAN_2" Type="Double" />
+          <Property Name="GIA_BAN_3" Type="Double" />
+          <Property Name="CHIEC_KHAU_1" Type="Double" />
+          <Property Name="CHIEC_KHAU_2" Type="Double" />
+          <Property Name="CHIEC_KHAU_3" Type="Double" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__CHUYEN_DO__CREAT__4316F928" FromRole="CHUYEN_DOI_DON_VI_TINH" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="DON_VI_TINH" Relationship="Self.FK__CHUYEN_DO__MA_DO__4222D4EF" FromRole="CHUYEN_DOI_DON_VI_TINH" ToRole="DON_VI_TINH" />
           <NavigationProperty Name="SAN_PHAM" Relationship="Self.FK__CHUYEN_DO__MA_SA__412EB0B6" FromRole="CHUYEN_DOI_DON_VI_TINH" ToRole="SAN_PHAM" />
@@ -5174,6 +5196,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_PRICE_BY_UNIT" ReturnType="Collection(SmsModel.SP_GET_PRICE_BY_UNIT_Result)">
+            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="MA_DON_VI" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="SP_GET_PRODUC_4_RETURN" ReturnType="Collection(SmsModel.SP_GET_PRODUC_4_RETURN_Result)">
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
@@ -5344,6 +5370,12 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
           <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
           <Property Type="Double" Name="HE_SO" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_1" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_2" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_3" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_1" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_2" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_3" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GET_HD_DETAIL_FOR_EXPORT_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
@@ -5472,6 +5504,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Double" Name="GIA_VON" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+          <Property Type="String" Name="CODE" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
           <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
@@ -5562,6 +5595,18 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="DIA_CHI_GIAO_HANG" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_PRICE_BY_UNIT_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
+          <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="HE_SO" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_1" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_2" Nullable="true" />
+          <Property Type="Double" Name="GIA_BAN_3" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_1" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_2" Nullable="true" />
+          <Property Type="Double" Name="CHIEC_KHAU_3" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SP_GET_PRODUC_4_RETURN_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="false" />
@@ -5669,6 +5714,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="MA_KHO_XUAT" ColumnName="MA_KHO_XUAT" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="GIA_BAN_TRUOC_CK" ColumnName="GIA_BAN_TRUOC_CK" />
+                <ScalarProperty Name="DON_GIA_TEMP" ColumnName="DON_GIA_TEMP" />
+                <ScalarProperty Name="SO_LUONG_TEMP" ColumnName="SO_LUONG_TEMP" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5745,6 +5793,12 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="GIA_BAN_1" ColumnName="GIA_BAN_1" />
+                <ScalarProperty Name="GIA_BAN_2" ColumnName="GIA_BAN_2" />
+                <ScalarProperty Name="GIA_BAN_3" ColumnName="GIA_BAN_3" />
+                <ScalarProperty Name="CHIEC_KHAU_1" ColumnName="CHIEC_KHAU_1" />
+                <ScalarProperty Name="CHIEC_KHAU_2" ColumnName="CHIEC_KHAU_2" />
+                <ScalarProperty Name="CHIEC_KHAU_3" ColumnName="CHIEC_KHAU_3" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6345,6 +6399,12 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
                 <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
                 <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
+                <ScalarProperty Name="GIA_BAN_1" ColumnName="GIA_BAN_1" />
+                <ScalarProperty Name="GIA_BAN_2" ColumnName="GIA_BAN_2" />
+                <ScalarProperty Name="GIA_BAN_3" ColumnName="GIA_BAN_3" />
+                <ScalarProperty Name="CHIEC_KHAU_1" ColumnName="CHIEC_KHAU_1" />
+                <ScalarProperty Name="CHIEC_KHAU_2" ColumnName="CHIEC_KHAU_2" />
+                <ScalarProperty Name="CHIEC_KHAU_3" ColumnName="CHIEC_KHAU_3" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -6517,6 +6577,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImportMapping FunctionImportName="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" FunctionName="SmsModel.Store.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result">
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
                 <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
                 <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
@@ -6639,6 +6700,22 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
                 <ScalarProperty Name="DIA_CHI_GIAO_HANG" ColumnName="DIA_CHI_GIAO_HANG" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_PRICE_BY_UNIT" FunctionName="SmsModel.Store.SP_GET_PRICE_BY_UNIT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_PRICE_BY_UNIT_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="HE_SO" ColumnName="HE_SO" />
+                <ScalarProperty Name="GIA_BAN_1" ColumnName="GIA_BAN_1" />
+                <ScalarProperty Name="GIA_BAN_2" ColumnName="GIA_BAN_2" />
+                <ScalarProperty Name="GIA_BAN_3" ColumnName="GIA_BAN_3" />
+                <ScalarProperty Name="CHIEC_KHAU_1" ColumnName="CHIEC_KHAU_1" />
+                <ScalarProperty Name="CHIEC_KHAU_2" ColumnName="CHIEC_KHAU_2" />
+                <ScalarProperty Name="CHIEC_KHAU_3" ColumnName="CHIEC_KHAU_3" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

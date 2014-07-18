@@ -50,6 +50,13 @@
 }
 @using (Html.BeginForm("Edit", "Import", FormMethod.Post, new { @id = "index" }))
 {
+            var showFlg = 0;
+        if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+        {
+            showFlg = 1;
+        }
+    
+    <input type="hidden" id="showFlg" value="@showFlg" />
     <table>
         <tr>
             <td>
@@ -114,8 +121,11 @@
                 <td class='inner colwidth head '> Sản phẩm </td>
                 <td class='inner colwidth head '> Số lượng </td>
                 <td class='inner colwidth head '> Đơn vị </td>
+@if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+                {
                 <td class='inner colwidth head '> Đơn giá </td>
                 <td class='innerLast colwidth head '> Thành tiền </td>
+}
             </tr>
         </thead>
 
@@ -147,32 +157,50 @@
                 <td class='inner colwidth '>
                     @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "quantity textbtl numberic" })
                 </td>
-                <td class="inner colwidth">
+                <td class="innerLast colwidth">
                     @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @name = i + "MA_DON_VI", @class = "unitTemp" })
                     @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
                 </td>
+@if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+                {
                 <td class='inner colwidth '>
                     @Html.TextBoxFor(u => u.Detail[i].DON_GIA, new { @class = "price textbtl numberic" })
                 </td>
                 <td class='innerLast colwidth '>
                     @Html.TextBox("total", total.ToString("#,###.##") , new { @class = "total textbtl numberic", @readOnly = true, @disabled = "disabled" })
                 </td>
+}
             </tr>
             }
             
         </tbody>
         <tfoot>
             <tr>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="6"> </td>
+                @if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+                {
+                    <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="6"> </td>
+                }
+                else
+                {
+                    <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="4"> </td>
+                }
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
                     <input type="button" value="Thêm dòng" onclick="addRow()" />
                 </td>
             </tr>
             <tr>
                 <td class='innerLast colwidth  ' colspan="3" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="2"> <strong>Tổng hóa đơn</strong> </td>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
+
+                @if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+                {
+                    <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
+                    <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="2"> <strong>Tổng hóa đơn</strong> </td>
+                    <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
+                }
+                else
+                {
+                    <td class='innerLast alignCenter colwidth ' colspan="2" style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
+                }
             </tr>
         </tfoot>
     </table>
@@ -185,6 +213,7 @@
             var pval = 1;
             var ppval = 1;
             var checkFlg = 0;
+            var showFlg = $("#showFlg").val();
             if ($("#importDate").val() == null || $("#importDate").val().trim() == "") {
                 alert("Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.");
                 return false;
@@ -206,8 +235,10 @@
                     if (quantity == null || quantity == '' || quantity == 0) {
                         rval = 0;
                     }
-                    if (price == null || price == '' || price == 0) {
-                        pval = 0;
+                    if (showFlg == 1) {
+                        if (price == null || price == '' || price == 0) {
+                            pval = 0;
+                        }
                     }
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;

@@ -343,9 +343,17 @@ td{
 } 
 
 .codebtl{
-    width:70px;
+    width:93%;
 } 
 
 .namebtl{
-    width:170px;
+   width:93%;
+}
+
+table.contentTable tr:nth-child(even) {
+    background: #E2F7FF;
+}
+
+table.contentTable tr:nth-child(odd) {
+    background: #FFF;
 }

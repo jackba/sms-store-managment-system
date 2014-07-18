@@ -4,33 +4,33 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c294c6fb3ec14ae59c0d798a6981965d" Name="Diagram1">
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="60.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="47.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="47" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHI_TIET_XUAT_KHO" Width="1.5" PointX="5.25" PointY="41.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.CHUYEN_DOI_DON_VI_TINH" Width="1.5" PointX="7.5" PointY="53.375" IsExpanded="true" />
+      <Diagram DiagramId="ac89d3291e8f445984a9c250086d4665" Name="Diagram1">
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="61.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="48" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.CHI_TIET_XUAT_KHO" Width="1.5" PointX="5.25" PointY="42.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.CHUYEN_DOI_DON_VI_TINH" Width="1.5" PointX="7.5" PointY="53.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.CONTROLLER_PERMISSION" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.DON_VI_TINH" Width="1.5" PointX="5.25" PointY="62.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.HOA_DON" Width="1.5" PointX="11.25" PointY="46.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHACH_HANG" Width="1.5" PointX="10.5" PointY="64.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHACH_HANG_DEBIT_HIST" Width="1.5" PointX="13.5" PointY="53.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHO" Width="1.5" PointX="5.25" PointY="79.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KHU_VUC" Width="1.5" PointX="5.25" PointY="84.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.KIEM_KHO_HISTORY" Width="1.5" PointX="18" PointY="53.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NGUOI_DUNG" Width="1.5" PointX="3" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHA_CUNG_CAP" Width="1.5" PointX="5.25" PointY="88.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHA_SAN_XUAT" Width="1.5" PointX="5.25" PointY="93.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHAP_KHO" Width="1.5" PointX="15.75" PointY="64" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.NHOM_NGUOI_DUNG" Width="1.5" PointX="0.75" PointY="47.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.PHAN_QUYEN" Width="1.5" PointX="5.25" PointY="53.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.SAN_PHAM" Width="1.5" PointX="7.5" PointY="66.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.SMS_MASTER" Width="1.5" PointX="5.25" PointY="102.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.SMS_MESSAGES" Width="1.5" PointX="8.25" PointY="41.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG" Width="1.5" PointX="13.5" PointY="46.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC" Width="1.5" PointX="18.75" PointY="62.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="9.75" PointY="55.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.XUAT_KHO" Width="1.5" PointX="21" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.DON_VI_TINH" Width="1.5" PointX="5.25" PointY="64.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.HOA_DON" Width="1.5" PointX="11.25" PointY="47.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.KHACH_HANG" Width="1.5" PointX="10.5" PointY="66.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.KHACH_HANG_DEBIT_HIST" Width="1.5" PointX="13.5" PointY="54.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.KHO" Width="1.5" PointX="5.25" PointY="82.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.KHU_VUC" Width="1.5" PointX="5.25" PointY="87.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.KIEM_KHO_HISTORY" Width="1.5" PointX="18" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.NGUOI_DUNG" Width="1.5" PointX="3" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.NHA_CUNG_CAP" Width="1.5" PointX="5.25" PointY="91.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.NHA_SAN_XUAT" Width="1.5" PointX="5.25" PointY="96.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.NHAP_KHO" Width="1.5" PointX="15.75" PointY="65.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.NHOM_NGUOI_DUNG" Width="1.5" PointX="0.75" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.PHAN_QUYEN" Width="1.5" PointX="5.25" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.SAN_PHAM" Width="1.5" PointX="7.5" PointY="68" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.SMS_MASTER" Width="1.5" PointX="5.25" PointY="105.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.SMS_MESSAGES" Width="1.5" PointX="8.25" PointY="42.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.TRA_HANG" Width="1.5" PointX="13.5" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC" Width="1.5" PointX="18.75" PointY="63.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="9.75" PointY="56.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.XUAT_KHO" Width="1.5" PointX="21" PointY="61.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_HOA_DON" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_HOA_DON_DISTICNT" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_IMPORT_DETAIL" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />

@@ -14,10 +14,6 @@ namespace SMS.Models
     
     public partial class CHI_TIET_HOA_DON
     {
-        public CHI_TIET_HOA_DON()
-        {
-
-        }
         public Nullable<int> MA_HOA_DON { get; set; }
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public Nullable<double> SO_LUONG { get; set; }
@@ -31,6 +27,9 @@ namespace SMS.Models
         public Nullable<int> MA_KHO_XUAT { get; set; }
         public int ID { get; set; }
         public Nullable<double> GIA_BAN_TRUOC_CK { get; set; }
+        public Nullable<double> DON_GIA_TEMP { get; set; }
+        public Nullable<double> SO_LUONG_TEMP { get; set; }
+        public Nullable<int> MA_DON_VI { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual HOA_DON HOA_DON { get; set; }

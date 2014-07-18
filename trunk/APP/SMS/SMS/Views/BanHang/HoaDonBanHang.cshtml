@@ -1004,13 +1004,23 @@
     function GetFactorOfProduct(productNo, unitNo) {
         if (unitNo != null && unitNo != 'undefined') {
             $.ajax({
-                url: "/BanHang/FindFactorOfProduct",
+                url: "/BanHang/FindFactorOfProduct1",
                 //data: "{'maSP' : '" + productNo + "'}",
                 data: "{ 'maSP': '" + productNo + "' , 'unitNo' : '" + unitNo + "'}",
                 dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $('#hidFactorValue').val(data.heso);
-
+                    var kind = $("#typeCustomers").val();
+                    if(kind == 1){
+                        $("#GiaBan").val(data.gia_ban_1);
+                        $("#ChietKhau").val(data.chiec_khau_1);
+                    }else if(kind == 2){
+                        $("#GiaBan").val(data.gia_ban_2);
+                        $("#ChietKhau").val(data.chiec_khau_2);
+                    }else{
+                        $("#GiaBan").val(data.gia_ban_3);
+                        $("#ChietKhau").val(data.chiec_khau_3);
+                    }
                     if ($('#hidFactorValue').val() != '' && $('#hidFactorValue').val() != '1') {
                         showSuggestUnit();
                     } else {
