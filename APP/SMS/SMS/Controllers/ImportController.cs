@@ -15,6 +15,38 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class ImportController : Controller
     {
+        public ActionResult deleteImport(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy phiếu nhập kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.NHAP_KHO.Find(id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+                donvi.ACTIVE = "I";
+                donvi.UPDATE_AT = DateTime.Now;
+                donvi.CREATE_BY = (int)Session["UserId"];
+                ctx.SaveChanges();
+
+                var details = ctx.CHI_TIET_NHAP_KHO.Where(u => u.ACTIVE == "A" && u.MA_NHAP_KHO == id).ToList<CHI_TIET_NHAP_KHO>();
+                foreach(var detail in details)
+                {
+                    detail.ACTIVE = "I";
+                    detail.UPDATE_AT = DateTime.Now;
+                    detail.CREATE_BY = (int)Session["UserId"];
+                    ctx.SaveChanges();
+                }
+                return RedirectToAction("Index", new { @messageInfor = "Xóa phiếu nhập kho thành công." });
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
 
         [HttpPost]
         public JsonResult getInventory(string storeId, string productId)
@@ -163,12 +195,12 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
-                    return RedirectToAction("Index", new { @messageInfor = "Nhận trả hàng thành công." });
+                    return RedirectToAction("Index", new { @messageInfor = "Sửa hóa đơn mua hàng thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
-                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("Index", new { @message = "Sửa hóa đơn mua hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
         }
@@ -326,10 +358,8 @@ namespace SMS.Controllers
                     foreach (var oldDetail in oldDetails)
                     {
                         oldDetail.ACTIVE = "I";
-                        oldDetail.CREATE_AT = DateTime.Now;
                         oldDetail.UPDATE_AT = DateTime.Now;
                         oldDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                        oldDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                         ctx.SaveChanges();
                     }
 

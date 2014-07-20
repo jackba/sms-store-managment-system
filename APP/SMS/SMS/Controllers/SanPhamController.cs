@@ -37,6 +37,31 @@ namespace SMS.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public JsonResult FindProductByCode(string code)
+        {
+            var ctx = new SmsContext();
+            var result = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE.ToLower() == code.ToLower()).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            var jresult = Json(new
+            {
+                ma_san_pham = result.MA_SAN_PHAM,
+                ten_san_pham = result.TEN_SAN_PHAM,
+                code = result.CODE,
+                gia_ban_1 = result.GIA_BAN_1,
+                gia_ban_2 = result.GIA_BAN_2,
+                gia_ban_3 = result.GIA_BAN_3,
+                chiec_khau_1 = result.CHIEC_KHAU_1,
+                chiec_khau_2 = result.CHIEC_KHAU_2,
+                chiec_khau_3 = result.CHIEC_KHAU_3,
+            });
+            return jresult;
+        }
+
         [HttpPost]
         public PartialViewResult PagingContent(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
