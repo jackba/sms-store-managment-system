@@ -410,6 +410,37 @@
             });
         }
 
+
+        function codeFocusout() {
+            $("input.code").focusout(function () {
+                var $this = $(this);
+                var code = $this.val();
+                var parent = $this.parent().parent();
+                if (code != null && code.trim() != ''){
+                    $.ajax({
+                        url: "/SanPham/FindProductByCode",
+                        data: "{ 'code': '" + code + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data != null && data.ma_san_pham != null && data.ma_san_pham != '') {
+                                $('input.productId', parent).val(data.ma_san_pham);
+                                $('input.productname', parent).val(data.ten_san_pham);
+                                createDonViTinh($this);
+                                $('input.convertor', parent).val("1");
+                                $this.css("background-color", "white");
+                            } else {
+                                alert("Sản phẩm này không tồn tại.");
+                                $this.val("");
+                                $this.css("background-color", "yellow");
+                                $this.focus();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                }
+            });
+        }
+
         function productCodeAutocomplete()
         {
             $("input.code").autocomplete({
@@ -434,6 +465,7 @@
                     $('input.productId', parent).val("");
                     $('input.productname', parent).val("");
                     $('input.convertor', parent).val("1");
+                    
                 },
                 select: function (event, ui) {
                     var $th = $(this);
@@ -521,6 +553,9 @@
             return flg;
         }
 
+       
+       
+
         function productAutocomplete()        {
             $("input.productname").autocomplete({
                 source: function (request, response) {
@@ -544,6 +579,7 @@
                     $('input.productId', parent).val("");
                     $('input.code', parent).val("");
                     $('input.convertor', parent).val("1");
+                    
                 },
                 select: function (event, ui) {
                     var $th = $(this);
@@ -648,6 +684,7 @@
             unitOnchange();
             tableCheck();
             headerCheck();
+            codeFocusout();
         });
 
 
@@ -699,8 +736,7 @@
                 '</tr>');
             }
             
-            $("#rowIndex").val(row);
-            $('input.code', $('#detailTable > tbody:last')).focus();
+            $("#rowIndex").val(row);            
             numberOnly();
             productAutocomplete();
             productCodeAutocomplete();
@@ -710,6 +746,8 @@
             unitOnchange();
             tableCheck();
             headerCheck();
+            codeFocusout();
+            $('input.code', $('#detailTable > tbody:last')).focus();
         };
     </script>
 }
