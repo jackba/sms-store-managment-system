@@ -15,6 +15,54 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class ImportController : Controller
     {
+        public ActionResult deleteTransfer(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.XUAT_KHO.Find(id);
+            if (donvi.ACTIVE.Equals("A") || donvi.ACTIVE.Equals("W"))
+            {
+
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        donvi.ACTIVE = "I";
+                        donvi.UPDATE_AT = DateTime.Now;
+                        donvi.CREATE_BY = (int)Session["UserId"];
+                        ctx.SaveChanges();
+
+                        var details = ctx.CHI_TIET_XUAT_KHO.Where(u => u.ACTIVE == "A" && u.MA_XUAT_KHO == id).ToList<CHI_TIET_XUAT_KHO>();
+                        foreach (var detail in details)
+                        {
+                            detail.ACTIVE = "I";
+                            detail.UPDATE_AT = DateTime.Now;
+                            detail.CREATE_BY = (int)Session["UserId"];
+                            ctx.SaveChanges();
+                        }
+                        transaction.Complete();
+                        return RedirectToAction("ListExportTransfer", new { @inforMessage = "Xóa phiếu xuất chuyển kho thành công." });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        Transaction.Current.Rollback();
+                        return RedirectToAction("ListExportTransfer", new { @message = "Xóa phiếu xuất chuyển kho  thất bại." });
+                    }
+                }
+
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy  phiếu xuất chuyển kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
+
         public ActionResult deleteImport(int id)
         {
             if (id <= 0)
@@ -26,20 +74,35 @@ namespace SMS.Controllers
             var donvi = ctx.NHAP_KHO.Find(id);
             if (donvi.ACTIVE.Equals("A"))
             {
-                donvi.ACTIVE = "I";
-                donvi.UPDATE_AT = DateTime.Now;
-                donvi.CREATE_BY = (int)Session["UserId"];
-                ctx.SaveChanges();
-
-                var details = ctx.CHI_TIET_NHAP_KHO.Where(u => u.ACTIVE == "A" && u.MA_NHAP_KHO == id).ToList<CHI_TIET_NHAP_KHO>();
-                foreach(var detail in details)
+                
+                using (var transaction = new System.Transactions.TransactionScope())
                 {
-                    detail.ACTIVE = "I";
-                    detail.UPDATE_AT = DateTime.Now;
-                    detail.CREATE_BY = (int)Session["UserId"];
-                    ctx.SaveChanges();
+                    try
+                    {
+                        donvi.ACTIVE = "I";
+                        donvi.UPDATE_AT = DateTime.Now;
+                        donvi.CREATE_BY = (int)Session["UserId"];
+                        ctx.SaveChanges();
+
+                        var details = ctx.CHI_TIET_NHAP_KHO.Where(u => u.ACTIVE == "A" && u.MA_NHAP_KHO == id).ToList<CHI_TIET_NHAP_KHO>();
+                        foreach (var detail in details)
+                        {
+                            detail.ACTIVE = "I";
+                            detail.UPDATE_AT = DateTime.Now;
+                            detail.CREATE_BY = (int)Session["UserId"];
+                            ctx.SaveChanges();
+                        }
+                        transaction.Complete();
+                        return RedirectToAction("Index", new { @messageInfor = "Xóa phiếu nhập kho thành công." });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        Transaction.Current.Rollback();
+                        return RedirectToAction("Index", new { @message = "Xóa phiếu nhập kho thất bại." });
+                    }
                 }
-                return RedirectToAction("Index", new { @messageInfor = "Xóa phiếu nhập kho thành công." });
+                
             }
             else
             {

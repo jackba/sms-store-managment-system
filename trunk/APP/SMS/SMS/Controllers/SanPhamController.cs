@@ -12,6 +12,7 @@ using System.IO;
 using System.Web.UI;
 using System.Text;
 using SMS.App_Start;
+using System.Data;
 
 namespace SMS.Controllers
 {
@@ -141,6 +142,38 @@ namespace SMS.Controllers
                                     };
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
+        }
+
+        [HttpPost]
+        public JsonResult FindInventory(int? storeId, int? productId)
+        {
+            var ctx = new SmsContext();
+            var StoreIdParam = new SqlParameter
+            {
+                ParameterName = "STORE_ID",
+                Value = Convert.ToInt32(storeId)
+            };
+
+            var ProductIdParam = new SqlParameter
+            {
+                ParameterName = "PRODUC_ID",
+                Value = Convert.ToInt32(productId)
+            };
+
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VAL",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+            var tonkho = ctx.Database.SqlQuery<Object>("exec SP_GET_TON_KHO_BY_STORE_ID_AND_PRODUCT_ID @STORE_ID, @PRODUC_ID, @RETURN_VAL OUT ",
+                StoreIdParam, ProductIdParam, returnValue).ToList<Object>().Take(SystemConstant.MAX_ROWS);
+            var rv = returnValue.Value == DBNull.Value ? 0 : Convert.ToDouble(returnValue.Value);
+            var jresult = Json(new
+            {
+                ton_kho = rv.ToString("#.##"),
+            });
+            return jresult;
         }
 
 

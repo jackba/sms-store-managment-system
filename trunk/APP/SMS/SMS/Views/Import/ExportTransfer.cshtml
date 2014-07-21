@@ -16,6 +16,10 @@
     </h2>
 </hgroup>
 <hr />
+
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
@@ -149,9 +153,57 @@
     <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
      <input type="button" value="Lưu & Xuất" style="width:200px;" onclick="return saveAndExport()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    
+    <div id="storeInformation">
+        <table>
+            <tr class="inner column-hscroll alignCenter">
+                <td class='innerLast alignCenter colwidth headStoreInfor'>
+                    Tên sản phẩm
+                </td>
+                <td class='innerLast alignCenter colwidth headStoreInfor'>
+                    Tồn kho
+                </td>
+            </tr>
+            <tr style="background-color:white">
+                <td class="innerLast colwidth" id="proName"> </td>
+                <td class="innerLast colwidth" id="stInfor"> </td>
+            </tr>
+
+        </table>
+    </div>
+    
     <script>
 
+        function placeDiv(event) {
+            var width =  event.width();
+            var offset = event.offset();
+            offset.left = offset.left + width + 20;
+            $('#storeInformation').show();
+            
+            $('#storeInformation').offset({ top: offset.top, left: offset.left })
+
+        }
+
+        function checkdlc() {
+            var flg = false;
+            var productIdes = $('td input.productId');
+            var i = 0;
+            var j = 1;
+            for (i = 0; i < productIdes.length - 1; i++) {
+                if (productIdes[i].value != '') {
+                    for (j = i + 1; j < productIdes.length; j++) {
+                        if (productIdes[j].value != '' && productIdes[j].value == productIdes[i].value) {
+                            flg = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return flg;
+        }
+
         function checkEnough(storeId, ProductId, quantity, convertor) {
+            var inventorNumber = 0;
             if (storeId != null && ProductId != null && quantity != null && convertor != null) {
                 $.ajax({
                     url: "/Import/getInventory",
@@ -159,34 +211,43 @@
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var inventorNumber = data;
-                        if (data < (quantity * convertor)) {
-                            return false;
-                        } else {
-                            return true;
-                        };
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-
+                if (inventorNumber < (quantity * convertor)) {
+                    return false;
+                } else {
+                    return true;
+                };
             }
         }
 
         function saveAndExport() {
+            $('#message').empty();
+            var errorMessage = '';
             if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
-                alert("Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.";
             }
             if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho xuất");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn kho xuất, Vui lòng chọn kho xuất.";
             }
             if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho nhập");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn kho nhập, Vui lòng chọn kho nhập.";
             }
             if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
-                alert("Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.";
             }
             
             var row = 0;
@@ -216,28 +277,40 @@
             });
             
             if (ppval == 0) {
-                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
             }
             if (row == 0) {
-                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
             }
             else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
-                return false;
-            } 
-            if (checkFlg == 1) {
-                var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
-                if (r == true) {
-                    $('#saveFlg').val(1);
-                    $('#index').submit();
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
                 }
-                else {
-                    return false;
-                }
+                errorMessage += "Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.";
             }
-            $('#index').submit();
+            if (errorMessage != '') {
+                $('#message').append(errorMessage);
+                $('#message').append("<hr/>");
+                return false;
+            }else{
+                if (checkFlg == 1) {
+                    var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
+                    if (r == true) {
+                        $('#saveFlg').val(1);
+                        $('#index').submit();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                $('#index').submit();
+            }
         }
 
 
@@ -493,6 +566,19 @@
                     }
                     return false;
                 },
+                focus: function (event, ui) {
+                    var $this = $(this);
+                    $('#proName').text(ui.item.name);
+                    var storeId = $("#exportStoreId").val();
+                    if (storeId != '') {
+                        //alert(ui.item.id);
+                        getStoreInformation(storeId, ui.item.id);
+                    }
+                    placeDiv($this);
+                },
+                close: function () {
+                    $("#storeInformation").hide();
+                },
                 minLength: 1
             });
         }
@@ -541,6 +627,53 @@
             return flg;
         }
 
+        function codeFocusout() {
+            $("input.code").focusout(function () {
+                var $this = $(this);
+                var code = $this.val();
+                var parent = $this.parent().parent();
+                if (code != null && code.trim() != '') {
+                    $.ajax({
+                        url: "/SanPham/FindProductByCode",
+                        data: "{ 'code': '" + code + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data != null && data.ma_san_pham != null && data.ma_san_pham != '') {
+                                $('input.productId', parent).val(data.ma_san_pham);
+                                $('input.productname', parent).val(data.ten_san_pham);
+                                createDonViTinh($this);
+                                $('input.convertor', parent).val("1");
+                                $this.css("background-color", "white");
+                            } else {
+                                alert("Sản phẩm này không tồn tại.");
+                                $this.val("");
+                                $this.css("background-color", "yellow");
+                                $this.focus();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                }
+            });
+        }
+
+        function getStoreInformation(storeId, ProductId) {
+            $.ajax({
+                url: "/SanPham/FindInventory",
+                data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var inventorNumber = data.ton_kho;
+                    if (inventorNumber == '') {
+                        $('#stInfor').text("0");
+                    } else {
+                        $('#stInfor').text(inventorNumber);
+                    }                    
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+        }
+
         function productAutocomplete() {
             $("input.productname").autocomplete({
                 source: function (request, response) {
@@ -582,6 +715,19 @@
                         $('input.convertor', pa).val("1");
                     }
                     return false;
+                },
+                focus: function (event, ui) {
+                    var $this = $(this);
+                    $('#proName').text(ui.item.value);
+                    var storeId = $("#exportStoreId").val();
+                    if (storeId != '') {
+                        //alert(ui.item.id);
+                        getStoreInformation(storeId, ui.item.id);
+                    }                    
+                    placeDiv($this);
+                },
+                close: function () {
+                    $("#storeInformation").hide();
                 },
                 minLength: 1
             });
@@ -665,6 +811,8 @@
             unitOnchange();
             tableCheck();
             headerCheck();
+            $("#storeInformation").hide();
+            //codeFocusout();
         });
 
 
@@ -699,6 +847,7 @@
             unitOnchange();
             tableCheck();
             headerCheck();
+            //codeFocusout();
         };
     </script>
 }

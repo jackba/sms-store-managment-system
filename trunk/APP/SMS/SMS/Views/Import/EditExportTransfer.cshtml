@@ -162,22 +162,22 @@
     <script>
 
         function checkEnough(storeId, ProductId, quantity, convertor) {
+            var inventorNumber = 0;
             if (storeId != null && ProductId != null && quantity != null && convertor != null) {
                 $.ajax({
                     url: "/Import/getInventory",
                     data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        var inventorNumber = data;
-                        if (data < (quantity * convertor)) {
-                            return false;
-                        } else {
-                            return true;
-                        };
+                        var inventorNumber = data;                       
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-
+                if (inventorNumber < (quantity * convertor)) {
+                    return false;
+                } else {
+                    return true;
+                };
             }
         }
 
@@ -217,6 +217,7 @@
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;
                     } else {
+                        var st = $("#exportStoreId option:selected").val();
                         if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
                             checkFlg = 1;
                         }

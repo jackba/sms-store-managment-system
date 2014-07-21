@@ -121,6 +121,16 @@ td.headLast
     text-align: center;
 }
 
+td.headStoreInfor
+{
+    border-top: 1px solid #666;
+    border-right: 1px solid #666;
+    background-color: #00FA9A;
+    white-space: nowrap;    
+    font-weight: bold;
+    text-align: center;
+}
+
 .rightcol
 {
     border-right: 1px solid #666;

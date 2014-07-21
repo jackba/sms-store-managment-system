@@ -1037,5 +1037,18 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual ObjectResult<Nullable<double>> SP_GET_INVENTORY_BY_PRO_STO_ID(Nullable<int> pRODUCT_ID, Nullable<int> sTORE_ID)
+        {
+            var pRODUCT_IDParameter = pRODUCT_ID.HasValue ?
+                new ObjectParameter("PRODUCT_ID", pRODUCT_ID) :
+                new ObjectParameter("PRODUCT_ID", typeof(int));
+    
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_INVENTORY_BY_PRO_STO_ID", pRODUCT_IDParameter, sTORE_IDParameter);
+        }
     }
 }
