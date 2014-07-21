@@ -15,6 +15,9 @@
     </h2>
 </hgroup>
 <hr />
+
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+</div>
 <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
@@ -193,25 +196,53 @@
     <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <script>
+        function checkdlc() {
+            var flg = false;
+            var productIdes = $('td input.productId');
+            var i = 0;
+            var j = 1;
+            for (i = 0; i < productIdes.length - 1; i++) {
+                if (productIdes[i].value != '') {
+                    for (j = i + 1; j < productIdes.length; j++) {
+                        if (productIdes[j].value != '' && productIdes[j].value == productIdes[i].value) {
+                            flg = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return flg;
+        }
         function returnSubmit() {
+            $('#message').empty();
+            if (checkdlc()) {
+                $('#message').append("Trong danh sách có ít nhất 2 mặt hàng giống nhau. Vui lòng kiểm tra lại");
+                return false;
+            }
             var row = 0;
             var rval = 1;
             var pval = 1;
             var ppval = 1;
             var checkFlg = 0;
             var showFlg = $("#showFlg").val();
-            
+            var errorMessage = '';
             if ($("#importDate").val() == null || $("#importDate").val().trim() == "") {
-                alert("Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.";
             }
             if ($("#providerId option:selected").val() == null || $("#providerId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn nhà cung cấp");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn nhà cung cấp, Vui lòng chọn nhà cung cấp";
             }
             if ($("#storeId option:selected").val() == null || $("#storeId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho nhập");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn kho nhập, Vui lòng chọn kho nhập";
             }
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
@@ -235,23 +266,37 @@
             });
 
             if (ppval == 0) {
-                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
             }
 
             if (pval == 0) {
-                alert("Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
             }
 
             if (row == 0) {
-                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
             }
             else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.");
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+            }
+            if (errorMessage != '') {
+                $('#message').append(errorMessage);
+                $('#message').append("<hr/>");
                 return false;
-            } else {
+            }
+            else {
                 $('#index').submit();
             }
         };
@@ -423,11 +468,11 @@
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             if (data != null && data.ma_san_pham != null && data.ma_san_pham != '') {
-                                $('input.productId', parent).val(data.ma_san_pham);
-                                $('input.productname', parent).val(data.ten_san_pham);
-                                createDonViTinh($this);
-                                $('input.convertor', parent).val("1");
-                                $this.css("background-color", "white");
+                                    $('input.productId', parent).val(data.ma_san_pham);
+                                    $('input.productname', parent).val(data.ten_san_pham);
+                                    createDonViTinh($this);
+                                    $('input.convertor', parent).val("1");
+                                    $this.css("background-color", "white");
                             } else {
                                 alert("Sản phẩm này không tồn tại.");
                                 $this.val("");
@@ -466,6 +511,7 @@
                     $('input.productname', parent).val("");
                     $('input.convertor', parent).val("1");
                     
+                    
                 },
                 select: function (event, ui) {
                     var $th = $(this);
@@ -476,6 +522,7 @@
                         $('input.productname', pa).val(ui.item.name);
                         createDonViTinh($th);
                         $('input.convertor', pa).val("1");
+                        $th.css("background-color", "white");
                     } else
                     {
                         alert("Sản phẩm này đã có trong danh sách");
@@ -734,9 +781,9 @@
                 '<select name="Detail[' + row + '].MA_DON_VI" class="unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
                 '<option value="">---------</option></select> </td>'+                
                 '</tr>');
-            }
-            
-            $("#rowIndex").val(row);            
+            }            
+            $("#rowIndex").val(row);
+            $('input.code', $('#detailTable > tbody:last')).focus();
             numberOnly();
             productAutocomplete();
             productCodeAutocomplete();
@@ -746,8 +793,7 @@
             unitOnchange();
             tableCheck();
             headerCheck();
-            codeFocusout();
-            $('input.code', $('#detailTable > tbody:last')).focus();
+            codeFocusout();            
         };
     </script>
 }
