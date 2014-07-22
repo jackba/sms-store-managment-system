@@ -246,14 +246,16 @@
             }
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
-                if (flg != 1) {
-                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+                if (flg != 1) {                    
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
                     if (quantity == null || quantity == '' || quantity == 0) {
                         rval = 0;
                     }
                     if (showFlg == 1) {
+                        
+                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+                        
                         if (price == null || price == '' || price == 0) {
                             pval = 0;
                         }
@@ -563,28 +565,31 @@
         }
 
         function quantityKeyPress() {
-            $('input.quantity').keyup(function (event) {
-                var $this = $(this);
-                var parent = $this.parent().parent();
-                var price = $('input.price', parent).val().replace(/,/gi, "");
-                var tt = $this.val().replace(/,/gi, "") * price;
+            var showFlg = $("#showFlg").val();
+            if (showFlg == 1) {
+                $('input.quantity').keyup(function (event) {
+                    var $this = $(this);
+                    var parent = $this.parent().parent();
+                    var price = $('input.price', parent).val().replace(/,/gi, "");
+                    var tt = $this.val().replace(/,/gi, "") * price;
 
-                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-                var arParts = String(tt).split(DecimalSeparator);
-                var intPart = arParts[0];
-                var decPart = (arParts.length > 1 ? arParts[1] : '');
-                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                if (decPart.length > 2) {
-                    decPart = (decPart + '00').substr(0, 2);
-                }
-                if (arParts.length > 1) {
-                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
-                } else {
-                    $('td input.total', parent).val(num2);
-                }
-                getAllTotal();
-            });
+                    var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                    var arParts = String(tt).split(DecimalSeparator);
+                    var intPart = arParts[0];
+                    var decPart = (arParts.length > 1 ? arParts[1] : '');
+                    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                    if (decPart.length > 2) {
+                        decPart = (decPart + '00').substr(0, 2);
+                    }
+                    if (arParts.length > 1) {
+                        $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
+                    } else {
+                        $('td input.total', parent).val(num2);
+                    }
+                    getAllTotal();
+                });
+            }
         }
 
         function checkDuplicate(val) {
@@ -691,37 +696,39 @@
 
 
         function getAllTotal() {
-            var AllTotal = 0;
-            var total = 0;
-            $('td input.total').each(function () {
-                $this = $(this);
-                $parent = $this.parent().parent();
-                if ($('input.delFlg', $parent).val() != 1) {
-                    total = $this.val().replace(/,/gi, "");
-                    if (total != null && total != '') {
-                        AllTotal += parseFloat(total);
+            var showFlg = $("#showFlg").val();
+            if (showFlg == 1) {
+                var AllTotal = 0;
+                var total = 0;
+                $('td input.total').each(function () {
+                    $this = $(this);
+                    $parent = $this.parent().parent();
+                    if ($('input.delFlg', $parent).val() != 1) {
+                        total = $this.val().replace(/,/gi, "");
+                        if (total != null && total != '') {
+                            AllTotal += parseFloat(total);
+                        }
                     }
-                }
-            });
+                });
 
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(AllTotal).split(DecimalSeparator);
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
-            }
-            if (arParts.length > 1) {
-                $('strong.fall').text(num2 + DecimalSeparator + decPart);
-            } else {
-                $('strong.fall').text(num2);
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AllTotal).split(DecimalSeparator);
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $('strong.fall').text(num2 + DecimalSeparator + decPart);
+                } else {
+                    $('strong.fall').text(num2);
+                }
             }
         };
 
-        $(document).ready(function () {
-            
+        $(document).ready(function () {            
             formatNumberic();
             numberOnly();
             productAutocomplete();    
@@ -731,7 +738,8 @@
             unitOnchange();
             tableCheck();
             headerCheck();
-            codeFocusout();
+            //codeFocusout();
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
         });
 
 
@@ -793,7 +801,7 @@
             unitOnchange();
             tableCheck();
             headerCheck();
-            codeFocusout();            
+            //codeFocusout();            
         };
     </script>
 }

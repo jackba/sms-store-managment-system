@@ -50,6 +50,15 @@
     ckind.Value = "3";
     ckind.Text = "Nhập chuyển kho";
     kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 4)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "4";
+    ckind.Text = "Nhập điều chỉnh kho";
+    kinds.Add(ckind);
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("Import", "Home")"> Quản lý kho - nhập kho </a>

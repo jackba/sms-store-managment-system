@@ -15,6 +15,79 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class ImportController : Controller
     {
+        public ActionResult Adjustment()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            ViewBag.Stores = stores;
+            ImportModel model = new ImportModel();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Providers = providers;
+            model.Units = units;
+            ViewBag.InputKind = -1;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Adjustment(ImportModel model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var infor = ctx.NHAP_KHO.Create();
+                    infor.MA_KHO = model.Infor.MA_KHO;
+                    infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
+                    infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
+                    infor.CREATE_AT = DateTime.Now;
+                    infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.ACTIVE = "A";
+                    infor.GHI_CHU = model.Infor.GHI_CHU;
+                    infor.LY_DO_NHAP = 4; // nhập mua hàng
+                    ctx.NHAP_KHO.Add(infor);
+                    ctx.SaveChanges();
+
+                    CHI_TIET_NHAP_KHO importDetail;
+                    foreach (var detail in model.Detail)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
+                            importDetail.ACTIVE = "A";
+                            importDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            importDetail.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            importDetail.HE_SO = detail.HE_SO;
+                            importDetail.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            importDetail.MA_DON_VI = detail.MA_DON_VI;
+                            importDetail.MA_NHAP_KHO = infor.MA_NHAP_KHO;
+                            importDetail.CREATE_AT = DateTime.Now;
+                            importDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            importDetail.UPDATE_AT = DateTime.Now;
+                            importDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ctx.CHI_TIET_NHAP_KHO.Add(importDetail);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("Index", new { @messageInfor = "Nhập điều chỉnh kho thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("Index", new { @message = "Nhập điều chỉnh kho thất bại, vui lòng liên hệ admin." });
+                }
+            }
+        }
+
         public ActionResult deleteTransfer(int id)
         {
             if (id <= 0)
@@ -641,12 +714,12 @@ namespace SMS.Controllers
                         }                        
                     }
                     transaction.Complete();
-                    return RedirectToAction("Index", new { @messageInfor = "Nhận trả hàng thành công." });
+                    return RedirectToAction("Index", new { @messageInfor = "Nhập kho thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
-                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("Index", new { @message = "Nhập kho thất bại, vui lòng liên hệ admin." });
                 }
             }
         }
