@@ -1,0 +1,149 @@
+﻿@model SMS.Models.CancelExportModel
+@using PagedList.Mvc;
+
+<div>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count phiếu xuất</label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ExportCancelListPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeId = ViewBag.StoreId,
+                            storeName = ViewBag.StoreName,
+                            exporterId = ViewBag.ExporterId,
+                            exporterName = ViewBag.ExporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+                        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            InsertionMode = InsertionMode.Replace,
+                            LoadingElementId = "resultLoadingDiv",
+                            UpdateTargetId = "mainDiv"
+                        }
+                    ))
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" id="tblExport" name="tblExport">
+        <tr style="width:100%">
+            <td class='inner colwidth head '>   Mã phiếu xuất </td>
+            <td class='inner colwidth head '> Người xuất </td>
+            <td class='inner colwidth head '> Kho xuất </td>
+            <td class='inner colwidth head '> Ngày xuất</td>
+            <td class='innerLast colwidth head '>  Ghi chú</td>
+            @if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+            {
+                <td class='innerLast colwidth head '>  Sửa </td>
+                <td class='innerLast colwidth head '>  Hủy </td>
+            }
+        </tr>
+        @{
+            DateTime Export = DateTime.Now;
+            if (Model.TheList != null && Model.TheList.Count() >= 1)
+            {
+                Export = (DateTime)Model.TheList[0].NGAY_XUAT;
+
+                <tr>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@Export.ToString("dd/MM/yyyy") </td>
+                </tr>
+            }
+        }
+        @foreach (var dbHist in Model.TheList)
+        {
+            if (Export != (DateTime)dbHist.NGAY_XUAT)
+            {
+                Export = (DateTime)dbHist.NGAY_XUAT;
+                <tr>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@Export.ToString("dd/MM/yyyy") </td>
+                </tr>
+            }
+            <tr class="inner column-hscroll alignCenter">
+                <td class="inner colwidth">
+                    <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO})" class="button-module">
+                        @dbHist.MA_XUAT_KHO
+                    </a>
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.TEN_NGUOI_DUNG
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.TEN_KHO
+                </td>
+                <td class="inner colwidth">
+                    @DateTime.Parse(dbHist.NGAY_XUAT.ToString()).ToString("dd/MM/yyyy")
+                </td>
+                <td class="innerLast colwidth">
+                    <div style="width:200px;" class="truncate" title="@dbHist.GHI_CHU"> @dbHist.GHI_CHU </div>
+                   
+                </td>
+                <td class="innerLast colwidth">
+                    @{
+            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+            {
+                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                </a>
+            }
+                    }
+                </td>
+                <td class="innerLast colwidth">
+                    @{
+            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+            {
+                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
+                </a>
+            }
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count phiếu xuất</label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.TheList, currentPageIndex => Url.Action("ExportCancelListPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeId = ViewBag.StoreId,
+                            storeName = ViewBag.StoreName,
+                            exporterId = ViewBag.ExporterId,
+                            exporterName = ViewBag.ExporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
