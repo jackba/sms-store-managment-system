@@ -279,6 +279,9 @@
     <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_EXPORT_4_CANCEL_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HD_DETAIL_FOR_EXPORT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -796,6 +799,8 @@
     <Content Include="Views\Export\XuatHuy.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Export\ExportCancelList.cshtml" />
+    <Content Include="Views\Export\ExportCancelListPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

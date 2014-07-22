@@ -1050,5 +1050,34 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_INVENTORY_BY_PRO_STO_ID", pRODUCT_IDParameter, sTORE_IDParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_EXPORT_4_CANCEL_Result> SP_GET_EXPORT_4_CANCEL(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHAN_VIEN, string tEN_NHAN_VIEN, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var tEN_KHOParameter = tEN_KHO != null ?
+                new ObjectParameter("TEN_KHO", tEN_KHO) :
+                new ObjectParameter("TEN_KHO", typeof(string));
+    
+            var mA_NHAN_VIENParameter = mA_NHAN_VIEN.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN", mA_NHAN_VIEN) :
+                new ObjectParameter("MA_NHAN_VIEN", typeof(int));
+    
+            var tEN_NHAN_VIENParameter = tEN_NHAN_VIEN != null ?
+                new ObjectParameter("TEN_NHAN_VIEN", tEN_NHAN_VIEN) :
+                new ObjectParameter("TEN_NHAN_VIEN", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPORT_4_CANCEL_Result>("SP_GET_EXPORT_4_CANCEL", mA_KHOParameter, tEN_KHOParameter, mA_NHAN_VIENParameter, tEN_NHAN_VIENParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
     }
 }

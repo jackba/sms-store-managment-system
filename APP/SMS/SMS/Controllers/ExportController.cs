@@ -16,6 +16,58 @@ namespace SMS.Controllers
     {
         //
         // GET: /Export/
+
+
+        public ActionResult ExportCancelList(string message, string inforMessage)
+        {
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ExportCancelListPartialView(int? storeId, string storeName, int? exporterId,
+            string exporterName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
+        {
+            if (string.IsNullOrEmpty(exporterName))
+            {
+                exporterName = string.Empty;
+                exporterId = 0;
+            }
+            if (string.IsNullOrEmpty(storeName))
+            {
+                storeName = string.Empty;
+                storeId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+                exporterId = Convert.ToInt32(Session["UserId"]);
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var theList = ctx.SP_GET_EXPORT_4_CANCEL(storeId, storeName, exporterId, exporterName, fromDate, toDate).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_EXPORT_4_CANCEL_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            CancelExportModel model = new CancelExportModel();
+            model.TheList = theList.ToPagedList(pageIndex, pageSize);
+            model.Count = theList.Count;
+            ViewBag.StoreId = storeId;
+            ViewBag.StoreName = storeName;
+            ViewBag.ExporterId = exporterId;
+            ViewBag.ExporterName = exporterName;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            return PartialView("ExportCancelListPartialView", model);
+        }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -543,18 +595,17 @@ namespace SMS.Controllers
                             exportDetail.UPDATE_AT = DateTime.Now;
                             exportDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                             exportDetail.GIA_VON = detail.GIA_VON / detail.HE_SO;
-                            //exportDetail.DON_GIA_TEMP = detail.GIA_VON;
                             ctx.CHI_TIET_XUAT_KHO.Add(exportDetail);
                             ctx.SaveChanges();
                         }
                     }
                     transaction.Complete();
-                    return RedirectToAction("Index", new { @inforMessage = "Nhận trả hàng thành công." });
+                    return RedirectToAction("ExportCancelList", new { @inforMessage = "Xuất hủy thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
-                    return RedirectToAction("Index", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ExportCancelList", new { @message = "Xuất hủy thất bại, vui lòng liên hệ admin." });
                 }
             }
         }
@@ -563,17 +614,14 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
-            //var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
-            //ImportModel model = new ImportModel();
             ExportModelXuatHuy model = new ExportModelXuatHuy();
             if (!(bool)Session["IsAdmin"])
             {
                 model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
             }
             model.Stores = stores;
-            //model.Providers = providers;
             model.Units = units;
             ViewBag.InputKind = -1;
             return View(model);

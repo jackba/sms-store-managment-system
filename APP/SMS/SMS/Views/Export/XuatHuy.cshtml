@@ -2,10 +2,10 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Nhập kho - mua hàng";
+    ViewBag.Title = "Xuất hủy hàng";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Import", "Home")"> Nhập kho </a> > @ViewBag.Title
+    <a href="@Url.Action("Export", "Home")"> Xuất kho </a> > @ViewBag.Title
 </div>
 
 <br />
@@ -15,6 +15,9 @@
     </h2>
 </hgroup>
 <hr />
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
@@ -36,6 +39,7 @@
                 changeYear: true,
                 yearRange: "-60:+0"
             });
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
         });
     </script>
     <style type="text/css">
@@ -162,24 +166,29 @@
     </table>
     <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+    
     <script>
         function returnSubmit() {
+
+            $('#message').empty();
+            var errorMessage = '';
             var row = 0;
             var rval = 1;
             var pval = 1;
             var ppval = 1;
             var checkFlg = 0;
+
             if ($("#importDate").val() == null || $("#importDate").val().trim() == "") {
-                alert("Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  ("Chưa nhập ngày xuất kho. Vui lòng chọn ngày xuất kho.");
             }
-            //if ($("#providerId option:selected").val() == null || $("#providerId option:selected").val().trim() == "") {
-            //    alert("Vui lòng chọn nhà cung cấp");
-            //    return false;
-            //}
             if ($("#storeId option:selected").val() == null || $("#storeId option:selected").val().trim() == "") {
-                alert("Vui lòng chọn kho nhập");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Chưa chọn kho xuất, vui lòng chọn kho xuất";
             }
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
@@ -201,23 +210,36 @@
             });
 
             if (ppval == 0) {
-                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  ("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
             }
 
             if (pval == 0) {
-                alert("Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
             }
 
             if (row == 0) {
-                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  ("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
             }
-            else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.");
+            if (rval == 0) {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  ("Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.");
+            } 
+            if (errorMessage != '') {
+                $('#message').append(errorMessage);
+                $('#message').append("<hr/>");
                 return false;
-            } else {
+            }else {
                 $('#index').submit();
             }
         };
