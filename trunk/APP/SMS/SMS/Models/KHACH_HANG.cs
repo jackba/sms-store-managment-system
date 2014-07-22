@@ -37,7 +37,7 @@ namespace SMS.Models
 		public int MA_KHU_VUC  { get; set; }
         public double DOANH_SO { get; set; }
 		public double NO_GOI_DAU  { get; set; } 
-		public DateTime NGAY_PHAT_SINH_NO  { get; set; }
+		public DateTime? NGAY_PHAT_SINH_NO  { get; set; }
 		public int KIND  { get; set; }
 		public string TEN_KHU_VUC  { get; set; }
 		public string KIND_NAME { get; set; }
