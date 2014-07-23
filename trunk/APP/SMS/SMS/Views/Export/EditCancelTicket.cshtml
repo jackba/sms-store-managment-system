@@ -74,6 +74,7 @@
         <tr>
             <td>
                 Kho : 
+                @Html.HiddenFor(u=> u.Infor.MA_XUAT_KHO)
             </td> 
             <td class="required">
                 @if ((bool)Session["IsAdmin"])

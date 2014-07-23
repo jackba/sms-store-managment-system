@@ -242,6 +242,7 @@
     <Compile Include="Models\SAN_PHAM.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SmsMaster.cs" />
     <Compile Include="Models\SmsMessageModel.cs" />
     <Compile Include="Models\SmsModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -462,6 +463,7 @@
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
     <Content Include="Content\images\Chargeback.png" />
+    <Content Include="Content\images\config.jpg" />
     <Content Include="Content\images\customer.png" />
     <Content Include="Content\images\download.jpg" />
     <Content Include="Content\images\ExportDataBlue.jpg" />
@@ -805,6 +807,7 @@
     <Content Include="Views\Import\Adjustment.cshtml" />
     <Content Include="Views\Import\EditAdjustment.cshtml" />
     <Content Include="Views\Export\EditCancelTicket.cshtml" />
+    <Content Include="Views\SmsMaster\Config.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -48,22 +48,17 @@ namespace SMS.Controllers
             {
                 try
                 {
-                    var infor = ctx.XUAT_KHO.Create();
+                    var infor = ctx.XUAT_KHO.Find(model.Infor.MA_XUAT_KHO);
+                    if (infor == null || infor.ACTIVE != "A")
+                    {
+                        return RedirectToAction("ExportCancelList", new { @message = "Phiếu xuất hủy này không tồn tại, vui lòng liên hệ admin." });
+                    }
                     infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
-                    //infor.MA_KHO = model.Infor.MA_KHO;
-                    //infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
-                    //infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
-                    infor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
-                    //infor.SO_HOA_DON = model.Infor.SO_HOA_DON;
-                    infor.CREATE_AT = DateTime.Now;
-                    infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                     infor.UPDATE_AT = DateTime.Now;
                     infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                    infor.ACTIVE = "A";
                     infor.GHI_CHU = model.Infor.GHI_CHU;
-                    infor.LY_DO_XUAT = 1; // nhập mua hàng
-                    ctx.XUAT_KHO.Add(infor);
+                    infor.LY_DO_XUAT = 1; 
                     ctx.SaveChanges();
 
                     ctx.CHI_TIET_XUAT_KHO.RemoveRange(ctx.CHI_TIET_XUAT_KHO.Where(u => u.MA_XUAT_KHO == model.Infor.MA_XUAT_KHO));
@@ -84,18 +79,17 @@ namespace SMS.Controllers
                             exportDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                             exportDetail.UPDATE_AT = DateTime.Now;
                             exportDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                            //exportDetail.GIA_VON = detail.GIA_VON / detail.HE_SO;
                             ctx.CHI_TIET_XUAT_KHO.Add(exportDetail);
                             ctx.SaveChanges();
                         }
                     }
                     transaction.Complete();
-                    return RedirectToAction("ExportCancelList", new { @inforMessage = "Xuất hủy thành công." });
+                    return RedirectToAction("ExportCancelList", new { @inforMessage = "Sửa phiếu xuất hủy thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
-                    return RedirectToAction("ExportCancelList", new { @message = "Xuất hủy thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ExportCancelList", new { @message = "Sửa phiếu xuất hủy thất bại, vui lòng liên hệ admin." });
                 }
             }
         }
