@@ -40,6 +40,66 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult EditCancelTicket(EditCancelTicketModel model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var infor = ctx.XUAT_KHO.Create();
+                    infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    //infor.MA_KHO = model.Infor.MA_KHO;
+                    //infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
+                    //infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
+                    infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
+                    infor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
+                    //infor.SO_HOA_DON = model.Infor.SO_HOA_DON;
+                    infor.CREATE_AT = DateTime.Now;
+                    infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.ACTIVE = "A";
+                    infor.GHI_CHU = model.Infor.GHI_CHU;
+                    infor.LY_DO_XUAT = 1; // nhập mua hàng
+                    ctx.XUAT_KHO.Add(infor);
+                    ctx.SaveChanges();
+
+                    ctx.CHI_TIET_XUAT_KHO.RemoveRange(ctx.CHI_TIET_XUAT_KHO.Where(u => u.MA_XUAT_KHO == model.Infor.MA_XUAT_KHO));
+                    CHI_TIET_XUAT_KHO exportDetail;
+                    foreach (var detail in model.Detail)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            exportDetail = ctx.CHI_TIET_XUAT_KHO.Create();
+                            exportDetail.ACTIVE = "A";
+                            exportDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            exportDetail.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            exportDetail.HE_SO = detail.HE_SO;
+                            exportDetail.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            exportDetail.MA_DON_VI = detail.MA_DON_VI;
+                            exportDetail.MA_XUAT_KHO = infor.MA_XUAT_KHO;
+                            exportDetail.CREATE_AT = DateTime.Now;
+                            exportDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            exportDetail.UPDATE_AT = DateTime.Now;
+                            exportDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            //exportDetail.GIA_VON = detail.GIA_VON / detail.HE_SO;
+                            ctx.CHI_TIET_XUAT_KHO.Add(exportDetail);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ExportCancelList", new { @inforMessage = "Xuất hủy thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ExportCancelList", new { @message = "Xuất hủy thất bại, vui lòng liên hệ admin." });
+                }
+            }
+        }
+
         public ActionResult ExportCancelList(string message, string inforMessage)
         {
             ViewBag.Message = message;
