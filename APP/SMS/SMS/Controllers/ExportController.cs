@@ -22,8 +22,12 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
-            var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
-            EditTransferModel model = new EditTransferModel();
+            var infor = ctx.XUAT_KHO.Where(u => u.ACTIVE == "A" && u.LY_DO_XUAT == 1 && u.MA_XUAT_KHO == id).FirstOrDefault();
+            if (infor == null)
+            {
+                return RedirectToAction("ExportCancelList", new { @message = "Không tìm thấy phiếu xuất hủy này, vui lòng kiểm tra lại" });
+            }
+            EditCancelTicketModel model = new EditCancelTicketModel();
             if (!(bool)Session["IsAdmin"])
             {
                 model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
@@ -32,7 +36,7 @@ namespace SMS.Controllers
             model.Units = units;
             model.Infor = infor;
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
-            model.ExportDetail = detail;
+            model.Detail = detail;
             return View(model);
         }
 

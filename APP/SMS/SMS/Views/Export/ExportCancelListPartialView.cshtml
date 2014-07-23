@@ -92,7 +92,7 @@
                     @{
             if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
             {
-                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
+                <a href="@Url.Action("EditCancelTicket", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/edit-icon.png"></img>
                 </a>
             }

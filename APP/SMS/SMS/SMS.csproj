@@ -804,6 +804,7 @@
     <Content Include="Views\Export\ExportCancelListPartialView.cshtml" />
     <Content Include="Views\Import\Adjustment.cshtml" />
     <Content Include="Views\Import\EditAdjustment.cshtml" />
+    <Content Include="Views\Export\EditCancelTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
