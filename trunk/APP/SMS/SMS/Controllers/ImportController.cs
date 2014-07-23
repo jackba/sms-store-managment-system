@@ -262,7 +262,7 @@ namespace SMS.Controllers
             }
             else
             {
-                ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                ViewBag.Message = "Không tìm thấy phiếu nhập kho tương ứng.";
                 return View("../Home/Error"); ;
             }
         }
