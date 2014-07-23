@@ -14,6 +14,69 @@ namespace SMS.Controllers
         //
         // GET: /SmsMaster/
 
+        [HttpPost]
+        public ActionResult Config(SmsMasterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = new SmsContext();
+                var companyName = db.SMS_MASTER.Where(u => u.NAME == "COMPANY_NAME" && u.ACTIVE == "A").FirstOrDefault();
+                companyName.VALUE = model.CompanyName;
+                companyName.UPDATE_AT = DateTime.Now;
+                companyName.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+
+                var address = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault();
+                address.VALUE = model.Address;
+                address.UPDATE_AT = DateTime.Now;
+                address.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+
+                var phoneNumber = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault();
+                phoneNumber.VALUE = model.PhoneNumber;
+                phoneNumber.UPDATE_AT = DateTime.Now;
+                phoneNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+
+                var faxNumber = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault();
+                faxNumber.VALUE = model.FaxNumber;
+                faxNumber.UPDATE_AT = DateTime.Now;
+                faxNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+
+                var advertisementHeader = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault();
+                advertisementHeader.VALUE = model.AdvertisementHeader;
+                advertisementHeader.UPDATE_AT = DateTime.Now;
+                advertisementHeader.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+
+                var advertisementFooter = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault();
+                advertisementFooter.VALUE = model.AdvertisementFooter;
+                advertisementFooter.UPDATE_AT = DateTime.Now;
+                advertisementFooter.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                db.SaveChanges();
+            }
+            return View(model);
+        }
+        public ActionResult Config()
+        {
+            SmsMasterModel model = new SmsMasterModel();
+            var ctx = new SmsContext();
+            var companyName = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "COMPANY_NAME").FirstOrDefault().VALUE;
+            var address = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault().VALUE;
+            var phoneNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault().VALUE;
+            var faxNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault().VALUE;
+            var advertisementHeader = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault().VALUE;
+            var advertisementFooter = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault().VALUE;
+            model.CompanyName = companyName;
+            model.Address = address;
+            model.AdvertisementHeader = advertisementHeader;
+            model.AdvertisementFooter = advertisementFooter;
+            model.PhoneNumber = phoneNumber;
+            model.FaxNumber = faxNumber;
+            return View(model);
+        }
+
         public ActionResult Index()
         {
 
