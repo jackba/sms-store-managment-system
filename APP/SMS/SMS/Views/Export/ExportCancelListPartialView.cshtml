@@ -102,7 +102,7 @@
                     @{
             if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
             {
-                <a href="@Url.Action("Delete", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
+                <a href="@Url.Action("DeleteExport", "Export", new { id = @dbHist.MA_XUAT_KHO })" class="button-module" onclick="return deleteSubmit()">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }
@@ -147,3 +147,14 @@
         </tr>
     </table>
 </div>
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn phiếu xuất kho này!");
+        if (r == true) {
+            document.forms['mainForm'].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>

@@ -16,6 +16,55 @@ namespace SMS.Controllers
     {
         //
         // GET: /Export/
+        public ActionResult DeleteExport(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.XUAT_KHO.Find(id);
+            if (donvi.ACTIVE.Equals("A"))
+            {
+
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        donvi.ACTIVE = "I";
+                        donvi.UPDATE_AT = DateTime.Now;
+                        donvi.CREATE_BY = (int)Session["UserId"];
+                        ctx.SaveChanges();
+
+                        var details = ctx.CHI_TIET_XUAT_KHO.Where(u => u.ACTIVE == "A" && u.MA_XUAT_KHO == id).ToList<CHI_TIET_XUAT_KHO>();
+                        foreach (var detail in details)
+                        {
+                            detail.ACTIVE = "I";
+                            detail.UPDATE_AT = DateTime.Now;
+                            detail.CREATE_BY = (int)Session["UserId"];
+                            ctx.SaveChanges();
+                        }
+                        transaction.Complete();
+                        return RedirectToAction("ExportCancelList", new { @messageInfor = "Xóa phiếu xuất kho thành công." });
+                        
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        Transaction.Current.Rollback();
+                        return RedirectToAction("ExportCancelList", new { @message = "Xóa phiếu xuất kho thất bại." });
+                    }
+                }
+
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy xuất kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+        }
 
         public ActionResult EditCancelTicket(int id)
         {
