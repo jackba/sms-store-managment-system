@@ -15,6 +15,89 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class ImportController : Controller
     {
+        [HttpPost]
+        public ActionResult EditAdjustment(EditImportModel model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var infor = ctx.NHAP_KHO.Find(model.Infor.MA_NHAP_KHO);
+                    if (infor == null || infor.ACTIVE == "I")
+                    {
+                        return RedirectToAction("Index", new { @message = "Phiếu nhập hàng không tồn tại, hoặc đã bị xóa. Vui lòng kiểm tra lại" });
+                    }
+                    infor.MA_KHO = model.Infor.MA_KHO;
+                    infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
+                    infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
+                    infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
+                    infor.SO_HOA_DON = model.Infor.SO_HOA_DON;
+                    infor.CREATE_AT = DateTime.Now;
+                    infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    infor.ACTIVE = "A";
+                    infor.GHI_CHU = model.Infor.GHI_CHU;
+                    infor.LY_DO_NHAP = 4; // Nhập điều chỉnh
+                    ctx.SaveChanges();
+
+                    ctx.CHI_TIET_NHAP_KHO.RemoveRange(ctx.CHI_TIET_NHAP_KHO.Where(u => u.MA_NHAP_KHO == model.Infor.MA_NHAP_KHO));
+                    CHI_TIET_NHAP_KHO importDetail;
+                    foreach (var detail in model.Detail)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
+                            importDetail.ACTIVE = "A";
+                            importDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            importDetail.SO_LUONG_TEMP = detail.SO_LUONG;
+                            importDetail.HE_SO = detail.HE_SO;
+                            importDetail.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
+                            importDetail.MA_DON_VI = detail.MA_DON_VI;
+                            importDetail.MA_NHAP_KHO = infor.MA_NHAP_KHO;
+                            importDetail.CREATE_AT = DateTime.Now;
+                            importDetail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            importDetail.UPDATE_AT = DateTime.Now;
+                            importDetail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            importDetail.GIA_VON = detail.DON_GIA / detail.HE_SO;
+                            importDetail.DON_GIA_TEMP = detail.DON_GIA;
+                            ctx.CHI_TIET_NHAP_KHO.Add(importDetail);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("Index", new { @messageInfor = "Sửa phiếu nhập điều chĩnh thành công." });
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("Index", new { @message = "Sửa phiếu nhập điều chĩnh thất bại, vui lòng liên hệ admin." });
+                }
+            }
+        }
+
+        public ActionResult EditAdjustment(int id)
+        {
+            EditImportModel model = new EditImportModel();
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            ViewBag.Stores = stores;
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Providers = providers;
+            model.Units = units;
+            var infor = ctx.SP_GET_IMPORT_INFOR_BY_ID(id).FirstOrDefault();
+            var detail = ctx.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT(id).ToList<SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result>();
+            model.Infor = infor;
+            model.Detail = detail;
+            return View(model);
+        }
         public ActionResult Adjustment()
         {
             var ctx = new SmsContext();
@@ -783,7 +866,7 @@ namespace SMS.Controllers
             ViewBag.StoreName = storeName;
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
-
+            ViewBag.InputKind = Convert.ToInt32(reasonId);
             var resultList = ctx.SP_GET_IMPORT(fromDate, toDate, Convert.ToInt32(importerId), importerName, Convert.ToInt32(reasonId)
                 , Convert.ToInt32(storeId), storeName, Convert.ToInt32(providerId), providerName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_IMPORT_Result>();
             int pageSize = SystemConstant.ROWS;
@@ -795,11 +878,11 @@ namespace SMS.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(int? reasonId, string message, string messageInfor)
+        public ActionResult Index(string message, string messageInfor)
         {
             ViewBag.Message = message;
             ViewBag.MessageInfor = messageInfor;
-            ViewBag.InputKind = Convert.ToInt32(reasonId);
+            ViewBag.InputKind = Convert.ToInt32(-1);
             return View();
         }
     }

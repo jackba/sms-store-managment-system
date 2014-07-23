@@ -22,7 +22,8 @@
                             importerId = ViewBag.ImporterId,
                             importerName = ViewBag.ImporterName,
                             fromDate = ViewBag.FromDate,
-                            todate = ViewBag.Todate
+                            todate = ViewBag.Todate,
+                            reasonId = ViewBag.InputKind
                         }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()
@@ -75,11 +76,21 @@
                     </td>
                     <td class='innerLast alignCenter' style="width:50px;">
                         @if (((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]) && @dbHist.LY_DO_NHAP != 1 && @dbHist.LY_DO_NHAP != 2 && @dbHist.LY_DO_NHAP != 3)
-                        {
-                            <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                        </a>
-                        }
+{
+    if (@dbHist.LY_DO_NHAP == 0)
+    {
+        <a href="@Url.Action("Edit", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+        </a>
+    }
+    else
+    {
+        <a href="@Url.Action("EditAdjustment", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+        </a>
+    }
+
+}
                         
                     </td>
                     <td class='innerLast alignCenter' style="width:50px;">
@@ -115,7 +126,8 @@
                             importerId = ViewBag.ImporterId,
                             importerName = ViewBag.ImporterName,
                             fromDate = ViewBag.FromDate,
-                            todate = ViewBag.Todate
+                            todate = ViewBag.Todate,
+                            reasonId = ViewBag.InputKind
                         }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new AjaxOptions()

@@ -17,6 +17,24 @@ namespace SMS.Controllers
         //
         // GET: /Export/
 
+        public ActionResult EditCancelTicket(int id)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
+            EditTransferModel model = new EditTransferModel();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+            }
+            model.Stores = stores;
+            model.Units = units;
+            model.Infor = infor;
+            var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
+            model.ExportDetail = detail;
+            return View(model);
+        }
 
         public ActionResult ExportCancelList(string message, string inforMessage)
         {
