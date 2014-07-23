@@ -803,6 +803,7 @@
     <Content Include="Views\Export\ExportCancelList.cshtml" />
     <Content Include="Views\Export\ExportCancelListPartialView.cshtml" />
     <Content Include="Views\Import\Adjustment.cshtml" />
+    <Content Include="Views\Import\EditAdjustment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
