@@ -21,40 +21,142 @@ namespace SMS.Controllers
             {
                 var db = new SmsContext();
                 var companyName = db.SMS_MASTER.Where(u => u.NAME == "COMPANY_NAME" && u.ACTIVE == "A").FirstOrDefault();
-                companyName.VALUE = model.CompanyName;
-                companyName.UPDATE_AT = DateTime.Now;
-                companyName.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (companyName == null)
+                {
+                    companyName = db.SMS_MASTER.Create();
+                    companyName.NAME = "COMPANY_NAME";
+                    companyName.VALUE = model.CompanyName;
+                    companyName.UPDATE_AT = DateTime.Now;
+                    companyName.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    companyName.CREATE_AT = DateTime.Now;
+                    companyName.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    companyName.ACTIVE = "A";
+                    db.SMS_MASTER.Add(companyName);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    companyName.VALUE = model.CompanyName;
+                    companyName.UPDATE_AT = DateTime.Now;
+                    companyName.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                
 
                 var address = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault();
-                address.VALUE = model.Address;
-                address.UPDATE_AT = DateTime.Now;
-                address.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (address == null)
+                {
+                    address = db.SMS_MASTER.Create();
+                    address.NAME = "ADDRESS";
+                    address.VALUE = model.Address;
+                    address.UPDATE_AT = DateTime.Now;
+                    address.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    address.CREATE_AT = DateTime.Now;
+                    address.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    address.ACTIVE = "A";
+                    db.SMS_MASTER.Add(address);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    address.VALUE = model.Address;
+                    address.UPDATE_AT = DateTime.Now;
+                    address.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                
 
                 var phoneNumber = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault();
-                phoneNumber.VALUE = model.PhoneNumber;
-                phoneNumber.UPDATE_AT = DateTime.Now;
-                phoneNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (phoneNumber == null)
+                {
+                    phoneNumber = db.SMS_MASTER.Create();
+                    phoneNumber.NAME = "PHONE_NUMBER";
+                    phoneNumber.VALUE = model.PhoneNumber;
+                    phoneNumber.UPDATE_AT = DateTime.Now;
+                    phoneNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    phoneNumber.CREATE_AT = DateTime.Now;
+                    phoneNumber.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    phoneNumber.ACTIVE = "A";
+                    db.SMS_MASTER.Add(phoneNumber);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    phoneNumber.VALUE = model.PhoneNumber;
+                    phoneNumber.UPDATE_AT = DateTime.Now;
+                    phoneNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                
 
                 var faxNumber = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault();
-                faxNumber.VALUE = model.FaxNumber;
-                faxNumber.UPDATE_AT = DateTime.Now;
-                faxNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (faxNumber == null)
+                {
+                    faxNumber = db.SMS_MASTER.Create();
+                    faxNumber.NAME = "FAX_NUMBER";
+                    faxNumber.VALUE = model.FaxNumber;
+                    faxNumber.UPDATE_AT = DateTime.Now;
+                    faxNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    faxNumber.CREATE_AT = DateTime.Now;
+                    faxNumber.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    faxNumber.ACTIVE = "A";
+                    db.SMS_MASTER.Add(faxNumber);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    faxNumber.VALUE = model.FaxNumber;
+                    faxNumber.UPDATE_AT = DateTime.Now;
+                    faxNumber.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+               
 
                 var advertisementHeader = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault();
-                advertisementHeader.VALUE = model.AdvertisementHeader;
-                advertisementHeader.UPDATE_AT = DateTime.Now;
-                advertisementHeader.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (advertisementHeader == null)
+                {
+                    advertisementHeader = db.SMS_MASTER.Create();
+                    advertisementHeader.NAME = "ADVERTISEMENT_HEADER";
+                    advertisementHeader.VALUE = model.AdvertisementHeader;
+                    advertisementHeader.CREATE_AT = DateTime.Now;
+                    advertisementHeader.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    advertisementHeader.UPDATE_AT = DateTime.Now;
+                    advertisementHeader.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    advertisementHeader.ACTIVE = "A";
+                    db.SMS_MASTER.Add(advertisementHeader);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    advertisementHeader.VALUE = model.AdvertisementHeader;
+                    advertisementHeader.UPDATE_AT = DateTime.Now;
+                    advertisementHeader.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                
 
                 var advertisementFooter = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault();
-                advertisementFooter.VALUE = model.AdvertisementFooter;
-                advertisementFooter.UPDATE_AT = DateTime.Now;
-                advertisementFooter.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                db.SaveChanges();
+                if (advertisementFooter == null)
+                {
+                    advertisementFooter = db.SMS_MASTER.Create();
+                    advertisementFooter.NAME = "ADVERTISEMENT_FOOTER";
+                    advertisementFooter.VALUE = model.AdvertisementFooter;
+                    advertisementFooter.CREATE_AT = DateTime.Now;
+                    advertisementFooter.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    advertisementFooter.UPDATE_AT = DateTime.Now;
+                    advertisementFooter.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    advertisementFooter.ACTIVE = "A";
+                    db.SMS_MASTER.Add(advertisementFooter);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    advertisementFooter.VALUE = model.AdvertisementFooter;
+                    advertisementFooter.UPDATE_AT = DateTime.Now;
+                    advertisementFooter.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                
             }
             return View(model);
         }
@@ -62,18 +164,18 @@ namespace SMS.Controllers
         {
             SmsMasterModel model = new SmsMasterModel();
             var ctx = new SmsContext();
-            var companyName = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "COMPANY_NAME").FirstOrDefault().VALUE;
-            var address = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault().VALUE;
-            var phoneNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault().VALUE;
-            var faxNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault().VALUE;
-            var advertisementHeader = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault().VALUE;
-            var advertisementFooter = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault().VALUE;
-            model.CompanyName = companyName;
-            model.Address = address;
-            model.AdvertisementHeader = advertisementHeader;
-            model.AdvertisementFooter = advertisementFooter;
-            model.PhoneNumber = phoneNumber;
-            model.FaxNumber = faxNumber;
+            var companyName = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "COMPANY_NAME").FirstOrDefault();
+            var address = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault();
+            var phoneNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault();
+            var faxNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault();
+            var advertisementHeader = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault();
+            var advertisementFooter = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault();
+            model.CompanyName = companyName == null ? "" : companyName.VALUE;
+            model.Address = address == null ? "" : address.VALUE;
+            model.AdvertisementHeader = advertisementHeader == null ? "" : advertisementHeader.VALUE;
+            model.AdvertisementFooter = advertisementFooter == null ? "" : advertisementFooter.VALUE ;
+            model.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
+            model.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
             return View(model);
         }
 
