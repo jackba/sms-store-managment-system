@@ -303,19 +303,56 @@
                 @Html.HiddenFor(u => u.HE_SO, new { id = "HE_SO" })
             </div>
             <div>
-               <label>Đơn vị cuối</label>
+                @Html.LabelFor(u => u.GIA_BAN_1, new { @class = "required" })
             </div>
             <div>
-                @Html.TextBox("UnitName", ViewBag.UnitName as string, new { id = "UnitName", @ReadOnly = "true" })
-                <input type="hidden" id="unitRoot" value="" />
-                <input type="hidden" id="checkExistConvertUnit" value="" />
+                @Html.TextBoxFor(u=> u.GIA_BAN_1, new { @class = "numberic alignNumberic" })
             </div>
             <div>
-                <input type="button" id="btnSave" style="width:100px" value="Lưu"  />
-                <span> </span>
-                <input type="button" style="width:100px" value="Quay lại" onclick="location.href='@Url.Action("ConvertUnitOfProducts", "SanPham")'" />
+                @Html.LabelFor(u => u.GIA_BAN_2, new { @class = "required" })
             </div>
-        </fieldset>
+            <div>
+                @Html.TextBoxFor(u => u.GIA_BAN_2, new { @class = "numberic alignNumberic" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.GIA_BAN_3, new { @class = "required" })
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.GIA_BAN_3, new { @class = "numberic alignNumberic" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.CHIEC_KHAU_1, new { @class = "required" })
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.CHIEC_KHAU_1, new { @class = "numberic alignNumberic" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.CHIEC_KHAU_2, new { @class = "required" })
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.CHIEC_KHAU_2, new { @class = "numberic alignNumberic" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.CHIEC_KHAU_3, new { @class = "required" })
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.CHIEC_KHAU_3, new { @class = "numberic alignNumberic" })
+            </div>
+
+                <div>
+                    <label>Đơn vị cuối</label>
+                </div>
+                <div>
+                    @Html.TextBox("UnitName", ViewBag.UnitName as string, new { id = "UnitName", @ReadOnly = "true" })
+                    <input type="hidden" id="unitRoot" value="" />
+                    <input type="hidden" id="checkExistConvertUnit" value="" />
+                </div>
+                <div>
+                    <input type="button" id="btnSave" style="width:100px" value="Lưu" />
+                    <span> </span>
+                    <input type="button" style="width:100px" value="Quay lại" onclick="location.href='@Url.Action("ConvertUnitOfProducts", "SanPham")'" />
+                </div>
+</fieldset>
     </div>
     <script>
         function reset() {
