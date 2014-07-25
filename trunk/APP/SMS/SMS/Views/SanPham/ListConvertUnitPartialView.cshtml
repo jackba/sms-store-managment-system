@@ -64,6 +64,24 @@
                         <td class='inner column-hscroll head'>
                             Hệ số
                         </td>
+                        <td class='inner column-hscroll head'>
+                            Đơn giá 1
+                        </td>
+                        <td class='inner column-hscroll head'>
+                            Chiếc khấu 1
+                        </td>
+                        <td class='inner column-hscroll head'>
+                            Đơn giá 2
+                        </td>
+                        <td class='inner column-hscroll head'>
+                            Chiếc khấu 2
+                        </td>
+                        <td class='inner column-hscroll head'>
+                            Đơn giá 3
+                        </td>
+                        <td class='inner column-hscroll head'>
+                            Chiếc khấu 3
+                        </td>
                         @{
                             if ((bool)Session["IsAdmin"] == true)
                             {
@@ -89,6 +107,12 @@
                             <td class='inner column-hscroll alignCenter'> @donvi.DonViVao.TEN_DON_VI </td>
                             <td class='inner column-hscroll alignCenter'> @donvi.DonViCuoi.TEN_DON_VI </td>
                             <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.HE_SO </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.GIA_BAN_1 </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.CHIEC_KHAU_1 </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.GIA_BAN_2 </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.CHIEC_KHAU_2 </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.GIA_BAN_3 </td>
+                            <td class='inner column-hscroll alignCenter alignNumberic'> @donvi.ChuyenDoiDonVi.CHIEC_KHAU_3 </td>
                             @{
                         if ((bool)Session["IsAdmin"] == true)
                         {

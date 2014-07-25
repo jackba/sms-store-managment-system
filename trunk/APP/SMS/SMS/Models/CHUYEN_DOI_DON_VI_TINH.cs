@@ -28,24 +28,45 @@ namespace SMS.Models
     {
         public int MA_CHUYEN_DOI { get; set; }
         [Required]
-        [Display(Name = "T�n s?n ph?m")]
+        [Display(Name = "Tên sản phẩm")]
         public Nullable<int> MA_SAN_PHAN { get; set; }
+
         [Required]
-        [Display(Name = "�on v?")]
+        [Display(Name = "Ðơn vị")]
         public Nullable<int> MA_DON_VI_VAO { get; set; }
+
         [Required]
-        [Display(Name = "H? s?")]
+        [Display(Name = "Hệ số")]
         public Nullable<double> HE_SO { get; set; }
+
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+
+        [Required]
+        [Display(Name = "Đơn giá 1")]
         public Nullable<double> GIA_BAN_1 { get; set; }
+
+        [Required]
+        [Display(Name = "Đơn giá 2")]
         public Nullable<double> GIA_BAN_2 { get; set; }
+
+        [Required]
+        [Display(Name = "Đơn giá 3")]
         public Nullable<double> GIA_BAN_3 { get; set; }
+
+        [Required]
+        [Display(Name = "Chiếc khấu 1")]
         public Nullable<double> CHIEC_KHAU_1 { get; set; }
+
+        [Required]
+        [Display(Name = "Chiếc khấu 2")]
         public Nullable<double> CHIEC_KHAU_2 { get; set; }
+
+        [Required]
+        [Display(Name = "Chiếc khấu 3")]
         public Nullable<double> CHIEC_KHAU_3 { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
