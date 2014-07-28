@@ -14,6 +14,8 @@ namespace SMS.Models
     public class HoaDonBanHang
     {
         public KhachHangInfo KH_Info { get; set; }
+        public List<KHO> Store { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
         public List<ChiTiet_HoaDon> lstChiTietHoaDon { get; set; }
 
     }
@@ -30,6 +32,7 @@ namespace SMS.Models
         public int? Ma_SP {get;set;}
         public string Ten_SP { get; set; } 
         public double? Gia_Ban { get; set; }
+        public double? Thanh_Tien { get; set; }
         public double? Phan_Tram_CK{get;set;}
         public double? Gia_Thuc{get;set;}
         public double? So_Luong{get;set;}

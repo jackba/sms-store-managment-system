@@ -37,11 +37,15 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
 
 @section Scripts {
-    <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
-    <script src="../../Content/js/jquery-1.9.1.js" type="text/javascript"></script>
-    <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/themes/base/css")
     <script type="text/javascript">
         $(document).ready(function () {
             $('.datePicker').datepicker({
@@ -50,6 +54,7 @@
                 changeYear: true,
                 yearRange: "-60:+0"
             });
+            $('#mainForm').submit();
         });
         </script>
     <style type="text/css">
@@ -79,14 +84,21 @@
 </hgroup>
 <br />
 <hr style="width:100%" />
-    @using (Html.BeginForm("showDebitHist", "KhachHang", FormMethod.Get, new { @name = "ShowDebitHist" }))
-    {
-
-        @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    @using (Ajax.BeginForm("showDebitHistPartialView", "KhachHang", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
+                           new { @id = "mainForm" }
+                      ))
+{
+        
         <div>
-            <fieldset>
                 <div>
                     @Html.HiddenFor(u => u.KhachHang.MA_KHACH_HANG)
+                    <input type="hidden" value="@Model.KhachHang.MA_KHACH_HANG" name="customerId" id="customerId" />
                     @Html.HiddenFor(u => u.KhachHang.EMAIL)
                     @Html.HiddenFor(u => u.KhachHang.MA_KHU_VUC)
                     @Html.HiddenFor(u => u.KhachHang.KIND)
@@ -142,7 +154,7 @@
                 </div>
                 <div class="right">
                     @{
-        if (Model.KhachHang.NGAY_PHAT_SINH_NO != null)
+                        if (Model.KhachHang.NGAY_PHAT_SINH_NO != null)
                         {
                             <label> @DateTime.Parse(Model.KhachHang.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy") </label>
                         }
@@ -156,118 +168,32 @@
                 <div style="clear:both"></div>
                 <hr style="width:100%" />
                 <div style="float:right">
-                    Ngày phát sinh: @Html.TextBox("fromDate", ViewBag.CurrentFilterFrom as string, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.CurrentFilterTo as string, new { @class = "datePicker" })
+                    Ngày phát sinh: @Html.TextBox("fromDate", ViewBag.CurrentFilterFrom as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.CurrentFilterTo as DateTime?, new { @class = "datePicker" })
                     <input type="submit" value="Search" class="myButton" />
                     <input type="button" value="Export Excel" class="myButton" onclick="window.location.href='@Url.Action("ExportDebitHist", "KhachHang", Model.KhachHang.MA_KHACH_HANG)'" />
                 </div>
                 <div style="clear:both"></div>
                 <hr style="width:100%" />
-                
-                <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
-                    <tr>
-                        <td class='inner colwidth head ' width="15%">
-                            @Html.ActionLink("Ngày phát sinh", "showDebitHist", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })
-                        </td>
-                        <td class='inner colwidth head ' width="15%">
-                            Số tiền nợ trước
-                        </td>
-                        <td class='inner colwidth head ' width="15%">
-                            Số tiền phát sinh
-                        </td>
-                        <td class='inner colwidth head ' width="15%">
-                            Số tiền nợ sau
-                        </td>
-                        <td class='inner colwidth head ' title="Nhân viên thực hiện" width="15%">
-                            Nhân viên t/h
-                        </td>
-                        <td class='inner headLast' width="15%">
-                            Tác vụ
-                        </td>
-                    </tr>
-@foreach (var dbHist in ViewBag.debitHist)
-{
-        <tr class='inner column-hscroll alignCenter'>
-        <td class="inner colwidth">
-            @DateTime.Parse(@dbHist.KhachHangDebitHist.NGAY_PHAT_SINH.ToString()).ToString("dd/MM/yyyy")
-        </td>
-        <td class="inner colwidth">
-            @dbHist.KhachHangDebitHist.NO_TRUOC.ToString("0,0.00")        
-        </td>
-        <td class="inner colwidth">
-            @{
-    string fs = "";
-    if (@dbHist.KhachHangDebitHist.PHAT_SINH <= 0)
-    {
-        fs = "(" + (-1 * @dbHist.KhachHangDebitHist.PHAT_SINH).ToString("0,0.00") + ")";
-    }else
-    {
-        fs = @dbHist.KhachHangDebitHist.PHAT_SINH.ToString("0,0.00");
-    }
-            }
-             @fs
-        </td>
-        <td class="inner colwidth">
-            @dbHist.KhachHangDebitHist.NO_SAU.ToString("0,0.00")
-        </td>
-        <td class="inner colwidth">
-             @dbHist.NhanVienThucHien.TEN_NGUOI_DUNG 
-        </td>
-            <td class="innerLast colwidth alignCenter">
-                @{
-    if (@dbHist.KhachHangDebitHist.PHAT_SINH > 0)
-    {
-
-        <a href="@Url.Action("CancelHist", "KhachHang", new { id = @dbHist.KhachHangDebitHist.ID })" class="button-module" onclick="return deleteSubmit()">
-            <img width="18" height="18" src="~/Content/images/delete.png" title="Click vào đây để xóa chứng từ" />
-        </a>
-    }
-    else
-    {
-        <a href="@Url.Action("ShowDetail", "HoaDon", new { id = @dbHist.KhachHangDebitHist.MA_HOA_DON, @flg = 1 })" class="button-module">
-            <img width="18" height="18" src="~/Content/images/listproduct.png" title="Click vào đây để xem chi tiếc hóa đơn"/>
-        </a>
-    }
+</div>
 }
-            </td>
+<div style="clear:both"></div>
+<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">
+    <img src="/Content/images/loading-2.gif" />
+</div>
+<div id="mainDiv">
 
-    </tr>
-}
-                    <tr>
-                        <td colspan=" 3">
-                            <div style="text-align:left; padding-top:3px;">
-                                <label>@ViewBag.Count : lượt phát sinh </label>
-                            </div>
-                        </td>
-                        <td colspan=" 3">
-                            <div style="text-align: right;  padding-top: 3px; ">
-                                @Html.PagedListPager(Model.KhachHangHists, page => Url.Action("showDebitHist",
-             new { id = Model.KhachHang.MA_KHACH_HANG, page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-                            </div>
-                        </td>
-                    </tr>
-                    
-                </table>
-                @if ((int)ViewBag.flg == 1)
-                {
-                    <input type="button" style="width:100px" value="Trở về" onclick="window.location.href='@Url.Action("Index","KhachHang")'" />    
-                }
-                else
-                {
-                    <input type="button" style="width:100px" value="Trở về" onclick="window.location.href='@Url.Action("Warning","KhachHang")'" />
-                }
-                
-            </fieldset>
-        </div>
-        <script>
-
-            $(document).ready(function () {
-                $('.datePicker').datepicker({
-                    dateFormat: 'dd/mm/yy',
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: "-60:+0"
-                });
-            });
+</div>
+<div>
+        @if ((int)ViewBag.flg == 1)
+        {
+            <input type="button" style="width:100px" value="Trở về" onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
+        }
+        else
+        {
+            <input type="button" style="width:100px" value="Trở về" onclick="window.location.href='@Url.Action("Warning","KhachHang")'" />
+        }
+</div>
+<script>
 
             function NumbericOnly(ctrl) {
                 $(ctrl).keypress(function (key) {
@@ -422,4 +348,3 @@
 
         </script>
 
-    }
