@@ -369,3 +369,38 @@ div.colum3{
 hr.mydashed{
     border: dashed 1px rgb(167, 167, 231);
 }
+
+input.code{
+    width:70px;
+}
+
+input.productName{
+    width:93%;
+}
+
+input.price{
+    width:50px;
+}
+
+input.quantity{
+    width:50px;
+}
+
+input.discount{
+    width:100px;
+}
+
+input.total{
+    width:100px;
+}
+
+input.realTotal{
+    width:100px;
+}
+.unit{
+    width:70px;
+}
+
+.store{
+    width:70px;
+}
