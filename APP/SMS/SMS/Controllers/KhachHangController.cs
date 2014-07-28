@@ -344,8 +344,64 @@ namespace SMS.Controllers
             return View(khuVuc);
         }
 
+        [HttpPost]
+        public PartialViewResult showDebitHistPartialView(int? customerId, DateTime? fromDate, DateTime? toDate, string sortOrder, int? currentPageIndex)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var debitHist = (from s in ctx.KHACH_HANG_DEBIT_HIST
+                             join u1 in ctx.NGUOI_DUNG on s.MA_NHAN_VIEN_TH equals u1.MA_NGUOI_DUNG
+                             where (s.ACTIVE.Equals("A")
+                             && s.MA_KHACH_HANG == customerId
+                             && (s.NGAY_PHAT_SINH >= fromDate)
+                             && (s.NGAY_PHAT_SINH <= toDate)
+                             )
+                             select new KhachHangDebitHistModel
+                             {
+                                 KhachHangDebitHist = s,
+                                 NhanVienThucHien = u1
+                             }).Take(SystemConstant.MAX_ROWS);
+
+            if (sortOrder == "date_desc")
+                sortOrder = "date";
+            else
+                sortOrder = "date_desc";
+            IPagedList<KhachHangDebitHistModel> khachHangHists = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            ViewBag.CurrentPageIndex = pageIndex;
+            switch (sortOrder)
+            {
+                case "date":
+                    khachHangHists = debitHist.OrderBy(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
+                    break;
+                case "date_desc":
+                    khachHangHists = debitHist.OrderByDescending(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khachHangHists = debitHist.OrderBy(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
+                    break;
+
+            }
+            KhachHangModel KhachHang = new KhachHangModel();
+            KhachHang.KhachHangHists = khachHangHists;
+            KhachHang.Count = debitHist == null ? 0 : debitHist.Count();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.CustomerId = customerId;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            return PartialView("showDebitHistPartialView", KhachHang);
+        }
+
         [HttpGet]
-        public ActionResult showDebitHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page, int? flg)
+        public ActionResult showDebitHist(int id, int? flg)
         {
             if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
@@ -357,54 +413,14 @@ namespace SMS.Controllers
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
                 return View("../Home/Error"); ;
             }
+            ViewBag.flg = flg;
             var ctx = new SmsContext();
             KHACH_HANG khuVuc = ctx.KHACH_HANG.Find(id);
             if (khuVuc.ACTIVE.Equals("A"))
             {
-                var khuVucList = (from s in ctx.KHU_VUC
-                                  where s.ACTIVE == "A"
-                                  select s).ToList<KHU_VUC>();
-                ViewBag.khuVucList = khuVucList;
-                DateTime fD = String.IsNullOrEmpty(fromDate)? SystemConstant.MIN_DATE: DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                DateTime tD = String.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                var debitHist = (from s in ctx.KHACH_HANG_DEBIT_HIST
-                                 join u1 in ctx.NGUOI_DUNG on s.MA_NHAN_VIEN_TH equals u1.MA_NGUOI_DUNG
-                                 where (s.ACTIVE.Equals("A")
-                                 && s.MA_KHACH_HANG == (int)id
-                                 && (fD == DateTime.MinValue || s.NGAY_PHAT_SINH >= fD)
-                                 && (tD == DateTime.MaxValue || s.NGAY_PHAT_SINH <= tD)
-                                 )
-                                 select new KhachHangDebitHistModel
-                                 {
-                                     KhachHangDebitHist = s,
-                                     NhanVienThucHien = u1
-                                 }).Take(SystemConstant.MAX_ROWS);
-
-                ViewBag.IdSortParm = sortOrder == "date_desc" ? "date" : "date_desc";
-                IPagedList<KhachHangDebitHistModel> khachHangHists = null;
-                int pageSize = SystemConstant.ROWS;
-                int pageIndex = page == null ? 1 : (int)page;
-                ViewBag.CurrentPageIndex = pageIndex;
-                ViewBag.Count = debitHist.Count();
-                switch (sortOrder)
-                {
-                    case "date":
-                        khachHangHists = debitHist.OrderBy(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
-                        break;
-                    case "date_desc":
-                        khachHangHists = debitHist.OrderByDescending(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
-                        break;
-                    default:
-                        khachHangHists = debitHist.OrderBy(KhachHangHist => KhachHangHist.KhachHangDebitHist.NGAY_PHAT_SINH).ToPagedList(pageIndex, pageSize);
-                        break;
-
-                }
-                ViewBag.debitHist = khachHangHists;
-                KhachHangModel KhachHang = new KhachHangModel();
-                KhachHang.KhachHang = khuVuc;
-                KhachHang.KhachHangHists = khachHangHists;
-                ViewBag.flg = flg;
-                return View(KhachHang);
+                KhachHangModel model = new KhachHangModel();
+                model.KhachHang = khuVuc;
+                return View(model);
             }
             else
             {
@@ -413,8 +429,59 @@ namespace SMS.Controllers
             }
         }
 
+        [HttpPost]
+        public PartialViewResult showOrderHistPartialView(int? customerId, DateTime? fromDate, DateTime? toDate, string sortOrder, int? currentPageIndex)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var orderList = ctx.GET_HOA_DON(fromDate, toDate, customerId).ToList<GET_HOA_DON_Result>();
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "date_desc";
+            }
+            else
+            {
+                sortOrder = "date";
+            }
+            ViewBag.SortOrder = sortOrder;
+            IPagedList<GET_HOA_DON_Result> khachHangHists = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            ViewBag.Count = orderList.Count();
+            switch (sortOrder)
+            {
+                case "date":
+                    khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                    break;
+                case "date_desc":
+                    khachHangHists = orderList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                    break;
+                default:
+                    khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
+                    break;
+
+            }
+
+            KhachHangModel KhachHang = new KhachHangModel();
+            KhachHang.OrderHist = khachHangHists;
+            var total = ctx.GET_SUM_HOA_DON_BY_CUS_ID(fromDate, toDate, customerId).ToList().First();
+            KhachHang.Total = total;
+            ViewBag.CustomerId = customerId;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            ViewBag.currentPageIndex = currentPageIndex;
+            return PartialView("showOrderHistPartialView", KhachHang);
+        }
+
         [HttpGet]
-        public ActionResult showOrderHist(int id, string fromDate, string toDate, string sortOrder, string currentFilter, int? page)
+        public ActionResult showOrderHist(int id)
         {
             int flg = Convert.ToInt32(Request.Form["flg"]);
             ViewBag.flg = flg;
@@ -432,40 +499,8 @@ namespace SMS.Controllers
             KHACH_HANG khuVuc = ctx.KHACH_HANG.Find(id);
             if (khuVuc.ACTIVE.Equals("A"))
             {
-                var khuVucList = (from s in ctx.KHU_VUC
-                                  where s.ACTIVE == "A"
-                                  select s).ToList<KHU_VUC>();
-                ViewBag.khuVucList = khuVucList;
-                DateTime fD = String.IsNullOrEmpty(fromDate) ? DateTime.MinValue : DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                DateTime tD = String.IsNullOrEmpty(toDate) ? DateTime.MaxValue : DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                var orderList = ctx.GET_HOA_DON(fD, tD, id).ToList<GET_HOA_DON_Result>();
-
-                ViewBag.IdSortParm = sortOrder == "date_desc" ? "date" : "date_desc";
-                IPagedList<GET_HOA_DON_Result> khachHangHists = null;
-                int pageSize = SystemConstant.ROWS;
-                int pageIndex = page == null ? 1 : (int)page;
-                ViewBag.CurrentPageIndex = pageIndex;
-                ViewBag.Count = orderList.Count();
-                switch (sortOrder)
-                {
-                    case "date":
-                        khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
-                        break;
-                    case "date_desc":
-                        khachHangHists = orderList.OrderByDescending(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
-                        break;
-                    default:
-                        khachHangHists = orderList.OrderBy(KhachHangHist => KhachHangHist.NGAY_BAN).ToList().ToPagedList(pageIndex, pageSize);
-                        break;
-
-                }
-               
-                ViewBag.debitHist = khachHangHists;
                 KhachHangModel KhachHang = new KhachHangModel();
                 KhachHang.KhachHang = khuVuc;
-                KhachHang.OrderHist = khachHangHists;
-                var total = ctx.GET_SUM_HOA_DON_BY_CUS_ID(fD, tD, id).ToList().First();
-                ViewBag.toTal = total;
                 return View(KhachHang);
             }
             else
@@ -473,7 +508,6 @@ namespace SMS.Controllers
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
                 return View("../Home/Error"); ;
             }
-            return View();
         }
 
 

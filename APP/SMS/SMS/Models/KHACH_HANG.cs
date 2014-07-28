@@ -24,6 +24,8 @@ namespace SMS.Models
         public IPagedList<KHACH_HANG_RESULT> WarningList { get; set; }
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
+        public GET_SUM_HOA_DON_BY_CUS_ID_Result Total { get; set; }
+        public long Count { get; set; }
     }
 
     public partial class KHACH_HANG_RESULT

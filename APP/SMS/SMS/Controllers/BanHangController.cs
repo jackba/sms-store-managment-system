@@ -25,6 +25,18 @@ namespace SMS.Controllers
     public class BanHangController : Controller
     {
         [HttpGet]
+
+        public ActionResult AddNew()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList(); ;
+            HoaDonBanHang hoanDon = new HoaDonBanHang();
+            hoanDon.Store = stores;
+            hoanDon.Units = units;
+            return View(hoanDon);
+        }
+        [HttpGet]
         public ActionResult HoaDonBanHang(int MaHoaDon)
         {
             var ctx = new SmsContext();

@@ -50,6 +50,7 @@
                             <td class='inner colwidth head ' width="40%">
                                  @Ajax.ActionLink("Mã khách hàng", "IndexPartialView", new
                            {
+                               ViewBag.CurrentPageIndex,
                                sortOrder = ViewBag.IdSortParm,
                                customerName = ViewBag.customerName,
                                currentFilter = ViewBag.CurrentFilter,
