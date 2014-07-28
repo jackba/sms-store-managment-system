@@ -42,50 +42,16 @@
 
         $('#TenKhachHang').focus();
 
-        setDisableControl('updateRecord', true);
-        setDisableControl('clearUpdateRecord', true);
-
-        $("#addRecord").click(function () {
-            addRecord();
-        });
-
-        $("#updateRecord").click(function () {
-            updateRecord();
-        });
-
-        $("#clearUpdateRecord").click(function () {
-            clearUpdateRecord();
-        });
-
-        $("#saveBill_top").click(function () {
-            return btnSaveClick();
-        });
-        $("#saveBill_bottom").click(function () {
-            return btnSaveClick();
-        });
-
-        $("#createNewBill_top").click(function () {
-            createNewBill();
-        });
-        $("#createNewBill_bottom").click(function () {
-            createNewBill();
-        });
-
-        $("#back_top").click(function () {
-            confirmBack();
-        });
-        $("#back_bottom").click(function () {
-            confirmBack();
-        });
-
-        $('#NgayBan').datepicker('setDate', 'today');
-        $('#NgayGiao').datepicker('setDate', 'today + 3');
         // hide
         hideRelationProduct();
         hideRelationCustomer();
 
+        $('#NgayBan').datepicker('setDate', 'today');
+        $('#NgayGiao').datepicker('setDate', 'today + 3');
+     
+
         //initial combobox store
-        $('#typeStore').html(createStore());
+        //$('#typeStore').html(createStore());
         //$('#typeStore').val($('#MyStore').val());
         /*disabled export excel*/
         setDisableControl('saveBill_top', true);
@@ -280,29 +246,7 @@
         });
         //format numberic end
         //MODE UPDATE
-        var model = @Html.Raw(Json.Encode(Model));
-        if ($('#KH_Info_Ma_HD').val() != null && $('#KH_Info_Ma_HD').val() != '' && $('#KH_Info_Ma_HD').val != 'undefined') {
-            $('#MaKhachHang').val($('#KH_Info_Ma_HD').val());
-            $('#TenKhachHang').val($('#KH_Info_Ten_KH').val());
-            $('#NgayBan').datepicker(new Date($('#KH_Info_Ngay_Ban').val()));
-            $('#NgayGiao').datepicker(new Date($('#KH_Info_Ngay_Giao').val()));
-            $('#DiaChi').val($('#KH_Info_Dia_Chi').val());
-
-
-            // render table
-            var rowChiTiet = null;
-            for(var i = 0 ; i < model.lstChiTietHoaDon.length; i++){
-                rowChiTiet = model.lstChiTietHoaDon[i];
-                createRowModeUpdate(rowChiTiet);
-
-                CalcTotalAllMoney($('#hidTotalRowAdded').val(), true);
-
-                $('#hidUnitRootName').val('');
-                $('#suggestUnit').html('');
-                $('#suggestUnit').hide();
-
-            }
-        }
+       
     });
 
     // FUNCTION EXECUTE
@@ -1325,6 +1269,228 @@
                 break;
         }
     }
+
+    function productAutocomplete() {
+        $("input.productName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SanPham/FindSuggestName", data: "{ 'prefixText': '" + request.term + "' }",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.value,
+                                    value: item.value,
+                                    code: item.code,
+                                    id: item.id
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                $('input.productId', parent).val("");
+                $('input.code', parent).val("");
+                $('input.convertor', parent).val("1");
+
+            },
+            select: function (event, ui) {
+                var $th = $(this);
+                var pa = $th.parent().parent();
+                if (!checkDuplicate(ui.item.id)) {
+                    $th.val(ui.item.label);
+                    $('input.productId', pa).val(ui.item.id);
+                    $('input.code', pa).val(ui.item.code);
+                    $('input.convertor', pa).val("1");
+                    createDonViTinh($th);
+                } else {
+                    alert("Sản phầm này đã được nhập.");
+                    $th.val("");
+                    $('input.productId', pa).val("");
+                    $('input.code', pa).val("");
+                    $('input.convertor', pa).val("1");
+                }
+                return false;
+            },
+            minLength: 1
+        });
+    }
+
+    function createDonViTinh(obj) {
+        var result = '';
+        var $th = obj;
+        var pr = $th.parent().parent();
+        var productId = $('input.productId', pr).val();
+        $.ajax({
+            url: "/BanHang/FindDonViTinhByMaSP",
+            data: "{'maSP' : '" + productId + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    var $this = obj;
+                    var parent = $this.parent().parent();
+                    var un = $('select.unit', parent);
+                    $('select.unit', parent).empty();
+                    $.each(data, function (i, item) {
+                        var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
+                        $(opt).appendTo(un);
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
+
+
+    function checkDuplicate(val) {
+        var flg = false;
+        $('td input.productId').each(function () {
+            if ($('input.delFlg', $(this).parent()).val() != 1) {
+                var checkVal = $(this).val();
+                if (val == checkVal) {
+                    flg = true;
+                }
+            }
+        })
+        return flg;
+    }
+    function productCodeAutocomplete() {
+        $("input.code").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/SanPham/FindSuggestByCd", data: "{ 'prefixText': '" + request.term + "' }",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.value,
+                                    name: item.name,
+                                    value: item.value,
+                                    id: item.id
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                $('input.productId', parent).val("");
+                $('input.productName', parent).val("");
+                $('input.convertor', parent).val("1");
+            },
+            select: function (event, ui) {
+                var $th = $(this);
+                var pa = $th.parent().parent();
+                if (!checkDuplicate(ui.item.id)) {
+                    $th.val(ui.item.label);
+                    $('input.productId', pa).val(ui.item.id);
+                    $('input.productName', pa).val(ui.item.name);
+                    createDonViTinh($th);
+                    $('input.convertor', pa).val("1");
+                    $th.css("background-color", "white");
+                } else {
+                    alert("Sản phẩm này đã có trong danh sách");
+                    $th.val("");
+                    $('input.productId', pa).val("");
+                    $('input.productName', pa).val("");
+                    $('input.convertor', pa).val("1");
+                }
+                return false;
+            },
+            minLength: 1
+        });
+    }
+    function tableCheck() {
+        $('.chcktbl').click(function () {
+            var length = $('.chcktbl:checked').length;
+            var max = $('.chcktbl').length;
+            if (length == max) {
+                $('#chckHead').prop('checked', true);
+            }
+            else {
+                $('#chckHead').prop('checked', false);
+            }
+        });
+    }
+
+    function headerCheck() {
+        $('#chckHead').click(function () {
+            if (this.checked == false) {
+                $('input.chcktbl:checked').prop('checked', false);
+            }
+            else {
+                $('input.chcktbl:not(:checked)').prop('checked', true);
+            }
+        });
+    }
+
+
+    function deleteCheckedRow() {
+        var rows = 0;
+        $('input.chcktbl:checked').each(function () {
+            var flg = $('input.delFlg', $(this).parent().parent());
+            if (flg.val() == null || flg.val() == '' || flg.val() == 0) {
+                rows++;
+            }
+            flg.val(1);
+            $(this).parent().parent().hide();
+
+        });
+        if (rows == 0) {
+            alert("Vui lòng chọn dòng để xóa.");
+        }
+    };
+
+    function addRow() {
+        var row = parseInt($("#rowIndex").val()) + 1;
+        $('#detailTable > tbody:last').append('<tr> ' +
+                '<td class="inner alignCenter colwidth" width="5%;">' +
+                '<input type="checkbox" class="chcktbl"> </td>' +
+                '<td class="inner colwidth "><input name="lstChiTietHoaDon[' + row + '].Code_SP" class="code codebtl" id="lstChiTietHoaDon_' + row + '__Code_SP" type="text" value=""></td>' +
+                '<td class="inner colwidth ">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Ma_SP" class="productId " id="lstChiTietHoaDon_' + row + '__Ma_SP" type="hidden" value="" data-val="true" data-val-number="The field Ma_SP must be a number."> ' +
+                '<input name="lstChiTietHoaDon[' + row + '].DEL_FLG" class="delFlg" id="lstChiTietHoaDon_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
+                '<input name="lstChiTietHoaDon[' + row + '].HE_SO" class="convertor" id="lstChiTietHoaDon_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Ten_SP" class="productName" id="lstChiTietHoaDon_' + row + '__Ten_SP" type="text" value="">' +
+                '</td>' +
+                '<td class="inner colwidth "><input name="lstChiTietHoaDon' + row + '].So_Luong" class="quantity" id="lstChiTietHoaDon' + row + '__So_Luong" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
+                '<td class="inner colwidth ">' +
+                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="unit " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
+                '</select></td>' +
+                '<td class="inner colwidth ">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Gia_Ban" class="price numberic" id="lstChiTietHoaDon_' + row + '__Gia_Ban" type="text" value="" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
+                '</td><td class="inner colwidth ">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Thanh_Tien" disabled="disabled" class="total numberic" id="lstChiTietHoaDon_' + row + '__Thanh_Tien" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
+                '</td><td class="inner colwidth ">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Phan_Tram_CK" class="discount numberic" id="lstChiTietHoaDon_' + row + '__Phan_Tram_CK" type="text" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '</td><td class="inner colwidth ">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Gia_Thuc" disabled="disabled" class="realTotal numberic" id="lstChiTietHoaDon_' + row + '__Gia_Thuc" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
+                '</td><td class="innerLast colwidth ">' +
+                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="store " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;"><option value="">---------</option>' +
+                '</select></td>' +
+                '</tr>');
+        $("#rowIndex").val(row);
+        $('input.code', $('#detailTable > tbody:last')).focus();
+        productAutocomplete();
+        productCodeAutocomplete();
+        tableCheck();
+        headerCheck();
+    }
+    $(document).ready(function () {
+        //formatNumberic();
+       // numberOnly();
+        productAutocomplete();
+        productCodeAutocomplete();
+       // quantityKeyPress();
+      //  priceKeyPress();
+       // unitOnchange();
+        tableCheck();
+        headerCheck();
+        //codeFocusout();
+       // $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+    });
+
     </script>
 }
 <div id="msgId">
@@ -1370,11 +1536,12 @@
                         <div class="titleItem required">Tên khách hàng </div>
                         <br />
                         <div>
-                            <input type="text" name="TenKhachHang" id="TenKhachHang" style="margin-left: 2px;" onkeypress="return disableEnterKey(event);" />
+                            @Html.TextBoxFor(u => u.KH_Info.Ten_KH, new { @name="TenKhachHang" ,@id="TenKhachHang", @style="margin-left: 2px;", @onkeypress="return disableEnterKey(event);" })
                             @*<input type="hidden" name="MaKhachHang" id="MaKhachHang" />*@
                             <input type="hidden" name="UserId" value="@ViewBag.UserId" />
                             <input type="hidden" id="MyStore" value="@ViewBag.MyStore" />
                             <input type="hidden" id="kindCustomer" />
+                            
                         </div>
 
                     </td>
@@ -1403,16 +1570,15 @@
                         <div class="titleItem required">Ngày bán</div>
                         <br />
                         <div>
-                            <input type="text" name="NgayBan" id="NgayBan" maxlength="10"
-                                   class="datePicker alignCenter " onkeypress="return disableEnterKey(event);" />
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Ban, "{0:d}", new {@name="NgayBan", @id="NgayBan", @class = "datePicker "})
+           
                         </div>
                     </td>
                     <td colspan="2">
                         <div class="titleItem required">Ngày giao hàng</div>
                         <br />
                         <div>
-                            <input type="text" name="NgayGiao" id="NgayGiao" maxlength="10"
-                                   class="datePicker alignCenter" onkeypress="return disableEnterKey(event);" />
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Giao, "{0:d}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
                         </div>
                     </td>
                     <td></td>
@@ -1422,7 +1588,8 @@
                         <div class="titleItem required">Địa chỉ giao hàng</div>
                         <br />
                         <div>
-                            <textarea name="DiaChi" id="DiaChi" rows="2" cols="3" class="alignText" maxlength="300"></textarea>
+                            @Html.TextAreaFor(u => u.KH_Info.Dia_Chi, new { @name="DiaChi", @id="DiaChi", @class="alignText" })
+                
                         </div>
                     </td>
                 </tr>
@@ -1476,7 +1643,7 @@
                     <span><strong>- Số lượng: </strong> </span>
                     @{
         int j = 0;
-        foreach (var Kho in ViewBag.KhoList)
+        foreach (var Kho in Model.Store)
         {
             j++;
             if (j <= 5)
@@ -1528,6 +1695,7 @@
         </div>
 
         <!--list content area-->
+        <input type="hidden" id="rowIndex" value="0" />
         <div>
             <table id="detailTable" name="detailTable" width="100%" class="contentTable">
                 <thead>
@@ -1541,7 +1709,7 @@
                         <td class='inner colwidth head '> Thành tiến </td>
                         <td class='inner colwidth head '> Chiếc khấu </td>
                         <td class='inner colwidth head '> Thực trả</td>
-                        <td class='inner colwidth head '> Kho</td>
+                        <td class='innerLast colwidth head '> Kho</td>
                     </tr>
                 </thead>
 
@@ -1555,25 +1723,32 @@
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Code_SP, new { @class = "code codebtl" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Ten_SP, new { @class = "code codebtl" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].Ma_SP, new { @class = "productId " })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].DEL_FLG, new { @class = "delFlg" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].HE_SO, new { @class = "convertor" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Ten_SP, new { @class = "productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].So_Luong, new { @class = "code codebtl" })
-                        </td>
-                        <td class='inner colwidth '></td>
-                        <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].So_Luong, new { @class = "quantity" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Thanh_Tien, new { @class = "code codebtl" })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "price numberic" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
-                        <td class='innerLast colwidth '></td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "discount numberic" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                        </td>
+                        <td class='innerLast colwidth '>
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "store " })
+                        </td>
                     </tr>
 
                 </tbody>

@@ -40,6 +40,8 @@ namespace SMS.Models
         public string Ten_Kho_Xuat { get; set; }
         public int Ma_Don_Vi{ get; set; }
         public string Ten_Don_Vi { get; set; }
+        public double? HE_SO { get; set; }
+        public int? DEL_FLG { get; set; }
     }
     public partial class HOA_DON
     {
