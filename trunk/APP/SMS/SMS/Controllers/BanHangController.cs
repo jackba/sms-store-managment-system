@@ -24,8 +24,82 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class BanHangController : Controller
     {
+        [HttpPost]
+        public ActionResult AddNew(HoaDonBanHang hoaDon)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList();
+            var Infor = hoaDon.KH_Info;
+            var details = hoaDon.lstChiTietHoaDon;
+            string InvoiceNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var invoice = ctx.HOA_DON.Create();
+                    invoice.SO_HOA_DON = InvoiceNo;
+                    invoice.NGAY_BAN = Infor.Ngay_Ban;
+                    invoice.NGAY_GIAO = Infor.Ngay_Giao;
+                    invoice.DIA_CHI_GIAO_HANG = Infor.Dia_Chi;
+                    invoice.MA_KHACH_HANG = Infor.Ma_KH;
+                    if (Convert.ToInt32(Infor.Ma_HD) <= 0)
+                    {
+                        invoice.TEN_KHACH_HANG = string.Empty;
+                    }
+                    invoice.MA_NHAN_VIEN_BAN = Convert.ToInt32(Session["UserId"]);
+                    invoice.STATUS = 1;
+                    invoice.CREATE_AT = DateTime.Now;
+                    invoice.UPDATE_AT = DateTime.Now;
+                    invoice.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    invoice.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    invoice.ACTIVE = "A";
+                    ctx.HOA_DON.Add(invoice);
+                    ctx.SaveChanges();
+                    CHI_TIET_HOA_DON ct;
+                    foreach (var detail in details)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.CHI_TIET_HOA_DON.Create();
+                            ct.MA_HOA_DON = invoice.MA_HOA_DON;
+                            ct.MA_SAN_PHAM = detail.Ma_SP;
+                            ct.SO_LUONG_TEMP = detail.So_Luong;
+                            ct.SO_LUONG = detail.So_Luong * detail.HE_SO;
+                            ct.DON_GIA_TEMP = detail.Gia_Ban;
+                            ct.PHAN_TRAM_CHIEC_KHAU = detail.Phan_Tram_CK;
+                            ct.DON_GIA = detail.Gia_Ban / detail.HE_SO;
+                            ct.ACTIVE = "A";
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_DON_VI = detail.Ma_Don_Vi;
+                            ct.MA_KHO_XUAT = detail.Ma_Kho_Xuat;
+                            ctx.CHI_TIET_HOA_DON.Add(ct);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    transaction.Complete();
+                    ViewBag.InforMessage = "Lưu hóa đơn thành công.";
+                    var In = new HoaDonBanHang();
+                    In.Store = stores;
+                    In.Units = units;
+                    return View(In);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    ViewBag.Message = "Lưu hóa đơn thất bại";
+                }
+            }
+            
+            hoaDon.Store = stores;
+            hoaDon.Units = units;            
+            return View(hoaDon);
+        }
         [HttpGet]
-
         public ActionResult AddNew()
         {
             var ctx = new SmsContext();
