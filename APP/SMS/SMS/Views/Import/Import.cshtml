@@ -449,7 +449,7 @@
                 var $this = $(this);
                 var parent = $this.parent().parent();
                 var productId = $('input.productId', parent).val();
-                var unitId = $('select.unit :selected').val();
+                var unitId = $this.val();
                 var convertor = $('input.convertor', parent);
                 if (productId != null && productId != '' && unitId != null && unitId != '') {
                     GetFactorOfProduct(productId, unitId, convertor);

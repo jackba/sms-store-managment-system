@@ -54,8 +54,8 @@
         //$('#typeStore').html(createStore());
         //$('#typeStore').val($('#MyStore').val());
         /*disabled export excel*/
-        setDisableControl('saveBill_top', true);
-        setDisableControl('saveBill_bottom', true);
+        //setDisableControl('saveBill_top', true);
+        //setDisableControl('saveBill_bottom', true);
 
         /**AUTOCOMPLETE**/
         // Customer name
@@ -161,7 +161,8 @@
                 $(".ui-menu-item").hide();
                 hideRelationProduct();
             }
-        });;
+        });
+        
         // Product name
         $("#TenSanPham").autocomplete({
             source: function (request, response) {
@@ -248,7 +249,7 @@
         //MODE UPDATE
        
     });
-
+    
     // FUNCTION EXECUTE
     function createRowModeUpdate(rowChiTiet){
         var CodeSP = rowChiTiet.Code_SP;
@@ -327,7 +328,7 @@
         $('#tableContent').prepend(newRow);
     }
 
-
+   
     function btnSaveClick() {
         var msgErr = checkInputFields(true);
         if ('' == msgErr) {
@@ -362,8 +363,8 @@
         $('#relationProduct').removeClass('HideElement');
         $('#relationProduct').addClass('relationProductShow');
 
-        var width = $('#' + idControlAjax).width();
-        var offset = $('#'+ idControlAjax).offset();
+        var width = idControlAjax.width();
+        var offset = idControlAjax.offset();
         offset.left = offset.left + width + 10;
         $('#relationProduct').offset({ top: offset.top, left: offset.left })
     }
@@ -439,12 +440,12 @@
         //    $('#S_GiaThuc').html($('#GiaThuc').val());
         //} else {
         $('#S_GiaBan').html(item.price);
-        addCommaNumberic('#S_GiaBan', true);
+        //addCommaNumberic('#S_GiaBan', true);
         $('#S_ChietKhau').html(item.discount);
-        addCommaNumberic('#GiaBan',true);
+        //addCommaNumberic('#GiaBan',true);
         var priceReal = CalcRealPrice(item.price, item.discount, true);
         $('#S_GiaThuc').html(priceReal);
-        addCommaNumberic('#S_GiaThuc', true);
+       // addCommaNumberic('#S_GiaThuc', true);
         //}
     }
     function setRelationCustomer(item, isSelected) {
@@ -502,30 +503,8 @@
                 function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
         });
     }
-    function createStore() {
-        var result = '';
-        $.ajax({
-            url: "/BanHang/FindStore",
-            //data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("input[type='radio']:checked").val() + "'}",
-            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-            success:
-                function (data) {
-                    $.each(data,function(i,item)
-                    {
-                        var opt = '';
-                        if (item.value == parseInt($('#MyStore').val())) {
-                            opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
-                        }else {
-                            opt = "<option value=" + item.value + ">" + item.name + "</option>"
-                        }
 
-                        $(opt).appendTo('#typeStore');
-                    });
-                },
-            error:
-                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-        });
-    }
+    
     function confirmBack() {
         var title = "Xác nhận";
         var content = "Quá trình trở về có thể làm mất dữ liệu bạn đang thao tác. <br\> Bạn muốn tiếp tục hay không?";
@@ -949,7 +928,7 @@
 
         return result;
     }
-    function GetFactorOfProduct(productNo, unitNo) {
+    function GetFactorOfProduct(productNo, unitNo, convertor) {
         if (unitNo != null && unitNo != 'undefined') {
             $.ajax({
                 url: "/BanHang/FindFactorOfProduct1",
@@ -957,23 +936,18 @@
                 data: "{ 'maSP': '" + productNo + "' , 'unitNo' : '" + unitNo + "'}",
                 dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    $('#hidFactorValue').val(data.heso);
+                    var parent = convertor.parent().parent();
                     var kind = $("#typeCustomers").val();
+                    convertor.val(data.heso);
                     if(kind == 1){
-                        $("#GiaBan").val(data.gia_ban_1);
-                        $("#ChietKhau").val(data.chiec_khau_1);
+                        $("input.price", parent).val(data.gia_ban_1);
+                        $("input.discount", parent).val(data.chiec_khau_1);
                     }else if(kind == 2){
-                        $("#GiaBan").val(data.gia_ban_2);
-                        $("#ChietKhau").val(data.chiec_khau_2);
+                        $("input.price", parent).val(data.gia_ban_2);
+                        $("input.discount", parent).val(data.chiec_khau_2);                        
                     }else{
-                        $("#GiaBan").val(data.gia_ban_3);
-                        $("#ChietKhau").val(data.chiec_khau_3);
-                    }
-                    if ($('#hidFactorValue').val() != '' && $('#hidFactorValue').val() != '1') {
-                        showSuggestUnit();
-                    } else {
-                        $('#suggestUnit').html('');
-                        $('#suggestUnit').hide();
+                        $("input.price", parent).val(data.gia_ban_3);
+                        $("input.discount", parent).val(data.chiec_khau_3);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -1317,6 +1291,19 @@
         });
     }
 
+    function unitOnchange() {
+        $("select.unit").change(function (event) {
+            var $this = $(this);
+            var parent = $this.parent().parent();
+            var productId = $('input.productId', parent).val();
+            var unitId = $this.val();
+            var convertor = $('input.convertor', parent);
+            if (productId != null && productId != '' && unitId != null && unitId != '') {
+                GetFactorOfProduct(productId, unitId, convertor);
+            }
+        });
+    }
+
     function createDonViTinh(obj) {
         var result = '';
         var $th = obj;
@@ -1342,6 +1329,32 @@
         });
     }
 
+    function createStore(obj) {        
+        var result = '';
+        $.ajax({
+            url: "/BanHang/FindStore",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    var $this = obj;
+                    var parent = $this.parent().parent();
+                    var un = $('select.store', parent);
+                    $('select.store', parent).empty();
+                    $.each(data, function (i, item) {
+                        var opt = '';
+                        if (item.value == parseInt($('#MyStore').val())) {
+                            opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
+                        } else {
+                            opt = "<option value=" + item.value + ">" + item.name + "</option>"
+                        }
+                        $(opt).appendTo(un);
+                    });
+                    un.val($("#myStore").val());
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+    }
 
     function checkDuplicate(val) {
         var flg = false;
@@ -1356,37 +1369,54 @@
         return flg;
     }
     function productCodeAutocomplete() {
+
         $("input.code").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/SanPham/FindSuggestByCd", data: "{ 'prefixText': '" + request.term + "' }",
+                    url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    dataFilter: function (data) { return data; }, success:
+                    dataFilter: function (data) { return data; },
+                    success:
                         function (data) {
                             response($.map(data, function (item) {
                                 return {
-                                    label: item.value,
-                                    name: item.name,
-                                    value: item.value,
-                                    id: item.id
+                                    lable: item.code,
+                                    value: item.code,
+                                    id: item.id,
+                                    price: item.price,
+                                    discount: item.discount,
+                                    unit: item.unit,
+                                    unitNm: item.unitNm,
+                                    name: item.name
                                 }
                             }))
-                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
                 var $this = $(this);
                 var parent = $this.parent().parent();
                 $('input.productId', parent).val("");
                 $('input.productName', parent).val("");
                 $('input.convertor', parent).val("1");
+                $('input.price', parent).val("");
             },
             select: function (event, ui) {
+                //setFixedField(ui.item, true);
+                hideRelationProduct();
+               // $('#hidUnitRootName').val(ui.item.unitNm);
+
+               // $('#hidFactorValue').val('1');
                 var $th = $(this);
                 var pa = $th.parent().parent();
                 if (!checkDuplicate(ui.item.id)) {
                     $th.val(ui.item.label);
                     $('input.productId', pa).val(ui.item.id);
                     $('input.productName', pa).val(ui.item.name);
+                    $('input.price', pa).val(ui.item.price);
+                    $('input.discount', pa).val(ui.item.discount);
                     createDonViTinh($th);
+                    createStore($th);
                     $('input.convertor', pa).val("1");
                     $th.css("background-color", "white");
                 } else {
@@ -1395,10 +1425,27 @@
                     $('input.productId', pa).val("");
                     $('input.productName', pa).val("");
                     $('input.convertor', pa).val("1");
+                    $('input.price', pa).val("");
                 }
                 return false;
             },
+            focus: function (event, ui) {
+                setRelationProduct(ui.item, true);
+                var $th = $(this);
+                setStoreInformation(ui.item);
+                showRelationProduct($th);
+                $('#hidFactorValue').val('1');
+            },
+            close: function () {
+                hideRelationProduct();
+            },
             minLength: 1
+
+        }).keyup(function (e) {
+            if (e.which === 13 || e.which === 27) {
+                $(".ui-menu-item").hide();
+                hideRelationProduct();
+            }
         });
     }
     function tableCheck() {
@@ -1467,21 +1514,24 @@
                 '</td><td class="inner colwidth ">' +
                 '<input name="lstChiTietHoaDon[' + row + '].Gia_Thuc" disabled="disabled" class="realTotal numberic" id="lstChiTietHoaDon_' + row + '__Gia_Thuc" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +
-                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="store " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;"><option value="">---------</option>' +
+                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="store " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; width: 100px; font-size: 1.2em"><option value="">---------</option>' +
                 '</select></td>' +
                 '</tr>');
         $("#rowIndex").val(row);
-        $('input.code', $('#detailTable > tbody:last')).focus();
+        $('input.code', $('#detailTable > tbody:last')).focus();        
         productAutocomplete();
         productCodeAutocomplete();
+        
         tableCheck();
         headerCheck();
+        unitOnchange();
     }
     $(document).ready(function () {
         //formatNumberic();
        // numberOnly();
         productAutocomplete();
         productCodeAutocomplete();
+        unitOnchange();
        // quantityKeyPress();
       //  priceKeyPress();
        // unitOnchange();
@@ -1516,7 +1566,10 @@
 @Html.HiddenFor(u => u.KH_Info.Ngay_Ban)
 @Html.HiddenFor(u => u.KH_Info.Ngay_Giao)
 @Html.HiddenFor(u => u.KH_Info.Dia_Chi)
-
+@{
+    var myStore = Convert.ToInt32(Session["MyStore"]);
+}
+<input type="hidden" id="myStore" value="@myStore" />
 <fieldset>
     @using (Ajax.BeginForm("SaveBill", "BanHang", new { MaHoaDon = ViewBag.MaHoaDon },
      new AjaxOptions()
@@ -1636,7 +1689,7 @@
                     <br />
                     <span><strong>- Giá bán : </strong> </span><span id="S_GiaBan"></span>
                     <br />
-                    <span><strong>- Chiết khấu : </strong> </span><span id="S_ChietKhau"></span>
+                    <span><strong>- Chiết khấu(%) : </strong> </span><span id="S_ChietKhau"></span>
                     <br />
                     <span><strong>- Giá sau chiết khấu : </strong> </span><span id="S_GiaThuc"></span>
                     <br />
@@ -1696,6 +1749,7 @@
 
         <!--list content area-->
         <input type="hidden" id="rowIndex" value="0" />
+        
         <div>
             <table id="detailTable" name="detailTable" width="100%" class="contentTable">
                 <thead>
@@ -1707,7 +1761,7 @@
                         <td class='innerLast colwidth head '> Đơn vị </td>
                         <td class='inner colwidth head '> Đơn giá </td>
                         <td class='inner colwidth head '> Thành tiến </td>
-                        <td class='inner colwidth head '> Chiếc khấu </td>
+                        <td class='inner colwidth head '> (%) </td>
                         <td class='inner colwidth head '> Thực trả</td>
                         <td class='innerLast colwidth head '> Kho</td>
                     </tr>
@@ -1747,7 +1801,7 @@
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='innerLast colwidth '>
-                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "store " })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
                         </td>
                     </tr>
 
