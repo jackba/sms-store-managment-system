@@ -12,6 +12,22 @@ namespace SMS.Models
         public long PageCount { get; set; }
     }
 
+    public class ImportCsvFile
+    {
+        public string No { get; set; }
+        public string Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string UniName { get; set; }
+        public string Quantity { get; set; }
+        public string Price { get; set; }
+    }
+
+    public class ImportCsvModel
+    {
+        public List<ImportCsvFile> TheList { get; set; }
+        public long Count { get; set; }
+    }
     public class ImportModel
     {
         public int StoreId { get; set; }

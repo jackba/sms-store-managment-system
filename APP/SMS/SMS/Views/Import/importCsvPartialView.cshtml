@@ -1,0 +1,53 @@
+﻿@model SMS.Models.ImportCsvModel
+@using PagedList.Mvc;
+<div>
+    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+        <tr>
+            <td class='inner colwidth head ' width="15%">
+                No
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Mã sản phẩm
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Tên Sản phẩm
+            </td>
+            <td class='inner colwidth head ' title="Nhân viên thực hiện" width="15%">
+                Tên đơn vị 
+            </td>
+            <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
+                Số lượng
+            </td>
+            <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
+                Đơn giá
+            </td>
+        </tr>
+        @foreach (var dbHist in Model.TheList)
+        {
+            <tr class='inner column-hscroll alignCenter'>
+                <td class="inner colwidth">
+                   @dbHist.No
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.Id
+                </td>
+
+                <td class="inner colwidth">
+                    @dbHist.Name
+                </td>
+
+                <td class="inner colwidth">
+                    @dbHist.UniName
+                </td>
+
+                <td class="innerLast colwidth">
+                    @dbHist.Quantity
+                </td>
+                <td class="innerLast colwidth">
+                    @dbHist.Price
+                </td>
+            </tr>
+        }        
+        
+    </table>
+</div>
