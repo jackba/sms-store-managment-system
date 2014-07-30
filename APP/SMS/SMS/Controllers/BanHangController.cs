@@ -43,9 +43,13 @@ namespace SMS.Controllers
                     invoice.NGAY_GIAO = Infor.Ngay_Giao;
                     invoice.DIA_CHI_GIAO_HANG = Infor.Dia_Chi;
                     invoice.MA_KHACH_HANG = Infor.Ma_KH;
-                    if (Convert.ToInt32(Infor.Ma_HD) <= 0)
+                    if (Convert.ToInt32(Infor.Ma_HD) > 0)
                     {
                         invoice.TEN_KHACH_HANG = string.Empty;
+                    }
+                    else
+                    {
+                        invoice.TEN_KHACH_HANG = Infor.Ten_KH;
                     }
                     invoice.MA_NHAN_VIEN_BAN = Convert.ToInt32(Session["UserId"]);
                     invoice.STATUS = 1;
