@@ -9,12 +9,161 @@ using SMS.App_Start;
 using System.Transactions;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
+using System.Web.UI;
+using CsvHelper;
 
 namespace SMS.Controllers
 {
     [CustomActionFilter]
     public class ImportController : Controller
     {
+        [HttpPost]
+        public PartialViewResult importCsvPartialView(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
+                CsvReader csvReader = new CsvReader(csvParser);
+                string[] headers = { };
+                List<string[]> rows = new List<string[]>();
+                string[] row;
+                while (csvReader.Read())
+                {
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
+                    {
+                        headers = csvReader.FieldHeaders;
+                    }
+                    row = new string[headers.Count()];
+                    for (int j = 0; j < headers.Count(); j++)
+                    {
+                        row[j] = csvReader.GetField(j);
+                    }
+                    rows.Add(row);
+                }
+                ImportCsvFile record;
+                List<ImportCsvFile> thelist = new List<ImportCsvFile>();
+                bool flag = true;
+                foreach (var r in rows)
+                {
+                    if (string.IsNullOrEmpty(r[1]) || string.IsNullOrEmpty(r[5]) || string.IsNullOrEmpty(r[6]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                    else
+                    {
+                        record = new ImportCsvFile();
+                        record.No = r[0].ToString();
+                        record.Id = r[1].ToString();
+                        record.Name = r[2].ToString();
+                        record.UniName = r[3].ToString();
+                        record.Quantity = r[4].ToString();
+                        record.Price = r[5].ToString();
+                        thelist.Add(record);
+                    }
+                }
+                if (flag)
+                {
+
+                }
+                else
+                {
+
+                }
+
+                ImportCsvModel model = new ImportCsvModel();
+                model.TheList = thelist;
+                model.Count = thelist.Count();
+                return PartialView("importCsvPartialView", model);
+            }
+            return PartialView();
+        }
+
+        public ActionResult importCsv()
+        {
+            return View();
+        }
+        public ActionResult downloadCSVTemplate()
+        {
+            Response.ClearContent();
+            Response.Buffer = true;
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
+            Response.ContentType = "text/csv";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"CODE\","); 
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Đơn vị tính\",");
+            fileStringBuilder.Append("\"Số lượng\",");
+            fileStringBuilder.Append("\"Giá vốn\"");            
+            var ctx = new SmsContext();
+            var products = ctx.SAN_PHAM.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A").ToList<SAN_PHAM>();
+            int i = 0;
+            foreach (var product in products)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + product.MA_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + product.CODE + "\",");
+                fileStringBuilder.Append("\"" + product.TEN_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + product.DON_VI_TINH.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\" \",");
+                fileStringBuilder.Append("\" \"");   
+            }
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+            return View("../Home/Import");
+        }
+        public ActionResult downloadTemplateExcel()
+        {
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=MyExcelFile.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("<table border=2><tr><td bgcolor='#00FFFF' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='7'> Kiểm kho định kỳ </td></tr>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> STT </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> Mã sản phẩm </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> CODE </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> Tên sản phẩm </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> Đơn vị tính </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> Số lượng</td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> Giá vốn </td></tr>");
+            
+            var ctx = new SmsContext();
+            var products = ctx.SAN_PHAM.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A").ToList<SAN_PHAM>();
+            int i = 0;
+            foreach (var product in products)
+            {
+                i += 1;
+                fileStringBuilder.Append("<tr>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> " + i + " </td>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> " + product.MA_SAN_PHAM + " </td>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> " + product.CODE + " </td>");
+                fileStringBuilder.Append("<td align='left'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> " + product.TEN_SAN_PHAM + " </td>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'> " + product.DON_VI_TINH.TEN_DON_VI + " </td>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'></td>");
+                fileStringBuilder.Append("<td align='center'  style=\"font-size:18px; font-family:'Times New Roman'\" colspan='1'></td>");
+                fileStringBuilder.Append("</tr>");
+            }
+            
+            fileStringBuilder.Append("</table>");
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+            return View("../Home/Import");
+        }
         [HttpPost]
         public ActionResult EditAdjustment(EditImportModel model)
         {
