@@ -35,5 +35,8 @@ namespace SMS.Models
         public double PHAN_TRAM_CHIEC_KHAU { get; set; }
         public Nullable<int> MA_KHO_XUAT { get; set; }
         public string TEN_DON_VI { get; set; }
+        public double SO_LUONG_TEMP { get; set; }
+        public double DON_GIA_TEMP { get; set; }
+        public string TEN_DON_VI_TEMP { get; set; }
     }
 }

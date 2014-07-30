@@ -486,6 +486,8 @@ warning 6002: The table/view 'STMA.dbo.V_HOA_DON' does not have a primary key de
             <PropertyRef Name="SO_LUONG" />
             <PropertyRef Name="DON_GIA" />
             <PropertyRef Name="PHAN_TRAM_CHIEC_KHAU" />
+            <PropertyRef Name="SO_LUONG_TEMP" />
+            <PropertyRef Name="DON_GIA_TEMP" />
           </Key>
           <Property Name="MA_HOA_DON" Type="int" Nullable="false" />
           <Property Name="SO_HOA_DON" Type="varchar" MaxLength="30" />
@@ -508,6 +510,9 @@ warning 6002: The table/view 'STMA.dbo.V_HOA_DON' does not have a primary key de
           <Property Name="PHAN_TRAM_CHIEC_KHAU" Type="float" Nullable="false" />
           <Property Name="MA_KHO_XUAT" Type="int" />
           <Property Name="TEN_DON_VI" Type="nvarchar" MaxLength="50" />
+          <Property Name="SO_LUONG_TEMP" Type="float" Nullable="false" />
+          <Property Name="DON_GIA_TEMP" Type="float" Nullable="false" />
+          <Property Name="TEN_DON_VI_TEMP" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'STMA.dbo.V_HOA_DON_DISTICNT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2176,7 +2181,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
     [V_HOA_DON].[DON_GIA] AS [DON_GIA], 
     [V_HOA_DON].[PHAN_TRAM_CHIEC_KHAU] AS [PHAN_TRAM_CHIEC_KHAU], 
     [V_HOA_DON].[MA_KHO_XUAT] AS [MA_KHO_XUAT], 
-    [V_HOA_DON].[TEN_DON_VI] AS [TEN_DON_VI]
+    [V_HOA_DON].[TEN_DON_VI] AS [TEN_DON_VI], 
+    [V_HOA_DON].[SO_LUONG_TEMP] AS [SO_LUONG_TEMP], 
+    [V_HOA_DON].[DON_GIA_TEMP] AS [DON_GIA_TEMP], 
+    [V_HOA_DON].[TEN_DON_VI_TEMP] AS [TEN_DON_VI_TEMP]
     FROM [dbo].[V_HOA_DON] AS [V_HOA_DON]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_HOA_DON_DISTICNT" EntityType="Self.V_HOA_DON_DISTICNT" store:Type="Views" store:Schema="dbo">
@@ -3326,6 +3334,8 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <PropertyRef Name="SO_LUONG" />
             <PropertyRef Name="DON_GIA" />
             <PropertyRef Name="PHAN_TRAM_CHIEC_KHAU" />
+            <PropertyRef Name="SO_LUONG_TEMP" />
+            <PropertyRef Name="DON_GIA_TEMP" />
           </Key>
           <Property Name="MA_HOA_DON" Type="Int32" Nullable="false" />
           <Property Name="SO_HOA_DON" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -3348,6 +3358,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="PHAN_TRAM_CHIEC_KHAU" Type="Double" Nullable="false" />
           <Property Name="MA_KHO_XUAT" Type="Int32" />
           <Property Name="TEN_DON_VI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SO_LUONG_TEMP" Type="Double" Nullable="false" />
+          <Property Name="DON_GIA_TEMP" Type="Double" Nullable="false" />
+          <Property Name="TEN_DON_VI_TEMP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="V_HOA_DON_DISTICNT">
           <Key>
@@ -6225,6 +6238,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySetMapping Name="V_HOA_DON">
             <EntityTypeMapping TypeName="SmsModel.V_HOA_DON">
               <MappingFragment StoreEntitySet="V_HOA_DON">
+                <ScalarProperty Name="TEN_DON_VI_TEMP" ColumnName="TEN_DON_VI_TEMP" />
+                <ScalarProperty Name="DON_GIA_TEMP" ColumnName="DON_GIA_TEMP" />
+                <ScalarProperty Name="SO_LUONG_TEMP" ColumnName="SO_LUONG_TEMP" />
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
