@@ -55,10 +55,8 @@
 </hgroup>
 <br />
     
-    @using (Html.BeginForm("importCsvPartialView", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-
-        
+@using (Html.BeginForm("importCsv", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{    
     <hr style="width:100%" />
     <h2>Import Using CSV</h2>
       <div class="control-group">
@@ -67,50 +65,63 @@
         </div>
       </div>
     <input class="btn btn-primary" type="submit" value="Import" />
-
     <div style="clear:both"></div>
     <hr style="width:100%" />
+    <div>
+    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+        <tr>
+            <td class='inner colwidth head ' width="5%">
+                No
+            </td>
+            <td class='inner colwidth head ' width="10%">
+                CODE
+            </td>
+            <td class='inner colwidth head ' width="10%">
+                Mã sản phẩm
+            </td>
+            <td class='inner colwidth head ' width="25%">
+                Tên Sản phẩm
+            </td>
+            <td class='inner colwidth head '  width="7%">
+                Tên đơn vị 
+            </td>
+            <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
+                Số lượng
+            </td>
+            <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
+                Đơn giá
+            </td>
+        </tr>
+        
+        @if (Model != null && Model.TheList != null)
+        { 
+        foreach (var dbHist in Model.TheList)
+        {
+            <tr class='inner column-hscroll alignCenter'>
+                <td class="inner colwidth" width="5%;">
+                    @dbHist.No
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.Code
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.Id
+                </td>                
+                <td class="inner colwidth">
+                    @dbHist.Name
+                </td>
+                <td class="inner colwidth">
+                    @dbHist.UniName
+                </td>
+                <td class="innerLast colwidth">
+                    @dbHist.Quantity
+                </td>
+                <td class="innerLast colwidth">
+                    @dbHist.Price
+                </td>
+            </tr>
+        }        
+        }
+    </table>
+</div>
 }
-<div style="clear:both"></div>
-<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 390px; ">
-    <img src="/Content/images/loading-2.gif" />
-</div>
-<div id="mainDiv">
-
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-       
-    });
-
-    function submitFuntion() {       
-        $("#mainForm").submit(function (event) {
-            var dataString;
-            event.preventDefault();
-            var action = $("#mainForm").attr("action");
-            if ($("#mainForm").attr("enctype") == "multipart/form-data") {
-                dataString = new FormData($("#mainForm").get(0));
-                contentType = false;
-                processData = false;
-            } else {
-            }
-            $.ajax({
-                type: "POST",
-                url: action,
-                data: dataString,
-                dataType: "json", //change to your own, else read my note above on enabling the JsonValueProviderFactory in MVC
-                contentType: contentType,
-                processData: processData,
-                success: function (data) {
-                    //BTW, data is one of the worst names you can make for a variable
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    //do your own thing
-                    alert("fail");
-                }
-            });            
-        });        
-    };
-</script>

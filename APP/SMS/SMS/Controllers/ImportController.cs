@@ -80,6 +80,68 @@ namespace SMS.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult importCsv(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
+                CsvReader csvReader = new CsvReader(csvParser);
+                string[] headers = { };
+                List<string[]> rows = new List<string[]>();
+                string[] row;
+                while (csvReader.Read())
+                {
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
+                    {
+                        headers = csvReader.FieldHeaders;
+                    }
+                    row = new string[headers.Count()];
+                    for (int j = 0; j < headers.Count(); j++)
+                    {
+                        row[j] = csvReader.GetField(j);
+                    }
+                    rows.Add(row);
+                }
+                ImportCsvFile record;
+                List<ImportCsvFile> thelist = new List<ImportCsvFile>();
+                bool flag = true;
+                foreach (var r in rows)
+                {
+                    if (string.IsNullOrEmpty(r[1]) || string.IsNullOrEmpty(r[5]) || string.IsNullOrEmpty(r[6]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                    else
+                    {
+                        record = new ImportCsvFile();
+                        record.No = r[0].ToString();
+                        record.Id = r[1].ToString();
+                        record.Code = r[2].ToString();
+                        record.Name = r[3].ToString();
+                        record.UniName = r[4].ToString();
+                        record.Quantity = r[5].ToString();
+                        record.Price = r[6].ToString();
+                        thelist.Add(record);
+                    }
+                }
+                if (flag)
+                {
+
+                }
+                else
+                {
+
+                }
+
+                ImportCsvModel model = new ImportCsvModel();
+                model.TheList = thelist;
+                model.Count = thelist.Count();
+                return View(model);
+            }
+            return View();
+        }
         public ActionResult importCsv()
         {
             return View();
