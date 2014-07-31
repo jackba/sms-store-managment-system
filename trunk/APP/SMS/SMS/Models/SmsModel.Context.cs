@@ -237,6 +237,53 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_DON_VI_TINH_Result>("SP_GET_DON_VI_TINH", mA_SAN_PHAMParameter);
         }
     
+        public virtual ObjectResult<SP_GET_EX_BY_ID_Result> SP_GET_EX_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_BY_ID_Result>("SP_GET_EX_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_EX_DETAIL_BY_ID_Result> SP_GET_EX_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_DETAIL_BY_ID_Result>("SP_GET_EX_DETAIL_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_EXPORT_4_CANCEL_Result> SP_GET_EXPORT_4_CANCEL(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHAN_VIEN, string tEN_NHAN_VIEN, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var tEN_KHOParameter = tEN_KHO != null ?
+                new ObjectParameter("TEN_KHO", tEN_KHO) :
+                new ObjectParameter("TEN_KHO", typeof(string));
+    
+            var mA_NHAN_VIENParameter = mA_NHAN_VIEN.HasValue ?
+                new ObjectParameter("MA_NHAN_VIEN", mA_NHAN_VIEN) :
+                new ObjectParameter("MA_NHAN_VIEN", typeof(int));
+    
+            var tEN_NHAN_VIENParameter = tEN_NHAN_VIEN != null ?
+                new ObjectParameter("TEN_NHAN_VIEN", tEN_NHAN_VIEN) :
+                new ObjectParameter("TEN_NHAN_VIEN", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPORT_4_CANCEL_Result>("SP_GET_EXPORT_4_CANCEL", mA_KHOParameter, tEN_KHOParameter, mA_NHAN_VIENParameter, tEN_NHAN_VIENParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_HD_DETAIL_FOR_EXPORT_Result> SP_GET_HD_DETAIL_FOR_EXPORT(Nullable<int> mA_KHO, Nullable<int> mA_HOA_DON)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
@@ -429,6 +476,15 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_HOA_DON_INFO_Result>("SP_GET_HOA_DON_INFO", mA_HOA_DONParameter);
         }
     
+        public virtual int SP_GET_IM_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_IM_DETAIL_BY_ID", iDParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_IMPORT_Result> SP_GET_IMPORT(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_NHAN_VIEN_NHAP, string tEN_NHAN_VIEN_NHAP, Nullable<int> lY_DO_NHAP, Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHA_CC, string tEN_NHA_CUNG_CAP)
         {
             var fROM_DATEParameter = fROM_DATE.HasValue ?
@@ -512,6 +568,19 @@ namespace SMS.Models
                 new ObjectParameter("TEN_SAN_PHAM", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_Result>("SP_GET_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<double>> SP_GET_INVENTORY_BY_PRO_STO_ID(Nullable<int> pRODUCT_ID, Nullable<int> sTORE_ID)
+        {
+            var pRODUCT_IDParameter = pRODUCT_ID.HasValue ?
+                new ObjectParameter("PRODUCT_ID", pRODUCT_ID) :
+                new ObjectParameter("PRODUCT_ID", typeof(int));
+    
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_INVENTORY_BY_PRO_STO_ID", pRODUCT_IDParameter, sTORE_IDParameter);
         }
     
         public virtual ObjectResult<SP_GET_INVENTORY_BY_STORE_ID_Result> SP_GET_INVENTORY_BY_STORE_ID(Nullable<int> mA_KHO)
@@ -875,6 +944,15 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_VALUE_OF_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
         }
     
+        public virtual ObjectResult<SP_HET_IM_BY_ID_Result> SP_HET_IM_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_HET_IM_BY_ID_Result>("SP_HET_IM_BY_ID", iDParameter);
+        }
+    
         public virtual ObjectResult<SP_IMPORT_REPORTER_Result> SP_IMPORT_REPORTER(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
         {
             var kINDParameter = kIND.HasValue ?
@@ -1036,84 +1114,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<Nullable<double>> SP_GET_INVENTORY_BY_PRO_STO_ID(Nullable<int> pRODUCT_ID, Nullable<int> sTORE_ID)
-        {
-            var pRODUCT_IDParameter = pRODUCT_ID.HasValue ?
-                new ObjectParameter("PRODUCT_ID", pRODUCT_ID) :
-                new ObjectParameter("PRODUCT_ID", typeof(int));
-    
-            var sTORE_IDParameter = sTORE_ID.HasValue ?
-                new ObjectParameter("STORE_ID", sTORE_ID) :
-                new ObjectParameter("STORE_ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_INVENTORY_BY_PRO_STO_ID", pRODUCT_IDParameter, sTORE_IDParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_EXPORT_4_CANCEL_Result> SP_GET_EXPORT_4_CANCEL(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHAN_VIEN, string tEN_NHAN_VIEN, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
-        {
-            var mA_KHOParameter = mA_KHO.HasValue ?
-                new ObjectParameter("MA_KHO", mA_KHO) :
-                new ObjectParameter("MA_KHO", typeof(int));
-    
-            var tEN_KHOParameter = tEN_KHO != null ?
-                new ObjectParameter("TEN_KHO", tEN_KHO) :
-                new ObjectParameter("TEN_KHO", typeof(string));
-    
-            var mA_NHAN_VIENParameter = mA_NHAN_VIEN.HasValue ?
-                new ObjectParameter("MA_NHAN_VIEN", mA_NHAN_VIEN) :
-                new ObjectParameter("MA_NHAN_VIEN", typeof(int));
-    
-            var tEN_NHAN_VIENParameter = tEN_NHAN_VIEN != null ?
-                new ObjectParameter("TEN_NHAN_VIEN", tEN_NHAN_VIEN) :
-                new ObjectParameter("TEN_NHAN_VIEN", typeof(string));
-    
-            var fROM_DATEParameter = fROM_DATE.HasValue ?
-                new ObjectParameter("FROM_DATE", fROM_DATE) :
-                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
-    
-            var tO_DATEParameter = tO_DATE.HasValue ?
-                new ObjectParameter("TO_DATE", tO_DATE) :
-                new ObjectParameter("TO_DATE", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPORT_4_CANCEL_Result>("SP_GET_EXPORT_4_CANCEL", mA_KHOParameter, tEN_KHOParameter, mA_NHAN_VIENParameter, tEN_NHAN_VIENParameter, fROM_DATEParameter, tO_DATEParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_EX_BY_ID_Result> SP_GET_EX_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_BY_ID_Result>("SP_GET_EX_BY_ID", iDParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_EX_DETAIL_BY_ID_Result> SP_GET_EX_DETAIL_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_DETAIL_BY_ID_Result>("SP_GET_EX_DETAIL_BY_ID", iDParameter);
-        }
-    
-        public virtual int SP_GET_IM_DETAIL_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_IM_DETAIL_BY_ID", iDParameter);
-        }
-    
-        public virtual ObjectResult<SP_HET_IM_BY_ID_Result> SP_HET_IM_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_HET_IM_BY_ID_Result>("SP_HET_IM_BY_ID", iDParameter);
         }
     }
 }
