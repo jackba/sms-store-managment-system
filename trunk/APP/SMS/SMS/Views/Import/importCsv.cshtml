@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Danh sách khách hàng cần thu nợ";
+    ViewBag.Title = "Nhập kiểm kho";
 }
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -18,50 +18,76 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-            $("#SearchString").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/KhachHang/Find", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                },
-                select: function (event, ui) {
-                    $('#SearchString').val(ui.item.label);
-                    return false;
-                },
-                minLength: 1
+            $(document).ready(function () {
+                $('.datePicker').datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "-60:+0"
+                });
             });
-            $('#mainForm').submit();
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
         });
     </script>
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a>
-    >  Danh sách khách hàng cần thu nợ
+    <a href="@Url.Action("Import", "Home")"> Nhập kho </a>
+    >  @ViewBag.Title
 </div>
-<br />
 <hgroup class="title">
-    <h2> Danh sách khách hàng cần thu nợ </h2>
+    <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
+<hr style="width:100%" />
+<input type="hidden" value="@ViewBag.Message" id="hidenMessage" />
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
     
+</div>   
+<div id="message" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
+    @if (!string.IsNullOrEmpty(ViewBag.InforMessage))
+    {
+        @ViewBag.InforMessage
+        <hr />
+    }
+</div>  
 @using (Html.BeginForm("importCsv", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {    
-    <hr style="width:100%" />
-    <h2>Import Using CSV</h2>
+    
       <div class="control-group">
-        <div class="controls">
-            <input id="file" type="file" accept="csv" name="file" data-val="true" data-val-required="File is required" />
+          <table>
+              <tr>
+                  <td>
+                      <label> Kho nhập  </label>
+                  </td>
+                  <td class="required">
+                      @if ((bool)Session["IsAdmin"])
+                      {
+                          @Html.DropDownListFor(u => u.StoreId, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                      }
+                      else
+                      {
+                          @Html.DropDownListFor(u => u.StoreId, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
+                      }
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label> Ngày nhập </label>
+                  </td>
+                  <td class="required">
+                      @Html.TextBoxFor(u => u.ImportDate, "{0:d,dd/mm/yy}", new { @class = "datePicker ", @id = "importDate" })
+                  </td>
+              </tr>
+              <tr>
+                  <td >
+                      <label>Chọn file</label> 
+                  </td>
+                  <td class="required">
+                      <input id="file" type="file" accept="csv" name="file" data-val="true" data-val-required="File is required" />
+                  </td>
+              </tr>
+          </table>
+        <div class="controls">            
+            
         </div>
       </div>
     <input class="btn btn-primary" type="submit" value="Import" />
@@ -120,8 +146,26 @@
                     @dbHist.Price
                 </td>
             </tr>
-        }        
+        }
+        }
+        else
+        {
+            <tr class='innerLast column-hscroll alignCenter'>
+                <td class="innerLast colwidth" colspan="7">Không có dữ liêu</td>
+            </tr>
         }
     </table>
 </div>
 }
+
+
+<script>
+    $(document).ready(function () {
+        var message = $("#hidenMessage").val();
+        if (message != '') {
+            $("#message").append(message);
+            $("#message").append("<hr />");
+        }
+        
+    });
+</script>

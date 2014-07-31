@@ -18,73 +18,66 @@ namespace SMS.Controllers
     [CustomActionFilter]
     public class ImportController : Controller
     {
-        [HttpPost]
-        public PartialViewResult importCsvPartialView(HttpPostedFileBase file)
+        public ActionResult showDetail(int id)
         {
-            if (file != null)
-            {
-                ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
-                CsvReader csvReader = new CsvReader(csvParser);
-                string[] headers = { };
-                List<string[]> rows = new List<string[]>();
-                string[] row;
-                while (csvReader.Read())
-                {
-                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
-                    {
-                        headers = csvReader.FieldHeaders;
-                    }
-                    row = new string[headers.Count()];
-                    for (int j = 0; j < headers.Count(); j++)
-                    {
-                        row[j] = csvReader.GetField(j);
-                    }
-                    rows.Add(row);
-                }
-                ImportCsvFile record;
-                List<ImportCsvFile> thelist = new List<ImportCsvFile>();
-                bool flag = true;
-                foreach (var r in rows)
-                {
-                    if (string.IsNullOrEmpty(r[1]) || string.IsNullOrEmpty(r[5]) || string.IsNullOrEmpty(r[6]))
-                    {
-                        flag = false;
-                        break;
-                    }
-                    else
-                    {
-                        record = new ImportCsvFile();
-                        record.No = r[0].ToString();
-                        record.Id = r[1].ToString();
-                        record.Name = r[2].ToString();
-                        record.UniName = r[3].ToString();
-                        record.Quantity = r[4].ToString();
-                        record.Price = r[5].ToString();
-                        thelist.Add(record);
-                    }
-                }
-                if (flag)
-                {
-
-                }
-                else
-                {
-
-                }
-
-                ImportCsvModel model = new ImportCsvModel();
-                model.TheList = thelist;
-                model.Count = thelist.Count();
-                return PartialView("importCsvPartialView", model);
-            }
+            return View();
+        }
+        [HttpPost]
+        public PartialViewResult showDetailPartialView(int id)
+        {
             return PartialView();
         }
 
-        [HttpPost]
-        public ActionResult importCsv(HttpPostedFileBase file)
+        
+        public bool checkNumber(string str)
         {
+            try
+            {
+                double outNumber;
+                double.TryParse(str, out outNumber);
+                if (outNumber == (double)0)
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool checkInteger(string str)
+        {
+            try
+            {
+                int outNumber;
+                int.TryParse(str, out outNumber);
+                if (outNumber == (int)0)
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        [HttpPost]
+        public ActionResult importCsv(HttpPostedFileBase file, ImportCsvModel model)
+        {
+            var ctx = new SmsContext();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var storeId = model.StoreId;
+            string ImportNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             if (file != null)
             {
+                var fp = Path.Combine(HttpContext.Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
+                file.SaveAs(fp);
+
                 ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
                 CsvReader csvReader = new CsvReader(csvParser);
                 string[] headers = { };
@@ -92,6 +85,13 @@ namespace SMS.Controllers
                 string[] row;
                 while (csvReader.Read())
                 {
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 7)
+                {
+                    ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
+                    model.Stores = stores;
+                    model.StoreId = storeId;
+                    return View(model);
+                }
                     if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
                     {
                         headers = csvReader.FieldHeaders;
@@ -106,45 +106,141 @@ namespace SMS.Controllers
                 ImportCsvFile record;
                 List<ImportCsvFile> thelist = new List<ImportCsvFile>();
                 bool flag = true;
-                foreach (var r in rows)
+                int i =1;
+                using (var transaction = new System.Transactions.TransactionScope())
                 {
-                    if (string.IsNullOrEmpty(r[1]) || string.IsNullOrEmpty(r[5]) || string.IsNullOrEmpty(r[6]))
+                    try
                     {
-                        flag = false;
-                        break;
+                        ctx.Database.CommandTimeout = 300;
+
+                        var import = ctx.NHAP_KHO.Create();
+                        import.NGAY_NHAP = model.ImportDate;
+                        import.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
+                        import.MA_KHO = model.StoreId;
+                        import.LY_DO_NHAP = 2;
+                        import.SO_HOA_DON = ImportNo;
+                        import.CREATE_AT = DateTime.Now;
+                        import.UPDATE_AT = DateTime.Now;
+                        import.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        import.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                        import.ACTIVE = "A";
+                        ctx.NHAP_KHO.Add(import);
+                        ctx.SaveChanges();
+
+                        var importHist = ctx.KIEM_KHO_HISTORY.Create();
+                        importHist.MA_NHAP_KHO = import.MA_NHAP_KHO;
+                        importHist.NGAY_KIEM_KHO = model.ImportDate;
+                        importHist.CREATE_AT = DateTime.Now;
+                        importHist.UPDATE_AT = DateTime.Now;
+                        importHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        importHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                        importHist.ACTIVE = "A";
+                        ctx.KIEM_KHO_HISTORY.Add(importHist);
+                        ctx.SaveChanges();
+
+                        CHI_TIET_NHAP_KHO detail;
+                        foreach (var r in rows)
+                        {
+                            i++;
+                            if (string.IsNullOrWhiteSpace(r[1]) || string.IsNullOrWhiteSpace(r[5]) || string.IsNullOrWhiteSpace(r[6]))
+                            {
+                                if (!flag)
+                                {
+                                    fileStringBuilder.Append("<br>");
+                                }
+                                flag = false;
+                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i);
+                            }
+                            else
+                            {
+                                if (!checkInteger(r[0].ToString())
+                                    || !checkNumber(r[5].ToString())
+                                    || !checkNumber(r[6].ToString()))
+                                {
+                                    if (!flag)
+                                    {
+                                        fileStringBuilder.Append("<br>");
+                                    }
+                                    flag = false;
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng, kiểm tra lại mã sản phẩm, số lượng và đơn giá." + i);
+                                }
+                                else
+                                {
+                                    record = new ImportCsvFile();
+                                    record.No = r[0].ToString();
+                                    record.Id = r[1].ToString();
+                                    record.Code = r[2].ToString();
+                                    record.Name = r[3].ToString();
+                                    record.UniName = r[4].ToString();
+                                    record.Quantity = r[5].ToString();
+                                    record.Price = r[6].ToString();
+                                    
+
+                                    detail = ctx.CHI_TIET_NHAP_KHO.Create();
+                                    detail.MA_NHAP_KHO = import.MA_NHAP_KHO;
+                                    detail.MA_SAN_PHAM = Convert.ToInt32(record.Id);
+                                    detail.SO_LUONG = Convert.ToDouble(record.Quantity);
+                                    detail.GIA_VON = Convert.ToDouble(record.Price);
+                                    detail.CREATE_AT = DateTime.Now;
+                                    detail.UPDATE_AT = DateTime.Now;
+                                    detail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                    detail.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                    detail.ACTIVE = "A";
+                                    ctx.CHI_TIET_NHAP_KHO.Add(detail);
+                                    ctx.SaveChanges();
+
+                                    thelist.Add(record);
+                                }
+                            }
+                        }
+                        if (flag)
+                        {
+                            ViewBag.InforMessage = "Nhập kiểm kho thành công. Vui lòng xem chi tiếc bên dưới.";
+                            transaction.Complete();
+                        }
+                        else
+                        {
+                            Transaction.Current.Rollback();
+                        }
                     }
-                    else
+                    catch(Exception ex)
                     {
-                        record = new ImportCsvFile();
-                        record.No = r[0].ToString();
-                        record.Id = r[1].ToString();
-                        record.Code = r[2].ToString();
-                        record.Name = r[3].ToString();
-                        record.UniName = r[4].ToString();
-                        record.Quantity = r[5].ToString();
-                        record.Price = r[6].ToString();
-                        thelist.Add(record);
+                        Console.WriteLine(ex.ToString());
+                        Transaction.Current.Rollback();
+                        ViewBag.Message = "Có lỗi xảy ra trong quá trình nhập kho. Vui lòng thực hiện lại.";
                     }
+                    
                 }
                 if (flag)
                 {
-
+                    model.TheList = thelist;
+                    model.Count = thelist.Count();
                 }
                 else
                 {
-
-                }
-
-                ImportCsvModel model = new ImportCsvModel();
-                model.TheList = thelist;
-                model.Count = thelist.Count();
-                return View(model);
+                    ViewBag.Message = fileStringBuilder.ToString();
+                }                            
             }
-            return View();
+            model.Stores = stores;
+            model.StoreId = storeId;
+            return View(model);
         }
-        public ActionResult importCsv()
+        public ActionResult importCsv(string message, string inforMessage)
         {
-            return View();
+            ImportCsvModel model = new ImportCsvModel();
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            if (!(bool)Session["IsAdmin"])
+            {
+                model.StoreId = Convert.ToInt32(Session["MyStore"]);
+            }else
+            {
+                model.StoreId = 0;
+            }
+            model.Stores = stores;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
+            return View(model);
         }
         public ActionResult downloadCSVTemplate()
         {
@@ -173,9 +269,9 @@ namespace SMS.Controllers
                 i += 1;
                 fileStringBuilder.Append("\"" + i + "\",");
                 fileStringBuilder.Append("\"" + product.MA_SAN_PHAM + "\",");
-                fileStringBuilder.Append("\"" + product.CODE + "\",");
-                fileStringBuilder.Append("\"" + product.TEN_SAN_PHAM + "\",");
-                fileStringBuilder.Append("\"" + product.DON_VI_TINH.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\"" + (string.IsNullOrEmpty(product.CODE) ? "" : product.CODE).Replace("\"", "\"\"") + "\",");
+                fileStringBuilder.Append("\"" + (string.IsNullOrEmpty(product.TEN_SAN_PHAM) ? "" : product.TEN_SAN_PHAM).Replace("\"", "\"\"") + "\",");
+                fileStringBuilder.Append("\"" + (string.IsNullOrEmpty(product.DON_VI_TINH.TEN_DON_VI) ? "" : product.DON_VI_TINH.TEN_DON_VI).Replace("\"", "\"\"") + "\",");
                 fileStringBuilder.Append("\" \",");
                 fileStringBuilder.Append("\" \"");   
             }
@@ -450,7 +546,14 @@ namespace SMS.Controllers
                         donvi.UPDATE_AT = DateTime.Now;
                         donvi.CREATE_BY = (int)Session["UserId"];
                         ctx.SaveChanges();
-
+                        if (donvi.LY_DO_NHAP == 2)
+                        {
+                            var importHist = ctx.KIEM_KHO_HISTORY.Where(u => u.MA_NHAP_KHO == donvi.MA_NHAP_KHO && u.ACTIVE == "A").FirstOrDefault();
+                            importHist.ACTIVE = "I";
+                            importHist.UPDATE_AT = DateTime.Now;
+                            importHist.CREATE_BY = (int)Session["UserId"];
+                            ctx.SaveChanges();
+                        }
                         var details = ctx.CHI_TIET_NHAP_KHO.Where(u => u.ACTIVE == "A" && u.MA_NHAP_KHO == id).ToList<CHI_TIET_NHAP_KHO>();
                         foreach (var detail in details)
                         {

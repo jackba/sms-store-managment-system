@@ -14,6 +14,16 @@ namespace SMS.Controllers
         //
         // GET: /TraHang/
 
+        public ActionResult ReturnToProvider()
+        {
+            return View();
+        }
+
+        public ActionResult EditReturnToProvider(int id)
+        {
+            return View();
+        }
+
         public ActionResult ReturnNoBill()
         {
             var ctx = new SmsContext();
