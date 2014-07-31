@@ -16,7 +16,15 @@ namespace SMS.Controllers
 
         public ActionResult ReturnToProvider()
         {
-            return View();
+            Return2Provider model = new Return2Provider();
+            var ctx = new SmsContext();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            model.Units = units;
+            model.Stores = stores;
+            model.Providers = providers;
+            return View(model);
         }
 
         public ActionResult EditReturnToProvider(int id)

@@ -37,4 +37,12 @@ namespace SMS.Models
         public int Count { get; set; }
     }
 
+    public class Return2Provider
+    {
+        public TRA_HANG_NCC Infor { get; set; }
+        public List<TRA_HANG_NCC_CHI_TIET> Details { get; set; }
+        public List<KHO> Stores { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+        public List<NHA_CUNG_CAP> Providers { get; set; }
+    }
 }
