@@ -1079,5 +1079,41 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPORT_4_CANCEL_Result>("SP_GET_EXPORT_4_CANCEL", mA_KHOParameter, tEN_KHOParameter, mA_NHAN_VIENParameter, tEN_NHAN_VIENParameter, fROM_DATEParameter, tO_DATEParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_EX_BY_ID_Result> SP_GET_EX_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_BY_ID_Result>("SP_GET_EX_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_EX_DETAIL_BY_ID_Result> SP_GET_EX_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_DETAIL_BY_ID_Result>("SP_GET_EX_DETAIL_BY_ID", iDParameter);
+        }
+    
+        public virtual int SP_GET_IM_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_IM_DETAIL_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_HET_IM_BY_ID_Result> SP_HET_IM_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_HET_IM_BY_ID_Result>("SP_HET_IM_BY_ID", iDParameter);
+        }
     }
 }

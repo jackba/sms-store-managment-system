@@ -286,6 +286,12 @@
     <Compile Include="Models\SP_GET_EXPORT_4_CANCEL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_EX_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_EX_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_HD_DETAIL_FOR_EXPORT_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -368,6 +374,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_HET_IM_BY_ID_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_DETAIL_Result.cs">
