@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PagedList;
+using System.ComponentModel.DataAnnotations;
 
 namespace SMS.Models
 {
@@ -26,6 +27,12 @@ namespace SMS.Models
     public class ImportCsvModel
     {
         public List<ImportCsvFile> TheList { get; set; }
+        public List<KHO> Stores { get; set; }
+
+        [Required]
+        public int StoreId { get; set; }
+        [Required]
+        public DateTime ImportDate { get; set; }
         public long Count { get; set; }
     }
     public class ImportModel

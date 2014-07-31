@@ -14,13 +14,7 @@ namespace SMS.Controllers
         public static DateTime MAX_DATE = DateTime.ParseExact("01/01/9999", "dd/MM/yyyy", cultureinfo);
         public static string SALT = "2014";
         public static DateTime getMinDate()
-        {
-            var ctx = new SmsContext();
-            var kiemKho = ctx.KIEM_KHO_HISTORY.OrderByDescending(kh => kh.MA_KIEM_KHO).FirstOrDefault();
-            if (kiemKho != null)
-            {
-                return Convert.ToDateTime(kiemKho.NGAY_KIEM_KHO);
-            }
+        {            
             return DateTime.ParseExact("01/01/2014", "dd/MM/yyyy", cultureinfo);
         }
     }

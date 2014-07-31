@@ -54,9 +54,17 @@
             {
                 <tr class="inner column-hscroll alignCenter">
                     <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
-                        <a href="@Url.Action("ShowDetail", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+                        @if (!string.IsNullOrEmpty(dbHist.SO_HOA_DON))
+                        { 
+                        <a href="@Url.Action("showDetail", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
                             @dbHist.SO_HOA_DON
                         </a>
+                        }
+                        else { 
+                        <a href="@Url.Action("showDetail", "Import", new { id = @dbHist.MA_NHAP_KHO })" class="button-module">
+                            @("#No")
+                        </a>
+                        }
                     </td>
                     <td class="inner colwidth">
                         @{

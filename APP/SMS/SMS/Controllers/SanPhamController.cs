@@ -410,7 +410,7 @@ namespace SMS.Controllers
             sp.KICH_THUOC = productUpdated.KICH_THUOC;
             sp.CAN_NANG = productUpdated.CAN_NANG;
             sp.MA_DON_VI = productUpdated.MA_DON_VI;
-            
+            sp.CODE = productUpdated.CODE;
             if (-1 == productUpdated.MA_NHA_SAN_XUAT)
             {
                 productUpdated.MA_NHA_SAN_XUAT = null;
@@ -460,38 +460,38 @@ namespace SMS.Controllers
         public ActionResult AddNew(SAN_PHAM productInsert)
         {
             var db = new SmsContext();
-                var sp = db.SAN_PHAM.Create();
-                // input fields
-                sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
-                sp.KICH_THUOC = productInsert.KICH_THUOC;
-                sp.CAN_NANG = productInsert.CAN_NANG;
-                sp.MA_DON_VI = productInsert.MA_DON_VI;
+            var sp = db.SAN_PHAM.Create();
+            // input fields
+            sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
+            sp.KICH_THUOC = productInsert.KICH_THUOC;
+            sp.CAN_NANG = productInsert.CAN_NANG;
+            sp.MA_DON_VI = productInsert.MA_DON_VI;
+            sp.CODE = productInsert.CODE;
+            if (-1 == productInsert.MA_NHA_SAN_XUAT)
+            {
+                productInsert.MA_NHA_SAN_XUAT = null;
+            }
+            sp.MA_DON_VI = productInsert.MA_DON_VI;
+            sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
+            sp.DAC_TA = productInsert.DAC_TA;
+            sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
+            sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
+            sp.GIA_BAN_3 = productInsert.GIA_BAN_3;
+            sp.CHIEC_KHAU_1 = productInsert.CHIEC_KHAU_1;
+            sp.CHIEC_KHAU_2 = productInsert.CHIEC_KHAU_2;
+            sp.CHIEC_KHAU_3 = productInsert.CHIEC_KHAU_3;
+            sp.CO_SO_TOI_THIEU = productInsert.CO_SO_TOI_THIEU;
+            sp.CO_SO_TOI_DA = productInsert.CO_SO_TOI_DA;
+            //common fields
+            sp.ACTIVE = "A";
+            sp.UPDATE_AT = DateTime.Now;
+            sp.CREATE_AT = DateTime.Now;
+            sp.UPDATE_BY = (int)Session["UserId"];
+            sp.CREATE_BY = (int)Session["UserId"];
 
-                if (-1 == productInsert.MA_NHA_SAN_XUAT)
-                {
-                    productInsert.MA_NHA_SAN_XUAT = null;
-                }
-                sp.MA_DON_VI = productInsert.MA_DON_VI;
-                sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
-                sp.DAC_TA = productInsert.DAC_TA;
-                sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
-                sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
-                sp.GIA_BAN_3 = productInsert.GIA_BAN_3;
-                sp.CHIEC_KHAU_1 = productInsert.CHIEC_KHAU_1;
-                sp.CHIEC_KHAU_2 = productInsert.CHIEC_KHAU_2;
-                sp.CHIEC_KHAU_3 = productInsert.CHIEC_KHAU_3;
-                sp.CO_SO_TOI_THIEU = productInsert.CO_SO_TOI_THIEU;
-                sp.CO_SO_TOI_DA = productInsert.CO_SO_TOI_DA;
-                //common fields
-                sp.ACTIVE = "A";
-                sp.UPDATE_AT = DateTime.Now;
-                sp.CREATE_AT = DateTime.Now;
-                sp.UPDATE_BY = (int)Session["UserId"];
-                sp.CREATE_BY = (int)Session["UserId"];
-
-                db.SAN_PHAM.Add(sp);
-                db.SaveChanges();
-                return Redirect("Index");
+            db.SAN_PHAM.Add(sp);
+            db.SaveChanges();
+            return Redirect("Index");
         }
 
         #region Common function
@@ -901,7 +901,12 @@ namespace SMS.Controllers
             conUnit.MA_SAN_PHAN = convertUnitInsert.MA_SAN_PHAN;
             conUnit.MA_DON_VI_VAO = convertUnitInsert.MA_DON_VI_VAO;
             conUnit.HE_SO = convertUnitInsert.HE_SO;
-
+            conUnit.CHIEC_KHAU_1 = convertUnitInsert.CHIEC_KHAU_1;
+            conUnit.GIA_BAN_1 = convertUnitInsert.GIA_BAN_1;
+            conUnit.CHIEC_KHAU_2 = convertUnitInsert.CHIEC_KHAU_2;
+            conUnit.GIA_BAN_2 = convertUnitInsert.GIA_BAN_2;
+            conUnit.CHIEC_KHAU_3 = convertUnitInsert.CHIEC_KHAU_3;
+            conUnit.GIA_BAN_3 = convertUnitInsert.GIA_BAN_3;
             conUnit.ACTIVE = "A";
             conUnit.UPDATE_AT = DateTime.Now;
             conUnit.CREATE_AT = DateTime.Now;
@@ -951,6 +956,12 @@ namespace SMS.Controllers
                 cddv.MA_SAN_PHAN = convertUnitUpdated.MA_SAN_PHAN;
                 cddv.MA_DON_VI_VAO = convertUnitUpdated.MA_DON_VI_VAO;
                 cddv.HE_SO = convertUnitUpdated.HE_SO;
+                cddv.CHIEC_KHAU_1 = convertUnitUpdated.CHIEC_KHAU_1;
+                cddv.CHIEC_KHAU_2 = convertUnitUpdated.CHIEC_KHAU_3;
+                cddv.CHIEC_KHAU_2 = convertUnitUpdated.CHIEC_KHAU_3;
+                cddv.GIA_BAN_1 = convertUnitUpdated.GIA_BAN_1;
+                cddv.GIA_BAN_2 = convertUnitUpdated.GIA_BAN_2;
+                cddv.GIA_BAN_3 = convertUnitUpdated.GIA_BAN_3;
                 //common fields
                 cddv.ACTIVE = "A";
                 cddv.UPDATE_AT = DateTime.Now;

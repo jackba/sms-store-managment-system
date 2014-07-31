@@ -468,6 +468,7 @@
     <Content Include="Content\images\Chargeback.png" />
     <Content Include="Content\images\config.jpg" />
     <Content Include="Content\images\customer.png" />
+    <Content Include="Content\images\Download-Icon.png" />
     <Content Include="Content\images\download.jpg" />
     <Content Include="Content\images\ExportDataBlue.jpg" />
     <Content Include="Content\images\ExportTransfer.jpg" />
@@ -483,6 +484,7 @@
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loadingColor.gif" />
     <Content Include="Content\images\Messages.png" />
+    <Content Include="Content\images\Misc-Download-icon.png" />
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\refund1.gif" />
@@ -817,6 +819,10 @@
     <Content Include="Views\Import\downloadTemplate.cshtml" />
     <Content Include="Views\Import\importCsv.cshtml" />
     <Content Include="Views\Import\importCsvPartialView.cshtml" />
+    <Content Include="Views\Import\showDetail.cshtml" />
+    <Content Include="Views\Import\showDetailPartialView.cshtml" />
+    <Content Include="Views\TraHang\ReturnToProvider.cshtml" />
+    <Content Include="Views\TraHang\EditReturnToProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
