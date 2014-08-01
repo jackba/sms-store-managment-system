@@ -16,11 +16,15 @@ namespace SMS.Models
         public Nullable<int> MA_PHIEU_TRA_NCC { get; set; }
         public Nullable<int> MA_SAN_PHAM { get; set; }
         public string TEN_SAN_PHAM { get; set; }
+        public string CODE { get; set; }
         public Nullable<double> DON_GIA { get; set; }
         public Nullable<int> MA_DON_VI { get; set; }
         public string TEN_DON_VI { get; set; }
         public Nullable<double> SO_LUONG { get; set; }
         public Nullable<int> MA_KHO_XUAT { get; set; }
         public string TEN_KHO { get; set; }
+        public int? DEL_FLG { get; set; }
+        public double? HE_SO { get; set; }
+        public double? THANH_TIEN { get; set; }
     }
 }

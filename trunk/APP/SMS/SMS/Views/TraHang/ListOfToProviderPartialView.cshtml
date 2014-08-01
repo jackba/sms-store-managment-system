@@ -89,7 +89,7 @@
             {
                 if (dbHist.MA_PHIEU_TRA == null)
                 {
-                     <a href="@Url.Action("EditReturn2Provider", "TraHang", new { id = @dbHist.MA_PHIEU_TRA })" class="button-module">
+                     <a href="@Url.Action("EditReturnToProvider", "TraHang", new { id = @dbHist.ID })" class="button-module">
                         <img width="16" height="16" alt="edit" src="~/Content/images/edit-icon.png"></img>
                     </a>
                 }
@@ -102,7 +102,7 @@
                     @{
             if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
             {
-                <a href="@Url.Action("DeleteReturn2Provider", "TraHang", new { id = @dbHist.MA_PHIEU_TRA })" class="button-module">
+                <a href="@Url.Action("DeleteReturn2Provider", "TraHang", new { id = @dbHist.ID })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }
