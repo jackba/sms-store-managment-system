@@ -39,17 +39,10 @@ namespace SMS.Controllers
                 try
                 {
                     var returnInfor = ctx.TRA_HANG_NCC.Create();
-                    //if (infor.SAVE_FLG == 1)
-                    //{
-                    //    exInfor.ACTIVE = "W"; // waiting
-                    //}
-                    //else
-                    //{
-                    //    exInfor.ACTIVE = "A";
-                    //}
                     returnInfor.ACTIVE = "A";
                     returnInfor.MA_NHA_CUNG_CAP = infor.MA_NHA_CUNG_CAP;
                     returnInfor.NGAY_LAP_PHIEU = infor.NGAY_LAP_PHIEU;
+                    returnInfor.NGUOI_LAP_PHIEU = Convert.ToInt32(Session["UserId"]);
                     returnInfor.GHI_CHU = infor.GHI_CHU;
                     returnInfor.CREATE_AT = DateTime.Now;
                     returnInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
@@ -94,20 +87,57 @@ namespace SMS.Controllers
 
                     }
                     transaction.Complete();
-                    return RedirectToAction("ListExportTransfer", new { @inforMessage = "Lưu thành công" });
+                    return RedirectToAction("ListOfToProvider", new { @inforMessage = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     Transaction.Current.Rollback();
-                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ListOfToProvider", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
-            return RedirectToAction("ListOfToProvider", new { @message = "Lập phiếu trả hàng thất bại, vui lòng liên hệ admin." });
+           
         }
 
         public ActionResult EditReturnToProvider(int id)
         {
-            return View();
+            EditReturn2Provider model = new EditReturn2Provider();
+            var ctx = new SmsContext();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
+            var details = ctx.SP_GET_RE_DETAIL_BY_ID(id).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_RE_DETAIL_BY_ID_Result>();
+            var infor = ctx.TRA_HANG_NCC.Include("NHA_CUNG_CAP").Where(u => u.ID == id && u.ACTIVE == "A").FirstOrDefault();
+            if (infor == null)
+            {
+                return RedirectToAction("ListOfToProvider", new { @message = "Không tìm thấy phiếu trả hàng này." });
+            }
+            model.Units = units;
+            model.Stores = stores;
+            model.Providers = providers;
+            model.Infor = infor;
+            model.Details = details;
+            model.Count = details.Count();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditReturnToProvider(EditReturn2Provider model)
+        {
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    transaction.Complete();
+                    return RedirectToAction("ListOfToProvider", new { @inforMessage = "Lưu thành công" });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ListOfToProvider", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
+                }
+            }
         }
 
         public ActionResult ReturnNoBill()

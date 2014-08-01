@@ -52,12 +52,12 @@
     </style>
 
 }
-@using (Html.BeginForm("ExportTransfer", "Import", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("ReturnToProvider", "TraHang", FormMethod.Post, new { @id = "index" }))
 {
     <table>
         <tr>
             <td>
-                Kho xuất :
+                Nhà cung cấp : 
             </td>
             <td class="required">
                @Html.DropDownListFor(u => u.Infor.MA_NHA_CUNG_CAP, new SelectList(@Model.Providers, "MA_NHA_CUNG_CAP", "TEN_NHA_CUNG_CAP"), "------------------Chọn nhà cung cấp-----------------", new { @id = "providerId", style = "padding:5px;font-size:1.2em", @class = "required" })
@@ -67,7 +67,7 @@
         
         <tr>
             <td>
-                Ngày xuất :
+                Ngày lập phiếu : 
             </td>
             <td class="required">
                 @Html.TextBoxFor(u => u.Infor.NGAY_LAP_PHIEU, "{0:d}", new { @class = "datePicker ", @id = "exportDate" })
@@ -95,6 +95,8 @@
                 <td class='inner colwidth head '> Sản phẩm </td>
                 <td class='inner colwidth head '> Số lượng </td>
                 <td class='innerLast colwidth head '> Đơn vị </td>
+                <td class='innerLast colwidth head '> Đơn giá </td>
+                <td class='innerLast colwidth head '> Thành tiền </td>
                 <td class='innerLast colwidth head '> Mã kho xuất </td>
             </tr>
         </thead>
@@ -119,19 +121,25 @@
                     @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
                 </td>
                 <td class="innerLast colwidth">
+                    @Html.TextBoxFor(u => u.Details[0].DON_GIA_TEMP, new { @class = "price numberic textbtl" })
+                </td>
+                <td class="innerLast colwidth">
+                    @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total textbtl", @disabled = "disabled" })
+                </td>
+                <td class="innerLast colwidth">
                     @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "store textbtl" })
                 </td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="5"> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="7"> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
                     <input type="button" value="Thêm dòng" onclick="addRow()" />
                 </td>
             </tr>
             <tr>
-                <td class='innerLast colwidth  ' colspan="3" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
+                <td class='innerLast colwidth  ' colspan="5" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong>Tổng hóa đơn</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
@@ -729,6 +737,8 @@
                 '<input name="Details[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="Details_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
                 '<td class="innerLast colwidth">' +
                 '<select name="Details[' + row + '].MA_DON_VI" class="unit textbtl" id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+                '<td class="innerLast colwidth"><input name="Details[' + row + '].DON_GIA_TEMP" class="price numberic textbtl" id="Details_' + row + '__DON_GIA_TEMP" type="text" value="" data-val="true" data-val-number="The field DON_GIA_TEMP must be a number."></td>' +
+                '<td class="innerLast colwidth"><input name="Details' + row + '].THANH_TIEN" disabled="disabled" class="total textbtl" id="Details_' + row + '__THANH_TIEN" type="text" value="" data-val="true" data-val-number="The field THANH_TIEN must be a number."></td>' +
                 '<option value="">---------</option></select> </td>' +
                 '<td class="innerLast colwidth">' +
                 '<select name="Details[' + row + '].MA_KHO_XUAT" class="store textbtl" id="Details_ + row + __MA_KHO_XUAT" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_KHO_XUAT must be a number."><option value="">---------</option>' +
