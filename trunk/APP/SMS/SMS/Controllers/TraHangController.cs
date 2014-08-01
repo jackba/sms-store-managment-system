@@ -124,10 +124,64 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult EditReturnToProvider(EditReturn2Provider model)
         {
+            var ctx = new SmsContext();
+            var infor = model.Infor;
+            var details = model.Details;
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
                 {
+                    var returnInfor = ctx.TRA_HANG_NCC.Where(u => u.ID == model.Infor.ID && u.ACTIVE == "A").FirstOrDefault();
+                    if (returnInfor == null)
+                    {
+                        return RedirectToAction("ListOfToProvider", new { @message = "Phiếu nhập hàng không tồn tại, hoặc đã bị xóa. Vui lòng kiểm tra lại" });
+                    }
+                    //returnInfor.ACTIVE = "A";
+                    returnInfor.MA_NHA_CUNG_CAP = infor.MA_NHA_CUNG_CAP;
+                    returnInfor.NGAY_LAP_PHIEU = infor.NGAY_LAP_PHIEU;
+                    returnInfor.NGUOI_LAP_PHIEU = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.GHI_CHU = infor.GHI_CHU;
+                    returnInfor.CREATE_AT = DateTime.Now;
+                    returnInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.UPDATE_AT = DateTime.Now;
+                    returnInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+
+                    ctx.TRA_HANG_NCC_CHI_TIET.RemoveRange(ctx.TRA_HANG_NCC_CHI_TIET.Where(u => u.MA_PHIEU_TRA_NCC == model.Infor.ID));
+                    TRA_HANG_NCC_CHI_TIET ct;
+
+                    foreach (var detail in details)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.TRA_HANG_NCC_CHI_TIET.Create();
+                            ct.ACTIVE = "A";
+                            //ct = ctx.CHI_TIET_XUAT_KHO.Create();
+                            //if (infor.SAVE_FLG == 1)
+                            //{
+                            //    ct.ACTIVE = "W";
+                            //}
+                            //else
+                            //{
+                            //    ct.ACTIVE = "A";
+                            //}
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_PHIEU_TRA_NCC = returnInfor.ID;
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG;
+                            ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
+                            ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
+                            ct.DON_GIA_TEMP = detail.DON_GIA;
+                            ct.DON_GIA = ct.DON_GIA_TEMP / detail.HE_SO;
+                            ctx.TRA_HANG_NCC_CHI_TIET.Add(ct);
+                            ctx.SaveChanges();
+                        }
+
+                    }
                     transaction.Complete();
                     return RedirectToAction("ListOfToProvider", new { @inforMessage = "Lưu thành công" });
                 }
