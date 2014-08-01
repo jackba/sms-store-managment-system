@@ -27,6 +27,23 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult ReturnToProvider(Return2Provider model)
+        {
+            var ctx = new SmsContext();
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return RedirectToAction("ListOfToProvider", new { @message = "Lập phiếu trả hàng thất bại, vui lòng liên hệ admin." });
+        }
+
         public ActionResult EditReturnToProvider(int id)
         {
             return View();
