@@ -50,4 +50,9 @@ namespace SMS.Models
         public List<DON_VI_TINH> Units { get; set; }
         public List<CHI_TIET_XUAT_KHO> Detail { get; set; }
     }
+
+    public class WaitingExport2ProviderListModel
+    {
+        //public IPagedList<>
+    }
 }

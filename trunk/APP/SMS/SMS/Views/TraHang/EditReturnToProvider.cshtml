@@ -744,9 +744,7 @@
             unitChange();
             storeChange();
         });
-
-
-
+        
 
         function addRow() {
             var row = parseInt($("#rowIndex").val()) + 1;
@@ -762,10 +760,10 @@
                 '<input name="Details[' + row + '].HE_SO" class="convertor" id="Details_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
                 '<input name="Details[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="Details_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="Details[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="Details_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+                '<input name="Details[' + row + '].SO_LUONG" class="quantity textbtl numberic" id="Details_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
                 '<td class="innerLast colwidth">' +
                 '<select name="Details[' + row + '].MA_DON_VI" class="unit textbtl" id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
-                '<td class="innerLast colwidth"><input name="Details[' + row + '].DON_GIA_TEMP" class="price numberic textbtl" id="Details_' + row + '__DON_GIA_TEMP" type="text" value="" data-val="true" data-val-number="The field DON_GIA_TEMP must be a number."></td>' +
+                '<td class="innerLast colwidth"><input name="Details[' + row + '].DON_GIA" class="price numberic textbtl" id="Details_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field DON_GIA_TEMP must be a number."></td>' +
                 '<td class="innerLast colwidth"><input name="Details' + row + '].THANH_TIEN" disabled="disabled" class="total textbtl" id="Details_' + row + '__THANH_TIEN" type="text" value="" data-val="true" data-val-number="The field THANH_TIEN must be a number."></td>' +
                 '<option value="">---------</option></select> </td>' +
                 '<td class="innerLast colwidth">' +

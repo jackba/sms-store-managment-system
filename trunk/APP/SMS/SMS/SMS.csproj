@@ -835,6 +835,8 @@
     <Content Include="Views\Import\showDetailPartialView.cshtml" />
     <Content Include="Views\TraHang\ReturnToProvider.cshtml" />
     <Content Include="Views\TraHang\EditReturnToProvider.cshtml" />
+    <Content Include="Views\Export\WaitingExport2Provider.cshtml" />
+    <Content Include="Views\Export\WaitingExport2ProviderPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

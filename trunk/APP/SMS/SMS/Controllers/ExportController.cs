@@ -66,6 +66,18 @@ namespace SMS.Controllers
             }
         }
 
+
+        public ActionResult WaitingExport2Provider()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult WaitingExport2ProviderPartialView()
+        {
+            return PartialView("WaitingExport2ProviderPartialView");
+        }
+
         public ActionResult EditCancelTicket(int id)
         {
             var ctx = new SmsContext();
