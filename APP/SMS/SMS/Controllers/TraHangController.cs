@@ -31,14 +31,75 @@ namespace SMS.Controllers
         public ActionResult ReturnToProvider(Return2Provider model)
         {
             var ctx = new SmsContext();
+            var infor = model.Infor;
+            var details = model.Details;
+
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
                 {
+                    var returnInfor = ctx.TRA_HANG_NCC.Create();
+                    //if (infor.SAVE_FLG == 1)
+                    //{
+                    //    exInfor.ACTIVE = "W"; // waiting
+                    //}
+                    //else
+                    //{
+                    //    exInfor.ACTIVE = "A";
+                    //}
+                    returnInfor.ACTIVE = "A";
+                    returnInfor.MA_NHA_CUNG_CAP = infor.MA_NHA_CUNG_CAP;
+                    returnInfor.NGAY_LAP_PHIEU = infor.NGAY_LAP_PHIEU;
+                    returnInfor.GHI_CHU = infor.GHI_CHU;
+                    returnInfor.CREATE_AT = DateTime.Now;
+                    returnInfor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    returnInfor.UPDATE_AT = DateTime.Now;
+                    returnInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+
+                    ctx.TRA_HANG_NCC.Add(returnInfor);
+                    ctx.SaveChanges();
+
+                    TRA_HANG_NCC_CHI_TIET ct;
+
+                    foreach (var detail in details)
+                    {
+                        if (detail.DEL_FLG != 1)
+                        {
+                            ct = ctx.TRA_HANG_NCC_CHI_TIET.Create();
+                            ct.ACTIVE = "A";
+                            //ct = ctx.CHI_TIET_XUAT_KHO.Create();
+                            //if (infor.SAVE_FLG == 1)
+                            //{
+                            //    ct.ACTIVE = "W";
+                            //}
+                            //else
+                            //{
+                            //    ct.ACTIVE = "A";
+                            //}
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.MA_PHIEU_TRA_NCC = returnInfor.ID;
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
+                            ct.SO_LUONG = detail.SO_LUONG_TEMP * detail.HE_SO;
+                            ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
+                            ct.DON_GIA_TEMP = detail.DON_GIA_TEMP;
+                            ct.DON_GIA = ct.DON_GIA_TEMP / detail.HE_SO;
+                            ctx.TRA_HANG_NCC_CHI_TIET.Add(ct);
+                            ctx.SaveChanges();
+                        }
+
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ListExportTransfer", new { @inforMessage = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
-
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
             return RedirectToAction("ListOfToProvider", new { @message = "Lập phiếu trả hàng thất bại, vui lòng liên hệ admin." });
