@@ -27,6 +27,7 @@ namespace SMS.Models
         public Nullable<int> MA_KHO_XUAT { get; set; }
         public Nullable<double> SO_LUONG_TEMP { get; set; }
         public Nullable<int> MA_DON_VI { get; set; }
+        public Nullable<double> DON_GIA_TEMP { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
@@ -36,6 +37,7 @@ namespace SMS.Models
         public string TEN_SAN_PHAM { get; set; }
         public int? DEL_FLG { get; set; }
         public double? HE_SO { get; set; }
+        public double? THANH_TIEN { get; set; }
         public string TEN_DON_VI { get; set; }
     }
 }
