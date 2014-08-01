@@ -367,6 +367,9 @@
     <Compile Include="Models\SP_GET_RETURN_LIST_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_RE_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_ROLE_OF_USER_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
