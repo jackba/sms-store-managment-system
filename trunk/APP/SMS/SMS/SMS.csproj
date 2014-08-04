@@ -280,6 +280,9 @@
     <Compile Include="Models\SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_DON_VI_TINH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -377,6 +380,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_WAITING_EX_2_PROVIDER_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_HET_IM_BY_ID_Result.cs">

@@ -53,6 +53,13 @@ namespace SMS.Models
 
     public class WaitingExport2ProviderListModel
     {
-        //public IPagedList<>
+        public IPagedList<SP_GET_WAITING_EX_2_PROVIDER_Result> TheList { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class Export2ProviderModel
+    {
+        public TRA_HANG_NCC Infor { get; set; }
+        
     }
 }
