@@ -2,7 +2,56 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Danh sách phiếu xuất kho bán lẻ";
+    ViewBag.Title = "Danh sách phiếu trả hàng - nhà cung cấp";
+}
+
+@{
+
+    List<SelectListItem> theImportStoreList = new List<SelectListItem>();
+    SelectListItem item;
+    if (ViewBag.Stores != null)
+    {
+        foreach (var donvi in ViewBag.Stores)
+        {
+            item = new SelectListItem();
+            item.Value = donvi.MA_KHO + "";
+            item.Text = donvi.TEN_KHO;
+            if (ViewBag.ExportStoreId != null && (int)ViewBag.ExportStoreId == donvi.MA_KHO)
+            {
+                item.Selected = true;
+            }
+            theImportStoreList.Add(item);
+        }
+    }
+
+    List<SelectListItem> kinds = new List<SelectListItem>();
+    SelectListItem ckind;
+
+
+    ckind = new SelectListItem();
+
+    ckind.Value = "0";
+    ckind.Text = "----------- Chọn trạng thái ----------";
+    kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 1)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "1";
+    ckind.Text = "Đang chờ xuất kho";
+    kinds.Add(ckind);
+
+    ckind = new SelectListItem();
+    if ((int)ViewBag.InputKind == 2)
+    {
+        ckind.Selected = true;
+    }
+    ckind.Value = "2";
+    ckind.Text = "Đã xuất";
+    kinds.Add(ckind);
+
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("Export", "Home")"> Xuất kho </a> > @ViewBag.Title
@@ -29,59 +78,7 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         $(document).ready(function () {
-
-            $("#customerName").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/KhachHang/Find", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                    $('#customerId').val("");
-                },
-                select: function (event, ui) {
-                    $('#customerName').val(ui.item.label);
-                    $('#customerId').val(ui.item.id);
-                    return false;
-                },
-                minLength: 1
-            });
-
-            $("#exporterName").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                    $('#exporterId').val("");
-                },
-                select: function (event, ui) {
-                    $('#exporterName').val(ui.item.label);
-                    $('#exporterId').val(ui.item.id);
-                    return false;
-                },
-                minLength: 1
-            });
-
+            
             $("#storeName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -137,7 +134,7 @@
     </style>
 
 }
-@using (Ajax.BeginForm("SaleExportListPartialView", "Export", new AjaxOptions()
+@using (Ajax.BeginForm("WaitingExport2ProviderPartialView", "Export", new AjaxOptions()
                             {
                                 HttpMethod = "POST",
                                 InsertionMode = InsertionMode.Replace,
@@ -152,43 +149,27 @@
         <table>
             <tr>
                 <td>
-                    @Html.Hidden("customerId", ViewBag.CustomerId as int?, new { id = "customerId" })
-                    Khách hàng:
+                    Loại nhập : 
                 </td>
                 <td>
-                    @Html.TextBox("customerName", ViewBag.CustomerName as string, new { id = "customerName" })
+                    @Html.DropDownList("status", kinds, new { @id = "status", style = "padding:5px;font-size:1.2em" })
                 </td>
             </tr>
-            @{
-    if ((bool)Session["IsAdmin"])
-    {
-        <tr>
-            <td>
-                @Html.Hidden("exporterId", ViewBag.ExporterId as int?, new { id = "exporterId" })
-                Nhân viên xuất kho:
-            </td>
-            <td>
-                @Html.TextBox("exporterName", ViewBag.ExporterName as string, new { id = "exporterName" })
-            </td>
-        </tr>
-    }
-    if ((bool)Session["IsAdmin"])
+    @if ((bool)Session["IsAdmin"])
     {
         <tr>
             <td>
                 @Html.Hidden("storeId", ViewBag.StoreId as int?, new { id = "storeId" })
-                Kho - cửa hàng:
+                Kho - cửa hàng : 
             </td>
             <td>
                 @Html.TextBox("storeName", ViewBag.StoreName as string, new { id = "storeName" })
             </td>
         </tr>
-
     }
-            }
             <tr>
                 <td>
-                    Ngày xuất kho:
+                    Ngày lập phiếu : 
                 </td>
                 <td>
                     @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })

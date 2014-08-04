@@ -14,6 +14,10 @@ namespace SMS.Controllers
 {
     public class ExportController : Controller
     {
+        public ActionResult Export2Provider(int id)
+        {
+            return View();
+        }
         //
         // GET: /Export/
         public ActionResult DeleteExport(int id)
@@ -69,13 +73,36 @@ namespace SMS.Controllers
 
         public ActionResult WaitingExport2Provider()
         {
+            ViewBag.InputKind = 0;
             return View();
         }
 
         [HttpPost]
-        public PartialViewResult WaitingExport2ProviderPartialView()
+        public PartialViewResult WaitingExport2ProviderPartialView(int? status, int? storeId,
+            string storeName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
-            return PartialView("WaitingExport2ProviderPartialView");
+            var ctx = new SmsContext();
+            if (string.IsNullOrWhiteSpace(storeName))
+            {
+                storeName = string.Empty;
+                storeId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
+            var thelist = ctx.SP_GET_WAITING_EX_2_PROVIDER(storeId, storeName, fromDate, toDate, status).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_WAITING_EX_2_PROVIDER_Result>();
+            ViewBag.InputKind = status;
+            ViewBag.StoreName = storeName;
+            ViewBag.StoreId = storeId;
+            ViewBag.FromDate = fromDate;
+            ViewBag.ToDate = toDate;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            WaitingExport2ProviderListModel model = new WaitingExport2ProviderListModel();
+            model.TheList = thelist.ToPagedList(pageIndex, pageSize);
+            model.Count = thelist.Count;
+            return PartialView("WaitingExport2ProviderPartialView", model);
         }
 
         public ActionResult EditCancelTicket(int id)

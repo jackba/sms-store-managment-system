@@ -119,6 +119,19 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_EXPORT_4_SALE", mA_XUAT_KHOParameter, mA_NHAN_VIEN_THParameter, rETURN_VALUE);
         }
     
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
         public virtual ObjectResult<SP_EXPORT_REPORT_Result> SP_EXPORT_REPORT(Nullable<int> kIND, Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
         {
             var kINDParameter = kIND.HasValue ?
@@ -747,6 +760,15 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_PRODUC_4_RETURN_Result>("SP_GET_PRODUC_4_RETURN", tEN_SAN_PHAMParameter);
         }
     
+        public virtual ObjectResult<SP_GET_RE_DETAIL_BY_ID_Result> SP_GET_RE_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RE_DETAIL_BY_ID_Result>("SP_GET_RE_DETAIL_BY_ID", iDParameter);
+        }
+    
         public virtual ObjectResult<SP_GET_REFUND_DETAIL_Result> SP_GET_REFUND_DETAIL(Nullable<int> mA_TRA_HANG)
         {
             var mA_TRA_HANGParameter = mA_TRA_HANG.HasValue ?
@@ -1116,13 +1138,59 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
     
-        public virtual ObjectResult<SP_GET_RE_DETAIL_BY_ID_Result> SP_GET_RE_DETAIL_BY_ID(Nullable<int> iD)
+        public virtual int SP_EXPORT_4_RETURN_2_PROVIDER(Nullable<int> iD, Nullable<int> sTORE_ID, Nullable<int> uSER_ID, ObjectParameter rETURN_VALUE)
         {
             var iDParameter = iD.HasValue ?
                 new ObjectParameter("ID", iD) :
                 new ObjectParameter("ID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_RE_DETAIL_BY_ID_Result>("SP_GET_RE_DETAIL_BY_ID", iDParameter);
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var uSER_IDParameter = uSER_ID.HasValue ?
+                new ObjectParameter("USER_ID", uSER_ID) :
+                new ObjectParameter("USER_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_EXPORT_4_RETURN_2_PROVIDER", iDParameter, sTORE_IDParameter, uSER_IDParameter, rETURN_VALUE);
+        }
+    
+        public virtual ObjectResult<SP_GET_WAITING_EX_2_PROVIDER_Result> SP_GET_WAITING_EX_2_PROVIDER(Nullable<int> sTORE_ID, string sTORE_NAME, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> sTATAUS)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var sTORE_NAMEParameter = sTORE_NAME != null ?
+                new ObjectParameter("STORE_NAME", sTORE_NAME) :
+                new ObjectParameter("STORE_NAME", typeof(string));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            var sTATAUSParameter = sTATAUS.HasValue ?
+                new ObjectParameter("STATAUS", sTATAUS) :
+                new ObjectParameter("STATAUS", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WAITING_EX_2_PROVIDER_Result>("SP_GET_WAITING_EX_2_PROVIDER", sTORE_IDParameter, sTORE_NAMEParameter, fROM_DATEParameter, tO_DATEParameter, sTATAUSParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result> SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID(Nullable<int> sTORE_ID, Nullable<int> iNVOICE_ID)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var iNVOICE_IDParameter = iNVOICE_ID.HasValue ?
+                new ObjectParameter("INVOICE_ID", iNVOICE_ID) :
+                new ObjectParameter("INVOICE_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result>("SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID", sTORE_IDParameter, iNVOICE_IDParameter);
         }
     }
 }
