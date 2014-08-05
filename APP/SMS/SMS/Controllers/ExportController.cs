@@ -14,12 +14,87 @@ namespace SMS.Controllers
 {
     public class ExportController : Controller
     {
-        public ActionResult Export2Provider(int id)
+        [HttpPost]
+        public ActionResult Export2Provider(Export2ProviderModel model)
         {
-            return View();
+            var ctx = new SmsContext();
+
+            var storeId = new SqlParameter
+            {
+                ParameterName = "STORE_ID",
+                Value = Convert.ToInt32(model.StoreId)
+            };
+
+            var InvoiceId = new SqlParameter
+            {
+                ParameterName = "ID",
+                Value = Convert.ToInt32(model.Infor.ID)
+            };
+            var UserId = new SqlParameter
+            {
+                ParameterName = "USER_ID",
+                Value = Convert.ToInt32(Session["UserId"])
+            };
+            var customerName = new SqlParameter
+            {
+                ParameterName = "EXPORT_DATE",
+                Value = Convert.ToDateTime(model.exportDate)
+            };
+            var returnValue = new SqlParameter
+            {
+                ParameterName = "RETURN_VALUE",
+                Value = Convert.ToInt32(0),
+                Direction = ParameterDirection.Output
+            };
+
+            ctx.Database.CommandTimeout = 300;
+            var export = ctx.Database.ExecuteSqlCommand("exec SP_EXPORT_4_RETURN_2_PROVIDER @ID, @STORE_ID, @USER_ID, @EXPORT_DATE , @RETURN_VALUE OUT",
+                storeId,
+                InvoiceId,
+                UserId,
+                customerName,
+                returnValue
+             );
+
+            int returnVal = Convert.ToInt32(returnValue.Value);
+
+            if (returnVal == -1)
+            {
+                return RedirectToAction("WaitingExport2Provider", new { @message = "Không thể xuất kho hóa đơn này. Lý do: có thể hóa đơn đã được xuất kho, hay đã bị hủy." });
+            }
+            else if (returnVal == 0)
+            {
+                ViewBag.Message = "Không đủ số lượng để xuất kho";
+            }
+            else
+            {
+                return RedirectToAction("WaitingExport2Provider", new { @messageInfor = "Xuất kho thành công" });
+            }
+            return View(model);
         }
-        //
-        // GET: /Export/
+
+        public ActionResult Export2Provider(int id, int? storeId)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var Infor = ctx.TRA_HANG_NCC.Include("NHA_CUNG_CAP").Where(u => u.ACTIVE == "A" && u.ID == id).FirstOrDefault();
+            if (Infor == null)
+            {
+                ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
+                return View("../Home/Error");
+            }
+            var details = ctx.SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID(Convert.ToInt32(storeId), id).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result>();
+            Export2ProviderModel model = new Export2ProviderModel();
+            model.TheList = details;
+            model.Infor = Infor;
+            model.StoreId = Convert.ToInt32(storeId);
+            return View(model);
+        }
+
         public ActionResult DeleteExport(int id)
         {
             if (id <= 0)
