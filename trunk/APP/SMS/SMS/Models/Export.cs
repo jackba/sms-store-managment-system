@@ -60,6 +60,8 @@ namespace SMS.Models
     public class Export2ProviderModel
     {
         public TRA_HANG_NCC Infor { get; set; }
-        
+        public int StoreId { get; set; }
+        public DateTime exportDate { get; set; }
+        public List<SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result> TheList { get; set; }
     }
 }
