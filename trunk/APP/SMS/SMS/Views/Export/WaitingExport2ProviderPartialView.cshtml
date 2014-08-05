@@ -15,10 +15,9 @@
                         new
                         {
                             currentPageIndex,
+                            status = ViewBag.InputKind,
                             storeid = ViewBag.StoreId,
                             storeName = ViewBag.storeName,
-                            customerId = ViewBag.CustomerId,
-                            customerName = ViewBag.customerName,
                             fromDate = ViewBag.FromDate,
                             todate = ViewBag.Todate
                         }),
@@ -68,7 +67,7 @@
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    <a href="@Url.Action("Export", "Export", new { @id = @dbHist.ID, @makho = ViewBag.storeId })" class="button-module">
+                    <a href="@Url.Action("Export2Provider", "Export", new { @id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
                         @dbHist.TEN_NHA_CUNG_CAP
                     </a>
                 </td>
@@ -76,7 +75,7 @@
                     @dbHist.NGUOI_LAP_PHIEU
                 </td>
                 <td class="inner colwidth">
-                    @if (dbHist.STATUS != 1)
+                    @if (dbHist.STATUS == 1)
                     {
                         @("Chưa xuất kho")
                     }
@@ -92,7 +91,7 @@
                     @{
                         if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
                         {
-                            <a href="@Url.Action("Export", "Export", new { id = @dbHist.ID, @makho = ViewBag.storeId })" class="button-module">
+                            <a href="@Url.Action("Export2Provider", "Export", new { id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
                                 <img width="16" height="16" alt="edit" src="~/Content/images/Export.jpg"></img>
                             </a>
                         }
@@ -117,10 +116,9 @@
                         new
                         {
                             currentPageIndex,
+                            status = ViewBag.InputKind,
                             storeid = ViewBag.StoreId,
                             storeName = ViewBag.storeName,
-                            customerId = ViewBag.CustomerId,
-                            customerName = ViewBag.customerName,
                             fromDate = ViewBag.FromDate,
                             todate = ViewBag.Todate
                         }),
