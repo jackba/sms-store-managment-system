@@ -41,7 +41,23 @@
         });
 
         $('#TenKhachHang').focus();
-
+        $('input.discount').focusout(
+            function (event) {
+                var obj = event.currentTarget ; 
+                if(obj.value == "") {
+                    obj.value = "0" ; 
+                }
+                if (removeCommas(obj.value) > 100) {
+                    obj.focus();
+                    obj.style.borderColor = "red";
+                    obj.style.backgroundColor = "antiquewhite";
+                } else {
+                    obj.style.borderColor = "#e2e2e2";
+                    obj.style.backgroundColor = "white";
+                }
+                obj.value = parseFloat(obj.value);
+            }
+        );
         // hide
         hideRelationProduct();
         hideRelationCustomer();
@@ -195,6 +211,13 @@
         //MODE UPDATE
        
     });
+
+        // check validate 
+    function checkInputDiscount(obj) {
+        if (obj != null) {
+            alert(this.val());
+        }
+    }
     
     // FUNCTION EXECUTE
     function createRowModeUpdate(rowChiTiet){
@@ -1821,6 +1844,7 @@
     };
     </script>
 }
+<!--message area start-->
 <div id="msgId">
     <div id="divInfo" style="display: none; color: blue">
 
@@ -1850,12 +1874,14 @@
     <hr class="mydashed" />
     }
 </div>
-<!--Message-->
+<!--message area end-->
+
 <!--Hidden field use for mode UPDATE-->
 @{
     var myStore = Convert.ToInt32(Session["MyStore"]);
 }
 <input type="hidden" id="myStore" value="@myStore" />
+
 <fieldset>
     @using (Ajax.BeginForm("AddNew", "BanHang", new { MaHoaDon = ViewBag.MaHoaDon },
      new AjaxOptions()
@@ -1942,7 +1968,7 @@
 
             <!--Informatio Panel support s-->
             <!--relationCustomer-->
-            <div id="relationCustomer">
+            <div id="relationCustomer" >
                 <div>
                     <span><strong>- Mã khách hàng : </strong> </span><span id="S_MaKhachHang"></span>
                     <br />
@@ -1958,7 +1984,7 @@
                 </div>
             </div>
             <!--relationProduct-->
-            <div id="relationProduct" style="top: 319px; left: 565px;">
+            <div id="relationProduct" style="top: 319px; left: 565px; ">
                 <div id="toolTipRelationProduct">
                     <span><strong>- Mã sản phẩm : </strong> </span><span id="S_MaSanPham"></span>
                     <br />
@@ -2045,8 +2071,6 @@
                         <td class='innerLast colwidth head '> Kho</td>
                     </tr>
                 </thead>
-
-
                 <tbody>
                     <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
@@ -2124,6 +2148,7 @@
         </div>
 
     <!--total money-->
+    <div style="display:none">
         <div id="divTotal">
             <table cellpadding="0" cellspacing="0" class="tableTotal">
                 <tr>
@@ -2145,7 +2170,7 @@
             <input type="button" id="back_bottom" style="width:100px" value="Trở về">
             <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
         </div>
-
+    </div>
     }
 
 </fieldset>
