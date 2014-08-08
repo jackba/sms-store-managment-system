@@ -68,7 +68,9 @@ namespace SMS.Controllers
                             ct = ctx.CHI_TIET_HOA_DON.Create();
                             ct.MA_HOA_DON = invoice.MA_HOA_DON;
                             ct.MA_SAN_PHAM = detail.Ma_SP;
+                            // luu tam so luong hang hoa da ban
                             ct.SO_LUONG_TEMP = detail.So_Luong;
+                            // luu tam so luong hang hoa da ban
                             ct.SO_LUONG = detail.So_Luong * detail.HE_SO;
                             ct.DON_GIA_TEMP = detail.Gia_Ban;
                             ct.PHAN_TRAM_CHIEC_KHAU = detail.Phan_Tram_CK;
@@ -86,10 +88,11 @@ namespace SMS.Controllers
                     }
                     transaction.Complete();
                     ViewBag.InforMessage = "Lưu hóa đơn thành công.";
-                    var In = new HoaDonBanHang();
-                    In.Store = stores;
-                    In.Units = units;
-                    return View(In);
+                    // reset form nhap ?
+                    //var In = new HoaDonBanHang();
+                    //In.Store = stores;
+                    //In.Units = units;
+                    //return View(In);
                 }
                 catch (Exception ex)
                 {
