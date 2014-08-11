@@ -70,7 +70,10 @@
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    @dbHist.MA_PHIEU_TRA
+                    @if (@dbHist.MA_PHIEU_TRA != null && @dbHist.MA_PHIEU_TRA > 0)
+                    {
+                         @dbHist.MA_PHIEU_TRA
+                    }                   
                 </td>
                 <td class="inner colwidth">
                     @dbHist.TEN_NHA_CUNG_CAP
@@ -100,9 +103,9 @@
 
                 <td class="innerLast colwidth">
                     @{
-            if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
+            if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]) && dbHist.MA_PHIEU_TRA > 0)
             {
-                <a href="@Url.Action("DeleteReturn2Provider", "TraHang", new { id = @dbHist.ID })" class="button-module">
+                <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.ID })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }

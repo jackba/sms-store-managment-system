@@ -44,6 +44,10 @@
             {
                 <td class='innerLast colwidth head '>  Xuất kho </td>
             }
+            @if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+{
+    <td class='innerLast colwidth head '>  Hủy </td>
+}
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
@@ -52,7 +56,7 @@
                 ImportDate = (DateTime)Model.TheList[0].NGAY_LAP_PHIEU;
 
                 <tr>
-                    <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
         }
@@ -89,7 +93,7 @@
                 </td>
                 <td class="innerLast colwidth">
                     @{
-                        if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
+            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"] && dbHist.STATUS == 1)
                         {
                             <a href="@Url.Action("Export2Provider", "Export", new { id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
                                 <img width="16" height="16" alt="edit" src="~/Content/images/Export.jpg"></img>
@@ -97,6 +101,18 @@
                         }
                     }
                 </td>
+                <td class="innerLast colwidth">
+                    @{
+            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"] && dbHist.STATUS != 1)
+            {
+                <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
+                    <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
+                </a>
+            }
+                    }
+                </td>
+
+
 
             </tr>
         }

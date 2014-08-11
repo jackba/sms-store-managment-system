@@ -95,6 +95,47 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        public ActionResult DeleteExport2Provider(int id)
+        {
+            if (id < 0)
+            {
+                return RedirectToAction("WaitingExport2Provider", new { @message = "Không tồn tại phiếu xuất kho này. Vui lòng kiểm tra lại" });
+            }
+            var ctx = new SmsContext();
+            var infor = ctx.XUAT_KHO.Find(id);
+            if (infor == null || infor.ACTIVE != "A")
+            {
+                return RedirectToAction("WaitingExport2Provider", new { @message = "Không tồn tại phiếu xuất kho này. Vui lòng kiểm tra lại" });
+            }
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    infor.ACTIVE = "I";
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    var details = ctx.CHI_TIET_XUAT_KHO.Where(u => u.ACTIVE == "A" && u.MA_XUAT_KHO == id).ToList<CHI_TIET_XUAT_KHO>();
+                    foreach (var detail in details)
+                    {
+                        detail.ACTIVE = "I";
+                        detail.UPDATE_AT = DateTime.Now;
+                        detail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        ctx.SaveChanges();
+                    }
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("WaitingExport2Provider", new { @message = "Hủy phiếu trả thất bại, vui lòng liên hệ admin." });
+                }
+            }
+            return RedirectToAction("WaitingExport2Provider", new { @messageInfor = "Xóa phiếu xuất kho thành công." });
+        }
+
+
         public ActionResult DeleteExport(int id)
         {
             if (id <= 0)
