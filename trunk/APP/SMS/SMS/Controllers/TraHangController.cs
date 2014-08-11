@@ -27,6 +27,51 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        public ActionResult DeleteReturn2Provider(int id)
+        {
+            if (id < 0)
+            {
+                return RedirectToAction("ListOfToProvider", new { @message = "Không tồn tại phiếu trả hàng này." });
+            }
+            var ctx = new SmsContext();
+            var infor = ctx.TRA_HANG_NCC.Find(id);
+            if (infor == null || infor.ACTIVE != "A")
+            {
+                return RedirectToAction("ListOfToProvider", new { @message = "Không tồn tại phiếu trả hàng này." });
+            }
+            var export = ctx.XUAT_KHO.Where(u => u.MA_PHIEU_TRA_NCC == id && u.ACTIVE == "A").FirstOrDefault();
+            if (export != null)
+            {
+                return RedirectToAction("ListOfToProvider", new { @message = "Phiếu trả này đã được xuất kho, bạn không thể hủy phiếu trả này." });
+            }
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    infor.ACTIVE = "I";
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    var details = ctx.TRA_HANG_NCC_CHI_TIET.Where(u => u.ACTIVE == "A" && u.MA_PHIEU_TRA_NCC == id).ToList<TRA_HANG_NCC_CHI_TIET>();
+                    foreach (var detail in details)
+                    {
+                        detail.ACTIVE = "I";
+                        detail.UPDATE_AT = DateTime.Now;
+                        detail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        ctx.SaveChanges();
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("ListOfToProvider", new { @inforMessage = "Hủy phiếu trả hàng nhà cung cấp thành công." });
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("ListOfToProvider", new { @message = "Hủy phiếu trả thất bại, vui lòng liên hệ admin." });
+                }
+            }           
+        }
+
         [HttpPost]
         public ActionResult ReturnToProvider(Return2Provider model)
         {
