@@ -76,7 +76,7 @@
                     </a>
                 </td>
                 <td class="inner colwidth">
-                    @dbHist.NGUOI_LAP_PHIEU
+                    @dbHist.TEN_NGUOI_DUNG
                 </td>
                 <td class="inner colwidth">
                     @if (dbHist.STATUS == 1)
@@ -105,7 +105,7 @@
                     @{
             if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"] && dbHist.STATUS != 1)
             {
-                <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
+                <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.MA_XUAT_KHO, @storeId = ViewBag.storeId })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
                 </a>
             }

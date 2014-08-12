@@ -14,12 +14,13 @@ namespace SMS.Models
     public partial class SP_GET_WAITING_EX_2_PROVIDER_Result
     {
         public int ID { get; set; }
+        public int MA_XUAT_KHO { get; set; }
         public Nullable<int> MA_NHA_CUNG_CAP { get; set; }
         public string TEN_NHA_CUNG_CAP { get; set; }
         public Nullable<System.DateTime> NGAY_LAP_PHIEU { get; set; }
         public Nullable<int> NGUOI_LAP_PHIEU { get; set; }
         public string TEN_NGUOI_DUNG { get; set; }
         public string GHI_CHU { get; set; }
-        public int STATUS { get; set; }
+        public Nullable<int> STATUS { get; set; }
     }
 }

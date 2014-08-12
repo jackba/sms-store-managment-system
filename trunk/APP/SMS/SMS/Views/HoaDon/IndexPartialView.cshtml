@@ -22,15 +22,13 @@
         <tr>
             <td class="innerLast colwidth" colspan="9" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
         </tr>
-    }
-            }
-            @foreach (var dbHist in Model.HoaDonList)
+            foreach (var dbHist in Model.HoaDonList)
             {
                 if (ImportDate != (DateTime)dbHist.NGAY_BAN)
                 {
                     ImportDate = (DateTime)dbHist.NGAY_BAN;
                     <tr>
-                        <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                        <td class="innerLast colwidth" colspan="9" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                     </tr>
                 }
                 <tr class="inner column-hscroll alignCenter">
@@ -103,6 +101,12 @@
                         }
                     </td>
                 </tr>
+            }
+    }
+    else { 
+    <tr>
+            <td class="innerLast" colspan="9"> Không có dữ liệu</td>
+    </tr>}
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="innerLast colwidth" colspan="3" style="background-color:lightgray">
