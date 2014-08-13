@@ -1602,6 +1602,18 @@
         });
     };
 
+    function onloadTotal() {
+        $('td input.productId').each(function () {
+            $this = $(this);
+            $parent = $this.parent().parent();
+            var price = $('input.price', $parent).val().replace(/,/gi, "");
+            var quantity = $('input.quantity', $parent).val().replace(/,/gi, "");
+            var discount = $('input.discount', $parent).val().replace(/,/gi, "");
+            var total = price * quantity - price * quantity * discount / 100;
+            $('input.total', $parent).val(price * quantity);
+            $('input.realTotal', $parent).val(total);
+        })
+    }
     function addRow() {
         var row = parseInt($("#rowIndex").val()) + 1;
         $('#detailTable > tbody:last').append('<tr> ' +
@@ -1720,11 +1732,13 @@
         productCodeAutocomplete();
         unitOnchange();
         tableCheck();
-        headerCheck();
-        formatNumberic();
+        headerCheck();        
         priceKeyPress();
         quantityKeyPress();
         discountKeyPress();
+        onloadTotal();
+        counter();
+        formatNumberic();
     });
 
     function checkdlc() {
@@ -1747,6 +1761,7 @@
 
     function returnSubmit() {
         $('#message').empty();
+        $('#InforMessage').empty();
         if (checkdlc()) {
             $('#message').append("Trong danh sách có ít nhất 2 mặt hàng giống nhau. Vui lòng kiểm tra lại");
             return false;
@@ -1861,17 +1876,17 @@
 </div>
 <hr class="mydashed" />
 <div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
-    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    @if (!string.IsNullOrEmpty(Model.Message))
 {
-    @ViewBag.InforMessage
+    @Model.Message
     <hr class="mydashed" />
 }
 </div>
 <div id="InforMessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
-    @if (!string.IsNullOrEmpty(ViewBag.InforMessage))
+    @if (!string.IsNullOrEmpty(Model.InforMessage))
     {
-        @ViewBag.InforMessage
-    <hr class="mydashed" />
+        @Model.InforMessage
+        <hr class="mydashed" />
     }
 </div>
 <!--message area end-->
@@ -2072,7 +2087,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                   @{
+        if (Model.lstChiTietHoaDon == null || Model.lstChiTietHoaDon.Count == 0)
+        {
+            <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
                             <input type="checkbox" class="chcktbl">
                         </td>
@@ -2107,6 +2125,55 @@
                             @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
                         </td>
                     </tr>
+        }
+        else
+        {
+            int i =0;
+            foreach (var detail in Model.lstChiTietHoaDon)
+            {
+                if (detail.DEL_FLG != 1) { 
+                 <tr>
+                        <td class='inner alignCenter colwidth' width="5%;">
+                            <input type="checkbox" class="chcktbl">
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Code_SP, new { @class = "code codebtl" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].Ma_SP, new { @class = "productId " })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].DEL_FLG, new { @class = "delFlg" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].HE_SO, new { @class = "convertor" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Ten_SP, new { @class = "productName" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].So_Luong, new { @class = "quantity numberic" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Ban, new { @class = "price numberic" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Phan_Tram_CK, new { @class = "discount numberic" })
+                        </td>
+                        <td class='inner colwidth '>
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                        </td>
+                        <td class='innerLast colwidth '>
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
+                        </td>
+                    </tr>
+                    i++;
+                   }
+                
+            }
+        }
+                   }
+                    
 
                 </tbody>
                 <tfoot>

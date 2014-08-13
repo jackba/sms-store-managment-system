@@ -86,7 +86,7 @@
     <hr />
     <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
-    <input type="hidden" id="rowIndex" value="0" />
+    <input type="hidden" id="rowIndex" value="@(Model.Details.Count - 1)" />
     <div style="clear:both"></div>
     <table id="detailTable" name="detailTable" width="100%">
         <thead>

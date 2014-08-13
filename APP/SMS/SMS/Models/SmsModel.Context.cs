@@ -53,6 +53,8 @@ namespace SMS.Models
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
+        public virtual DbSet<V_BUGET_BY_MONTH> V_BUGET_BY_MONTH { get; set; }
+        public virtual DbSet<V_BUGET_BY_WEEK> V_BUGET_BY_WEEK { get; set; }
         public virtual DbSet<V_HOA_DON> V_HOA_DON { get; set; }
         public virtual DbSet<V_HOA_DON_DISTICNT> V_HOA_DON_DISTICNT { get; set; }
         public virtual DbSet<V_IMPORT_DETAIL> V_IMPORT_DETAIL { get; set; }
@@ -62,6 +64,11 @@ namespace SMS.Models
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+    
+        public virtual int dynTable()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("dynTable");
+        }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -238,6 +245,24 @@ namespace SMS.Models
                 new ObjectParameter("USER_FULL_NAME", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_ALL_ROLE_Result>("SP_GET_ALL_ROLE", uSER_IDParameter, uSER_FULL_NAMEParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_BILL_DETAIL_BY_ID_Result> SP_GET_BILL_DETAIL_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_BILL_DETAIL_BY_ID_Result>("SP_GET_BILL_DETAIL_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_BILL_INFOR_Result> SP_GET_BILL_INFOR(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_BILL_INFOR_Result>("SP_GET_BILL_INFOR", iDParameter);
         }
     
         public virtual ObjectResult<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Nullable<int> mA_XUAT_KHO)
@@ -1182,24 +1207,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, mA_SAN_PHAMParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<SP_GET_BILL_DETAIL_BY_ID_Result> SP_GET_BILL_DETAIL_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_BILL_DETAIL_BY_ID_Result>("SP_GET_BILL_DETAIL_BY_ID", iDParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_BILL_INFOR_Result> SP_GET_BILL_INFOR(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_BILL_INFOR_Result>("SP_GET_BILL_INFOR", iDParameter);
         }
     }
 }
