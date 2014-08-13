@@ -285,9 +285,11 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
-        public ActionResult Index()
+        public ActionResult Index( string messsage, string inforMessage)
         {
             ViewBag.InputKind = Convert.ToInt32(0);
+            ViewBag.Messasge = messsage;
+            ViewBag.InforMessage = inforMessage;
             return View();
         }
         [HttpPost]

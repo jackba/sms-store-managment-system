@@ -71,7 +71,7 @@
                         @{
                 if (dbHist.STATUS == 1 && ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (int)dbHist.MA_NHAN_VIEN_BAN == (int)Session["UserId"]))
                 {
-                    <a href="@Url.Action("HoaDonBanHang", "BanHang", new { MaHoaDon = @dbHist.MA_HOA_DON })" class="button-module">
+                    <a href="@Url.Action("Edit", "BanHang", new { @id = @dbHist.MA_HOA_DON })" class="button-module">
                         <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
                     </a>
                 }

@@ -277,6 +277,12 @@
     <Compile Include="Models\SP_GET_ALL_ROLE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_BILL_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_BILL_INFOR_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -401,6 +407,12 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_BUGET_BY_MONTH.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_BUGET_BY_WEEK.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_HOA_DON.cs">
@@ -844,6 +856,7 @@
     <Content Include="Views\Export\WaitingExport2Provider.cshtml" />
     <Content Include="Views\Export\WaitingExport2ProviderPartialView.cshtml" />
     <Content Include="Views\Export\Export2Provider.cshtml" />
+    <Content Include="Views\BanHang\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

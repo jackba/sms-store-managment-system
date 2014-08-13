@@ -22,8 +22,32 @@ namespace SMS.Controllers
     [Authorize]
     [HandleError]
     [CustomActionFilter]
+    
     public class BanHangController : Controller
     {
+        public ActionResult Edit(int id)
+        {
+            if (id < 0)
+            {
+                return RedirectToAction("Index", "HoaDon", new { @message = "Không tìm thấy hóa đơn này." });
+            }
+            var ctx = new SmsContext();
+            var Infor = ctx.SP_GET_BILL_INFOR(id).FirstOrDefault();
+            if (Infor == null)
+            {
+                return RedirectToAction("Index", "HoaDon", new { @message = "Không tìm thấy hóa đơn này." });
+            }
+            var details = ctx.SP_GET_BILL_DETAIL_BY_ID(id).ToList<SP_GET_BILL_DETAIL_BY_ID_Result>();            
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList();
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList();
+            EditHoaDonBanHang model = new EditHoaDonBanHang();
+            model.Store = stores;
+            model.Units = units;
+            model.Infor = Infor;
+            model.Details = details;
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult AddNew(HoaDonBanHang hoaDon)
         {
@@ -32,6 +56,8 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList();
             var Infor = hoaDon.KH_Info;
             var details = hoaDon.lstChiTietHoaDon;
+            hoaDon.Store = stores;
+            hoaDon.Units = units;           
             string InvoiceNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             using (var transaction = new System.Transactions.TransactionScope())
             {
@@ -87,18 +113,14 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
-                    ViewBag.InforMessage = "Lưu hóa đơn thành công.";
-                    // reset form nhap ?
-                    //var In = new HoaDonBanHang();
-                    //In.Store = stores;
-                    //In.Units = units;
-                    //return View(In);
+                    hoaDon.InforMessage = "Lưu hóa đơn thành công.";
+                    return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.ToString());
                     Transaction.Current.Rollback();
-                    ViewBag.Message = "Lưu hóa đơn thất bại";
+                    hoaDon.Message = "Lưu hóa đơn thất bại, vui lòng kiểm tra lại hóa đơn hoặc liên hệ admin. ";
                 }
             }
             
@@ -107,7 +129,7 @@ namespace SMS.Controllers
             return View(hoaDon);
         }
         [HttpGet]
-        public ActionResult AddNew()
+        public ActionResult AddNew(string message, string inforMessage)
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList();
@@ -115,6 +137,8 @@ namespace SMS.Controllers
             HoaDonBanHang hoanDon = new HoaDonBanHang();
             hoanDon.Store = stores;
             hoanDon.Units = units;
+            hoanDon.Message = message;
+            hoanDon.InforMessage = inforMessage;
             return View(hoanDon);
         }
         [HttpGet]
