@@ -731,6 +731,7 @@
         };
 
         $(document).ready(function () {
+            productIdChange();
             formatNumberic();
             numberOnly();
             productAutocomplete();
@@ -745,7 +746,12 @@
             storeChange();
         });
         
-
+        function productIdChange() {
+            $("input.productId").each(function () {
+                var $this = $(this);
+                createDonViTinh($this);
+            });
+        }
         function addRow() {
             var row = parseInt($("#rowIndex").val()) + 1;
             $('#detailTable > tbody:last').append('<tr> ' +
