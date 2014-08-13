@@ -17,8 +17,20 @@ namespace SMS.Models
         public List<KHO> Store { get; set; }
         public List<DON_VI_TINH> Units { get; set; }
         public List<ChiTiet_HoaDon> lstChiTietHoaDon { get; set; }
-
+        public string Message { get; set; }
+        public string InforMessage { get; set; }
     }
+
+    public class EditHoaDonBanHang
+    {
+        public SP_GET_BILL_INFOR_Result Infor { get; set; }
+        public List<KHO> Store { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+        public List<SP_GET_BILL_DETAIL_BY_ID_Result> Details { get; set; }
+        public string Message { get; set; }
+        public string InforMessage { get; set; }
+    }
+
     public class KhachHangInfo{
         public int Ma_HD { get; set; }
         public int? Ma_KH {get;set;}
