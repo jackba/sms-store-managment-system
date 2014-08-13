@@ -1214,19 +1214,30 @@
         }
 
        
+        function productIdChange() {
+            $("input.productId").each(function () {
+                var $this = $(this);
+                createDonViTinh($this);
+            });
+        }
 
         $(document).ready(function () {
+            // hide
+            hideRelationProduct();
+            hideRelationCustomer();
+
+            productIdChange();
             customerAutocomplet();
             formatNumberic();
             numberOnly();
             productAutocomplete();
             productCodeAutocomplete();
-            quantityKeyPress();
-            unitOnchange();
+            quantityKeyPress();            
             tableCheck();
             headerCheck();
             $("#storeInformation").hide();
             $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+            unitOnchange();
             unitChange();
             storeChange();
             onloadTotal();
