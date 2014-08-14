@@ -691,7 +691,7 @@ namespace SMS.Controllers
             {
                 return RedirectToAction("Index", new { @messageInfor = "Xuất kho thành công" });
             }
-            var infor = ctx.SP_GET_HOA_DON_INFO(model.storeId).FirstOrDefault();
+            var infor = ctx.SP_GET_HOA_DON_INFO(model.Infor.MA_HOA_DON).FirstOrDefault();
             var detailList = ctx.SP_GET_HD_DETAIL_FOR_EXPORT(Convert.ToInt32(model.storeId), Convert.ToInt32(model.Infor.MA_HOA_DON)).ToList<SP_GET_HD_DETAIL_FOR_EXPORT_Result>();
             model.DetailList = detailList;
             model.Infor = infor;
