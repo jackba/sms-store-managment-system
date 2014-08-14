@@ -65,7 +65,7 @@
                 @Html.LabelFor(u => u.NGAY_SINH)
             </div>
             <div class="required">
-                @Html.TextBoxFor(u => u.NGAY_SINH, "{0:d}", new { @class = "datePicker" })
+                @Html.TextBoxFor(u => u.NGAY_SINH, "{0:dd/MM/yyyy}", new { @class = "datePicker" })
             </div>
             <div>
                 @Html.LabelFor(u => u.SO_CHUNG_MINH)
@@ -107,7 +107,7 @@
                 @Html.LabelFor(u => u.NGAY_VAO_LAM)
             </div>
             <div>
-                @Html.TextBoxFor(u => u.NGAY_VAO_LAM, "{0:d}", new { @class = "datePicker" })
+                @Html.TextBoxFor(u => u.NGAY_VAO_LAM, "{0:dd/MM/yyyy}", new { @class = "datePicker" })
             </div>
             <div>
                 @Html.LabelFor(u => u.MA_NHOM_NGUOI_DUNG)

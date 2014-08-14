@@ -919,10 +919,27 @@
                         $("input.price", parent).val(data.gia_ban_3);
                         $("input.discount", parent).val(data.chiec_khau_3);
                     }
+
+
+                    var discount = $('input.discount', parent).val();
+                    var quality = $('input.quantity', parent).val();
+                    var price = $('input.price', parent).val();
+                    if (discount != '' && quality != '' && price != '') {
+                        discount = discount.replace(/,/gi, "");
+                        quality = quality.replace(/,/gi, "");
+                        price = price.replace(/,/gi, "");
+                        var total = quality * price;
+                        var realTotal = total - total * discount / 100;
+                        $('input.total', parent).val(total);
+                        $('input.realTotal', parent).val(realTotal);
+                        formatNumberic();
+                    }
+                    counter();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
             });
         }
+        counter();
     }
     function CalcRealPrice(price, discount, isReturn) {
         $('#contentMsgErr').empty();
@@ -1301,20 +1318,20 @@
             if (productId != null && productId != '' && unitId != null && unitId != '') {
                 GetFactorOfProduct(productId, unitId, convertor);
             }
-            var discount = $('input.discount', parent).val();
-            var quality = $('input.quantity', parent).val();
-            var price = $('input.price', parent).val();
-            if (discount != '' && quality != '' && price != '') {
-                discount = discount.replace(/,/gi, "");
-                quality = quality.replace(/,/gi, "");
-                price = price.replace(/,/gi, "");
-                var total = quality * price;
-                var realTotal = total - total * discount / 100;
-                $('input.total', parent).val(total);
-                $('input.realTotal', parent).val(realTotal);
-                formatNumberic();
-            }
-            counter();
+            //var discount = $('input.discount', parent).val();
+            //var quality = $('input.quantity', parent).val();
+            //var price = $('input.price', parent).val();
+            //if (discount != '' && quality != '' && price != '') {
+            //    discount = discount.replace(/,/gi, "");
+            //    quality = quality.replace(/,/gi, "");
+            //    price = price.replace(/,/gi, "");
+            //    var total = quality * price;
+            //    var realTotal = total - total * discount / 100;
+            //    $('input.total', parent).val(total);
+            //    $('input.realTotal', parent).val(realTotal);
+            //    formatNumberic();
+            //}
+            //counter();
         });
     }
 
@@ -1951,7 +1968,7 @@
                         <div class="titleItem required">Ngày bán</div>
                         <br />
                         <div>
-                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Ban, "{0:d}", new {@name="NgayBan", @id="NgayBan", @class = "datePicker "})
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Ban, "{0:dd/MM/yyyy}", new {@name="NgayBan", @id="NgayBan", @class = "datePicker "})
            
                         </div>
                     </td>
@@ -1959,7 +1976,7 @@
                         <div class="titleItem required">Ngày giao hàng</div>
                         <br />
                         <div>
-                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Giao, "{0:d}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Giao, "{0:dd/MM/yyyy}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
                         </div>
                     </td>
                     <td></td>

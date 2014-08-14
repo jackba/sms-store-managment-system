@@ -6,6 +6,7 @@
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
+    <a href="@Url.Action("Index", "BanHang")"> Bán hàng </a> >
     @ViewBag.Title
 </div>
 
@@ -53,7 +54,7 @@
     </style>
 
 }
-@using (Html.BeginForm("Edit", "BanHang", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("Edit", "BanHang", FormMethod.Post, new { @id = "formContent" }))
 {
     <table>
 
@@ -79,13 +80,13 @@
                 Ngày lập phiếu :
             </td>
             <td class="required">
-                @Html.TextBoxFor(u => u.Infor.NGAY_BAN, "{0:d}", new { @name = "NgayBan", @id = "NgayBan", @class = "datePicker " })
+                @Html.TextBoxFor(u => u.Infor.NGAY_BAN, "{0:dd/MM/yyyy}", new { @name = "NgayBan", @id = "NgayBan", @class = "datePicker " })
             </td>
             <td>
                 Ngày giao hàng :
             </td>
             <td class="required">
-                @Html.TextBoxFor(u => u.Infor.NGAY_GIAO, "{0:d}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
+                @Html.TextBoxFor(u => u.Infor.NGAY_GIAO, "{0:dd/MM/yyyy}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
             </td>
         </tr>
         <tr>
@@ -368,20 +369,20 @@
                 if (productId != null && productId != '' && unitId != null && unitId != '') {
                     GetFactorOfProduct(productId, unitId, convertor);
                 }
-                var discount = $('input.discount', parent).val();
-                var quality = $('input.quantity', parent).val();
-                var price = $('input.price', parent).val();
-                if (discount != '' && quality != '' && price != '') {
-                    discount = discount.replace(/,/gi, "");
-                    quality = quality.replace(/,/gi, "");
-                    price = price.replace(/,/gi, "");
-                    var total = quality * price;
-                    var realTotal = total - total * discount / 100;
-                    $('input.total', parent).val(total);
-                    $('input.realTotal', parent).val(realTotal);
-                    formatNumberic();
-                }
-                counter();
+                //var discount = $('input.discount', parent).val();
+                //var quality = $('input.quantity', parent).val();
+                //var price = $('input.price', parent).val();
+                //if (discount != '' && quality != '' && price != '') {
+                //    discount = discount.replace(/,/gi, "");
+                //    quality = quality.replace(/,/gi, "");
+                //    price = price.replace(/,/gi, "");
+                //    var total = quality * price;
+                //    var realTotal = total - total * discount / 100;
+                //    $('input.total', parent).val(total);
+                //    $('input.realTotal', parent).val(realTotal);
+                //    formatNumberic();
+                //}
+                //counter();
             });
         }
 
@@ -416,36 +417,59 @@
 
         function returnSubmit() {
             $('#message').empty();
-            var errorMessage = '';
-            if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
-                if (errorMessage != '') {
-                    errorMessage += "<br>";
-                }
-                errorMessage += "Chưa nhập ngày lập phiếu. Vui lòng chọn ngày lập phiếu.";
+            $('#InforMessage').empty();
+            if (checkdlc()) {
+                $('#message').append("Trong danh sách có ít nhất 2 mặt hàng giống nhau. Vui lòng kiểm tra lại");
+                return false;
             }
-            if ($("#providerId option:selected").val() == null || $("#providerId option:selected").val().trim() == "") {
-                if (errorMessage != '') {
-                    errorMessage += "<br>";
-                }
-                errorMessage += "Chưa chọn nhà cung cấp. Vui lòng chọn nhà cung cấp cần trả hàng.";
-            }
-
             var row = 0;
             var rval = 1;
+            var pval = 1;
             var ppval = 1;
+            var checkFlg = 0;
+            var showFlg = $("#showFlg").val();
+            var errorMessage = '';
+            if ($("#NgayBan").val() == null || $("#NgayBan").val().trim() == "") {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa nhập ngày bán hàng. Vui lòng chọn ngày bán hàng.";
+            }
+            if ($("#TenKhachHang").val() == null || $("#TenKhachHang").val().trim() == "") {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng nhập tên khách hàng.";
+            }
+
+            if ($("#NgayGiao").val() == null || $("#NgayGiao").val().trim() == "") {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa nhập ngày giao hàng. Vui lòng chọn ngày giao hàng.";
+            }
+            if ($("#DiaChi").val() == null || $("#DiaChi").val().trim() == "") {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng nhập địa chỉ giao hàng.";
+            }
+
             $('input.chcktbl').each(function () {
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
                 if (flg != 1) {
-                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                    if (quantity == '') {
-                        rval = 0;
-                    }
-                    quantity = parseFloat(quantity);
-                    convertor = parseFloat(convertor);
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
                     if (quantity == null || quantity == '' || quantity == 0) {
                         rval = 0;
+                    }
+                    if (showFlg == 1) {
+
+                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                        if (price == null || price == '' || price == 0) {
+                            pval = 0;
+                        }
                     }
                     if (productId == null || productId == '' || productId == 0) {
                         ppval = 0;
@@ -459,28 +483,34 @@
                     errorMessage += "<br>";
                 }
                 errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
-
             }
+
+            if (pval == 0) {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
+            }
+
             if (row == 0) {
                 if (errorMessage != '') {
                     errorMessage += "<br>";
                 }
                 errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
-
             }
-            if (rval == 0) {
+            else if (rval == 0) {
                 if (errorMessage != '') {
                     errorMessage += "<br>";
                 }
-                errorMessage += "Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.";
-
+                errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
             }
             if (errorMessage != '') {
                 $('#message').append(errorMessage);
-                $('#message').append("<hr/>");
+                $('#message').append("<hr class='mydashed'/>");
                 return false;
-            } else {
-                $('#index').submit();
+            }
+            else {
+                $('#formContent').submit();
             }
         };
 
@@ -631,6 +661,22 @@
                             $("input.price", parent).val(data.gia_ban_3);
                             $("input.discount", parent).val(data.chiec_khau_3);
                         }
+
+                        var discount = $('input.discount', parent).val();
+                        var quality = $('input.quantity', parent).val();
+                        var price = $('input.price', parent).val();
+                        if (discount != '' && quality != '' && price != '') {
+                            discount = discount.replace(/,/gi, "");
+                            quality = quality.replace(/,/gi, "");
+                            price = price.replace(/,/gi, "");
+                            var total = quality * price;
+                            var realTotal = total - total * discount / 100;
+                            $('input.total', parent).val(total);
+                            $('input.realTotal', parent).val(realTotal);
+                            formatNumberic();
+                        }
+                        counter();
+
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
@@ -1225,7 +1271,6 @@
             // hide
             hideRelationProduct();
             hideRelationCustomer();
-
             productIdChange();
             customerAutocomplet();
             formatNumberic();
@@ -1236,7 +1281,6 @@
             tableCheck();
             headerCheck();
             $("#storeInformation").hide();
-            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             unitOnchange();
             unitChange();
             storeChange();

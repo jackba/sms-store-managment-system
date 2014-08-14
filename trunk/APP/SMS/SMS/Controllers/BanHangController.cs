@@ -25,6 +25,68 @@ namespace SMS.Controllers
     
     public class BanHangController : Controller
     {
+        [HttpPost]
+        public ActionResult Edit(EditHoaDonBanHang model)
+        {
+            var ctx = new SmsContext();
+            var infor = ctx.HOA_DON.Find(model.Infor.MA_HOA_DON);
+            if (infor == null || infor.ACTIVE != "A")
+            {
+                return RedirectToAction("Index", "HoaDon", new { @message = "Không tìm thấy hóa đơn này." }); 
+            }
+            if (infor.STATUS > 1)
+            {
+                return RedirectToAction("Index", "HoaDon", new { @message = "Hóa đơn đã được thu tiền. Bạn không được phép sửa hóa đơn này." }); 
+            }
+             using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    infor.MA_KHACH_HANG = model.Infor.MA_KHACH_HANG;
+                    if (infor.MA_KHACH_HANG == null || infor.MA_KHACH_HANG <= 0)
+                    {
+                        infor.TEN_KHACH_HANG = model.Infor.TEN_KHACH_HANG;
+                    }
+                    infor.NGAY_BAN = model.Infor.NGAY_BAN;
+                    infor.NGAY_GIAO = model.Infor.NGAY_GIAO;
+                    infor.DIA_CHI_GIAO_HANG = model.Infor.DIA_CHI_GIAO_HANG;
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+
+                    ctx.CHI_TIET_HOA_DON.RemoveRange(ctx.CHI_TIET_HOA_DON.Where(x => x.MA_HOA_DON == model.Infor.MA_HOA_DON));
+                    CHI_TIET_HOA_DON ct;
+                    foreach (var detail in model.Details)
+                    {
+                        ct = ctx.CHI_TIET_HOA_DON.Create();
+                        ct.MA_HOA_DON = infor.MA_HOA_DON;
+                        ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                        ct.SO_LUONG_TEMP = detail.SO_LUONG;
+                        ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
+                        ct.DON_GIA_TEMP = detail.DON_GIA;
+                        ct.DON_GIA = detail.DON_GIA / detail.HE_SO;
+                        ct.MA_DON_VI = detail.MA_DON_VI;
+                        ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
+                        ct.CREATE_AT = DateTime.Now;
+                        ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                        ct.UPDATE_AT = DateTime.Now;
+                        ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        ct.ACTIVE = "A";
+                        ctx.CHI_TIET_HOA_DON.Add(ct);
+                        ctx.SaveChanges();
+                    }
+                    transaction.Complete();
+                    return RedirectToAction("Index", "HoaDon", new { @inforMessage = "Lưu hóa đơn bán hàng thành công." });
+                }
+                 catch(Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    return RedirectToAction("Index", "HoaDon", new { @message = "Lưu hóa đơn thất bại. Vui lòng liên hệ admin." });
+                }
+             }
+        }
+
         public ActionResult Edit(int id)
         {
             if (id < 0)
