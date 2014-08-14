@@ -121,7 +121,7 @@ namespace SMS.Models
         [Display(Name = "Mật khẩu")]
         public string MAT_KHAU { get; set; }
         [Display(Name = "Ngày vào làm")]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
 
         public Nullable<System.DateTime> NGAY_VAO_LAM { get; set; }
