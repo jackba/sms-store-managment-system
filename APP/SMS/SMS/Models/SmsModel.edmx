@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CHI_TIET_HOA_DON">
           <Key>
             <PropertyRef Name="ID" />
@@ -195,6 +195,7 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
           <Property Name="MA_HOA_DON" Type="int" />
+          <Property Name="MA_PHIEU_TRA" Type="int" />
         </EntityType>
         <EntityType Name="KHO">
           <Key>
@@ -2762,8 +2763,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3002,6 +3002,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__KHACH_HAN__CREAT__1CBC4616" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__KHACH_HAN__MA_NH__1BC821DD" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__KHACH_HAN__UPDAT__1DB06A4F" FromRole="KHACH_HANG_DEBIT_HIST" ToRole="NGUOI_DUNG" />
+          <Property Name="MA_PHIEU_TRA" Type="Int32" />
         </EntityType>
         <EntityType Name="KHO">
           <Key>
@@ -5195,7 +5196,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GET_KHACH_HANG_ALERT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GET_SUM_HOA_DON_BY_CUS_ID" ReturnType="Collection(SmsModel.GET_SUM_HOA_DON_BY_CUS_ID_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5243,26 +5244,26 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="USER_FULL_NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_BILL_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_BILL_DETAIL_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_BILL_INFOR" ReturnType="Collection(SmsModel.SP_GET_BILL_INFOR_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN" ReturnType="Collection(SmsModel.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result)">
-            <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
+          <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID" ReturnType="Collection(SmsModel.SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result)">
             <Parameter Name="STORE_ID" Mode="In" Type="Int32" />
             <Parameter Name="INVOICE_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_DON_VI_TINH" ReturnType="Collection(SmsModel.SP_GET_DON_VI_TINH_Result)">
-            <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+          <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_EX_BY_ID" ReturnType="Collection(SmsModel.SP_GET_EX_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_EX_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_EX_DETAIL_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_EXPORT_4_CANCEL" ReturnType="Collection(SmsModel.SP_GET_EXPORT_4_CANCEL_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -5313,7 +5314,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="TEN_NV_TT" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_DETAIL_FOR_RETURN" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result)">
-            <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
+          <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_EXPORTED" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_EXPORTED_Result)">
             <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
@@ -5324,10 +5325,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_HOA_DON_INFO" ReturnType="Collection(SmsModel.SP_GET_HOA_DON_INFO_Result)">
-            <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
+          <Parameter Name="MA_HOA_DON" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IM_DETAIL_BY_ID">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5341,13 +5342,13 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="TEN_NHA_CUNG_CAP" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_Result)">
-            <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
+          <Parameter Name="IMPORT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT" ReturnType="Collection(SmsModel.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result)">
-            <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
+          <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_IMPORT_INFOR_BY_ID" ReturnType="Collection(SmsModel.SP_GET_IMPORT_INFOR_BY_ID_Result)">
-            <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
+          <Parameter Name="MA_NHAP_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -5359,7 +5360,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="STORE_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY_BY_STORE_ID" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_BY_STORE_ID_Result)">
-            <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+          <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_LIST_RETURN_TO_PROVIDERS" ReturnType="Collection(SmsModel.SP_GET_LIST_RETURN_TO_PROVIDERS_Result)">
             <Parameter Name="PROVIDER_ID" Mode="In" Type="Int32" />
@@ -5387,7 +5388,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="TEN_NHAN_VIEN_CHUYEN" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID" ReturnType="Collection(SmsModel.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID_Result)">
-            <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
+          <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_PHIEU_XUAT_KHO_BAN_LE" ReturnType="Collection(SmsModel.SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
@@ -5403,19 +5404,19 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="MA_DON_VI" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_PRODUC_4_RETURN" ReturnType="Collection(SmsModel.SP_GET_PRODUC_4_RETURN_Result)">
-            <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
+          <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_RE_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_RE_DETAIL_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_REFUND_DETAIL" ReturnType="Collection(SmsModel.SP_GET_REFUND_DETAIL_Result)">
-            <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
+          <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_RETURN_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_RETURN_DETAIL_BY_ID_Result)">
-            <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
+          <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_RETURN_INFO_BY_ID" ReturnType="Collection(SmsModel.SP_GET_RETURN_INFO_BY_ID_Result)">
-            <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
+          <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_RETURN_LIST" ReturnType="Collection(SmsModel.SP_GET_RETURN_LIST_Result)">
             <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
@@ -5425,7 +5426,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="TEN_NHAN_VIEN" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_ROLE_OF_USER" ReturnType="Collection(SmsModel.SP_GET_ROLE_OF_USER_Result)">
-            <Parameter Name="USER_ID" Mode="In" Type="Int32" />
+          <Parameter Name="USER_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_SMS_MESSAGES" ReturnType="Collection(SmsModel.SP_GET_SMS_MESSAGES_Result)">
             <Parameter Name="MA_NHOM_NGUOI_DUNG" Mode="In" Type="Int32" />
@@ -5436,13 +5437,13 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO" />
           <FunctionImport Name="SP_GET_TON_KHO_ALERT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_ALL">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_BY_ID">
-            <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
+          <Parameter Name="INPUT_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_TON_KHO_BY_STORE_ID_AND_PRODUCT_ID">
             <Parameter Name="STORE_ID" Mode="In" Type="Int32" />
@@ -5475,7 +5476,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="STATAUS" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_HET_IM_BY_ID" ReturnType="Collection(SmsModel.SP_HET_IM_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_IMPORT_REPORTER" ReturnType="Collection(SmsModel.SP_IMPORT_REPORTER_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
@@ -6195,6 +6196,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySetMapping Name="KHACH_HANG_DEBIT_HIST">
             <EntityTypeMapping TypeName="SmsModel.KHACH_HANG_DEBIT_HIST">
               <MappingFragment StoreEntitySet="KHACH_HANG_DEBIT_HIST">
+                <ScalarProperty Name="MA_PHIEU_TRA" ColumnName="MA_PHIEU_TRA" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="NO_TRUOC" ColumnName="NO_TRUOC" />

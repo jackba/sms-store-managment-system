@@ -11,7 +11,7 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public class KhachHangDebitHistModel
     {
         public KHACH_HANG_DEBIT_HIST KhachHangDebitHist { get; set; }
@@ -37,11 +37,12 @@ namespace SMS.Models
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
         public Nullable<int> MA_HOA_DON { get; set; }
+        public Nullable<int> MA_PHIEU_TRA { get; set; }
     
+        public virtual HOA_DON HOA_DON { get; set; }
         public virtual KHACH_HANG KHACH_HANG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
-        public virtual HOA_DON HOA_DON { get; set; }
     }
 }

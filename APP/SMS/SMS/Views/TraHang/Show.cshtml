@@ -136,10 +136,59 @@
             </div>
             <div style="clear:both"></div>
             <hr style="width:100%" />
+            @if (Model.Infor.MA_KHACH_HANG != null && Model.CustomerInformation.NO_GOI_DAU >0)
+            {
+                <div>
+                    <table border="1" class="innerLast" style="width:100%">
+                        <tr class="innerLast" >
+                            <td style=" background-color:lightblue" colspan="2" class="innerLast">
+                                Thông tin nợ gối đầu của khách hàng
+                            </td>
+                    </tr>
+                        <tr class="innerLast">
+                            <td style="background-color:lightgray" class="innerLast">
+                                Số tiền khách nợ
+                            </td>
+                            <td class="innerLast" id="CustomerDebit">
+                                @Model.CustomerInformation.NO_GOI_DAU.ToString("0,0.00")
+                                @Html.HiddenFor(u=> u.CustomerInformation.NO_GOI_DAU)
+
+                            </td>
+                        </tr>
+                        <tr class="innerLast" >
+                            <td style="background-color:lightgray" class="innerLast">
+                                Tổng tiền của hóa đơn
+                            </td>
+                            <td class="innerLast" id="totalOfBill">
+                                @Model.Infor.TONG_TIEN.ToString("0,0.00")
+                            </td>
+                        </tr>
+                        <tr class="innerLast">
+                            <td style="background-color:lightgray" class="innerLast">
+                                Tổng tiền trả lại cho khách
+                            </td>
+                            <td class="innerLast" id="ttReturn">
+                               @{
+                double ttReturn = (double)Model.CustomerInformation.NO_GOI_DAU - (double)Model.Infor.TONG_TIEN;
+                if(ttReturn > 0){
+                    @("0")
+                }
+                else
+                {
+                    @((ttReturn*-1).ToString("0,0.00"))
+                }
+                               }
+                            </td>
+                        </tr>
+
+                    </table>
+                    <hr />
+                </div>
+            }
             @if (Model.Infor.STATUS == 3)
-{
-    <input type="button" id="returnFirst" style="width:300px" value="Nhận trả hàng" onclick="return returnSubmit()" />
-}
+            {
+                <input type="button" id="returnFirst" style="width:300px" value="Nhận trả hàng" onclick="return returnSubmit()" />
+            }
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
             <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("Index","TraHang")'" />
 
@@ -210,7 +259,7 @@
                 }
                 <tr style="background-color:lightgray">
                     <td class="innerLast colwidth" colspan="6">
-                        <strong> Tồng tiền cần thanh toán lại cho khách</strong>
+                        <strong> Tồng tiền của hóa đơn</strong>
                     </td>
                     <td class="innerLast colwidth numberic">
                         <strong class="allTotal numberic">@totalAll.ToString("0,0.00")</strong>

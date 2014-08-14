@@ -464,9 +464,18 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
+            InvoicesModel model = new InvoicesModel();
+            if(invoiceInfor != null && invoiceInfor.MA_KHACH_HANG != null)
+            {
+                var customerInformation = ctx.KHACH_HANG.Find(invoiceInfor.MA_KHACH_HANG);
+                if (customerInformation != null)
+                {
+                    model.CustomerInformation = customerInformation;
+                }
+            }
             List<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result> detailList = 
                 ctx.SP_GET_HOA_DON_DETAIL_FOR_RETURN(id).ToList<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result>();
-            InvoicesModel model = new InvoicesModel();
+           
             model.Infor = invoiceInfor;
             model.detailReturnList = detailList;
             ViewBag.Message = message;
@@ -509,10 +518,12 @@ namespace SMS.Controllers
                     ctx.SaveChanges();
                     int maPhieuTra = phieutra.MA_TRA_HANG;
                     CHI_TIET_TRA_HANG chitiet = null;
+                    double total = 0;
                     foreach (var detail in model.detailReturnList)
                     {
                         if (Convert.ToInt32(detail.DEL_FLG) != 1)
                         {
+                            total += detail.DON_GIA * detail.SO_LUONG;
                             chitiet = ctx.CHI_TIET_TRA_HANG.Create();
                             chitiet.MA_TRA_HANG = maPhieuTra;
                             chitiet.MA_SAN_PHAM = detail.MA_SAN_PHAM;
@@ -524,6 +535,59 @@ namespace SMS.Controllers
                             chitiet.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                             chitiet.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                             ctx.CHI_TIET_TRA_HANG.Add(chitiet);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    if (model.Infor.MA_KHACH_HANG != null && model.CustomerInformation != null 
+                        && model.CustomerInformation.NO_GOI_DAU > 0)
+                    {
+                        if ((double)model.CustomerInformation.NO_GOI_DAU > total)
+                        {
+                            var customerInfor = ctx.KHACH_HANG.Find(model.Infor.MA_KHACH_HANG);
+                            var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                            customerInfor.UPDATE_AT = DateTime.Now;
+                            customerInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.NO_SAU = cusHist.NO_TRUOC - total;
+                            cusHist.NO_TRUOC = (double)customerInfor.NO_GOI_DAU;
+                            cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                            cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                            customerInfor.NO_GOI_DAU = customerInfor.NO_GOI_DAU - (decimal)total;
+                            cusHist.PHAT_SINH = total;
+                            cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                            cusHist.UPDATE_AT = DateTime.Now;
+                            cusHist.CREATE_AT = DateTime.Now;
+                            cusHist.MA_KHACH_HANG = customerInfor.MA_KHACH_HANG;
+                            cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.ACTIVE = "A";
+                            cusHist.MA_PHIEU_TRA = maPhieuTra;
+                            customerInfor.DOANH_SO = customerInfor.DOANH_SO - (decimal)total;
+                            ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);
+                            ctx.SaveChanges();
+                        }
+                        else
+                        {
+                            var customerInfor = ctx.KHACH_HANG.Find(model.Infor.MA_KHACH_HANG);
+                            var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                            customerInfor.UPDATE_AT = DateTime.Now;
+                            customerInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.NO_SAU = 0;
+                            cusHist.NO_TRUOC = (double)customerInfor.NO_GOI_DAU;
+                            cusHist.PHAT_SINH = (double)customerInfor.NO_GOI_DAU;
+                            cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                            cusHist.UPDATE_AT = DateTime.Now;
+                            cusHist.CREATE_AT = DateTime.Now;
+                            cusHist.MA_KHACH_HANG = customerInfor.MA_KHACH_HANG;
+                            cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            cusHist.ACTIVE = "A";
+                            cusHist.MA_PHIEU_TRA = maPhieuTra;
+                            cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                            cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                            customerInfor.NO_GOI_DAU = 0;
+                            customerInfor.NGAY_PHAT_SINH_NO = null;
+                            customerInfor.DOANH_SO = customerInfor.DOANH_SO - (decimal)total;
+                            ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);
                             ctx.SaveChanges();
                         }
                     }
