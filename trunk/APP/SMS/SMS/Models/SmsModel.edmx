@@ -420,6 +420,7 @@
           <Property Name="MA_HOA_DON" Type="int" />
           <Property Name="IMPORT_FLG" Type="bit" />
           <Property Name="RETURN_FLG" Type="bit" />
+          <Property Name="MA_KHACH_HANG" Type="int" />
         </EntityType>
         <EntityType Name="TRA_HANG_NCC">
           <Key>
@@ -3355,6 +3356,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="NHAP_KHO" Relationship="Self.FK__NHAP_KHO__MA_PHI__73BA3083" FromRole="TRA_HANG" ToRole="NHAP_KHO" />
           <NavigationProperty Name="TRA_HANG_NCC" Relationship="Self.FK__TRA_HANG___MA_PH__503BEA1C" FromRole="TRA_HANG" ToRole="TRA_HANG_NCC" />
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__TRA_HANG__MA_XUA__6477ECF3" FromRole="TRA_HANG" ToRole="XUAT_KHO" />
+          <Property Name="MA_KHACH_HANG" Type="Int32" />
         </EntityType>
         <EntityType Name="TRA_HANG_NCC">
           <Key>
@@ -6433,6 +6435,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySetMapping Name="TRA_HANG">
             <EntityTypeMapping TypeName="SmsModel.TRA_HANG">
               <MappingFragment StoreEntitySet="TRA_HANG">
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_XUAT_KHO" ColumnName="MA_XUAT_KHO" />
                 <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
