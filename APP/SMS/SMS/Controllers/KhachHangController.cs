@@ -153,7 +153,8 @@ namespace SMS.Controllers
                                  select new
                                  {
                                      id = x.MA_KHACH_HANG,  
-                                     value = x.TEN_KHACH_HANG}; 
+                                     value = x.TEN_KHACH_HANG, 
+                                 debit = x.NO_GOI_DAU}; 
             var result = Json(suggestedUsers.Take(5).ToList()); 
             return result; 
         }
@@ -395,8 +396,8 @@ namespace SMS.Controllers
             KhachHang.Count = debitHist == null ? 0 : debitHist.Count();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CustomerId = customerId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");;
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");;
             return PartialView("showDebitHistPartialView", KhachHang);
         }
 

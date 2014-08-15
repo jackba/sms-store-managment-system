@@ -30,6 +30,36 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
         //Stop Form Submission of Enter Key Press
+        $("#customerName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/KhachHang/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; }, success:
+                        function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.value,
+                                    value: item.value,
+                                    id: item.id,
+                                    debit: item.debit
+                                }
+                            }))
+                        }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+                $('#customerId').val("");
+            },
+            select: function (event, ui) {
+                $('#customerName').val(ui.item.label);
+                $('#customerId').val(ui.item.id);
+                if (ui.item.debit > 0) {
+                    $("#CustomerDebit").html(ui.item.debit);
+                }
+                return false;
+            },
+            minLength: 1
+        });
+
         $(document).ready(function () {
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -57,6 +87,7 @@
                 Tên khách hàng :
             </td>
             <td class="required">
+                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG, new { @id = "customerId" })
                 @Html.HiddenFor(u => u.Infor.MA_TRA_HANG)
                 @Html.TextBoxFor(u => u.Infor.TEN_KHACH_HANG, new { @id = "customerName" })
             </td>
@@ -78,6 +109,40 @@
             </td>
         </tr>
     </table>
+    <hr />
+    if (Model.Customer != null && Model.Customer.NO_GOI_DAU > 0) { 
+    <table border="1" class="innerLast" style="width:100%">
+        <tr class="innerLast">
+            <td style=" background-color:lightblue" colspan="2" class="innerLast">
+                <strong> Thông tin nợ gối đầu của khách hàng </strong>
+            </td>
+            </tr>
+        <tr class="innerLast">
+            <td style="background-color:lightgray" class="innerLast">
+                Số tiền khách nợ
+            </td>
+            <td class="innerLast numberic" id="CustomerDebit">
+                @if (Model.Customer != null)
+                {
+                    @Double.Parse(Model.Customer.NO_GOI_DAU.ToString()).ToString("#,###.##")
+                }
+                
+            </td>
+        </tr>
+        <tr class="innerLast">
+            <td style="background-color:lightgray" class="innerLast">
+                Tổng tiền của hóa đơn
+            </td>
+            <td class="innerLast" id="totalOfBill">
+        </td>
+        <tr class="innerLast">
+            <td style="background-color:lightgray" class="innerLast">
+                Tiền trả lại cho khách
+            </td>
+            <td class="innerLast" id="totalOfBill"></td>
+        </tr>   
+        </table>
+    }
     <hr />
     <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />

@@ -14,6 +14,7 @@ namespace SMS.Models
     public partial class SP_GET_RETURN_INFO_BY_ID_Result
     {
         public int MA_TRA_HANG { get; set; }
+        public Nullable<int> MA_KHACH_HANG { get; set; }
         public string TEN_KHACH_HANG { get; set; }
         public Nullable<System.DateTime> NGAY_TRA { get; set; }
         public Nullable<int> MA_NV_NHAN { get; set; }

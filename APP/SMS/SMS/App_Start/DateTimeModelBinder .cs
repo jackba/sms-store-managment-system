@@ -6,115 +6,66 @@ namespace SMS.App_Start
 {
     public class DateTimeModelBinder : IModelBinder  
     {
+
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
+            if (controllerContext == null)
+                throw new ArgumentNullException("controllerContext", "controllerContext is null.");
+            if (bindingContext == null)
+                throw new ArgumentNullException("bindingContext", "bindingContext is null.");
+
             var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-            System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
-            var date = DateTime.Now;
-            if (value.Culture.ToString().Equals("vi-VN"))
-            {
-                try
-                {
-                    return DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-                }
-                catch
-                {
-                    return null;
-                }
 
-            }
-            else if (value.Culture.ToString().Equals("en-US"))
-            {
-                try
-                {
-                    date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-                    return date;
-                }
-                catch
-                {
-                    try
-                    {
-                        date = DateTime.ParseExact(value.AttemptedValue, "MM/dd/yyyy", cultureinfo);
-                        return date;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
+            if (value == null)
+                throw new ArgumentNullException(bindingContext.ModelName);
 
-            }
-            else
+            CultureInfo cultureInf = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            cultureInf.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+            bindingContext.ModelState.SetModelValue(bindingContext.ModelName, value);
+            try
             {
-                try
-                {
-                    date = DateTime.ParseExact(value.AttemptedValue, "yyyy/MM/dd", cultureinfo);
-                    return date;
-                }
-                catch
-                {
-                    return null;
-                }
+                var date = value.ConvertTo(typeof(DateTime), cultureInf);
+
+                return date;
+            }
+            catch (Exception ex)
+            {
+                bindingContext.ModelState.AddModelError(bindingContext.ModelName, ex);
+                return null;
             }
         }
+
     }
     
     public class NullableDateTimeBinder : IModelBinder
     {
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-            if (value != null)
-            {
-                System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
-                var  date = DateTime.Now;
-                if (value.Culture.ToString().Equals("vi-VN"))
-                {
-                    try
-                    {
-                        return DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);                       
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+            if (controllerContext == null)
+                throw new ArgumentNullException("controllerContext", "controllerContext is null.");
+            if (bindingContext == null)
+                throw new ArgumentNullException("bindingContext", "bindingContext is null.");
 
-                }
-                else if (value.Culture.ToString().Equals("en-US"))
-                {
-                    try
-                    {
-                        date = DateTime.ParseExact(value.AttemptedValue, "dd/MM/yyyy", cultureinfo);
-                        return date;
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            date = DateTime.ParseExact(value.AttemptedValue, "MM/dd/yyyy", cultureinfo);
-                            return date;
-                        }
-                        catch
-                        {
-                            return null;
-                        }
-                    }
-                   
-                }
-                else
-                {
-                    try
-                    {
-                        date = DateTime.ParseExact(value.AttemptedValue, "yyyy/MM/dd", cultureinfo);
-                        return date;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
+            var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+
+            if (value == null) return null;
+
+            CultureInfo cultureInf = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            cultureInf.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+
+            bindingContext.ModelState.SetModelValue(bindingContext.ModelName, value);
+
+            try
+            {
+                var date = value.ConvertTo(typeof(DateTime), cultureInf);
+
+                return date;
             }
-            return null;
+            catch (Exception ex)
+            {
+                bindingContext.ModelState.AddModelError(bindingContext.ModelName, ex);
+                return null;
+            }
         }
     }
 }
