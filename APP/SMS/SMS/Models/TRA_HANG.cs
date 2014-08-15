@@ -36,6 +36,7 @@ namespace SMS.Models
         public Nullable<int> MA_HOA_DON { get; set; }
         public Nullable<bool> IMPORT_FLG { get; set; }
         public Nullable<bool> RETURN_FLG { get; set; }
+        public Nullable<int> MA_KHACH_HANG { get; set; }
     
         public virtual ICollection<CHI_TIET_TRA_HANG> CHI_TIET_TRA_HANG { get; set; }
         public virtual HOA_DON HOA_DON { get; set; }
