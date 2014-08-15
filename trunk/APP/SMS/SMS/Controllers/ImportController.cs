@@ -831,8 +831,8 @@ namespace SMS.Controllers
             model.TheList = theList.ToPagedList(pageIndex, pageSize);
             model.Count = theList.Count;
             ViewBag.Status = status;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = todate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.ImportStoreId = importStoreId;
             ViewBag.ExportStoreId = exportStoreId;
             return PartialView("ListWaitingImportPartialView", model);
@@ -1178,8 +1178,8 @@ namespace SMS.Controllers
             ViewBag.ImporterName = importerName;
             ViewBag.StoreId = storeId;
             ViewBag.StoreName = storeName;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy"); ;
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ViewBag.InputKind = Convert.ToInt32(reasonId);
             var resultList = ctx.SP_GET_IMPORT(fromDate, toDate, Convert.ToInt32(importerId), importerName, Convert.ToInt32(reasonId)
                 , Convert.ToInt32(storeId), storeName, Convert.ToInt32(providerId), providerName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_IMPORT_Result>();

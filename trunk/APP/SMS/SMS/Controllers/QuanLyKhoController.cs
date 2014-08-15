@@ -221,8 +221,8 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");;
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy"); ;
             ImExModel model = new ImExModel();
             model.ResultList = tk;
             return PartialView("ImExDetailPartialViewResult", model);

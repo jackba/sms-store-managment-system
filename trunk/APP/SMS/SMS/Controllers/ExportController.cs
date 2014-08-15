@@ -826,8 +826,8 @@ namespace SMS.Controllers
             ViewBag.StoreName = storeName;
             ViewBag.CustomerId = customerId;
             ViewBag.CustomerName = customerName;
-            ViewBag.Todate = todate;
-            ViewBag.Fromdate = fromdate;
+            ViewBag.Todate = ((DateTime)todate).ToString("dd/MM/yyyy");
+            ViewBag.Fromdate = ((DateTime)fromdate).ToString("dd/MM/yyyy");
             return PartialView("IndexPartialView", model);
         }
 

@@ -306,6 +306,10 @@ namespace SMS.Controllers
                 ParameterName = "MA_NHAN_VIEN_THUC_HIEN",
                 Value = Convert.ToInt32(Session["UserId"])
             };
+            if (model.Infor.SO_TIEN_KHACH_TRA >= (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU))
+            {
+                model.Infor.SO_TIEN_KHACH_TRA = model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU;
+            }
             var TotalPay = new SqlParameter
             {
                 ParameterName = "SO_TIEN_KHACH_TRA",
@@ -356,7 +360,7 @@ namespace SMS.Controllers
                 {
                     model.Infor.SO_TIEN_KHACH_TRA = 0;
                 }
-                invoice.SO_TIEN_KHACH_TRA = model.Infor.SO_TIEN_KHACH_TRA;
+                
                 if (model.Infor.SO_TIEN_KHACH_TRA <= (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU))
                 {
                     model.Infor.SO_TIEN_NO_GOI_DAU = (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU) - model.Infor.SO_TIEN_KHACH_TRA;
@@ -366,7 +370,7 @@ namespace SMS.Controllers
                     model.Infor.SO_TIEN_KHACH_TRA = (model.Infor.TONG_TIEN - model.Infor.CHIEC_KHAU);
                     model.Infor.SO_TIEN_NO_GOI_DAU = 0;
                 }
-                
+                invoice.SO_TIEN_KHACH_TRA = model.Infor.SO_TIEN_KHACH_TRA;
                 invoice.SO_TIEN_NO_GOI_DAU = model.Infor.SO_TIEN_NO_GOI_DAU;
                 invoice.STATUS = 2;
                 invoice.UPDATE_AT = DateTime.Now;

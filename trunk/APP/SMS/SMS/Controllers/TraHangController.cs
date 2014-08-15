@@ -27,6 +27,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+
         public ActionResult DeleteReturn2Provider(int id)
         {
             if (id < 0)
@@ -260,6 +261,7 @@ namespace SMS.Controllers
                     returnInfor.GHI_CHU = model.ReturnInfor.GHI_CHU;
                     returnInfor.NGAY_TRA = model.ReturnInfor.NGAY_TRA;
                     returnInfor.TEN_KHACH_HANG = model.ReturnInfor.TEN_KHACH_HANG;
+                    returnInfor.MA_KHACH_HANG = model.ReturnInfor.MA_KHACH_HANG;
                     returnInfor.CREATE_AT = DateTime.Now;
                     returnInfor.UPDATE_AT = DateTime.Now;
                     returnInfor.NHAN_VIEN_NHAN = Convert.ToInt32(Session["UserId"]);
@@ -268,13 +270,14 @@ namespace SMS.Controllers
                     returnInfor.ACTIVE = "A";
                     ctx.TRA_HANG.Add(returnInfor);
                     ctx.SaveChanges();
-
+                    double total = 0;
                     foreach (var detail in model.ReturnDetail)
                     {
                         CHI_TIET_TRA_HANG ct;
                         if (detail.DEL_FLG != 1)
                         {
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
+                            total += (double)detail.GIA_VON * (double)detail.SO_LUONG_TEMP;
                             ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
                             ct.MA_DON_VI = detail.MA_DON_VI;
                             ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
@@ -291,6 +294,61 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                     }
+                    if (model.ReturnInfor.MA_KHACH_HANG != null)
+                    {
+                        var customer = ctx.KHACH_HANG.Find(model.ReturnInfor.MA_KHACH_HANG);
+                        if (customer != null && customer.NO_GOI_DAU > 0)
+                        {
+                            if ((double)customer.NO_GOI_DAU > total)
+                            {
+                                var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                                customer.UPDATE_AT = DateTime.Now;
+                                customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.NO_TRUOC = (double)customer.NO_GOI_DAU;
+                                cusHist.NO_SAU = cusHist.NO_TRUOC - total;
+                                cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                                cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                                customer.NO_GOI_DAU = customer.NO_GOI_DAU - (decimal)total;
+                                cusHist.PHAT_SINH = total;
+                                cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                                cusHist.UPDATE_AT = DateTime.Now;
+                                cusHist.CREATE_AT = DateTime.Now;
+                                cusHist.MA_KHACH_HANG = customer.MA_KHACH_HANG;
+                                cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.ACTIVE = "A";
+                                cusHist.MA_PHIEU_TRA = returnInfor.MA_TRA_HANG;
+                                customer.DOANH_SO = customer.DOANH_SO - (decimal)total;
+                                ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);
+                                ctx.SaveChanges();
+                            }
+                            else
+                            {
+                                
+                                var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                                customer.UPDATE_AT = DateTime.Now;
+                                customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.NO_SAU = 0;
+                                cusHist.NO_TRUOC = (double)customer.NO_GOI_DAU;
+                                cusHist.PHAT_SINH = (double)customer.NO_GOI_DAU;
+                                cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                                cusHist.UPDATE_AT = DateTime.Now;
+                                cusHist.CREATE_AT = DateTime.Now;
+                                cusHist.MA_KHACH_HANG = customer.MA_KHACH_HANG;
+                                cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.ACTIVE = "A";
+                                cusHist.MA_PHIEU_TRA = returnInfor.MA_TRA_HANG;
+                                cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                                cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                                customer.NO_GOI_DAU = 0;
+                                customer.NGAY_PHAT_SINH_NO = null;
+                                customer.DOANH_SO = customer.DOANH_SO - (decimal)total;
+                                ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);                               
+                            }
+                        }
+                    }
+                    ctx.SaveChanges();
                     transaction.Complete();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
                 }
@@ -361,6 +419,66 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        public ActionResult deleteGetReturn(int id)
+        {
+            if (id < 0)
+            {
+                return RedirectToAction("ReturnPurchaseList", new { @message = "Không tồn tại phiếu nhận hàng trả này." });
+            }
+            var ctx = new SmsContext();
+            var infor = ctx.TRA_HANG.Find(id);
+            if (infor == null || infor.ACTIVE != "A")
+            {
+                return RedirectToAction("ReturnPurchaseList", new { @message = "Không tồn tại phiếu nhận hàng trả này." });
+            }
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    if (infor.MA_KHACH_HANG != null)
+                    {
+                        var debitHist = ctx.KHACH_HANG_DEBIT_HIST.Where(u => u.ACTIVE == "A" && u.MA_PHIEU_TRA == id).FirstOrDefault();
+                        var customer = ctx.KHACH_HANG.Find(infor.MA_KHACH_HANG);
+                        if (debitHist != null)
+                        {
+                            if (customer.NO_GOI_DAU == 0)
+                            {
+                                customer.NGAY_PHAT_SINH_NO = DateTime.Now;
+                            }
+                            customer.NO_GOI_DAU = customer.NO_GOI_DAU + (decimal)debitHist.PHAT_SINH;
+                            customer.UPDATE_AT = DateTime.Now;
+                            customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            debitHist.ACTIVE = "I";
+                            debitHist.UPDATE_AT = DateTime.Now;
+                            debitHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                        }
+
+                    }
+                    infor.ACTIVE = "I";
+                    infor.UPDATE_AT = DateTime.Now;
+                    infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+
+                    var details = ctx.CHI_TIET_TRA_HANG.Where(u => u.ACTIVE == "A" && u.MA_TRA_HANG == id).ToList<CHI_TIET_TRA_HANG>();
+                    foreach (var detail in details)
+                    {
+                        detail.ACTIVE = "I";
+                        detail.UPDATE_AT = DateTime.Now;
+                        detail.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    }
+                    ctx.SaveChanges();
+                    transaction.Complete();
+                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Xóa phiếu trả hàng thành công." });
+                }
+                catch (Exception ex)
+                {
+                    Transaction.Current.Rollback();
+                    Console.Write(ex.ToString());
+                    return RedirectToAction("ReturnPurchaseList", new { @message = "Xóa phiếu trả hàng thất bại." });
+                }
+            }
+            
+        }
+
         public ViewResult EditGetReturn(int id)
         {
             var ctx = new SmsContext();
@@ -371,6 +489,41 @@ namespace SMS.Controllers
             model.Detail = detail;
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             model.Units = units;
+
+            if (infor != null && infor.MA_KHACH_HANG != null)
+            {
+                var debitHist = ctx.KHACH_HANG_DEBIT_HIST.Where(u => u.ACTIVE == "A" && u.MA_PHIEU_TRA == infor.MA_TRA_HANG).FirstOrDefault();
+                var customer = ctx.KHACH_HANG.Find(infor.MA_KHACH_HANG);
+                if (debitHist != null)
+                {
+                    using (var transaction = new System.Transactions.TransactionScope())
+                    {
+                        try
+                        {
+                            if (customer.NO_GOI_DAU == 0)
+                            {
+                                customer.NGAY_PHAT_SINH_NO = DateTime.Now;
+                            }
+                            customer.NO_GOI_DAU = (decimal)customer.NO_GOI_DAU + (decimal)debitHist.PHAT_SINH;
+                            customer.UPDATE_AT = DateTime.Now;
+                            customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            debitHist.ACTIVE = "I";
+                            debitHist.UPDATE_AT = DateTime.Now;
+                            debitHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                           
+                            ctx.SaveChanges();
+                            transaction.Complete();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.ToString());
+                            Transaction.Current.Rollback();
+                        }
+                    }
+                }
+                model.Customer = customer;
+            }
+            
             return View(model);
         }
 
@@ -386,12 +539,14 @@ namespace SMS.Controllers
                     returnInfor.GHI_CHU = model.Infor.GHI_CHU;
                     returnInfor.NGAY_TRA = model.Infor.NGAY_TRA;
                     returnInfor.TEN_KHACH_HANG = model.Infor.TEN_KHACH_HANG;
+                    returnInfor.MA_KHACH_HANG = model.Infor.MA_KHACH_HANG;
                     returnInfor.UPDATE_AT = DateTime.Now;
                     returnInfor.NHAN_VIEN_NHAN = Convert.ToInt32(Session["UserId"]);
                     returnInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     returnInfor.ACTIVE = "A";
                     ctx.SaveChanges();
                     ctx.CHI_TIET_TRA_HANG.RemoveRange(ctx.CHI_TIET_TRA_HANG.Where(u => u.MA_TRA_HANG == returnInfor.MA_TRA_HANG));
+                    double total = 0;
                     foreach (var detail in model.Detail)
                     {
                         CHI_TIET_TRA_HANG ct;
@@ -399,6 +554,7 @@ namespace SMS.Controllers
                         {
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
                             ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            total += (double)detail.DON_GIA * (double)detail.SO_LUONG;
                             ct.MA_DON_VI = detail.MA_DON_VI;
                             ct.SO_LUONG_TEMP = detail.SO_LUONG;
                             ct.SO_LUONG_TRA = detail.SO_LUONG * detail.HE_SO;
@@ -412,6 +568,61 @@ namespace SMS.Controllers
                             ct.MA_TRA_HANG = returnInfor.MA_TRA_HANG;
                             ctx.CHI_TIET_TRA_HANG.Add(ct);
                             ctx.SaveChanges();
+                        }
+                    }
+                    if (model.Infor.MA_KHACH_HANG != null)
+                    {
+                        var customer = ctx.KHACH_HANG.Find(model.Infor.MA_KHACH_HANG);
+                        if (customer != null && customer.NO_GOI_DAU > 0)
+                        {
+                            if ((double)customer.NO_GOI_DAU > total)
+                            {
+                                var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                                customer.UPDATE_AT = DateTime.Now;
+                                customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.NO_TRUOC = (double)customer.NO_GOI_DAU;
+                                cusHist.NO_SAU = cusHist.NO_TRUOC - total;
+                                cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                                cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                                customer.NO_GOI_DAU = customer.NO_GOI_DAU - (decimal)total;
+                                cusHist.PHAT_SINH = total;
+                                cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                                cusHist.UPDATE_AT = DateTime.Now;
+                                cusHist.CREATE_AT = DateTime.Now;
+                                cusHist.MA_KHACH_HANG = customer.MA_KHACH_HANG;
+                                cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.ACTIVE = "A";
+                                cusHist.MA_PHIEU_TRA = returnInfor.MA_TRA_HANG;
+                                customer.DOANH_SO = customer.DOANH_SO - (decimal)total;
+                                ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);
+                                ctx.SaveChanges();
+                            }
+                            else
+                            {
+
+                                var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
+                                customer.UPDATE_AT = DateTime.Now;
+                                customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.NO_SAU = 0;
+                                cusHist.NO_TRUOC = (double)customer.NO_GOI_DAU;
+                                cusHist.PHAT_SINH = (double)customer.NO_GOI_DAU;
+                                cusHist.NGAY_PHAT_SINH = DateTime.Now;
+                                cusHist.UPDATE_AT = DateTime.Now;
+                                cusHist.CREATE_AT = DateTime.Now;
+                                cusHist.MA_KHACH_HANG = customer.MA_KHACH_HANG;
+                                cusHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                cusHist.ACTIVE = "A";
+                                cusHist.MA_PHIEU_TRA = returnInfor.MA_TRA_HANG;
+                                cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
+                                cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
+                                customer.NO_GOI_DAU = 0;
+                                customer.NGAY_PHAT_SINH_NO = null;
+                                customer.DOANH_SO = customer.DOANH_SO - (decimal)total;
+                                ctx.KHACH_HANG_DEBIT_HIST.Add(cusHist);
+                                ctx.SaveChanges();
+                            }
                         }
                     }
                     transaction.Complete();
@@ -512,6 +723,7 @@ namespace SMS.Controllers
                     phieutra.CREATE_AT = DateTime.Now;
                     phieutra.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                     phieutra.UPDATE_AT = DateTime.Now;
+                    phieutra.MA_KHACH_HANG = model.Infor.MA_KHACH_HANG;
                     phieutra.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     phieutra.ACTIVE = "A";
                     ctx.TRA_HANG.Add(phieutra);
@@ -547,8 +759,8 @@ namespace SMS.Controllers
                             var cusHist = ctx.KHACH_HANG_DEBIT_HIST.Create();
                             customerInfor.UPDATE_AT = DateTime.Now;
                             customerInfor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                            cusHist.NO_SAU = cusHist.NO_TRUOC - total;
                             cusHist.NO_TRUOC = (double)customerInfor.NO_GOI_DAU;
+                            cusHist.NO_SAU = cusHist.NO_TRUOC - total;
                             cusHist.MA_NHAN_VIEN_TH = Convert.ToInt32(Session["UserId"]);
                             cusHist.GHI_CHU = "Trả hàng - Trừ vào công nợ của khách hàng";
                             customerInfor.NO_GOI_DAU = customerInfor.NO_GOI_DAU - (decimal)total;

@@ -142,7 +142,7 @@
                     <table border="1" class="innerLast" style="width:100%">
                         <tr class="innerLast" >
                             <td style=" background-color:lightblue" colspan="2" class="innerLast">
-                                Thông tin nợ gối đầu của khách hàng
+                                <strong> Thông tin nợ gối đầu của khách hàng </strong>
                             </td>
                     </tr>
                         <tr class="innerLast">
@@ -160,7 +160,7 @@
                                 Tổng tiền của hóa đơn
                             </td>
                             <td class="innerLast" id="totalOfBill">
-                                @Model.Infor.TONG_TIEN.ToString("0,0.00")
+                                @to.ToString("0,0.00")
                             </td>
                         </tr>
                         <tr class="innerLast">
@@ -169,7 +169,7 @@
                             </td>
                             <td class="innerLast" id="ttReturn">
                                @{
-                double ttReturn = (double)Model.CustomerInformation.NO_GOI_DAU - (double)Model.Infor.TONG_TIEN;
+                double ttReturn = (double)Model.CustomerInformation.NO_GOI_DAU - (double)to;
                 if(ttReturn > 0){
                     @("0")
                 }
