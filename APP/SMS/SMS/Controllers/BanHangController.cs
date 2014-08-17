@@ -65,6 +65,7 @@ namespace SMS.Controllers
                         ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
                         ct.DON_GIA_TEMP = detail.DON_GIA;
                         ct.DON_GIA = detail.DON_GIA / detail.HE_SO;
+                        ct.PHAN_TRAM_CHIEC_KHAU = detail.PHAN_TRAM_CHIEC_KHAU;
                         ct.MA_DON_VI = detail.MA_DON_VI;
                         ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
                         ct.CREATE_AT = DateTime.Now;

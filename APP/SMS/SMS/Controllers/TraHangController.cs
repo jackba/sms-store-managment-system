@@ -13,7 +13,7 @@ namespace SMS.Controllers
     {
         //
         // GET: /TraHang/
-
+        
         public ActionResult ReturnToProvider()
         {
             Return2Provider model = new Return2Provider();

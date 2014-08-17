@@ -1830,7 +1830,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="dynTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="F_CHECK_REMAIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
@@ -1893,10 +1892,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Parameter Name="MA_XUAT_KHO" Type="int" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_TH" Type="int" Mode="In" />
           <Parameter Name="RETURN_VALUE" Type="int" Mode="InOut" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="SP_EXPORT_4_RETURN_2_PROVIDER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
@@ -5196,7 +5191,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
-          <FunctionImport Name="dynTable" />
           <FunctionImport Name="GET_HOA_DON" ReturnType="Collection(SmsModel.GET_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
@@ -5214,10 +5208,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="MA_XUAT_KHO" Mode="In" Type="Int32" />
             <Parameter Name="MA_NHAN_VIEN_TH" Mode="In" Type="Int32" />
             <Parameter Name="RETURN_VALUE" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_EXPORT_4_RETURN_2_PROVIDER">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -5600,6 +5590,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="KIND" Nullable="true" />
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
           <Property Type="DateTime" Name="NGAY_GIAO" Nullable="true" />
@@ -6674,7 +6665,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="dynTable" FunctionName="SmsModel.Store.dynTable" />
           <FunctionImportMapping FunctionImportName="GET_HOA_DON" FunctionName="SmsModel.Store.GET_HOA_DON">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.GET_HOA_DON_Result">
@@ -6698,7 +6688,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_DELETE_EXPORT_4_SALE" FunctionName="SmsModel.Store.SP_DELETE_EXPORT_4_SALE" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SmsModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="SP_EXPORT_4_RETURN_2_PROVIDER" FunctionName="SmsModel.Store.SP_EXPORT_4_RETURN_2_PROVIDER" />
           <FunctionImportMapping FunctionImportName="SP_EXPORT_REPORT" FunctionName="SmsModel.Store.SP_EXPORT_REPORT">
             <ResultMapping>
@@ -6765,6 +6754,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="MA_HOA_DON" ColumnName="MA_HOA_DON" />
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="KIND" ColumnName="KIND" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />
                 <ScalarProperty Name="NGAY_GIAO" ColumnName="NGAY_GIAO" />

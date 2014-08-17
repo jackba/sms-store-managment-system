@@ -65,11 +65,6 @@ namespace SMS.Models
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
     
-        public virtual int dynTable()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("dynTable");
-        }
-    
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
             var fROM_DATEParameter = fROM_DATE.HasValue ?
@@ -124,19 +119,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_NHAN_VIEN_TH", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_EXPORT_4_SALE", mA_XUAT_KHOParameter, mA_NHAN_VIEN_THParameter, rETURN_VALUE);
-        }
-    
-        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
         public virtual int SP_EXPORT_4_RETURN_2_PROVIDER(Nullable<int> iD, Nullable<int> sTORE_ID, Nullable<int> uSER_ID, Nullable<System.DateTime> eXPORT_DATE, ObjectParameter rETURN_VALUE)
