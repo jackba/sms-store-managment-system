@@ -16,6 +16,7 @@ namespace SMS.Models
         public int MA_HOA_DON { get; set; }
         public string SO_HOA_DON { get; set; }
         public string TEN_KHACH_HANG { get; set; }
+        public Nullable<int> KIND { get; set; }
         public Nullable<int> MA_KHACH_HANG { get; set; }
         public Nullable<System.DateTime> NGAY_BAN { get; set; }
         public Nullable<System.DateTime> NGAY_GIAO { get; set; }

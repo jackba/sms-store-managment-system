@@ -1,5 +1,82 @@
-﻿@{
+﻿@model SMS.Models.InvoicesModel
+@using PagedList.Mvc;
+@{
     ViewBag.Title = "Payment";
 }
 
-<h2>Payment</h2>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="~/Content/css/960.css" type="text/css" media="screen">
+<link rel="stylesheet" href="~/Content/css/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/Content/css/print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="~/Content/css/print-preview.css" type="text/css" media="screen">
+
+@section Scripts
+{
+    <script>
+        //Stop Form Submission of Enter Key Press
+
+        $(function () {
+            alert($("#feature > div"));
+            alert($("#printpreview"));
+            $("#feature > div").scrollable({ interval: 2000 }).autoscroll();
+            $("#printpreview").printPreview();
+
+            // Add keybinding (not recommended for production use)
+            $(document).bind('keydown', function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 80 && !$('#print-modal').length) {
+                    $.printPreview.loadPrintPreview();
+                    return false;
+                }
+            });
+        });
+
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+
+
+
+
+<div id="feature">
+    <h2>Payment</h2>
+    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+        <tr>
+            <td class='inner colwidth head ' width="5%;">
+                STT
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Tên sản phầm
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Số lượng
+            </td>
+            <td class='innerLast colwidth head ' width="15%">
+                Đơn vị
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Đơn giá
+            </td>
+            <td class='inner colwidth head ' width="15%">
+                Chiếc khấu (%)
+            </td>
+            <td class='innerLast colwidth head ' width="15%">
+                Thành tiền
+            </td>
+        </tr>
+        
+    </table>
+
+    <a class="" id="printpreview" name="printpreview">Print this page</a>
+</div>

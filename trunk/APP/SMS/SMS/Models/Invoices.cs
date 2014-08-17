@@ -12,6 +12,8 @@ namespace SMS.Models
         public KHACH_HANG CustomerInformation { get; set; }
         public List<SP_GET_HOA_DON_DETAIL_FOR_RETURN_Result> detailReturnList { get; set; }
         public List<V_HOA_DON> detailList { get; set; }
+        public decimal customerDebit { get; set; }
+        public decimal maxDebit { get; set; }
     }
 
     public class InvoicesNoReciveModel

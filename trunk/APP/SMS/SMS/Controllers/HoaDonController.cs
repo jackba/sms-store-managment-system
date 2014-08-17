@@ -343,7 +343,7 @@ namespace SMS.Controllers
                 ViewBag.Status = -1;
                 return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = flg, @status = -1 });
             }
-            return View();
+            return View(model);
         }
         [HttpPost]
         public ActionResult Payment(InvoicesModel model)
@@ -419,15 +419,43 @@ namespace SMS.Controllers
                 ViewBag.Message = "Không tìm thấy  hóa đơn tương ứng.";
                 return View("../Home/Error");
             }
-            return View();
+            return View(model);
         }
         
         public ActionResult ShowDetail(int id, int? flg, int? status )
         {
             var ctx = new SmsContext();
-            var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
-            List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
             InvoicesModel model = new InvoicesModel();
+            var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
+            if (invoiceInfor != null && invoiceInfor.MA_KHACH_HANG != null)
+            {
+                var customer = ctx.KHACH_HANG.Find(invoiceInfor.MA_KHACH_HANG);
+                if(customer != null)
+                {
+                    var kind = customer.KIND;
+                    model.customerDebit = customer.NO_GOI_DAU;
+                    string key = "";
+                    if(kind ==1)
+                    {
+                        key = "MAX_DEBIT_KIND_1";
+                    }
+                    else if(kind == 2)
+                    {
+                        key = "MAX_DEBIT_KIND_2";
+                    }else
+                    {
+                        key = "MAX_DEBIT_KIND_3";
+                    }
+                    var maxdebit = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == key).FirstOrDefault();
+                    if (maxdebit != null && maxdebit.VALUE != null)
+                    {
+                        decimal debit = decimal.Parse(maxdebit.VALUE.Replace(",", ""));
+                        model.maxDebit = debit;
+                    }
+                }
+            }
+            List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
+            
             model.Infor = invoiceInfor;
             model.detailList = detailList;
             ViewBag.Flg = flg;

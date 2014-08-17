@@ -24,7 +24,9 @@
 <hgroup class="title">
     <h2>Chi tiết hóa đơn bán hàng</h2>
 </hgroup>
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
 
+</div>
 
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.Info </div>
@@ -37,7 +39,9 @@
         <fieldset>
             <div class="left">
                 @Html.HiddenFor(u => u.Infor.MA_HOA_DON)
-                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG)
+                @Html.HiddenFor(u => u.customerDebit, new { @id = "cusDebit" })
+                @Html.HiddenFor(u => u.maxDebit, new { @id = "maxDebit" })
+                @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG, new {@id = "customerId" })
                 @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien"})
                 @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
                 <input type="hidden" value="@ViewBag.Flg" id="flg" name="flg"/>
@@ -196,8 +200,8 @@
                         </tr>
                     </table>
 
-                    <input type="button" id="paymentFirst" style="width:100px" value="Thu tiền" />
-                    <input type="button" id="paymentAndExportFirst" style="width:200px" value="Thu tiền & Xuất kho" />
+                    <input type="button" id="paymentFirst" style="width:100px" value="Thu tiền" onclick="return paymentSubmit();"/>
+    <input type="button" id="paymentAndExportFirst" onclick="return paymentAndExportSubmit();" style="width:200px" value="Thu tiền & Xuất kho" />
 
                 }
                 @if (@Model.Infor.STATUS == 2)
@@ -294,8 +298,9 @@
                 }
                 @if (@Model.Infor.STATUS == 1)
 {
-    <input type="button" id="paymentLast" style="width:100px" value="Thu tiền" onclick="window.location.href='@Url.Action("Payment", "HoaDon", new { @id = @Model.Infor.MA_HOA_DON })'" />
-                                    <input type="button" id="paymentAndExportLast" style="width:200px" value="Thu tiền & Xuất kho" />
+    <input type="button" id="paymentLast" style="width:100px" value="Thu tiền"
+            onclick="return paymentSubmit();" />
+    <input type="button" onclick="return paymentAndExportSubmit();" id="paymentAndExportLast" style="width:200px" value="Thu tiền & Xuất kho" />
 
 }
  @if ((int)ViewBag.Flg == 1)
@@ -312,6 +317,103 @@ else
 
 
 <script type="text/javascript">
+    function paymentSubmit() {
+        $("#message").empty();
+        var customerId = $("#customerId").val();
+        var totalPay = $("#payMoney").val();
+        if ((customerId == null || customerId == '' || customerId == 0) && (totalPay == null || totalPay.trim() == '')) {
+            $("#message").append("<hr />")
+            $("#message").append("Khách hàng là khách vãng lai. Bạn cần phải nhập số tiền khách phải trả");
+            return false;
+        } else {
+            if ((customerId != null && customerId != '' && customerId != 0)) {
+                var cusDebit = $("#cusDebit").val();
+                var maxDebit = $("maxDebit").val();
+                var debit = $("debitMoney").val();
+                if (cusDebit == null || cusDebit.trim() == '') {
+                    cusDebit = 0;
+                } else {
+                    cusDebit.replace(/,/gi, "");
+                }
+                if (maxDebit == null || maxDebit.trim() == '') {
+                    maxDebit = 0;
+                }
+                else {
+                    maxDebit.replace(/,/gi, "");
+                }
+                if (debit == null || debit.trim() == '') {
+                    debit = 0;
+                } else {
+                    debit.replace(/,/gi, "");
+                }
+                if (maxDebit <= (cusDebit + debit)) {
+                    var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
+                    if (r == true) {
+                        var form = $("#ShowDetail");
+                        form.attr("action", "/HoaDon/Payment");
+                        form.submit();
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }            
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/Payment");
+            form.submit();
+        }
+    }
+
+    function paymentAndExportSubmit() {
+        $("#message").empty();
+        var customerId = $("#customerId").val();
+        var totalPay = $("#payMoney").val();
+        if ((customerId == null || customerId == '' || customerId == 0) && (totalPay == null || totalPay.trim() == '')) {
+            $("#message").append("<hr />")
+            $("#message").append("Khách hàng là khách vãng lai. Bạn cần phải nhập số tiền khách phải trả");
+            return false;
+        } else {
+            if ((customerId != null && customerId != '' && customerId != 0)) {
+                var cusDebit = $("#cusDebit").val();
+                var maxDebit = $("maxDebit").val();
+                var debit = $("debitMoney").val();
+                if (cusDebit == null || cusDebit.trim() == '') {
+                    cusDebit = 0;
+                } else {
+                    cusDebit.replace(/,/gi, "");
+                }
+                if (maxDebit == null || maxDebit.trim() == '') {
+                    maxDebit = 0;
+                }
+                else {
+                    maxDebit.replace(/,/gi, "");
+                }
+                if (debit == null || debit.trim() == '') {
+                    debit = 0;
+                } else {
+                    debit.replace(/,/gi, "");
+                }
+                if (maxDebit <= (cusDebit + debit)) {
+                    var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
+                    if (r == true) {
+                        var form = $("#ShowDetail");
+                        form.attr("action", "/HoaDon/PaymentAndExport");
+                        form.submit();
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+
+            var form = $("#ShowDetail");
+            form.attr("action", "/HoaDon/PaymentAndExport");
+            form.submit();
+        }
+    }
+
     function formatNumberic() {
         $('input.numberic').each(function () {
             var $this = $(this);
@@ -355,7 +457,7 @@ else
         }
         $("#returnMoney").val(0);
         formatNumberic();
-
+        /*
         $("#paymentFirst").click(function () {
             var form = $("#ShowDetail");
             form.attr("action", "/HoaDon/Payment");
@@ -379,13 +481,13 @@ else
             form.attr("action", "/HoaDon/PaymentAndExport");
             form.submit();
         });
-        
+        */
 
     });
 
     $(document).ready(function () {
-        formatNumberic();    
-           
+        formatNumberic();
+
             $('input.numberic').keypress(function (key) {
                 var keycode = (key.which) ? key.which : key.keyCode;
                 //comparing pressed keycodes
@@ -470,7 +572,7 @@ else
                     }
                     $("#debitMoney").val(0);
                 }
-                
+
 
             });
 
