@@ -14,6 +14,7 @@ namespace SMS.Models
         public List<V_HOA_DON> detailList { get; set; }
         public decimal customerDebit { get; set; }
         public decimal maxDebit { get; set; }
+        public SmsMasterModel SmsMaster { get; set; }
     }
 
     public class InvoicesNoReciveModel

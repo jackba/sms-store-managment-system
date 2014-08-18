@@ -136,9 +136,9 @@
 </head>
 <body>
     <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    @Html.ActionLink(
+        <div class="content-wrapper" id="myHeader">
+            <div class="float-left">
+                @Html.ActionLink(
                                         " ",
                                         "Index",
                                         "Home",
@@ -148,35 +148,36 @@
                                             style = " /*background: url('" + Url.Content("~/Images/logo.png") + "') no-repeat center right;*/ display:block; height:82px; width:282px; float:left;"
                                         }
                                     )
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    @if (Request.IsAuthenticated)
-                    {
-                     <nav>
-                         <ul id="menu" >
-                             <li  >@Html.ActionLink("Home", "Index", "Home", null, new {@class="menuClass" , @id="Index" })</li>
-                             @if (Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+                @if (Request.IsAuthenticated)
+                {
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "menuClass", @id = "Index" })</li>
+                            @if (Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
                             {
-                                <li >@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home", null, new { @class = "menuClass", @id = "QuanLyKho" })</li>
+                                <li>@Html.ActionLink("Quản Lý Kho", "QuanLyKho", "Home", null, new { @class = "menuClass", @id = "QuanLyKho" })</li>
                             }
-                                @if (Convert.ToBoolean(Session["IsSaler"]) || Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
+                            @if (Convert.ToBoolean(Session["IsSaler"]) || Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
                             {
-                                <li >@Html.ActionLink("Bán Hàng", "BanHang", "Home", null, new { @class = "menuClass", @id = "BanHang" })</li>
+                                <li>@Html.ActionLink("Bán Hàng", "BanHang", "Home", null, new { @class = "menuClass", @id = "BanHang" })</li>
                             }
-                            <li >@Html.ActionLink("Danh Mục", "DanhMuc", "Home", null, new { @class = "menuClass", @id = "DanhMuc" })</li>
+                            <li>@Html.ActionLink("Danh Mục", "DanhMuc", "Home", null, new { @class = "menuClass", @id = "DanhMuc" })</li>
                             @if (Convert.ToBoolean(Session["IsAdmin"]))
                             {
-                                <li >@Html.ActionLink("Quản Trị", "QuanTri", "Home", null, new { @class = "menuClass", @id = "QuanTri" })</li>
+                                <li>@Html.ActionLink("Quản Trị", "QuanTri", "Home", null, new { @class = "menuClass", @id = "QuanTri" })</li>
                             }
-                             <li >@Html.ActionLink("Người Dùng", "Show", "Account", null, new { @class = "menuClass", @id = "Show" })</li>
-                         </ul>
+                            <li>@Html.ActionLink("Người Dùng", "Show", "Account", null, new { @class = "menuClass", @id = "Show" })</li>
+                        </ul>
                     </nav>
-                     }
-                </div>
+                }
             </div>
+        </div>
+
         </header>
     <div id="body">
         @RenderSection("featured", required: false)
@@ -185,7 +186,7 @@
             </section>
     </div>
     <footer>
-            <div class="content-wrapper">
+            <div class="content-wrapper" id="myFooter">
                 <div class="float-left">
                     <p>&copy; @DateTime.Now.Year Cửa hàng cung cấp trang thiết bị ngành nước</p>
                     <p>SMS - Store Management System</p>
