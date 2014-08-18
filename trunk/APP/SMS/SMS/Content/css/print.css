@@ -12,10 +12,9 @@
 #feature a.next,
 a.print-preview {
     display: none;
-    margin: 0 0 1em;
 }
 
-#MainTable td{
+#MainTable td {
     border-left: 1px solid #666;
     border-right: 1px solid #666;
     border-bottom: 1px solid #666;
@@ -24,8 +23,8 @@ a.print-preview {
     height: 28px;
 }
 
-/* -- Typography -- */
 
+/* -- Typography -- */
 body {
     background: #FFF;
     color: #000;
