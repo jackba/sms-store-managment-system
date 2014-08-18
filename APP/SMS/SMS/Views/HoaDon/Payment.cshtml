@@ -1,40 +1,19 @@
 ﻿@model SMS.Models.InvoicesModel
 @using PagedList.Mvc;
-@{
-    ViewBag.Title = "Payment";
-}
-
-
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
-
-<link rel="stylesheet" href="~/Content/css/960.css" type="text/css" media="screen">
-<link rel="stylesheet" href="~/Content/css/screen.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="~/Content/css/print.css" type="text/css" media="print" />
-<link rel="stylesheet" href="~/Content/css/print-preview.css" type="text/css" media="screen">
 
 @section Scripts
 {
     <script>
         //Stop Form Submission of Enter Key Press
-
-        $(function () {
-            alert($("#feature > div"));
-            alert($("#printpreview"));
-            $("#feature > div").scrollable({ interval: 2000 }).autoscroll();
-            $("#printpreview").printPreview();
-
-            // Add keybinding (not recommended for production use)
-            $(document).bind('keydown', function (e) {
-                var code = (e.keyCode ? e.keyCode : e.which);
-                if (code == 80 && !$('#print-modal').length) {
-                    $.printPreview.loadPrintPreview();
-                    return false;
-                }
-            });
-        });
-
+        function pagePrint() {
+            var printContents = document.getElementById("printFeature").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('myHeader').style.display = 'none';
+            document.getElementById('myFooter').style.display = 'none';
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
     </script>
     <style type="text/css">
         .required:after {
@@ -46,37 +25,145 @@
 
 }
 
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
+    <a href="@Url.Action("Collection", "HoaDon")"> Danh sách hóa đơn </a> >
+    In hóa đơn
+</div>
 
+<div id="printFeature">
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/css/print.css" rel="stylesheet" media="print" type="text/css" />
 
+    <table style="width:100%">
+        <tr>
+            <td rowspan="3">
+                <img width="100" height="100" src="~/Images/logo2.png"></img>
+            </td>
+            <td style="text-align:right">
+                <table style="width:100%">
+                    <tr>
+                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"> @Model.SmsMaster.Address</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber  - Fax: @Model.SmsMaster.FaxNumber</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <hr style="width:100%" />
+    <table style="width:100%">
+        <tr>
+            <td style="width:20%">
+                Số hóa đơn
+            </td>
+            <td>
+                @Model.Infor.SO_HOA_DON
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tên khách hàng
+            </td>
+            <td>
+                @Model.Infor.TEN_KHACH_HANG
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Đại chỉ giao hàng
+            </td>
+            <td>
+                @Model.Infor.DIA_CHI_GIAO_HANG
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ngày bán hàng
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_BAN != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
+                }
 
-<div id="feature">
-    <h2>Payment</h2>
-    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ngày giao hàng
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_GIAO != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
+                }
+
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <div style="text-align:center">
+        @Model.SmsMaster.AdvertisementHeader
+    </div>
+    <hr style="width:100%" />
+    <table style="width:100%" id="MainTable" class="details">
         <tr>
             <td class='inner colwidth head ' width="5%;">
                 STT
             </td>
-            <td class='inner colwidth head ' width="15%">
+            <td class='inner colwidth head '>
                 Tên sản phầm
             </td>
-            <td class='inner colwidth head ' width="15%">
+            <td class='inner colwidth head '>
                 Số lượng
             </td>
-            <td class='innerLast colwidth head ' width="15%">
+            <td class='innerLast colwidth head '>
                 Đơn vị
             </td>
-            <td class='inner colwidth head ' width="15%">
+            <td class='inner colwidth head '>
                 Đơn giá
             </td>
-            <td class='inner colwidth head ' width="15%">
-                Chiếc khấu (%)
+            <td class='inner colwidth head '>
+                (%)
             </td>
-            <td class='innerLast colwidth head ' width="15%">
+            <td class='innerLast colwidth head '>
                 Thành tiền
             </td>
         </tr>
-        
+        @{
+            int i = 0;
+            double total = 0;
+            double allTotal = 0;
+        }
+        @foreach (var detail in Model.detailList)
+        {
+            i++;
+            total = detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP - detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP * detail.PHAN_TRAM_CHIEC_KHAU / 100;
+            allTotal += total;
+            <tr>
+                <td class="innerLast colwidth">@i</td>
+                <td class="innerLast colwidth">@detail.TEN_SAN_PHAM</td>
+                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.TEN_DON_VI_TEMP</td>
+                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@total.ToString("#,###.##")</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
+            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
+        </tr>
     </table>
-
-    <a class="" id="printpreview" name="printpreview">Print this page</a>
+    <div class="innerLast" style="text-align:center">
+        @Model.SmsMaster.AdvertisementFooter
+    </div>
 </div>
+<input type="button" value="In hóa đơn" onclick="pagePrint(); return false;">

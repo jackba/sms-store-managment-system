@@ -493,9 +493,6 @@
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\css\960.css" />
-    <Content Include="Content\css\images\icon-close.png" />
-    <Content Include="Content\css\images\icon-print.png" />
-    <Content Include="Content\css\print-preview.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\screen.css" />
     <Content Include="Content\images\bill.png" />
@@ -601,7 +598,7 @@
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.min.js" />
     <Content Include="Content\js\jquery.print-preview.js" />
-    <Content Include="Content\js\jquery.tools.min.js" />
+    <Content Include="Content\js\print.tool.js" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />
