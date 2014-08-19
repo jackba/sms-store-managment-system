@@ -364,6 +364,32 @@ namespace SMS.Controllers
             model.SmsMaster = master;
             return View(model);
         }
+        public ActionResult Payment(int id)
+        {
+            var ctx = new SmsContext();
+            InvoicesModel model = new InvoicesModel();
+            var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(id).FirstOrDefault();
+            List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
+            model.Infor = invoiceInfor;
+            model.detailList = detailList;
+
+            SmsMasterModel master = new SmsMasterModel();
+            var companyName = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "COMPANY_NAME").FirstOrDefault();
+            var address = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault();
+            var phoneNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "PHONE_NUMBER").FirstOrDefault();
+            var faxNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault();
+            var advertisementHeader = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault();
+            var advertisementFooter = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault();
+            master.CompanyName = companyName == null ? "" : companyName.VALUE;
+            master.Address = address == null ? "" : address.VALUE;
+            master.AdvertisementHeader = advertisementHeader == null ? "" : advertisementHeader.VALUE;
+            master.AdvertisementFooter = advertisementFooter == null ? "" : advertisementFooter.VALUE;
+            master.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
+            master.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
+            model.SmsMaster = master;
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult Payment(InvoicesModel model)
         {
