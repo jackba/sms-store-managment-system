@@ -1,0 +1,99 @@
+﻿@model SMS.Models.ReportWeekModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Báo cáo doanh thu của các tuần trong năm";
+}
+<style>
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a>
+    > @ViewBag.Title
+</div>
+<br />
+<table style="width:100%; font-family:'Times New Roman'">
+    <tr>
+        <td class='inner colwidth alignCenter head '>
+            Tổng thực thu
+        </td>
+        <td class='inner colwidth alignCenter head '>
+            Tổng tiền khách nợ
+        </td>
+        <td class='inner colwidth alignCenter head '>
+            Tổng trả hàng
+        </td>
+        <td class='innerLast colwidth alignCenter head '>
+            Doanh thu sau cùng
+        </td>
+    </tr>
+    <tr>
+        <td class='innerLast colwidth alignCenter'>
+            @Model.Total.SO_TIEN_KHACH_TRA.ToString("#,####.##")
+        </td>
+        <td class='inner colwidth  alignCenter'>
+            @Model.Total.SO_TIEN_NO_GOI_DAU.ToString("#,####.##")
+        </td>
+        <td class='inner colwidth  alignCenter'>
+            @Model.Total.RETURN_TOTAL.ToString("#,####.##")
+        </td>
+        <td class='innerLast colwidth alignCenter '>
+            @Model.Total.TOTAL.ToString("#,####.##")
+        </td>
+    </tr>
+</table>
+<br />
+<table style="width:100%; font-family:'Times New Roman'" class="contentTable">
+    <tr>
+        <td class='inner colwidth alignCenter head '>
+            Tuần
+        </td>
+        <td class='inner colwidth alignCenter head '>Ngày đầu tuần</td>
+        <td class='inner colwidth alignCenter head '>Ngày cuối tuần</td>
+        <td class='inner colwidth alignCenter head '>
+            Tổng thực thu
+        </td>
+        <td class='inner colwidth alignCenter head '>
+            Tổng nợ gối đầu
+        </td>
+        <td class='inner colwidth alignCenter head '>
+            Tổng trả hàng
+        </td>
+        <td class='innerLast colwidth alignCenter head '>
+            Doanh thu sau cùng
+        </td>
+    </tr>
+    @foreach (var detail in Model.TheList)
+    {
+        <tr>
+            <td class='innerLast colwidth alignCenter'>
+                @detail.WEEK
+            </td>
+            <td class='inner colwidth  alignCenter'>
+                @detail.START_DATE.ToString("dd/MM/yyyy")
+            </td>
+            <td class='inner colwidth  alignCenter'>
+                @detail.END_DATE.ToString("dd/MM/yyyy")
+            </td>
+            <td class='innerLast colwidth alignCenter '>
+                @detail.SO_TIEN_KHACH_TRA.ToString("#,####.##")
+            </td>
+            <td class='innerLast colwidth alignCenter '>
+                @detail.SO_TIEN_NO_GOI_DAU.ToString("#,####.##")
+            </td>
+            <td class='innerLast colwidth alignCenter '>
+                @detail.RETURN_TOTAL.ToString("#,####.##")
+            </td>
+            <td class='innerLast colwidth alignCenter '>
+                @detail.TOTAL.ToString("#,####.##")
+            </td>
+        </tr>
+    }
+</table>

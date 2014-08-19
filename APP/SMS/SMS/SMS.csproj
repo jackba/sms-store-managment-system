@@ -165,6 +165,7 @@
     <Compile Include="Controllers\PhanQuyenController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\BanHangController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SaleReportController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SmsMasterController.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Models\PHAN_QUYEN.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\SAN_PHAM.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -385,6 +387,9 @@
     <Compile Include="Models\SP_GET_SMS_MESSAGES_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_STATISTICS_BY_MONTH_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -407,6 +412,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_ALL_CUS_RETURN_BY_WEEK.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_BUGET_BY_MONTH.cs">
@@ -434,6 +442,15 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_STATISTICS_BY_MONTH.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_STATISTICS_BY_WEEK.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_TRA_NHAP_TRA_NCC.cs">
@@ -493,7 +510,6 @@
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\css\960.css" />
-    <Content Include="Content\css\print-preview.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\screen.css" />
     <Content Include="Content\images\bill.png" />
@@ -519,9 +535,14 @@
     <Content Include="Content\images\loadingColor.gif" />
     <Content Include="Content\images\Messages.png" />
     <Content Include="Content\images\Misc-Download-icon.png" />
+    <Content Include="Content\images\print.png" />
     <Content Include="Content\images\provider_back.png" />
     <Content Include="Content\images\refund.png" />
     <Content Include="Content\images\refund1.gif" />
+    <Content Include="Content\images\report.jpg" />
+    <Content Include="Content\images\report1.jpg" />
+    <Content Include="Content\images\report2.jpg" />
+    <Content Include="Content\images\report3.jpg" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
@@ -598,7 +619,6 @@
     <Content Include="Content\images\storage.png" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.min.js" />
-    <Content Include="Content\js\jquery.print-preview.js" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />
@@ -862,6 +882,12 @@
     <Content Include="Views\Export\WaitingExport2ProviderPartialView.cshtml" />
     <Content Include="Views\Export\Export2Provider.cshtml" />
     <Content Include="Views\BanHang\Edit.cshtml" />
+    <Content Include="Views\Report\MonthlyReport.cshtml" />
+    <Content Include="Views\Report\WeeklyReport.cshtml" />
+    <Content Include="Views\Report\MthReportPartialView.cshtml" />
+    <Content Include="Views\Report\MthReport.cshtml" />
+    <Content Include="Views\Report\WeReport.cshtml" />
+    <Content Include="Views\Report\WeReportPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
