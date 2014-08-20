@@ -1,0 +1,127 @@
+﻿@model SMS.Models.ReportReturn2ProviderModel
+@using PagedList.Mvc;
+<div>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count hóa đơn</label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.Details, currentPageIndex => Url.Action("Return2ProviderReportPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:100%; font-family:'Times New Roman'" class="contentTable">
+        <tr>
+            <td class='inner colwidth alignCenter head '>
+                STT
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tên nhà cung cấp
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Ngày lập phiếu
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Người lập phiếu
+            </td>
+            <td class='innerLast colwidth alignCenter head '>
+                Tổng giá trị
+            </td>
+        </tr>
+        @{
+            int i = 0;
+            double total = 0;
+        }
+        @if (Model.Details != null && Model.Details.Count() > 0)
+        {
+            
+            foreach (var detail in Model.Details)
+            {
+                i++;
+                total += detail.TOTAL;
+                <tr>
+                    <td class='innerLast colwidth alignCenter'>
+                        @i
+                    </td>
+                    <td class='innerLast colwidth alignCenter'>
+                        @detail.TEN_NHA_CUNG_CAP
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.NGAY_LAP_PHIEU.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TEN_NGUOI_DUNG
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TOTAL.ToString("#,####.##")
+                    </td>
+                </tr>
+            }
+            <tr style="font-weight:bold">
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray" colspan="4"></td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@total.ToString("#,####.##")</td>
+            </tr>
+        }
+        else
+        {
+            <tr style="background-color:lightgray">
+                <td class='innerLast colwidth alignCenter' colspan="5">Không có dữ liệu</td>
+            </tr>
+        }
+    </table>
+
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count hóa đơn</label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.Details, currentPageIndex => Url.Action("Return2ProviderReportPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

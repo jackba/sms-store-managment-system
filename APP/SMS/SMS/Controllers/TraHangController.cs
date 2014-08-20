@@ -648,6 +648,8 @@ namespace SMS.Controllers
             {
                 userId = Convert.ToInt32(Session["UserId"]);
             }
+            fromDate = fromDate == null ? SystemConstant.MIN_DATE : fromDate;
+            toDate = toDate == null ? SystemConstant.MAX_DATE : toDate;
             var ctx = new SmsContext();
             var resultList = ctx.SP_GET_RETURN_LIST(customerName, fromDate, toDate, userId, userName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_RETURN_LIST_Result>();
             int pageSize = SystemConstant.ROWS;
@@ -658,8 +660,8 @@ namespace SMS.Controllers
             ViewBag.CustomerName = customerName;
             ViewBag.UserId = userId;
             ViewBag.UserName = userName;
-            ViewBag.FromDate = fromDate;
-            ViewBag.Todate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 
@@ -854,8 +856,8 @@ namespace SMS.Controllers
             model.PageCount = exportedList.Count;
             ViewBag.BillId = billId;
             ViewBag.BillCode = billCode;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ViewBag.CustomerId = customerId;
             ViewBag.CustomerName = customerName;
             return PartialView("IndexPartialView", model);

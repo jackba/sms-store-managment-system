@@ -357,6 +357,9 @@ namespace SMS.Controllers
             {
                 toDate = SystemConstant.MAX_DATE;
             }
+            fromDate = fromDate == null ? SystemConstant.MIN_DATE : fromDate;
+            toDate = toDate == null ? SystemConstant.MAX_DATE : toDate;
+
             var debitHist = (from s in ctx.KHACH_HANG_DEBIT_HIST
                              join u1 in ctx.NGUOI_DUNG on s.MA_NHAN_VIEN_TH equals u1.MA_NGUOI_DUNG
                              where (s.ACTIVE.Equals("A")
@@ -475,8 +478,8 @@ namespace SMS.Controllers
             var total = ctx.GET_SUM_HOA_DON_BY_CUS_ID(fromDate, toDate, customerId).ToList().First();
             KhachHang.Total = total;
             ViewBag.CustomerId = customerId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ViewBag.currentPageIndex = currentPageIndex;
             return PartialView("showOrderHistPartialView", KhachHang);
         }

@@ -970,8 +970,8 @@ namespace SMS.Controllers
             ViewBag.Status = status;
             ViewBag.UserId = userId;
             ViewBag.UserFullName = userFullName;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = todate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.ImportStoreId = importStoreId;
             ViewBag.ExportStoreId = exportStoreId;
             return PartialView("ListExportTransferPartialView", model);

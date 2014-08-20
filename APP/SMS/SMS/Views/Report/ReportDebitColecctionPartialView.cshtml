@@ -1,0 +1,57 @@
+﻿@model SMS.Models.ReportDebitColectionModel
+@using PagedList.Mvc;
+<div>
+    <table style="width:100%; font-family:'Times New Roman'" class="contentTable">
+        <tr>
+            <td class='inner colwidth alignCenter head '>
+                STT
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tên khách hàng
+            </td>
+            <td class='inner colwidth alignCenter head '>
+               Ngày phát sinh
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Số phát sinh
+            </td>
+        </tr>
+        @{
+            double total = 0;
+        }
+        @if (Model.Details != null && Model.Details.Count() > 0)
+        {
+            int i =0;
+            foreach (var detail in Model.Details)
+            {
+                i++;
+                total += detail.PHAT_SINH;
+                <tr>
+                    <td class='innerLast colwidth alignCenter'>
+                        @i
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TEN_KHACH_HANG
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.NGAY_PHAT_SINH.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.PHAT_SINH.ToString("#,####.##")
+                    </td>
+                </tr>
+            }
+            <tr style="font-weight:bold">
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray" colspan="3"></td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@total.ToString("#,####.##")</td>
+            </tr>
+        }
+        else
+        {
+            <tr style="background-color:lightgray">
+                <td class='innerLast colwidth alignCenter' colspan="5">Không có dữ liệu</td>
+            </tr>
+        }
+    </table>
+
+</div>
