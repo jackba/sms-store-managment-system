@@ -14,6 +14,7 @@ namespace SMS.Models
         public double TOTAL { get; set; }
         public int MONTH { get; set; }
         public int YEAR { get; set; }
+        public DateTime DAY { get; set; }
     }
 
     public class ReportWeek

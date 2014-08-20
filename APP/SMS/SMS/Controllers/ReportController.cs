@@ -73,10 +73,46 @@ namespace SMS.Controllers
             model.TheList = tonkho;
             return PartialView("WeReportPartialView", model);
         }
+        
+        public ActionResult DayReport()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult DayReportPartialView(DateTime? fromDate, DateTime? toDate)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var tonkho = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY @START_TIME, @END_TIME",
+               FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
+            ReportModel model = new ReportModel();
+            model.TheList = tonkho;
+            return PartialView("DayReportPartialView", model);
+        }
+
         public ActionResult MthReport()
         {
             return View();
         }
+
 
         [HttpPost]
         public PartialViewResult MthReportPartialView(DateTime? fromDate, DateTime? toDate)
