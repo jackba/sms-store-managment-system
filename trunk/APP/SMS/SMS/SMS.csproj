@@ -543,6 +543,7 @@
     <Content Include="Content\images\report1.jpg" />
     <Content Include="Content\images\report2.jpg" />
     <Content Include="Content\images\report3.jpg" />
+    <Content Include="Content\images\report4.jpg" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
@@ -888,6 +889,8 @@
     <Content Include="Views\Report\MthReport.cshtml" />
     <Content Include="Views\Report\WeReport.cshtml" />
     <Content Include="Views\Report\WeReportPartialView.cshtml" />
+    <Content Include="Views\Report\DayReport.cshtml" />
+    <Content Include="Views\Report\DayReportPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
