@@ -379,7 +379,7 @@ input.productName{
 }
 
 input.price{
-    width:100px;
+    width:70px;
 }
 
 input.quantity{
@@ -391,16 +391,16 @@ input.discount{
 }
 
 input.total{
-    width:100px;
+    width:90px;
 }
 
 input.realTotal{
-    width:100px;
+    width:90px;
 }
 .unit{
     width:70px;
 }
 
 .store{
-    width:70px;
+    width:112px !important;
 }
