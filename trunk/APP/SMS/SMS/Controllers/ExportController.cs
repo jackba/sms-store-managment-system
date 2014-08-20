@@ -198,6 +198,14 @@ namespace SMS.Controllers
             string storeName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
             var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
             if (string.IsNullOrWhiteSpace(storeName))
             {
                 storeName = string.Empty;
@@ -211,8 +219,8 @@ namespace SMS.Controllers
             ViewBag.InputKind = status;
             ViewBag.StoreName = storeName;
             ViewBag.StoreId = storeId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             WaitingExport2ProviderListModel model = new WaitingExport2ProviderListModel();
@@ -511,8 +519,8 @@ namespace SMS.Controllers
             ViewBag.CustomerName = customerName;
             ViewBag.ExporterId = exporterId;
             ViewBag.ExporterName = exporterName;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -520,6 +528,14 @@ namespace SMS.Controllers
         public PartialViewResult SaleExportListPartialView(int? storeId, string storeName, int? exporterId, string exporterName, int? customerId,
             string customerName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
             if (string.IsNullOrEmpty(storeName))
             {
                 storeName = string.Empty;
@@ -620,8 +636,8 @@ namespace SMS.Controllers
             ViewBag.CustomerName = customerName;
             ViewBag.ExporterId = exporterId;
             ViewBag.ExporterName = exporterName;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -771,8 +787,8 @@ namespace SMS.Controllers
             ViewBag.StoreName = storeName;
             ViewBag.CustomerId = customerId;
             ViewBag.CustomerName = customerName;
-            ViewBag.Todate = todate;
-            ViewBag.Fromdate = fromdate;
+            ViewBag.Todate = ((DateTime)todate).ToString("dd/MM/yyyy");
+            ViewBag.Fromdate = ((DateTime)fromdate).ToString("dd/MM/yyyy");
             return PartialView("IndexPartialView", model);
         }
 

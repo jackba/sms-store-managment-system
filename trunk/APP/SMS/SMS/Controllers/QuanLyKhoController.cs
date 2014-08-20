@@ -298,8 +298,8 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ExportReportDetailModel model = new ExportReportDetailModel();
             model.ResultList = tk;
             var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
@@ -391,8 +391,8 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ExportRepotModel model = new ExportRepotModel();
             model.ResultList = tk;
             var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
@@ -480,8 +480,8 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             SpImportRepoterModel model = new SpImportRepoterModel();
             model.ResultList = tk;
             var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
@@ -630,8 +630,8 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
-            ViewBag.FromDate = fromDate;
-            ViewBag.ToDate = toDate;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
 
             ImportReportDetail model = new ImportReportDetail();
             model.ResultList = tk;

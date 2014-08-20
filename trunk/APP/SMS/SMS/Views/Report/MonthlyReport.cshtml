@@ -41,6 +41,17 @@
     </tr>
 </table>
 <br />
+
+@RenderChart()
+
+@helper RenderChart()
+{
+    <div style="width:100%; text-align:center">
+            <img src="/Report/GetRainfallChart"/>
+    </div>
+}
+<br />
+
 <table style="width:100%; font-family:'Times New Roman'">
     @{int month = 0;}
     @for(int i = 1; i <=3; i++)
