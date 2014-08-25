@@ -21,7 +21,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult ReportByAreaPartialView(int areaId, string areaName, DateTime? fromDate, DateTime? toDate)
+        public PartialViewResult ReportByAreaPartialView(int? areaId, string areaName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(areaName))
             {
