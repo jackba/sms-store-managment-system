@@ -15,6 +15,58 @@ namespace SMS.Controllers
         //
         // GET: /Report/
 
+        public ActionResult ReportByArea()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ReportByAreaPartialView(int areaId, string areaName, DateTime? fromDate, DateTime? toDate)
+        {
+            if (string.IsNullOrWhiteSpace(areaName))
+            {
+                areaName = string.Empty;
+                areaId = 0;
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var customerIdParam = new SqlParameter
+            {
+                ParameterName = "MA_KHU_VUC",
+                Value = Convert.ToInt32(areaId)
+            };
+            var customerNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHU_VUC",
+                Value = areaName
+            };
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+
+            var tonkho = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY_AND_AREA  @START_TIME, @END_TIME, @MA_KHU_VUC, @TEN_KHU_VUC ",
+                FromDateParam, ToDateParam, customerIdParam,customerNameParam ).Take(SystemConstant.MAX_ROWS).ToList<Report>();
+            ReportModel model = new ReportModel();
+            model.TheList = tonkho;
+
+            return PartialView("ReportByAreaPartialView", model);
+        }
+
+
         public ActionResult ReportDebitColecction()
         {
             return View();
