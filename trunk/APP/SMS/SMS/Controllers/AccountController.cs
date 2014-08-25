@@ -162,7 +162,7 @@ namespace SMS.Controllers
             bool IsValid = false;
             using (var ctx = new SmsContext())
             {
-                var user = ctx.NGUOI_DUNG.FirstOrDefault(u => u.USER_NAME == username && u.ACTIVE == "A");
+                var user = ctx.NGUOI_DUNG.Where(u => u.USER_NAME.ToLower() == username.ToLower() && u.ACTIVE == "A").FirstOrDefault();
                 if (user != null)
                 {
                     if (user.MAT_KHAU == crypto.Compute(password, user.SALT))

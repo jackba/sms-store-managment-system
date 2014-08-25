@@ -897,6 +897,8 @@
     <Content Include="Views\Report\Return2ProviderReportPartialView.cshtml" />
     <Content Include="Views\Report\ReportDebitColecctionPartialView.cshtml" />
     <Content Include="Views\Report\ReportDebitColecction.cshtml" />
+    <Content Include="Views\Report\ReportByArea.cshtml" />
+    <Content Include="Views\Report\ReportByAreaPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
