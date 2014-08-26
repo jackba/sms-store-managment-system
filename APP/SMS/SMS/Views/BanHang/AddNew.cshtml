@@ -1086,10 +1086,6 @@
     function returnSubmit() {
         $('#message').empty();
         $('#InforMessage').empty();
-        if (checkdlc()) {
-            $('#message').append("Trong danh sách có ít nhất 2 mặt hàng giống nhau. Vui lòng kiểm tra lại");
-            return false;
-        }
         var row = 0;
         var rval = 1;
         var pval = 1;

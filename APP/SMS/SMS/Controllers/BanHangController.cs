@@ -63,8 +63,8 @@ namespace SMS.Controllers
                         ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
                         ct.SO_LUONG_TEMP = detail.SO_LUONG;
                         ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
-                        ct.DON_GIA_TEMP = detail.DON_GIA;
-                        ct.DON_GIA = detail.DON_GIA / detail.HE_SO;
+                        ct.DON_GIA_TEMP = (double)detail.DON_GIA;
+                        ct.DON_GIA = (double)detail.DON_GIA / detail.HE_SO;
                         ct.PHAN_TRAM_CHIEC_KHAU = detail.PHAN_TRAM_CHIEC_KHAU;
                         ct.MA_DON_VI = detail.MA_DON_VI;
                         ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
