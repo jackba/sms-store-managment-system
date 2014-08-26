@@ -15,6 +15,56 @@ namespace SMS.Controllers
         //
         // GET: /Report/
 
+        public ActionResult ReportByCustomer()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ReportByCustomerPartialView(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
+        {
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                customerName = string.Empty;
+                customerId = 0;
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var customerIdParam = new SqlParameter
+            {
+                ParameterName = "MA_KHACH_HANG",
+                Value = Convert.ToInt32(customerId)
+            };
+            var customerNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHACH_HANG",
+                Value = customerName
+            };
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var tonkho = ctx.Database.SqlQuery<ReportByCustomer>("exec SP_REPORT_BY_CUSTOMER  @START_TIME, @END_TIME, @MA_KHACH_HANG, @TEN_KHACH_HANG ",
+               FromDateParam, ToDateParam, customerIdParam, customerNameParam).Take(SystemConstant.MAX_ROWS).ToList<ReportByCustomer>();
+            ReportByCustomerModel model = new ReportByCustomerModel();
+            model.TheList = tonkho;
+
+            return PartialView("ReportByCustomerPartialView", model);
+        }
+
         public ActionResult ReportByArea()
         {
             return View();

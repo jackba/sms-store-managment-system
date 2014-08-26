@@ -18,6 +18,27 @@ namespace SMS.Models
         public DateTime DAY { get; set; }
     }
 
+    public class ReportByCustomer
+    {
+        public int MA_KHACH_HANG { get; set; }
+        public string TEN_KHACH_HANG { get; set; }
+        public int MA_KHU_VUC { get; set; }
+        public string TEN_KHU_VUC { get; set; }
+        public double SO_TIEN_KHACH_TRA { get; set; }
+        public double SO_TIEN_NO_GOI_DAU { get; set; }
+        public double BUGET_TOTAL { get; set; }
+        public double RETURN_TOTAL { get; set; }
+        public double TOTAL { get; set; }
+        public int MONTH { get; set; }
+        public int YEAR { get; set; }
+        public DateTime DAY { get; set; }
+    }
+
+    public class ReportByCustomerModel
+    {
+        public List<ReportByCustomer> TheList { get; set; }
+    }
+
     public class ReportWeek
     {
         public double SO_TIEN_KHACH_TRA { get; set; }
@@ -31,7 +52,7 @@ namespace SMS.Models
         public DateTime END_DATE { get; set; }
     }
 
-
+   
 
     public class ReportWeekModel
     {

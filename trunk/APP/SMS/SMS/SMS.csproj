@@ -546,6 +546,9 @@
     <Content Include="Content\images\report4.jpg" />
     <Content Include="Content\images\report5.jpg" />
     <Content Include="Content\images\Report6.png" />
+    <Content Include="Content\images\report7.png" />
+    <Content Include="Content\images\report8.png" />
+    <Content Include="Content\images\report9.png" />
     <Content Include="Content\images\role.png" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
@@ -899,6 +902,8 @@
     <Content Include="Views\Report\ReportDebitColecction.cshtml" />
     <Content Include="Views\Report\ReportByArea.cshtml" />
     <Content Include="Views\Report\ReportByAreaPartialView.cshtml" />
+    <Content Include="Views\Report\ReportByCustomer.cshtml" />
+    <Content Include="Views\Report\ReportByCustomerPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
