@@ -86,12 +86,12 @@ namespace SMS.Controllers
                 while (csvReader.Read())
                 {
                     if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 7)
-                {
-                    ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
-                    model.Stores = stores;
-                    model.StoreId = storeId;
-                    return View(model);
-                }
+                    {
+                        ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
+                        model.Stores = stores;
+                        model.StoreId = storeId;
+                        return View(model);
+                    }
                     if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
                     {
                         headers = csvReader.FieldHeaders;

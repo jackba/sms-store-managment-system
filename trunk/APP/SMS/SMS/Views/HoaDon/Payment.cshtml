@@ -4,10 +4,24 @@
 @section Scripts
 {
     <script>
+        $(document).ready(function () {
+            $("#smallPagePrint").hide();
+        });
         //Stop Form Submission of Enter Key Press
         function pagePrint() {
             var printContents = document.getElementById("printFeature").innerHTML;
             var originalContents = document.body.innerHTML;
+            document.getElementById('myHeader').style.display = 'none';
+            document.getElementById('myFooter').style.display = 'none';
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+
+        function smallPagePrint() {
+            var printContents = document.getElementById("smallPagePrint").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.getElementById('printFeature').style.display = 'none';
             document.getElementById('myHeader').style.display = 'none';
             document.getElementById('myFooter').style.display = 'none';
             document.body.innerHTML = printContents;
@@ -29,6 +43,144 @@
     <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
     <a href="@Url.Action("Collection", "HoaDon")"> Danh sách hóa đơn </a> >
     In hóa đơn
+</div>
+
+@{
+    int i = 0;
+    double total = 0;
+    double allTotal = 0;
+}
+
+<div id="smallPagePrint" style="width:450px">
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="~/Content/css/print.css" rel="stylesheet" media="print" type="text/css" />
+    <table style="width:100%">
+        <tr>
+            <td rowspan="3" style="width:30%">
+                <img width="100" height="100" src="~/Images/logo2.png"></img>
+            </td>
+            <td style="text-align:right">
+                <table style="width:100%">
+                    <tr>
+                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"> @Model.SmsMaster.Address</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber  - Fax: @Model.SmsMaster.FaxNumber</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <hr />
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:50%">
+                Số hóa đơn
+            </td>
+            <td>
+                @Model.Infor.SO_HOA_DON
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tên khách hàng
+            </td>
+            <td>
+                @Model.Infor.TEN_KHACH_HANG
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Điạ chỉ giao hàng
+            </td>
+            <td>
+                @Model.Infor.DIA_CHI_GIAO_HANG
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ngày bán hàng
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_BAN != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ngày giao hàng
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_GIAO != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
+                }
+
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <div style="text-align:center">
+        @Model.SmsMaster.AdvertisementHeader
+    </div>
+    <hr />
+    <table style="width:100%" id="SmallMainTable" class="details">
+        <tr>
+            <td class='inner colwidth head '>
+                Số lượng
+            </td>
+            <td class='innerLast colwidth head '>
+                Đơn vị
+            </td>
+            <td class='inner colwidth head '>
+                Đơn giá
+            </td>
+            <td class='inner colwidth head '>
+                (%)
+            </td>
+            <td class='innerLast colwidth head '>
+                Thành tiền
+            </td>
+        </tr>
+        @{
+            i = 0;
+            total = 0;
+            allTotal = 0;
+        }
+        @foreach (var detail in Model.detailList)
+        {
+            i++;
+            total = detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP - detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP * detail.PHAN_TRAM_CHIEC_KHAU / 100;
+            allTotal += total;
+            <tr>
+                <td class="innerLast colwidth" colspan="6">(@i) @detail.TEN_SAN_PHAM</td>
+            </tr>
+            <tr>
+                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.TEN_DON_VI_TEMP</td>
+                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@total.ToString("#,###.##")</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
+            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
+        </tr>
+    </table>
+    <div class="innerLast" style="text-align:center">
+        @Model.SmsMaster.AdvertisementFooter
+    </div>
+
 </div>
 
 <div id="printFeature">
@@ -138,9 +290,9 @@
             </td>
         </tr>
         @{
-            int i = 0;
-            double total = 0;
-            double allTotal = 0;
+            i = 0;
+            total = 0;
+            allTotal = 0;
         }
         @foreach (var detail in Model.detailList)
         {
@@ -167,3 +319,4 @@
     </div>
 </div>
 <input type="button" value="In hóa đơn" onclick="pagePrint(); return false;">
+<input type="button" value="In hóa đơn (80x***)" onclick="smallPagePrint(); return false;">
