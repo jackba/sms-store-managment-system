@@ -267,7 +267,8 @@ namespace SMS.Controllers
                                                 }
                                                 else
                                                 {
-                                                    var product1 = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE == r[2].Trim()).FirstOrDefault();
+                                                    string code = r[2].Trim();
+                                                    var product1 = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE.ToLower() == code).FirstOrDefault();
                                                     if (product1.MA_SAN_PHAM != product.MA_SAN_PHAM)
                                                     {
                                                         if (!flag)
