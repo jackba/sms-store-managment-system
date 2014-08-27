@@ -904,6 +904,7 @@
     <Content Include="Views\Report\ReportByAreaPartialView.cshtml" />
     <Content Include="Views\Report\ReportByCustomer.cshtml" />
     <Content Include="Views\Report\ReportByCustomerPartialView.cshtml" />
+    <Content Include="Views\SanPham\importCsv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
