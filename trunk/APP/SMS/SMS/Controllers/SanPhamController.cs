@@ -141,43 +141,144 @@ namespace SMS.Controllers
                             row[j] = csvReader.GetField(j);
                         }
                         rows.Add(row);
-                        bool flag = true;
-                        int i = 1;
-                        using (var transaction = new System.Transactions.TransactionScope())
+                    }
+                }
+                bool flag = true;
+                int i = 1;
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        SAN_PHAM product;
+                        foreach (var r in rows)
                         {
-                            try
+                            i++;
+                            if (string.IsNullOrWhiteSpace(r[1]))
                             {
-                                SAN_PHAM product;
-                                foreach (var r in rows)
+                                if (string.IsNullOrWhiteSpace(r[2]) ||
+                                    string.IsNullOrWhiteSpace(r[3]) ||
+                                    string.IsNullOrWhiteSpace(r[4]) ||
+                                    string.IsNullOrWhiteSpace(r[5]) ||
+                                    string.IsNullOrWhiteSpace(r[6]) ||
+                                    string.IsNullOrWhiteSpace(r[7]) ||
+                                    string.IsNullOrWhiteSpace(r[8]))
                                 {
-                                    i++;
-                                    if (string.IsNullOrWhiteSpace(r[1]))
+                                    if (!flag)
                                     {
-                                        if (string.IsNullOrWhiteSpace(r[2]) ||
-                                            string.IsNullOrWhiteSpace(r[3]) ||
-                                            string.IsNullOrWhiteSpace(r[4]) ||
-                                            string.IsNullOrWhiteSpace(r[5]) ||
-                                            string.IsNullOrWhiteSpace(r[6]) ||
-                                            string.IsNullOrWhiteSpace(r[7]) ||
-                                            string.IsNullOrWhiteSpace(r[8]))
+                                        fileStringBuilder.Append("<br>");
+                                    }
+                                    flag = false;
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Khi thêm mới bạn phải điền đầy đủ thông tin");
+                                }
+                                else
+                                {
+                                    if (checkProductExisted(r[2]))
+                                    {
+                                        if (!flag)
+                                        {
+                                            fileStringBuilder.Append("<br>");
+                                        }
+                                        flag = false;
+                                        fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Trùng CODE.");
+                                    }
+                                    else
+                                    {
+                                        if (!checkPriceDiscountAndWeigh(r[6], r[7], r[8], r[9], r[10], r[11], r[13]))
                                         {
                                             if (!flag)
                                             {
                                                 fileStringBuilder.Append("<br>");
                                             }
                                             flag = false;
-                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Khi thêm mới bạn phải điền đầy đủ thông tin");
+                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm trai lại đơn giá, chiếc khấu và trọng lượng, tất cả phải là ký tự số.");
                                         }
                                         else
                                         {
-                                            if (checkProductExisted(r[2]))
+                                            if (!checkUnit(r[4]))
                                             {
                                                 if (!flag)
                                                 {
                                                     fileStringBuilder.Append("<br>");
                                                 }
                                                 flag = false;
-                                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Trùng CODE.");
+                                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm trai lại mã đơn vị.");
+                                            }
+                                            else
+                                            {
+                                                product = ctx.SAN_PHAM.Create();
+                                                product.CODE = r[2];
+                                                product.TEN_SAN_PHAM = r[3];
+                                                product.MA_DON_VI = Convert.ToInt32(r[4]);
+                                                product.GIA_BAN_1 = Convert.ToDouble(r[6]);
+                                                product.GIA_BAN_2 = Convert.ToDouble(r[7]);
+                                                product.GIA_BAN_3 = Convert.ToDouble(r[8]);                                                        
+                                                product.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[9])? 0 : Convert.ToDouble(r[9]);
+                                                product.CHIEC_KHAU_2 = string.IsNullOrWhiteSpace(r[10]) ? 0 : Convert.ToDouble(r[10]);
+                                                product.CHIEC_KHAU_3 = string.IsNullOrWhiteSpace(r[11]) ? 0 : Convert.ToDouble(r[11]);
+                                                product.KICH_THUOC = r[12];
+                                                product.CAN_NANG = string.IsNullOrWhiteSpace(r[13]) ? 0 : Convert.ToDouble(r[13]);
+                                                product.DAC_TA  = r[14];
+                                                ctx.SAN_PHAM.Add(product);
+                                                ctx.SaveChanges();
+                                            }
+                                        }
+                                                
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (string.IsNullOrWhiteSpace(r[2]) ||
+                                    string.IsNullOrWhiteSpace(r[3]) ||
+                                    string.IsNullOrWhiteSpace(r[4]) ||
+                                    string.IsNullOrWhiteSpace(r[5]) ||
+                                    string.IsNullOrWhiteSpace(r[6]) ||
+                                    string.IsNullOrWhiteSpace(r[7]) ||
+                                    string.IsNullOrWhiteSpace(r[8]))
+                                {
+                                    if (!flag)
+                                    {
+                                        fileStringBuilder.Append("<br>");
+                                    }
+                                    flag = false;
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng điền đầy đủ các thông tin cần cập nhật.");
+                                }
+                                else
+                                {
+                                    int productId = 0;
+                                    if (!int.TryParse(r[1], out productId))
+                                    {
+                                        if (!flag)
+                                        {
+                                            fileStringBuilder.Append("<br>");
+                                        }
+                                        flag = false;
+                                        fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Mã sản phẩm phải là số nguyên.");
+                                    }
+                                    else
+                                    {
+                                        product = ctx.SAN_PHAM.Find(productId);
+                                        if (product.ACTIVE != "A")
+                                        {
+                                            if (!flag)
+                                            {
+                                                fileStringBuilder.Append("<br>");
+                                            }
+                                            flag = false;
+                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Không tồn tại sản phẩm này trong hệ thống.");
+                                        }
+                                        else
+                                        {
+                                            string code = r[2].Trim();
+                                            var product1 = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE.ToLower() == code).FirstOrDefault();
+                                            if (product1 != null && product1.MA_SAN_PHAM != product.MA_SAN_PHAM)
+                                            {
+                                                if (!flag)
+                                                {
+                                                    fileStringBuilder.Append("<br>");
+                                                }
+                                                flag = false;
+                                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Sản phẩm trùng CODE. Vui lòng chọn code khác");
                                             }
                                             else
                                             {
@@ -203,154 +304,53 @@ namespace SMS.Controllers
                                                     }
                                                     else
                                                     {
-                                                        product = ctx.SAN_PHAM.Create();
                                                         product.CODE = r[2];
                                                         product.TEN_SAN_PHAM = r[3];
                                                         product.MA_DON_VI = Convert.ToInt32(r[4]);
                                                         product.GIA_BAN_1 = Convert.ToDouble(r[6]);
                                                         product.GIA_BAN_2 = Convert.ToDouble(r[7]);
-                                                        product.GIA_BAN_3 = Convert.ToDouble(r[8]);                                                        
-                                                        product.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[9])? 0 : Convert.ToDouble(r[9]);
+                                                        product.GIA_BAN_3 = Convert.ToDouble(r[8]);
+                                                        product.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[9]) ? 0 : Convert.ToDouble(r[9]);
                                                         product.CHIEC_KHAU_2 = string.IsNullOrWhiteSpace(r[10]) ? 0 : Convert.ToDouble(r[10]);
                                                         product.CHIEC_KHAU_3 = string.IsNullOrWhiteSpace(r[11]) ? 0 : Convert.ToDouble(r[11]);
                                                         product.KICH_THUOC = r[12];
                                                         product.CAN_NANG = string.IsNullOrWhiteSpace(r[13]) ? 0 : Convert.ToDouble(r[13]);
-                                                        product.DAC_TA  = r[14];
-                                                        ctx.SAN_PHAM.Add(product);
+                                                        product.DAC_TA = r[14];
                                                         ctx.SaveChanges();
                                                     }
                                                 }
-                                                
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (string.IsNullOrWhiteSpace(r[2]) ||
-                                            string.IsNullOrWhiteSpace(r[3]) ||
-                                            string.IsNullOrWhiteSpace(r[4]) ||
-                                            string.IsNullOrWhiteSpace(r[5]) ||
-                                            string.IsNullOrWhiteSpace(r[6]) ||
-                                            string.IsNullOrWhiteSpace(r[7]) ||
-                                            string.IsNullOrWhiteSpace(r[8]))
-                                        {
-                                            if (!flag)
-                                            {
-                                                fileStringBuilder.Append("<br>");
-                                            }
-                                            flag = false;
-                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng điền đầy đủ các thông tin cần cập nhật.");
-                                        }
-                                        else
-                                        {
-                                            int productId = 0;
-                                            if (!int.TryParse(r[1], out productId))
-                                            {
-                                                if (!flag)
-                                                {
-                                                    fileStringBuilder.Append("<br>");
-                                                }
-                                                flag = false;
-                                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Mã sản phẩm phải là số nguyên.");
-                                            }
-                                            else
-                                            {
-                                                product = ctx.SAN_PHAM.Find(productId);
-                                                if (product.ACTIVE != "A")
-                                                {
-                                                    if (!flag)
-                                                    {
-                                                        fileStringBuilder.Append("<br>");
-                                                    }
-                                                    flag = false;
-                                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Không tồn tại sản phẩm này trong hệ thống.");
-                                                }
-                                                else
-                                                {
-                                                    string code = r[2].Trim();
-                                                    var product1 = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE.ToLower() == code).FirstOrDefault();
-                                                    if (product1.MA_SAN_PHAM != product.MA_SAN_PHAM)
-                                                    {
-                                                        if (!flag)
-                                                        {
-                                                            fileStringBuilder.Append("<br>");
-                                                        }
-                                                        flag = false;
-                                                        fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Sản phẩm trùng CODE. Vui lòng chọn code khác");
-                                                    }
-                                                    else
-                                                    {
-                                                        if (!checkPriceDiscountAndWeigh(r[6], r[7], r[8], r[9], r[10], r[11], r[13]))
-                                                        {
-                                                            if (!flag)
-                                                            {
-                                                                fileStringBuilder.Append("<br>");
-                                                            }
-                                                            flag = false;
-                                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm trai lại đơn giá, chiếc khấu và trọng lượng, tất cả phải là ký tự số.");
-                                                        }
-                                                        else
-                                                        {
-                                                            if (!checkUnit(r[4]))
-                                                            {
-                                                                if (!flag)
-                                                                {
-                                                                    fileStringBuilder.Append("<br>");
-                                                                }
-                                                                flag = false;
-                                                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm trai lại mã đơn vị.");
-                                                            }
-                                                            else
-                                                            {
-                                                                product.CODE = r[2];
-                                                                product.TEN_SAN_PHAM = r[3];
-                                                                product.MA_DON_VI = Convert.ToInt32(r[4]);
-                                                                product.GIA_BAN_1 = Convert.ToDouble(r[6]);
-                                                                product.GIA_BAN_2 = Convert.ToDouble(r[7]);
-                                                                product.GIA_BAN_3 = Convert.ToDouble(r[8]);
-                                                                product.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[9]) ? 0 : Convert.ToDouble(r[9]);
-                                                                product.CHIEC_KHAU_2 = string.IsNullOrWhiteSpace(r[10]) ? 0 : Convert.ToDouble(r[10]);
-                                                                product.CHIEC_KHAU_3 = string.IsNullOrWhiteSpace(r[11]) ? 0 : Convert.ToDouble(r[11]);
-                                                                product.KICH_THUOC = r[12];
-                                                                product.CAN_NANG = string.IsNullOrWhiteSpace(r[13]) ? 0 : Convert.ToDouble(r[13]);
-                                                                product.DAC_TA = r[14];
-                                                                ctx.SaveChanges();
-                                                            }
-                                                        }
-                                                    }
-                                                }
                                             }
                                         }
                                     }
                                 }
-                                if (flag)
-                                {
-                                    transaction.Complete();
-                                    return RedirectToAction("Index", new { @messageInfor = "Import danh sách sản phẩm thành công." });
-                                }
-                                else
-                                {
-                                    Transaction.Current.Rollback();
-                                    ViewBag.Message = "Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
-                                    return View();                                    
-                                }
-                            }
-                            catch
-                            {
-                                ViewBag.Message = "Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
-                                return View();
                             }
                         }
+                        if (flag)
+                        {
+                            transaction.Complete();
+                            return RedirectToAction("Index", new { @messageInfor = "Import danh sách sản phẩm thành công." });
+                        }
+                        else
+                        {
+                            Transaction.Current.Rollback();
+                            ViewBag.Message = "Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                            return View();                                    
+                        }
+                    }
+                    catch
+                    {
+                        ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                        return View();
                     }
                 }
             }
+                
+            
             else
             {
                 ViewBag.Message = "Bạn chưa chọn file. Vui lòng chọn file import.";
                 return View();
             }
-            ViewBag.Message = "Có lỗi xảy ra trong quá trình import danh sách. Vui lòng liên hệ admin.";
-            return View();
         }
 
         public ActionResult importCsv(string message, string inforMessage)
@@ -385,7 +385,41 @@ namespace SMS.Controllers
             return jresult;
         }
 
-
+        public ActionResult downloadConvertCSVTemplate()
+        {
+            Response.ClearContent();
+            Response.Buffer = true;
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
+            Response.ContentType = "text/csv";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"ID\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Mã đơn vị tính\",");
+            fileStringBuilder.Append("\"Tên đơn vị tính\",");
+            fileStringBuilder.Append("\"Hệ số\",");
+            fileStringBuilder.Append("\"Đơn giá 1\",");
+            fileStringBuilder.Append("\"Đơn giá 2\",");
+            fileStringBuilder.Append("\"Đơn giá 3\",");
+            fileStringBuilder.Append("\"Chiếc khấu 1\",");
+            fileStringBuilder.Append("\"Chiếc khấu 2\",");
+            fileStringBuilder.Append("\"Chiếc khấu 3\"");
+            var ctx = new SmsContext();
+            var converts = ctx.CHUYEN_DOI_DON_VI_TINH.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A");
+            int i = 0;
+            foreach (var convert in converts)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + convert.MA_SAN_PHAN + "\",");
+            }
+        }
         public ActionResult downloadCSVTemplate()
         {
             Response.ClearContent();

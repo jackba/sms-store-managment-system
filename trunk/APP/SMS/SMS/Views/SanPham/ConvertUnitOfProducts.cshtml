@@ -90,6 +90,16 @@
                       ))
 {
     <hr style="width:100%" />
+    <div>
+        @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
+        {
+             <hr style="width:100%" />
+            <input type="button" value="Download danh mục" class="myButton"
+                   onclick="location.href='@Url.Action("downloadConvertCSVTemplate", "SanPham")'" />
+            <input type="button" value="Import danh mục" class="myButton"
+                   onclick="location.href='@Url.Action("importConvertCsv", "SanPham")'" />
+        }
+    </div>
     <div style="float:right">
         Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
         <input type="submit" value="Tìm kiếm" class="myButton" />
