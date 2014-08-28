@@ -365,7 +365,12 @@
 </script>
 }
 
-
+<div style="font-family:'Times New Roman';color:red">
+    @ViewBag.Message
+</div>
+<div style="font-family:'Times New Roman';color:blue">
+    @ViewBag.InforMessage
+</div>
   @using (Ajax.BeginForm("PagingContent", "SanPham", new AjaxOptions()
                             {
                                 HttpMethod = "POST",

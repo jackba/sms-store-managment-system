@@ -905,9 +905,11 @@
     <Content Include="Views\Report\ReportByCustomer.cshtml" />
     <Content Include="Views\Report\ReportByCustomerPartialView.cshtml" />
     <Content Include="Views\SanPham\importCsv.cshtml" />
+    <Content Include="Views\SanPham\importConvertCsv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="aspnet_client\" />
     <Folder Include="Filters\" />
     <Folder Include="ImportUploads\" />
   </ItemGroup>
