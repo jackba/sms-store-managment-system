@@ -29,8 +29,10 @@ namespace SMS.Controllers
         IPagedList<SanPhamDisplay> listResult = null;
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string inforMessage, string message)
         {
+            ViewBag.InforMessage = inforMessage;
+            ViewBag.Message = message;
             Session[SEARCH_ADVANCE] = null;
             return View();
         }
@@ -100,6 +102,210 @@ namespace SMS.Controllers
             return true;
         }
 
+        public ActionResult importConvertCsv()
+        {
+            return View();
+        }
+        
+        private bool checkConverterRow(string productId, string unitId, 
+            string factor,string price1, string price2, string price3, string discount1, string discount2, string discount3)
+        {
+            discount1 = string.IsNullOrWhiteSpace(discount1) ? "0" : discount1;
+            discount2 = string.IsNullOrWhiteSpace(discount2) ? "0" : discount2;
+            discount3 = string.IsNullOrWhiteSpace(discount3) ? "0" : discount3;
+            int proId;
+            int unId;
+            float fac, p1, p2, p3, d1, d2, d3;
+
+            if(string.IsNullOrWhiteSpace(price1) 
+                || string.IsNullOrWhiteSpace(price2) 
+                || string.IsNullOrWhiteSpace(price3)
+                || string.IsNullOrWhiteSpace(productId)
+                || string.IsNullOrWhiteSpace(unitId))
+            {
+                return false;
+            }
+
+            if(!int.TryParse(productId, out proId)
+                || !int.TryParse(unitId, out unId)
+                || !float.TryParse(factor, out fac)
+                || !float.TryParse(price1, out p1)
+                || !float.TryParse(price2, out p2)
+                || !float.TryParse(price3, out p3)
+                || !float.TryParse(discount1, out d1)
+                || !float.TryParse(discount2, out d2)
+                || !float.TryParse(discount3, out d3))
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        [HttpPost]
+        public ActionResult importConvertCsv(HttpPostedFileBase file)
+        {
+            var ctx = new SmsContext();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            if (file != null)
+            {
+                var fp = Path.Combine(HttpContext.Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
+                file.SaveAs(fp);
+                
+                if (Path.GetExtension(fp) == null || Path.GetExtension(fp).ToLower() != ".csv")
+                {
+                    ViewBag.Message = "Định dạng file không đúng. Vui lòng chọn lại file import.";
+                    return View();
+                }
+                ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
+                CsvReader csvReader = new CsvReader(csvParser);
+                string[] headers = { };
+                List<string[]> rows = new List<string[]>();
+                string[] row;
+                
+                while (csvReader.Read())
+                {
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 13)
+                    {
+                        ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
+                        return View();
+                    }
+                    else
+                    {
+                        if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
+                        {
+                            headers = csvReader.FieldHeaders;
+                        }
+                        row = new string[headers.Count()];
+                        for (int j = 0; j < headers.Count(); j++)
+                        {
+                            row[j] = csvReader.GetField(j);
+                        }
+                        rows.Add(row);
+                    }
+                }
+
+                 bool flag = true;
+                int i = 1;
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        CHUYEN_DOI_DON_VI_TINH convert;
+                        foreach (var r in rows)
+                        {
+                            i++;
+                            if (string.IsNullOrWhiteSpace(r[1]))
+                            {
+                                if (checkConverterRow(r[2], r[4], r[6], r[7], r[8], r[9], r[10], r[11], r[12]))
+                                {
+                                    convert = ctx.CHUYEN_DOI_DON_VI_TINH.Create();
+                                    convert.UPDATE_AT = DateTime.Now;
+                                    convert.ACTIVE = "A";
+                                    convert.CREATE_AT = DateTime.Now;
+                                    convert.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                    convert.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                    convert.MA_SAN_PHAN = int.Parse(r[2]);
+                                    convert.MA_DON_VI_VAO = int.Parse(r[4]);
+                                    convert.HE_SO = float.Parse(r[6]);
+                                    convert.GIA_BAN_1 = float.Parse(r[7]);
+                                    convert.GIA_BAN_2 = float.Parse(r[8]);
+                                    convert.GIA_BAN_3 = float.Parse(r[9]);
+                                    convert.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[10])? 0 : float.Parse(r[10]);
+                                    convert.CHIEC_KHAU_2 = string.IsNullOrWhiteSpace(r[11]) ? 0 : float.Parse(r[11]);
+                                    convert.CHIEC_KHAU_3 = string.IsNullOrWhiteSpace(r[12]) ? 0 :  float.Parse(r[12]);
+                                    ctx.CHUYEN_DOI_DON_VI_TINH.Add(convert);
+                                    ctx.SaveChanges();
+                                }
+                                else
+                                {
+                                    if (!flag)
+                                    {
+                                        fileStringBuilder.Append("<br>");
+                                    }
+                                    flag = false;
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm tra ký tự số.");
+                                }
+                            }
+                            else
+                            {
+                                int convertId = 0;
+                                if (!int.TryParse(r[1], out convertId))
+                                {
+                                    if (!flag)
+                                    {
+                                        fileStringBuilder.Append("<br>");
+                                    }
+                                    flag = false;
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". ID phải là ký tự sô. Vui lòng kiểm tra lại");
+                                }
+                                else
+                                {
+                                    convert = ctx.CHUYEN_DOI_DON_VI_TINH.Find(convertId);
+                                    if (convert == null || convert.ACTIVE != "A")
+                                    {
+                                        if (!flag)
+                                        {
+                                            fileStringBuilder.Append("<br>");
+                                        }
+                                        flag = false;
+                                        fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". ID phải là ký tự sô. Vui lòng kiểm tra lại");
+                                    }
+                                    else
+                                    {
+                                        if (checkConverterRow(r[2], r[4], r[6], r[7], r[8], r[9], r[10], r[11], r[12]))
+                                        {
+                                            convert.ACTIVE = "A";
+                                            convert.UPDATE_AT = DateTime.Now;
+                                            convert.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                            convert.MA_SAN_PHAN = int.Parse(r[2]);
+                                            convert.MA_DON_VI_VAO = int.Parse(r[4]);
+                                            convert.HE_SO = float.Parse(r[6]);
+                                            convert.GIA_BAN_1 = float.Parse(r[7]);
+                                            convert.GIA_BAN_2 = float.Parse(r[8]);
+                                            convert.GIA_BAN_3 = float.Parse(r[9]);
+                                            convert.CHIEC_KHAU_1 = string.IsNullOrWhiteSpace(r[10]) ? 0 : float.Parse(r[10]);
+                                            convert.CHIEC_KHAU_2 = string.IsNullOrWhiteSpace(r[11]) ? 0 : float.Parse(r[11]);
+                                            convert.CHIEC_KHAU_3 = string.IsNullOrWhiteSpace(r[12]) ? 0 : float.Parse(r[12]);
+                                            ctx.SaveChanges();
+                                        }
+                                        else
+                                        {
+                                            if (!flag)
+                                            {
+                                                fileStringBuilder.Append("<br>");
+                                            }
+                                            flag = false;
+                                            fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm tra ký tự số.");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (flag)
+                        {
+                            transaction.Complete();
+                            return RedirectToAction("ConvertUnitOfProducts", new { @inforMessage = "Import danh sách sản phẩm thành công." });
+                        }
+                        else
+                        {
+                            Transaction.Current.Rollback();
+                            ViewBag.Message = fileStringBuilder.ToString();
+                            return View();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                        return View();
+                    }
+                }
+            }
+            return View();
+        }
+
+
         [HttpPost]
         public ActionResult importCsv(HttpPostedFileBase file)
         {
@@ -124,7 +330,7 @@ namespace SMS.Controllers
 
                 while (csvReader.Read())
                 {
-                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 15)
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 17)
                     {
                         ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
                         return View();
@@ -142,6 +348,8 @@ namespace SMS.Controllers
                         }
                         rows.Add(row);
                     }
+
+
                 }
                 bool flag = true;
                 int i = 1;
@@ -218,6 +426,11 @@ namespace SMS.Controllers
                                                 product.KICH_THUOC = r[12];
                                                 product.CAN_NANG = string.IsNullOrWhiteSpace(r[13]) ? 0 : Convert.ToDouble(r[13]);
                                                 product.DAC_TA  = r[14];
+                                                product.ACTIVE = "A";
+                                                product.UPDATE_AT = DateTime.Now;
+                                                product.CREATE_AT = DateTime.Now;
+                                                product.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                                product.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                                                 ctx.SAN_PHAM.Add(product);
                                                 ctx.SaveChanges();
                                             }
@@ -258,7 +471,7 @@ namespace SMS.Controllers
                                     else
                                     {
                                         product = ctx.SAN_PHAM.Find(productId);
-                                        if (product.ACTIVE != "A")
+                                        if (product == null || product.ACTIVE != "A")
                                         {
                                             if (!flag)
                                             {
@@ -316,6 +529,9 @@ namespace SMS.Controllers
                                                         product.KICH_THUOC = r[12];
                                                         product.CAN_NANG = string.IsNullOrWhiteSpace(r[13]) ? 0 : Convert.ToDouble(r[13]);
                                                         product.DAC_TA = r[14];
+                                                        product.ACTIVE = "A";
+                                                        product.UPDATE_AT = DateTime.Now;
+                                                        product.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                                                         ctx.SaveChanges();
                                                     }
                                                 }
@@ -328,12 +544,12 @@ namespace SMS.Controllers
                         if (flag)
                         {
                             transaction.Complete();
-                            return RedirectToAction("Index", new { @messageInfor = "Import danh sách sản phẩm thành công." });
+                            return RedirectToAction("Index", new { @inforMessage = "Import danh sách sản phẩm thành công." });
                         }
                         else
                         {
                             Transaction.Current.Rollback();
-                            ViewBag.Message = "Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                            ViewBag.Message = fileStringBuilder.ToString();
                             return View();                                    
                         }
                     }
@@ -410,15 +626,30 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Chiếc khấu 2\",");
             fileStringBuilder.Append("\"Chiếc khấu 3\"");
             var ctx = new SmsContext();
-            var converts = ctx.CHUYEN_DOI_DON_VI_TINH.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A");
+            var converts = ctx.CHUYEN_DOI_DON_VI_TINH.Include("SAN_PHAM").Include("DON_VI_TINH").Where(u => u.ACTIVE == "A");
             int i = 0;
             foreach (var convert in converts)
             {
                 fileStringBuilder.Append("\n");
                 i += 1;
                 fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + convert.MA_CHUYEN_DOI + "\",");
                 fileStringBuilder.Append("\"" + convert.MA_SAN_PHAN + "\",");
+                fileStringBuilder.Append("\"" + convert.SAN_PHAM.TEN_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + convert.MA_DON_VI_VAO + "\",");
+                fileStringBuilder.Append("\"" + convert.DON_VI_TINH.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\"" + (convert.HE_SO == null? "0": ((Double)convert.HE_SO).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.GIA_BAN_1 == null ? "0" : ((Double)convert.GIA_BAN_1).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.GIA_BAN_2 == null ? "0" : ((Double)convert.GIA_BAN_2).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.GIA_BAN_3 == null ? "0" : ((Double)convert.GIA_BAN_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_1 == null ? "0" : ((Double)convert.CHIEC_KHAU_1).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_2 == null ? "0" : ((Double)convert.CHIEC_KHAU_2).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_3 == null ? "0" : ((Double)convert.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
             }
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+            return View("../SanPham/ConvertUnitOfProducts");
         }
         public ActionResult downloadCSVTemplate()
         {
@@ -1232,8 +1463,10 @@ namespace SMS.Controllers
 
         /*** CONVERT UNIT START **/
         [HttpGet]
-        public ActionResult ConvertUnitOfProducts()
-        {            
+        public ActionResult ConvertUnitOfProducts(string inforMessage, string message)
+        {
+            ViewBag.InforMessage = inforMessage;
+            ViewBag.Message = message;
             return View();
         }
 

@@ -15,13 +15,14 @@ using CsvHelper;
 
 namespace SMS.Controllers
 {
-    [CustomActionFilter]
+    
     public class ImportController : Controller
     {
         public ActionResult showDetail(int id)
         {
             return View();
         }
+     
         [HttpPost]
         public PartialViewResult showDetailPartialView(int id)
         {
@@ -65,6 +66,7 @@ namespace SMS.Controllers
             return true;
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult importCsv(HttpPostedFileBase file, ImportCsvModel model)
         {
@@ -225,6 +227,8 @@ namespace SMS.Controllers
             model.StoreId = storeId;
             return View(model);
         }
+
+        [CustomActionFilter]
         public ActionResult importCsv(string message, string inforMessage)
         {
             ImportCsvModel model = new ImportCsvModel();
@@ -242,6 +246,8 @@ namespace SMS.Controllers
             ViewBag.InforMessage = inforMessage;
             return View(model);
         }
+
+        [CustomActionFilter]
         public ActionResult downloadCSVTemplate()
         {
             Response.ClearContent();
@@ -280,6 +286,8 @@ namespace SMS.Controllers
             Response.End();
             return View("../Home/Import");
         }
+
+        [CustomActionFilter]
         public ActionResult downloadTemplateExcel()
         {
             Response.ClearContent();
@@ -322,6 +330,8 @@ namespace SMS.Controllers
             Response.End();
             return View("../Home/Import");
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditAdjustment(EditImportModel model)
         {
@@ -384,6 +394,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult EditAdjustment(int id)
         {
             EditImportModel model = new EditImportModel();
@@ -405,6 +416,8 @@ namespace SMS.Controllers
             model.Detail = detail;
             return View(model);
         }
+
+        [CustomActionFilter]
         public ActionResult Adjustment()
         {
             var ctx = new SmsContext();
@@ -424,6 +437,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Adjustment(ImportModel model)
         {
@@ -478,6 +492,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult deleteTransfer(int id)
         {
             if (id <= 0)
@@ -526,6 +541,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult deleteImport(int id)
         {
             if (id <= 0)
@@ -613,11 +629,13 @@ namespace SMS.Controllers
 
         //
         // GET: /Import/
+        [CustomActionFilter]
         public ActionResult ListOfImportBill()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ImportTransfer(ImportTransferModel model)
         {
@@ -675,7 +693,8 @@ namespace SMS.Controllers
                 return RedirectToAction("ListWaitingImport", new { @message = "Nhập kho thất bại, vui lòng kiểm tra lại" });
             }
         }
-
+        
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(EditImportModel model)
         {
@@ -738,6 +757,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult Edit(int id)
         {
             EditImportModel model = new EditImportModel();
@@ -760,6 +780,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult ImportTransfer(int id)
         {
             var ctx = new SmsContext();
@@ -779,6 +800,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult ListExportTransfer(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -794,6 +816,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult ListWaitingImport(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -838,6 +861,7 @@ namespace SMS.Controllers
             return PartialView("ListWaitingImportPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult EditExportTransfer(int id)
         {
             var ctx = new SmsContext();
@@ -857,7 +881,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditExportTransfer(EditTransferModel model)
         {
@@ -977,6 +1001,7 @@ namespace SMS.Controllers
             return PartialView("ListExportTransferPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ExportTransfer(TransferModel model)
         {
@@ -1063,6 +1088,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Import(ImportModel model)
         {
@@ -1121,6 +1147,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult Import()
         {
             var ctx = new SmsContext();
@@ -1138,6 +1165,7 @@ namespace SMS.Controllers
             ViewBag.InputKind = -1;
             return View(model);
         }
+
 
         [HttpPost]
         public PartialViewResult IndexPartialView(DateTime? fromDate, DateTime? toDate, int? importerId, string importerName,

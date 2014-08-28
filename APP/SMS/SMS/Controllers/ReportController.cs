@@ -15,6 +15,135 @@ namespace SMS.Controllers
         //
         // GET: /Report/
 
+        public ActionResult downloadReportBycustomer(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
+        {
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                customerName = string.Empty;
+                customerId = 0;
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var customerIdParam = new SqlParameter
+            {
+                ParameterName = "MA_KHACH_HANG",
+                Value = Convert.ToInt32(customerId)
+            };
+            var customerNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHACH_HANG",
+                Value = customerName
+            };
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            var details = ctx.Database.SqlQuery<ReportByCustomer>("exec SP_REPORT_BY_CUSTOMER  @START_TIME, @END_TIME, @MA_KHACH_HANG, @TEN_KHACH_HANG ",
+               FromDateParam, ToDateParam, customerIdParam, customerNameParam).ToList<ReportByCustomer>();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename= "+ fileName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='5'> BÁO CÁO DOANH THU THEO KHU VỰC - KHÁCH HÀNG </td></tr>");
+            fileStringBuilder.Append("<tr>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tên khách hàng </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng thực thu </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng nợ gối đầu</td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng trả hàng </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Doanh thu </td>");
+            fileStringBuilder.Append("</tr>");
+            int AreaId = 0;
+            double reciptTotal = 0;
+            double debitTotal = 0;
+            double returnTotal = 0;
+            double total = 0;
+            double subreciptTotal = 0;
+            double subdebitTotal = 0;
+            double subreturnTotal = 0;
+            double subtotal = 0;
+            foreach (var detail in details)
+            {
+                if (AreaId != detail.MA_KHU_VUC)
+                {
+                    AreaId = detail.MA_KHU_VUC;
+                    if (subtotal != 0 || subreciptTotal != 0 || subdebitTotal != 0 || subreturnTotal != 0)
+                    {
+                        fileStringBuilder.Append("<tr>");
+                        fileStringBuilder.Append("<td align='center' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> </td>");
+                        fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subreciptTotal.ToString("#,###.##") + " </td>");
+                        fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subdebitTotal.ToString("#,###.##") + " </td>");
+                        fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subreturnTotal.ToString("#,###.##") + " </td>");
+                        fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subtotal.ToString("#,###.##") + " </td>");
+                        fileStringBuilder.Append("</tr>");
+                    }
+                    fileStringBuilder.Append("<tr>");
+                    fileStringBuilder.Append("<td align='left' colspan='5' bgcolor='#87CEFA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.TEN_KHU_VUC +"</td>");
+                    fileStringBuilder.Append("</tr>");
+                    subreciptTotal = 0;
+                    subdebitTotal = 0;
+                    subreturnTotal = 0;
+                    subtotal = 0;
+                }
+                reciptTotal += detail.SO_TIEN_KHACH_TRA;
+                debitTotal += detail.SO_TIEN_NO_GOI_DAU;
+                returnTotal += detail.RETURN_TOTAL;
+                total += detail.TOTAL;
+                subreciptTotal += detail.SO_TIEN_KHACH_TRA;
+                subdebitTotal += detail.SO_TIEN_NO_GOI_DAU;
+                subreturnTotal += detail.RETURN_TOTAL;
+                subtotal += detail.TOTAL;
+                fileStringBuilder.Append("<tr>");
+                fileStringBuilder.Append("<td align='left' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.TEN_KHACH_HANG +" </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.SO_TIEN_KHACH_TRA.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.SO_TIEN_NO_GOI_DAU.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.RETURN_TOTAL.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.TOTAL.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("</tr>");
+            }
+            if (subtotal != 0 || subreciptTotal != 0 || subdebitTotal != 0 || subreturnTotal != 0)
+            {
+                fileStringBuilder.Append("<tr>");
+                fileStringBuilder.Append("<td align='left' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> </td>");
+                fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subreciptTotal.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subdebitTotal.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subreturnTotal.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' bgcolor='#20B2AA' style=\"font-size:18px; font-family:'Times New Roman'\"> " + subtotal.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("</tr>");
+            }
+
+            fileStringBuilder.Append("<tr>");
+            fileStringBuilder.Append("<td align='left' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng cộng </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + reciptTotal.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + debitTotal.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + returnTotal.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + total.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("</tr>");
+
+            fileStringBuilder.Append("</table>");
+
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+            return View("../Report/ReportByCustomer");
+        }
         public ActionResult ReportByCustomer()
         {
             return View();

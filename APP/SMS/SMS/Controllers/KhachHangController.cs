@@ -14,7 +14,7 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
+    
     public class KhachHangController : Controller
     {
         [HttpPost]
@@ -126,6 +126,7 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", khachHangs);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Index()
         {

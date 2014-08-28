@@ -11,13 +11,10 @@ using System.Data;
 
 namespace SMS.Controllers
 {
-    [CustomActionFilter]
+    [Authorize]
+    [HandleError]
     public class HoaDonController : Controller
     {
-        //
-        // GET: /HoaDon/
-
-
         [HttpPost]
         public JsonResult FindExported(string prefixText)
         {
@@ -42,6 +39,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult PagingContent(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? salerId, string salerName,
@@ -96,6 +94,7 @@ namespace SMS.Controllers
             return PartialView("CollectionPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult CollectionPartialView(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
@@ -151,7 +150,8 @@ namespace SMS.Controllers
             return PartialView("CollectionPartialView", model);
         }
 
-         [HttpPost]
+        [CustomActionFilter]
+        [HttpPost]
         public PartialViewResult IndexPagingContent(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? salerId, string salerName,
             int? accountantId, string accountantName, int? status, int? areaId, string areaName, int? currentPageIndex)
@@ -218,6 +218,7 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult IndexPartialView(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
@@ -285,6 +286,7 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult Index( string messsage, string inforMessage)
         {
             ViewBag.InputKind = Convert.ToInt32(0);
@@ -292,6 +294,8 @@ namespace SMS.Controllers
             ViewBag.InforMessage = inforMessage;
             return View();
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult PaymentAndExport(InvoicesModel model)
         {
@@ -364,6 +368,8 @@ namespace SMS.Controllers
             model.SmsMaster = master;
             return View(model);
         }
+
+        [CustomActionFilter]
         public ActionResult Payment(int id)
         {
             var ctx = new SmsContext();
@@ -389,7 +395,8 @@ namespace SMS.Controllers
             model.SmsMaster = master;
             return View(model);
         }
-
+                
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Payment(InvoicesModel model)
         {
@@ -486,6 +493,7 @@ namespace SMS.Controllers
             return View(model);
         }
         
+
         public ActionResult ShowDetail(int id, int? flg, int? status )
         {
             var ctx = new SmsContext();
@@ -536,6 +544,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -627,6 +636,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ShowDetail(InvoicesModel model)
         {
