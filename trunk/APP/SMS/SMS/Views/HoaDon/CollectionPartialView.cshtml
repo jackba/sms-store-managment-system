@@ -12,17 +12,16 @@
                 <td class='innerLast colwidth head '>  Thu tiền </td>
             </tr>
             @{
-    DateTime ImportDate = DateTime.Now;
-    if (Model.Invoices != null && Model.Invoices.Count() >= 1)
-    {
+                DateTime ImportDate = DateTime.Now;
+                if (Model.Invoices != null && Model.Invoices.Count() >= 1)
+                {
         ImportDate = (DateTime)Model.Invoices[0].NGAY_BAN;
 
         <tr>
             <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
         </tr>
-    }
-            }
-            @foreach (var dbHist in Model.Invoices)
+    
+            foreach (var dbHist in Model.Invoices)
             {
                 if (ImportDate != (DateTime)dbHist.NGAY_BAN)
                 {
@@ -77,6 +76,13 @@
                     </td>
                 </tr>
             }
+            }
+            else{
+<tr>
+    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">Không có dữ liệu</td>
+</tr>
+            }
+}
             
         </table>
 

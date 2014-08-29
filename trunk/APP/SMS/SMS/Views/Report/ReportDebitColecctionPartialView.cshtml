@@ -15,8 +15,16 @@
             <td class='inner colwidth alignCenter head '>
                Số tiền thu
             </td>
+            <td class='inner colwidth alignCenter head '>
+                Số tiền thu từ trả hàng
+            </td>
+            <td class='innerLast colwidth alignCenter head '>
+                Tổng cộng
+            </td>
         </tr>
         @{
+            double cash = 0;
+            double byReturn = 0;
             double total = 0;
         }
         @if (Model.Details != null && Model.Details.Count() > 0)
@@ -25,31 +33,41 @@
             foreach (var detail in Model.Details)
             {
                 i++;
-                total += detail.PHAT_SINH;
+                cash += detail.PHAT_SINH;
+                byReturn += detail.PHAT_SINH_BY_RETURN;
+                total += detail.TOTAL;
                 <tr>
                     <td class='innerLast colwidth alignCenter'>
                         @i
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth align-left '>
                         @detail.TEN_KHACH_HANG
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth align-left '>
                         @detail.NGAY_PHAT_SINH.ToString("dd/MM/yyyy")
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth numberic '>
                         @detail.PHAT_SINH.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth numberic '>
+                        @detail.PHAT_SINH_BY_RETURN.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth numberic '>
+                        @detail.TOTAL.ToString("#,####.##")
                     </td>
                 </tr>
             }
             <tr style="font-weight:bold">
-                <td class='innerLast colwidth alignCenter' style="background-color:lightgray" colspan="3"></td>
-                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@total.ToString("#,####.##")</td>
+                <td class='innerLast colwidth numberic' style="background-color:lightgray" colspan="3"></td>
+                <td class='innerLast colwidth numberic' style="background-color:lightgray" >@cash.ToString("#,####.##")</td>
+                <td class='innerLast colwidth numberic' style="background-color:lightgray" >@byReturn.ToString("#,####.##")</td>
+                <td class='innerLast colwidth numberic' style="background-color:lightgray">@total.ToString("#,####.##")</td>
             </tr>
         }
         else
         {
             <tr style="background-color:lightgray">
-                <td class='innerLast colwidth alignCenter' colspan="5">Không có dữ liệu</td>
+                <td class='innerLast colwidth alignCenter' colspan="6">Không có dữ liệu</td>
             </tr>
         }
     </table>

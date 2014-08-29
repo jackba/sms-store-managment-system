@@ -90,7 +90,9 @@ namespace SMS.Models
         public int MA_KHACH_HANG { get; set; }
         public DateTime NGAY_PHAT_SINH { get; set; }
         public double PHAT_SINH { get; set; }
+        public double PHAT_SINH_BY_RETURN { get; set; }
         public string TEN_KHACH_HANG { get; set; }
+        public double TOTAL { get; set; }
     }
     public class ReportDebitColectionModel
     {
