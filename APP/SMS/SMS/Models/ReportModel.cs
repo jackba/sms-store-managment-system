@@ -16,6 +16,8 @@ namespace SMS.Models
         public int MONTH { get; set; }
         public int YEAR { get; set; }
         public DateTime DAY { get; set; }
+        public int MA_KHU_VUC { get; set; }
+        public string TEN_KHU_VUC { get; set; }
     }
 
     public class ReportByCustomer
