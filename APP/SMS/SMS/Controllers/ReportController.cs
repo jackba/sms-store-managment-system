@@ -15,6 +15,105 @@ namespace SMS.Controllers
         //
         // GET: /Report/
 
+
+        [HttpPost]
+        public ActionResult DownloadDebitColecction(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
+        {
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                customerName = string.Empty;
+                customerId = 0;
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var customerIdParam = new SqlParameter
+            {
+                ParameterName = "CUSTOMER_ID",
+                Value = Convert.ToInt32(customerId)
+            };
+            var customerNameParam = new SqlParameter
+            {
+                ParameterName = "CUSTOMER_NAME",
+                Value = customerName
+            };
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "FROM_DATE",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "TO_DATE",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var deatils = ctx.Database.SqlQuery<ReportDebitColection>("exec SP_GET_REPORT_DEBT_COLLECTION @CUSTOMER_ID, @CUSTOMER_NAME, @FROM_DATE, @TO_DATE", customerIdParam, customerNameParam,
+                FromDateParam, ToDateParam).ToList<ReportDebitColection>();
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='6'> BÁO CÁO THU NỢ </td></tr>");
+            fileStringBuilder.Append("<tr>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> STT </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tên khách hàng </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Ngày</td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Trả bằng tiền mặt </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Trả hàng </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng cộng </td>");
+            fileStringBuilder.Append("</tr>");
+
+            int i = 0;
+            double cash = 0;
+            double byReturn = 0;
+            double total = 0;
+
+            foreach (var detail in deatils)
+            {
+
+                i++;
+                cash += detail.PHAT_SINH;
+                byReturn += detail.PHAT_SINH_BY_RETURN;
+                total += detail.TOTAL;
+                fileStringBuilder.Append("<tr>");
+                fileStringBuilder.Append("<td align='center' style=\"font-size:18px; font-family:'Times New Roman'\"> " + i + " </td>");
+                fileStringBuilder.Append("<td align='left' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.TEN_KHACH_HANG + " </td>");
+                fileStringBuilder.Append("<td align='left' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.NGAY_PHAT_SINH.ToString("dd/MM/yyyy") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.PHAT_SINH.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.PHAT_SINH_BY_RETURN.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("<td align='right' style=\"font-size:18px; font-family:'Times New Roman'\"> " + detail.TOTAL.ToString("#,###.##") + " </td>");
+                fileStringBuilder.Append("</tr>");
+            }
+
+            fileStringBuilder.Append("<tr>");
+            fileStringBuilder.Append("<td align='left' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman' \" colspan='3' > Tổng cộng </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + cash.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + byReturn.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + total.ToString("#,###.##") + " </td>");
+            fileStringBuilder.Append("</tr>");
+
+            fileStringBuilder.Append("</table>");
+
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+            return View("../Report/ReportDebitColecction");
+        }
+
+
+
+        [HttpPost]
         public ActionResult downloadReportByArea(int? areaId, string areaName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(areaName))
@@ -148,7 +247,7 @@ namespace SMS.Controllers
         }
 
 
-
+        [HttpPost]
         public ActionResult downloadReportBycustomer(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(customerName))
@@ -386,6 +485,8 @@ namespace SMS.Controllers
         {
             return View();
         }
+
+
 
         [HttpPost]
         public PartialViewResult ReportDebitColecctionPartialView(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)

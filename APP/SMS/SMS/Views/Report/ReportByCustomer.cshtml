@@ -59,6 +59,35 @@
             $('#mainForm').submit();
         });
         $(document).ready(function () {
+
+            $("#ExportExcel").click(function () {
+                var customerId = $("#customerId").val();
+                var customerName = $("#customerName").val();
+                var fromDate = $("#fromDate").val();
+                var toDate = $("#toDate").val();
+                $.ajax({
+                    url: "/Report/downloadReportBycustomer",
+                    data: "{ 'customerId': '" + customerId + "' , 'customerName':'" + customerName + "' , 'fromDate': '"+ fromDate+"' , 'toDate': '"+ toDate + "'}",
+                    type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function(response, status, request) {
+                        var disp = request.getResponseHeader('Content-Disposition');
+                        if (disp && disp.search('attachment') != -1) {
+                            var type = request.getResponseHeader('application/ms-excel');
+                            var blob = new Blob([response], { type : type });
+                            if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                                var fileName = new Date().getTime().toString() + ".xls";
+                                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                                window.navigator.msSaveBlob(blob, fileName);
+                            } else {
+                                var URL = window.URL || window.webkitURL;
+                                var downloadUrl = URL.createObjectURL(blob);
+                                window.location = downloadUrl;
+                            }
+                        }
+                    }
+                });
+            });
+
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
@@ -66,6 +95,7 @@
                 yearRange: "-60:+0"
             });
         });
+
     </script>
     <style type="text/css">
         .required:after {
@@ -115,8 +145,7 @@
                 <td>
                     @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
                     <input type="submit" value="Tìm kiếm" class="myButton" />
-                    <input type="button" value="Xuất excel" id="btnExport" class="myButton"
-                           onclick="location.href='@Url.Action("downloadReportBycustomer", "Report")'" />
+                    <input type="button" value="Xuất excel" id="ExportExcel" class="myButton" />
                 </td>
             </tr>
         </table>
