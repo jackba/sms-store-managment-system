@@ -24,31 +24,73 @@
             double debitTotal = 0;
             double returnTotal = 0;
             double total = 0;
+            double subreciptTotal = 0;
+            double subdebitTotal = 0;
+            double subreturnTotal = 0;
+            double subtotal = 0;
+            int areaId = 0;
         }
         @if (Model.TheList != null && Model.TheList.Count() > 0)
         {
             foreach (var detail in Model.TheList)
             {
+                if (areaId != detail.MA_KHU_VUC)
+                {
+                    areaId = detail.MA_KHU_VUC;
+                    if (subtotal != 0 || subreciptTotal != 0 || subdebitTotal != 0 || subreturnTotal != 0)
+                    {
+                        <tr style="font-weight:bold">
+                            <td class='innerLast colwidth alignCenter' style="background-color: LightSeaGreen; "></td>
+                            <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subreciptTotal.ToString("#,####.##")</td>
+                            <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subdebitTotal.ToString("#,####.##")</td>
+                            <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subreturnTotal.ToString("#,####.##")</td>
+                            <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subtotal.ToString("#,####.##")</td>
+                        </tr>
+                    }
+                    subreciptTotal = 0;
+                    subdebitTotal = 0;
+                    subreturnTotal = 0;
+                    subtotal = 0;
+                    <tr>
+                    <td class='innerLast colwidth align-left' colspan="5" style="background-color:lightgray">
+                        @detail.TEN_KHU_VUC
+                    </td>
+                    </tr>
+                }
                 reciptTotal += detail.SO_TIEN_KHACH_TRA;
                 debitTotal += detail.SO_TIEN_NO_GOI_DAU;
                 returnTotal += detail.RETURN_TOTAL;
                 total += detail.TOTAL;
+                subreciptTotal += detail.SO_TIEN_KHACH_TRA;
+                subdebitTotal += detail.SO_TIEN_NO_GOI_DAU;
+                subreturnTotal += detail.RETURN_TOTAL;
+                subtotal += detail.TOTAL;
                 <tr>
                     <td class='innerLast colwidth alignCenter'>
                         @detail.DAY.ToString("dd/MM/yyyy")
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth numberic '>
                         @detail.SO_TIEN_KHACH_TRA.ToString("#,####.##")
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth numberic '>
                         @detail.SO_TIEN_NO_GOI_DAU.ToString("#,####.##")
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth numberic '>
                         @detail.RETURN_TOTAL.ToString("#,####.##")
                     </td>
-                    <td class='innerLast colwidth alignCenter '>
+                    <td class='innerLast colwidth numberic '>
                         @detail.TOTAL.ToString("#,####.##")
                     </td>
+                </tr>
+            }
+            if (subtotal != 0 || subreciptTotal != 0 || subdebitTotal != 0 || subreturnTotal != 0)
+            {
+                <tr style="font-weight:bold">
+                    <td class='innerLast colwidth alignCenter' style="background-color: LightSeaGreen; "></td>
+                    <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subreciptTotal.ToString("#,####.##")</td>
+                    <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subdebitTotal.ToString("#,####.##")</td>
+                    <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subreturnTotal.ToString("#,####.##")</td>
+                    <td class='innerLast colwidth numberic' style="background-color: LightSeaGreen; ">@subtotal.ToString("#,####.##")</td>
                 </tr>
             }
             <tr style="font-weight:bold">
