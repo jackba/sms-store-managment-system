@@ -28,7 +28,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult FifoReportPagingContent(int? StoreId, int? ProductId, bool? flag, string StoreName, string ProductName, int? currentPageIndex)
+        public PartialViewResult FifoReportPagingContent(int? StoreId, string StoreName, int? ProductId, string ProductName,  bool? flag, int? currentPageIndex)
         {
             if (string.IsNullOrEmpty(StoreName))
             {
@@ -52,10 +52,24 @@ namespace SMS.Controllers
                 ParameterName = "MA_KHO",
                 Value = Convert.ToInt32(StoreId)
             };
+
+            var StoreNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHO",
+                Value = StoreName
+            };
+
+
             var idProductParam = new SqlParameter
             {
                 ParameterName = "MA_SAN_PHAM",
                 Value = Convert.ToInt32(ProductId)
+            };
+
+            var ProductNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_SAN_PHAM_PR",
+                Value = ProductName
             };
 
             var totalExport = new SqlParameter
@@ -72,9 +86,11 @@ namespace SMS.Controllers
             };
             var ctx = new SmsContext();
             ctx.Database.CommandTimeout = 300;
-            var tonkho = ctx.Database.SqlQuery<Fifo>("exec STMA_GET_GIA_TRI_HANG_BAN_TON @MA_KHO, @MA_SAN_PHAM, @GIA_VON_HANG_BAN_TOTAL OUT, @GIA_TRI_HANG_TON_TOTAL OUT",
+            var tonkho = ctx.Database.SqlQuery<Fifo>("exec STMA_GET_GIA_TRI_HANG_BAN_TON @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM_PR, @GIA_VON_HANG_BAN_TOTAL OUT, @GIA_TRI_HANG_TON_TOTAL OUT",
                 idStoreParam,
+                StoreNameParam,
                 idProductParam,
+                ProductNameParam,
                 totalExport,
                 totalLeft
                 ).ToList<Fifo>().Take(SystemConstant.MAX_ROWS);
@@ -86,8 +102,8 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             FifoModel model = new FifoModel();
             model.ResultList = tk;
-            var exportValue = (double)totalExport.Value;
-            var leftValue = (double)totalLeft.Value;
+            var exportValue = totalExport == null ? 0 : (double)totalExport.Value;
+            var leftValue = totalLeft == null ? 0 : (double)totalLeft.Value;
             model.GIA_VON_HANG_BAN_TOTAL = exportValue;
             model.GIA_TRI_HANG_TON_TOTAL = leftValue;
             ViewBag.StoreName = StoreName;
@@ -105,7 +121,7 @@ namespace SMS.Controllers
                 StoreName = string.Empty;
                 StoreId = 0;
             }
-            
+
             if (!(bool)Session["IsAdmin"])
             {
                 StoreId = (int)Session["MyStore"];
@@ -122,10 +138,24 @@ namespace SMS.Controllers
                 ParameterName = "MA_KHO",
                 Value = Convert.ToInt32(StoreId)
             };
+
+            var StoreNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHO",
+                Value = StoreName
+            };
+
+
             var idProductParam = new SqlParameter
             {
                 ParameterName = "MA_SAN_PHAM",
                 Value = Convert.ToInt32(ProductId)
+            };
+
+            var ProductNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_SAN_PHAM_PR",
+                Value = ProductName
             };
 
             var totalExport = new SqlParameter
@@ -142,9 +172,11 @@ namespace SMS.Controllers
             };
             var ctx = new SmsContext();
             ctx.Database.CommandTimeout = 300;
-            var tonkho = ctx.Database.SqlQuery<Fifo>("exec STMA_GET_GIA_TRI_HANG_BAN_TON @MA_KHO, @MA_SAN_PHAM, @GIA_VON_HANG_BAN_TOTAL OUT, @GIA_TRI_HANG_TON_TOTAL OUT",
+            var tonkho = ctx.Database.SqlQuery<Fifo>("exec STMA_GET_GIA_TRI_HANG_BAN_TON @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM_PR, @GIA_VON_HANG_BAN_TOTAL OUT, @GIA_TRI_HANG_TON_TOTAL OUT",
                 idStoreParam,
+                StoreNameParam,
                 idProductParam,
+                ProductNameParam,
                 totalExport,
                 totalLeft
                 ).ToList<Fifo>().Take(SystemConstant.MAX_ROWS);
@@ -156,8 +188,8 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             FifoModel model = new FifoModel();
             model.ResultList = tk;
-            var exportValue = (double)totalExport.Value;
-            var leftValue = (double)totalLeft.Value;
+            var exportValue = totalExport == null? 0: (double)totalExport.Value;
+            var leftValue = totalLeft == null ? 0: (double)totalLeft.Value;
             model.GIA_VON_HANG_BAN_TOTAL = exportValue;
             model.GIA_TRI_HANG_TON_TOTAL = leftValue;
             ViewBag.StoreName = StoreName;
