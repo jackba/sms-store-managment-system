@@ -1412,6 +1412,50 @@ namespace SMS.Controllers
             return View();
         }
 
+        public ActionResult downloadWarningList()
+        {
+            var ctx = new SmsContext();
+            var details = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", 
+                new SqlParameter("NAME", string.Empty)).ToList<SP_GET_TON_KHO_ALERT>();
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='5'> SẢN PHẨM CẦN NHẬP KHO </td></tr>");
+            fileStringBuilder.Append("<tr>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> STT </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Mã sản phẩm </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tên sản phẩm </td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tên đơn vị</td>");
+            fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Số lượng </td>");
+            fileStringBuilder.Append("</tr>");
+            int i = 0;
+            foreach (var detail in details)
+            {
+                i++;
+                fileStringBuilder.Append("<tr>");
+                fileStringBuilder.Append("<td align='center' > " + i + " </td>");
+                fileStringBuilder.Append("<td align='center' > " + detail.MA_SAN_PHAM + " </td>");
+                fileStringBuilder.Append("<td align='center' > " + detail.TEN_SAN_PHAM + " </td>");
+                fileStringBuilder.Append("<td align='center' > " + detail.TEN_DON_VI + " </td>");
+                fileStringBuilder.Append("<td align='center' > </td>");
+                fileStringBuilder.Append("</tr>");
+            }
+            fileStringBuilder.Append("</table>");
+
+            Response.Output.Write(fileStringBuilder.ToString());
+            Response.Flush();
+            Response.End();
+
+            return View("../Sanpham/Warning");
+        }
+
         [HttpPost]
         public PartialViewResult PagingContentWarning(string SearchString, int? currentPageIndex)
         {
@@ -1426,7 +1470,7 @@ namespace SMS.Controllers
             ctx.Database.CommandTimeout = 300;
             // var watch = Stopwatch.StartNew();
             var ListKho = ctx.KHOes.Where(u => u.ACTIVE.Equals("A")).ToList();
-            string s = ctx.Database.Connection.ToString();
+            //string s = ctx.Database.Connection.ToString();
             var tonkho = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<SP_GET_TON_KHO_ALERT>().Take(SystemConstant.MAX_ROWS); ;
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.Count = tonkho.Count();

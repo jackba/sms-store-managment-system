@@ -57,17 +57,17 @@
                 <tr>
                     <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
-            }
-        }
-        @foreach (var dbHist in Model.Detail)
-        {
-            if (ImportDate != (DateTime)dbHist.NGAY_LAP_PHIEU)
+        
+            
+            foreach (var dbHist in Model.Detail)
             {
-                ImportDate = (DateTime)dbHist.NGAY_LAP_PHIEU;
-                <tr>
-                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
-                </tr>
-            }
+                if (ImportDate != (DateTime)dbHist.NGAY_LAP_PHIEU)
+                {
+                    ImportDate = (DateTime)dbHist.NGAY_LAP_PHIEU;
+                    <tr>
+                        <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    </tr>
+                }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
                     @if (@dbHist.MA_PHIEU_TRA != null && @dbHist.MA_PHIEU_TRA > 0)
@@ -114,7 +114,17 @@
 
 
             </tr>
+            }
+
+            }
+            else
+            {
+                <tr>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">Không có dữ liệu </td>
+                </tr>
+            }
         }
+       
 
     </table>
 

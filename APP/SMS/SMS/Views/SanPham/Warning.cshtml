@@ -71,7 +71,9 @@
     <div style="float:right">
         Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
         <input type="submit" value="Tìm kiếm" class="myButton" />
-        <input type="button" value="Lập phiếu đề xuất mua hàng"/>
+
+    <input type="button" value="Lập phiếu đề xuất mua hàng" onclick="location.href='@Url.Action("downloadWarningList", "SanPham")'" />
+
     </div>
     <div style="clear:both"></div>
 

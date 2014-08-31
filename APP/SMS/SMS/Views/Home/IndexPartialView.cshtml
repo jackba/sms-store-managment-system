@@ -48,6 +48,10 @@
         </td>
     </tr>
     @{
+        if (ViewBag.tonKho != null && ViewBag.tonKho.Count > 0)
+        {
+            
+        
         foreach (var tonKho in ViewBag.tonKho)
         {
             <tr>
@@ -99,6 +103,14 @@
                 <td class="innerLast colwidth">
                     @tonKho.TOTAL.ToString("0,0.00")
                 </td>
+            </tr>
+        }
+        }
+        else
+        {
+            int colspan = 3 + i;
+            <tr>
+                <td  colspan="@colspan" class="innerLast alignCenter"  style="background-color:lightgray">Tất cả các sản phẩm đều có số lượng tồn trong vùng an toàn.</td>
             </tr>
         }
     }
