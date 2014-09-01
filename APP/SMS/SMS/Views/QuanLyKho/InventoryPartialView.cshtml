@@ -50,15 +50,15 @@
                 </td>
                 <td class="inner colwidth"> @dbHist.TEN_SAN_PHAM</td>
                 <td class="inner colwidth"> @dbHist.TEN_DON_VI</td>
-                <td class="inner colwidth">@dbHist.SO_LUONG_TON.ToString("0,0.00")</td>
-                <td class="innerLast colwidth">@dbHist.VALUE.ToString("0,0.00")</td>
+                <td class="inner colwidth numberic">@dbHist.SO_LUONG_TON.ToString("0,0.00")</td>
+                <td class="innerLast colwidth numberic">@dbHist.VALUE.ToString("0,0.00")</td>
             </tr>
         }
         <tr class="inner column-hscroll alignCenter">
             <td class="inner colwidth" style="background-color:lightgray" colspan="4">
                 Tổng giá trị hàng tồn tính theo giá hiện hành (đơn giá 1)
             </td>
-            <td class="innerLast colwidth" style="background-color:lightgray">
+            <td class="innerLast colwidth numberic" style="background-color:lightgray">
                 @Model.VALUE.ToString("0,0.00")
             </td>
         </tr>
