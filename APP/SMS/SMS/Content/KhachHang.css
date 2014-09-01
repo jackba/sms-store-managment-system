@@ -37,7 +37,7 @@ td
 }
 div.horizontal-scroll
 {
-    width: 962px;
+    width: 1200px;
     height: 23px;
     overflow: hidden;
     overflow-x: scroll;
@@ -149,7 +149,7 @@ div.divhead
 {
     overflow: hidden;
     height: 28px;
-    width: 642px;
+    width: 880px;
     border-left: 0px solid #666;
     border-right: 1px solid #666; /*border-bottom: 0px solid #666;*/
     border-bottom: 1px solid #666;
@@ -158,7 +158,7 @@ div.divhead
 div.content
 {
     overflow: hidden;
-    width: 642px;
+    width: 880px;
     height: auto;
     border-left: 0px solid #666;
     border-right: 1px solid #666; 
@@ -170,7 +170,7 @@ td.tablefrozencolumn
 }
 td.tablecontent
 {
-    width: 501px;
+    /*width: 501px;*/
 }
 td.tableverticalscroll
 {
@@ -249,7 +249,7 @@ div.divTitle{
 }
 
 .tdNumeric{
-    width:100px;
+    width:160px;
 }
 .alignText{
     text-align:left;

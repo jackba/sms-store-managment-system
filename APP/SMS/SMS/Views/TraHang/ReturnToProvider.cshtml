@@ -118,7 +118,7 @@
                     @Html.TextBoxFor(u => u.Details[0].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
                 </td>
                 <td class="innerLast colwidth">
-                    @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
+                    @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%", @class = "unit " })
                 </td>
                 <td class="innerLast colwidth">
                     @Html.TextBoxFor(u => u.Details[0].DON_GIA_TEMP, new { @class = "price numberic textbtl" })
@@ -127,7 +127,7 @@
                     @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total textbtl", @disabled = "disabled" })
                 </td>
                 <td class="innerLast colwidth">
-                    @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "store textbtl" })
+                    @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%", @class = "store " })
                 </td>
             </tr>
         </tbody>

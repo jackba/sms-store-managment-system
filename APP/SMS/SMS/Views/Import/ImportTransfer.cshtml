@@ -94,7 +94,7 @@
     </table>
     <hr />
     <input type="submit" value="Lưu" style="width:200px;" />
-    <input type="button" value="Trở về danh sách hóa đơn" style="width:300px;"  />
+    <input type="button" value="Trở về danh sách hóa đơn" style="width:250px;"  />
     <input type="hidden" id="rowIndex" value="@(Model.ExportDetail.Count - 1)" />
     @Html.HiddenFor(u => u.Infor.SAVE_FLG, new { id = "saveFlg" })
     <div style="clear:both"></div>
@@ -143,7 +143,7 @@
         </tfoot>
     </table>
     <input type="submit" value="Lưu" style="width:200px;" />
-    <input type="button" value="Trở về danh sách hóa đơn" style="width:300px;"  />
+    <input type="button" value="Trở về danh sách hóa đơn" style="width:250px;"  />
     <script>
 
         function checkEnough(storeId, ProductId, quantity, convertor) {

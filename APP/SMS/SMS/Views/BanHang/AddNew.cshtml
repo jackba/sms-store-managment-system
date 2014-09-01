@@ -18,7 +18,7 @@
 <h2>@ViewBag.Title</h2>
 @section Scripts
 {
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/themes/base/css")
     <link href="../../Content/css/sunny/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
@@ -129,7 +129,7 @@
             obj.style.borderColor = "#e2e2e2";
             obj.style.backgroundColor = "white";
             setDisableControl('btnSave_Top', false);
-            setDisableControl('btnSave_Bottom', faslse);
+            setDisableControl('btnSave_Bottom', false);
         }
         obj.value = parseFloat(obj.value);
     
@@ -1370,21 +1370,21 @@
         <input type="hidden" id="rowIndex" value="0" />
         
         <div>
-            <input type="button"id="btnSave_Top" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+            <input type="button"id="btnSave_Top" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
             <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
             <table id="detailTable" name="detailTable" width="100%" class="contentTable">
                 <thead>
                     <tr class="inner column-hscroll alignCenter">
-                        <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
-                        <td class='inner colwidth head '> CODE </td>
-                        <td class='inner colwidth head '> Sản phẩm </td>
-                        <td class='inner colwidth head '> Số lượng </td>
-                        <td class='innerLast colwidth head '> Đơn vị </td>
-                        <td class='inner colwidth head '> Đơn giá </td>
-                        <td class='inner colwidth head '> Thành tiền </td>
-                        <td class='inner colwidth head '> (%) </td>
-                        <td class='inner colwidth head '> Thực trả</td>
-                        <td class='innerLast colwidth head '> Kho</td>
+                        <td class='inner colwidth head ' width="3%;"> <input type="checkbox" id="chckHead" /> </td>
+                        <td class='inner colwidth head ' style="width:7%;"> CODE </td>
+                        <td class='inner colwidth head ' style="width:7%;"> Sản phẩm </td>
+                        <td class='inner colwidth head ' style="width:7%;"> Số lượng </td>
+                        <td class='innerLast colwidth head ' style="width:7%;"> Đơn vị </td>
+                        <td class='inner colwidth head ' style="width:7%;"> Đơn giá </td>
+                        <td class='inner colwidth head ' style="width:7%;"> Thành tiền </td>
+                        <td class='inner colwidth head ' style="width:3%;"> (%) </td>
+                        <td class='inner colwidth head ' style="width:7%;"> Thực trả</td>
+                        <td class='innerLast colwidth head ' width="7%"> Kho</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -1502,7 +1502,7 @@
                     <input type="text" class="numberic" disabled="disabled" id="paymentTotal" style="font-size:20px; color:red; background-color:lightblue"/></td>
                 </tr>
             </table>
-            <input type="button" id="btnSave_Bottom" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+            <input type="button" id="btnSave_Bottom" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
             <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
             <div class="mainContentScroll">
                 <table id="tableContent" class="tableContentScroll">

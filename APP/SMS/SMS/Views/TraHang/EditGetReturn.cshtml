@@ -144,7 +144,7 @@
         </table>
     }
     <hr />
-    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
 
     <div style="clear:both"></div>
@@ -173,26 +173,26 @@
                     <input type="checkbox" class="chcktbl">
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].CODE, new { @class = "code codebtl" })
+                    @Html.TextBoxFor(u => u.Detail[i].CODE, new { @class = "code codebtlReturn" })
                 </td>
                 <td class='inner colwidth '>
                     @Html.HiddenFor(u => u.Detail[i].MA_SAN_PHAM, new { @class = "productId " })
                     @Html.HiddenFor(u => u.Detail[i].DEL_FLG, new { @class = "delFlg" })
                     @Html.HiddenFor(u => u.Detail[i].HE_SO, new { @class = "convertor" })
-                    @Html.TextBoxFor(u => u.Detail[i].TEN_SAN_PHAM, new { @class = "productname namebtl" })
+                    @Html.TextBoxFor(u => u.Detail[i].TEN_SAN_PHAM, new { @class = "productname namebtlReturn" })
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "quantity textbtl numberic" })
+                    @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "quantity textbtlReturn numberic" })
                 </td>
                 <td class="inner colwidth">
                     @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                    @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
+                    @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;width:100%;", @class = "unit" })
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].DON_GIA, new { @class = "price textbtl numberic" })
+                    @Html.TextBoxFor(u => u.Detail[i].DON_GIA, new { @class = "price textbtlReturn numberic" })
                 </td>
                 <td class='innerLast colwidth '>
-                    @Html.TextBox("total", @total.ToString("#,###.##"), new { @class = "total textbtl numberic", @readOnly = true, @disabled = "disabled" })
+                    @Html.TextBox("total", @total.ToString("#,###.##"), new { @class = "total textbtlReturn numberic", @readOnly = true, @disabled = "disabled" })
                 </td>
             </tr>
             }
@@ -213,7 +213,7 @@
             </tr>
         </tfoot>
     </table>
-    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" value="@(Model.Detail.Count -1 )" id="rowIndex" />
     <script>
@@ -778,22 +778,22 @@
                 '<td class="inner alignCenter colwidth" width="5%;">' +
                 '<input type="checkbox" class="chcktbl"> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="Detail[' + row + '].CODE" class="code codebtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+                '<input name="Detail[' + row + '].CODE" class="code codebtlReturn ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
                 '</td>' +
                 '<td class="inner colwidth">' +
                 '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
                 '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
                 '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-                '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+                '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtlReturn" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="Detail[' + row + '].SO_LUONG" class="quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+                '<input name="Detail[' + row + '].SO_LUONG" class="quantity textbtlReturn numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
                 '<td class="inner colwidth">' +
-                '<select name="Detail[' + row + '].MA_DON_VI" class="unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+                '<select name="Detail[' + row + '].MA_DON_VI" class="unit " id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
                 '<option value="">---------</option></select> </td>' +
                 '<td class="inner colwidth">' +
-                '<input name="Detail[' + row + '].DON_GIA" class="price textbtl numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+                '<input name="Detail[' + row + '].DON_GIA" class="price textbtlReturn numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
                 '<td class="innerLast colwidth">' +
-                '<input name="Detail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtl numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
+                '<input name="Detail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtlReturn numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
                 '</tr>');
             $("#rowIndex").val(row);
             $('input.code', $('#detailTable > tbody:last')).focus();
