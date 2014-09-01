@@ -453,7 +453,7 @@ namespace SMS.Controllers
 
         
         [HttpPost]
-        public PartialViewResult ImportRepoterPartialView(int? kind, int? StoreId, int? ProductId, string StoreName, 
+        public PartialViewResult ImportRepoterPartialView(int? kind, int? StoreId, string StoreName, int? ProductId,
             string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
             var ctx = new SmsContext();
@@ -494,9 +494,10 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
-            var tonkho = ctx.Database.SqlQuery<SpImportRepoter>("exec SP_IMPORT_REPORTER @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<SpImportRepoter>("exec SP_IMPORT_REPORTER @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -516,9 +517,10 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             SpImportRepoterModel model = new SpImportRepoterModel();
             model.ResultList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO,@TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -575,9 +577,10 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
-            var tonkho = ctx.Database.SqlQuery<SpImportRepoter>("exec SP_IMPORT_REPORTER @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<SpImportRepoter>("exec SP_IMPORT_REPORTER @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO",string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -593,9 +596,10 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             SpImportRepoterModel model = new SpImportRepoterModel();
             model.ResultList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -776,7 +780,6 @@ namespace SMS.Controllers
                 ProductName = string.Empty;
                 ProductId = 0;
             }
-
             if (!(bool)Session["IsAdmin"])
             {
                 StoreId = (int)Session["MyStore"];
@@ -785,8 +788,10 @@ namespace SMS.Controllers
             ViewBag.StoreName = StoreName;
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
-            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+
+            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<Inventory>().Take(SystemConstant.MAX_ROWS);
             ViewBag.Count = tonkho.Count();
@@ -796,8 +801,9 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;
@@ -827,8 +833,9 @@ namespace SMS.Controllers
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
 
-            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<Inventory>().Take(SystemConstant.MAX_ROWS);
             ViewBag.Count = tonkho.Count();
@@ -838,8 +845,9 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;

@@ -130,6 +130,7 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
+                    $('#StoreId').val("");
                 },
                 select: function (event, ui) {
                     $('#StoreName').val(ui.item.label);
