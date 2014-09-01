@@ -95,7 +95,7 @@
         </tr>
     </table>
     <hr />
-    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" id="rowIndex" value="0" />
 
@@ -129,7 +129,7 @@
                     @Html.TextBoxFor(u => u.Detail[0].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
                 </td>
                 <td class="innerLast colwidth">
-                    @Html.DropDownListFor(u => u.Detail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
+                    @Html.DropDownListFor(u => u.Detail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%;", @class = "unit " })
                 </td>
             </tr>
         </tbody>
@@ -146,7 +146,7 @@
             </tr>
         </tfoot>
     </table>
-    <input type="button" value="Lưu" style="width:300px;" onclick="return returnSubmit()" />
+    <input type="button" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <script>
         function checkdlc() {

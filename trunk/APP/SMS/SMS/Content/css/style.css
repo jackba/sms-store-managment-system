@@ -9,13 +9,13 @@ div, a, img {
 }
 
 .grid_7 {
-   width: 960;
+   width: 1024px;
    display: inline;
    float: left;
    margin-left: 1%;
    margin-right: 1%;
    font: 12px/1.5 "Lucida Sans Unicode","Lucida Grande",sans-serif;
-      margin-top: 10px;
+      margin-top: 40px;
 }
 
 a.dashboard-module:hover, a.dashboard-module:active {

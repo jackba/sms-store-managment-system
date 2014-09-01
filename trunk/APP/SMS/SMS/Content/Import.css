@@ -338,16 +338,52 @@ td{
     white-space: nowrap;
 }
 
+.textbtl_Edit{
+    width:95%;
+} 
+
+.codebtl_Edit{
+    width:95%;
+} 
+
+.namebtl_Edit{
+   width:95%;
+}
+
 .textbtl{
-    width:92%;
+    width:96%;
 } 
 
 .codebtl{
-    width:92%;
+    width:96%;
 } 
 
 .namebtl{
-   width:92%;
+   width:96%;
+}
+
+.textbtl_Import{
+    width:95%;
+} 
+
+.codebtl_Import{
+    width:95%;
+} 
+
+.namebtl_Import{
+   width:95%;
+}
+
+.textbtlReturn{
+    width:95%;
+} 
+
+.codebtlReturn{
+    width:95%;
+} 
+
+.namebtlReturn{
+   width:95%;
 }
 
 table.contentTable tr:nth-child(even) {
