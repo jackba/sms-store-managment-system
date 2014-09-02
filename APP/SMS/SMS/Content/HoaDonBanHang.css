@@ -371,36 +371,36 @@ hr.mydashed{
 }
 
 input.code{
-    width:70px;
+    width:80px;
 }
 
 input.productName{
-    width:92%;
+    width:195px;
 }
 
 input.price{
-    width:70px;
+    width:90px;
 }
 
 input.quantity{
-    width:50px;
+    width:75px;
 }
 
 input.discount{
-    width:20px;
+    width:30px;
 }
 
 input.total{
-    width:90px;
+    width:170px;
 }
 
 input.realTotal{
-    width:90px;
+    width:170px;
 }
 .unit{
-    width:70px;
+    width:90px;
 }
 
 .store{
-    width:112px !important;
+    width:125px !important;
 }
