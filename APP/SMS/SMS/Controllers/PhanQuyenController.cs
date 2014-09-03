@@ -11,12 +11,12 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class PhanQuyenController : Controller
     {
         //
         // GET: /PhanQuyen/
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Index()
         {
@@ -42,6 +42,7 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -54,6 +55,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -83,6 +85,7 @@ namespace SMS.Controllers
 
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -108,6 +111,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(PHAN_QUYEN phanQuyen)
         {
@@ -132,6 +136,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(PHAN_QUYEN phanQuyen)
         {

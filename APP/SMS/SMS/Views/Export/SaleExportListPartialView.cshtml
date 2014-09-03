@@ -60,9 +60,9 @@
                 <tr>
                     <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
-            }
-        }
-        @foreach (var dbHist in Model.SaleExportList)
+            
+        
+        foreach (var dbHist in Model.SaleExportList)
         {
             if (ImportDate != (DateTime)dbHist.NGAY_XUAT)
             {
@@ -104,6 +104,14 @@
                 </td>
 
             </tr>
+        }
+            }
+            else
+            {
+                <tr>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">Không có dữ liệu </td>
+                </tr>
+            }
         }
 
     </table>

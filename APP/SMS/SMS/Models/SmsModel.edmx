@@ -478,37 +478,6 @@
           <Property Name="MA_PHIEU_TRA_NCC" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'STMA.dbo.V_BUGET_BY_MONTH' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="V_BUGET_BY_MONTH">
-          <Key>
-            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
-            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
-            <PropertyRef Name="TOTAL" />
-          </Key>
-          <Property Name="SO_TIEN_KHACH_TRA" Type="float" Nullable="false" />
-          <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" Nullable="false" />
-          <Property Name="TOTAL" Type="float" Nullable="false" />
-          <Property Name="MONTH" Type="int" />
-          <Property Name="YEAR" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'STMA.dbo.V_BUGET_BY_WEEK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="V_BUGET_BY_WEEK">
-          <Key>
-            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
-            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
-            <PropertyRef Name="TOTAL" />
-          </Key>
-          <Property Name="SO_TIEN_KHACH_TRA" Type="float" Nullable="false" />
-          <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" Nullable="false" />
-          <Property Name="TOTAL" Type="float" Nullable="false" />
-          <Property Name="WEEK" Type="int" />
-          <Property Name="MONTH" Type="int" />
-          <Property Name="YEAR" Type="int" />
-          <Property Name="START_DATE" Type="datetime" />
-          <Property Name="END_DATE" Type="datetime" />
-        </EntityType>
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'STMA.dbo.V_HOA_DON' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_HOA_DON">
           <Key>
@@ -642,6 +611,39 @@ warning 6002: The table/view 'STMA.dbo.V_NHAP_XUAT_KHO' does not have a primary 
           <Property Name="SO_LUONG_TON" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'STMA.dbo.V_RETURN_2_PROVIDER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_RETURN_2_PROVIDER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="MA_NHA_CUNG_CAP" Type="int" />
+          <Property Name="MA_PHIEU_TRA" Type="int" />
+          <Property Name="NGAY_LAP_PHIEU" Type="date" />
+          <Property Name="MA_NV_LAP_PHIEU" Type="int" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MA_SAN_PHAM" Type="int" />
+          <Property Name="SO_LUONG" Type="float" />
+          <Property Name="DON_GIA" Type="float" />
+          <Property Name="MA_KHO_XUAT" Type="int" />
+          <Property Name="SO_LUONG_TEMP" Type="float" />
+          <Property Name="MA_DON_VI" Type="int" />
+          <Property Name="DON_GIA_TEMP" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'STMA.dbo.V_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TRA_HANG">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="int" Nullable="false" />
+          <Property Name="MA_KHACH_HANG" Type="int" />
+          <Property Name="TEN_KHACH_HANG" Type="nvarchar" MaxLength="100" />
+          <Property Name="NGAY_TRA" Type="date" />
+          <Property Name="MA_NGUOI_NHAN" Type="int" />
+          <Property Name="TOTAL" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'STMA.dbo.V_TRA_NHAP_TRA_NCC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_TRA_NHAP_TRA_NCC">
           <Key>
@@ -651,6 +653,19 @@ warning 6002: The table/view 'STMA.dbo.V_TRA_NHAP_TRA_NCC' does not have a prima
           <Property Name="MA_TRA_HANG" Type="int" Nullable="false" />
           <Property Name="MA_SAN_PHAM" Type="int" />
           <Property Name="SO_LUONG" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'STMA.dbo.V_WARNING_PRODUCTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_WARNING_PRODUCTS">
+          <Key>
+            <PropertyRef Name="MA_SAN_PHAM" />
+            <PropertyRef Name="TEN_SAN_PHAM" />
+          </Key>
+          <Property Name="MA_SAN_PHAM" Type="int" Nullable="false" />
+          <Property Name="TEN_SAN_PHAM" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MA_DON_VI" Type="int" />
+          <Property Name="TEN_DON_VI" Type="nvarchar" MaxLength="50" />
+          <Property Name="TON_KHO" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1903,6 +1918,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_EXPORT_REPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -1911,6 +1927,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_EXPORT_REPORT_DETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -1919,6 +1936,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_EXPORT_REPORT_SUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -1985,6 +2003,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
           <Parameter Name="TEN_KHACH_HANG" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
@@ -2037,6 +2056,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="SP_GET_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
@@ -2058,6 +2078,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="SP_GET_NHAP_XUAT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -2077,6 +2098,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="SP_GET_PHIEU_XUAT_KHO_BAN_LE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_NHAN_VIEN_XUAT" Type="int" Mode="In" />
           <Parameter Name="TEN_NHAN_VIEN_XUAT" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_KHACH_HANG" Type="int" Mode="In" />
@@ -2096,6 +2118,18 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="SP_GET_REFUND_DETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_TRA_HANG" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_REPORT_DEBT_COLLECTION" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CUSTOMER_ID" Type="int" Mode="In" />
+          <Parameter Name="CUSTOMER_NAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_REPORT_RETURN_2_PROVIDER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PROVIDER_ID" Type="int" Mode="In" />
+          <Parameter Name="PROVIDER_NAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
         <Function Name="SP_GET_RETURN_DETAIL_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_TRA_HANG" Type="int" Mode="In" />
@@ -2150,6 +2184,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="SP_GET_VALUE_OF_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
@@ -2166,6 +2201,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_IMPORT_REPORTER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -2174,6 +2210,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_IMPORT_REPORTER_DETAIL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -2182,6 +2219,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_IMPORT_REPORTER_SUM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KIND" Type="int" Mode="In" />
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -2210,7 +2248,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         </Function>
         <Function Name="STMA_GET_GIA_TRI_HANG_BAN_TON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
+          <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
+          <Parameter Name="TEN_SAN_PHAM_PR" Type="nvarchar" Mode="In" />
           <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Type="float" Mode="InOut" />
           <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Type="float" Mode="InOut" />
         </Function>
@@ -2244,27 +2284,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="V_BUGET_BY_MONTH" EntityType="Self.V_BUGET_BY_MONTH" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [V_BUGET_BY_MONTH].[SO_TIEN_KHACH_TRA] AS [SO_TIEN_KHACH_TRA], 
-    [V_BUGET_BY_MONTH].[SO_TIEN_NO_GOI_DAU] AS [SO_TIEN_NO_GOI_DAU], 
-    [V_BUGET_BY_MONTH].[TOTAL] AS [TOTAL], 
-    [V_BUGET_BY_MONTH].[MONTH] AS [MONTH], 
-    [V_BUGET_BY_MONTH].[YEAR] AS [YEAR]
-    FROM [dbo].[V_BUGET_BY_MONTH] AS [V_BUGET_BY_MONTH]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="V_BUGET_BY_WEEK" EntityType="Self.V_BUGET_BY_WEEK" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [V_BUGET_BY_WEEK].[SO_TIEN_KHACH_TRA] AS [SO_TIEN_KHACH_TRA], 
-    [V_BUGET_BY_WEEK].[SO_TIEN_NO_GOI_DAU] AS [SO_TIEN_NO_GOI_DAU], 
-    [V_BUGET_BY_WEEK].[TOTAL] AS [TOTAL], 
-    [V_BUGET_BY_WEEK].[WEEK] AS [WEEK], 
-    [V_BUGET_BY_WEEK].[MONTH] AS [MONTH], 
-    [V_BUGET_BY_WEEK].[YEAR] AS [YEAR], 
-    [V_BUGET_BY_WEEK].[START_DATE] AS [START_DATE], 
-    [V_BUGET_BY_WEEK].[END_DATE] AS [END_DATE]
-    FROM [dbo].[V_BUGET_BY_WEEK] AS [V_BUGET_BY_WEEK]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="V_HOA_DON" EntityType="Self.V_HOA_DON" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [V_HOA_DON].[MA_HOA_DON] AS [MA_HOA_DON], 
@@ -2356,12 +2375,48 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
     [V_NHAP_XUAT_KHO].[SO_LUONG_TON] AS [SO_LUONG_TON]
     FROM [dbo].[V_NHAP_XUAT_KHO] AS [V_NHAP_XUAT_KHO]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_RETURN_2_PROVIDER" EntityType="Self.V_RETURN_2_PROVIDER" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_RETURN_2_PROVIDER].[ID] AS [ID], 
+    [V_RETURN_2_PROVIDER].[MA_NHA_CUNG_CAP] AS [MA_NHA_CUNG_CAP], 
+    [V_RETURN_2_PROVIDER].[MA_PHIEU_TRA] AS [MA_PHIEU_TRA], 
+    [V_RETURN_2_PROVIDER].[NGAY_LAP_PHIEU] AS [NGAY_LAP_PHIEU], 
+    [V_RETURN_2_PROVIDER].[MA_NV_LAP_PHIEU] AS [MA_NV_LAP_PHIEU], 
+    [V_RETURN_2_PROVIDER].[GHI_CHU] AS [GHI_CHU], 
+    [V_RETURN_2_PROVIDER].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_RETURN_2_PROVIDER].[SO_LUONG] AS [SO_LUONG], 
+    [V_RETURN_2_PROVIDER].[DON_GIA] AS [DON_GIA], 
+    [V_RETURN_2_PROVIDER].[MA_KHO_XUAT] AS [MA_KHO_XUAT], 
+    [V_RETURN_2_PROVIDER].[SO_LUONG_TEMP] AS [SO_LUONG_TEMP], 
+    [V_RETURN_2_PROVIDER].[MA_DON_VI] AS [MA_DON_VI], 
+    [V_RETURN_2_PROVIDER].[DON_GIA_TEMP] AS [DON_GIA_TEMP]
+    FROM [dbo].[V_RETURN_2_PROVIDER] AS [V_RETURN_2_PROVIDER]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_TRA_HANG" EntityType="Self.V_TRA_HANG" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_TRA_HANG].[MA_TRA_HANG] AS [MA_TRA_HANG], 
+    [V_TRA_HANG].[MA_KHACH_HANG] AS [MA_KHACH_HANG], 
+    [V_TRA_HANG].[TEN_KHACH_HANG] AS [TEN_KHACH_HANG], 
+    [V_TRA_HANG].[NGAY_TRA] AS [NGAY_TRA], 
+    [V_TRA_HANG].[MA_NGUOI_NHAN] AS [MA_NGUOI_NHAN], 
+    [V_TRA_HANG].[TOTAL] AS [TOTAL]
+    FROM [dbo].[V_TRA_HANG] AS [V_TRA_HANG]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_TRA_NHAP_TRA_NCC" EntityType="Self.V_TRA_NHAP_TRA_NCC" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [V_TRA_NHAP_TRA_NCC].[MA_TRA_HANG] AS [MA_TRA_HANG], 
     [V_TRA_NHAP_TRA_NCC].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
     [V_TRA_NHAP_TRA_NCC].[SO_LUONG] AS [SO_LUONG]
     FROM [dbo].[V_TRA_NHAP_TRA_NCC] AS [V_TRA_NHAP_TRA_NCC]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_WARNING_PRODUCTS" EntityType="Self.V_WARNING_PRODUCTS" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_WARNING_PRODUCTS].[MA_SAN_PHAM] AS [MA_SAN_PHAM], 
+    [V_WARNING_PRODUCTS].[TEN_SAN_PHAM] AS [TEN_SAN_PHAM], 
+    [V_WARNING_PRODUCTS].[MA_DON_VI] AS [MA_DON_VI], 
+    [V_WARNING_PRODUCTS].[TEN_DON_VI] AS [TEN_DON_VI], 
+    [V_WARNING_PRODUCTS].[TON_KHO] AS [TON_KHO]
+    FROM [dbo].[V_WARNING_PRODUCTS] AS [V_WARNING_PRODUCTS]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_XUAT_KHO" EntityType="Self.V_XUAT_KHO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3434,33 +3489,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="TRA_HANG" Relationship="Self.FK__TRA_HANG__MA_XUA__6477ECF3" FromRole="XUAT_KHO" ToRole="TRA_HANG" />
           <NavigationProperty Name="TRA_HANG_NCC" Relationship="Self.FK__XUAT_KHO__MA_PHI__336AA144" FromRole="XUAT_KHO" ToRole="TRA_HANG_NCC" />
         </EntityType>
-        <EntityType Name="V_BUGET_BY_MONTH">
-          <Key>
-            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
-            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
-            <PropertyRef Name="TOTAL" />
-          </Key>
-          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" Nullable="false" />
-          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" Nullable="false" />
-          <Property Name="TOTAL" Type="Double" Nullable="false" />
-          <Property Name="MONTH" Type="Int32" />
-          <Property Name="YEAR" Type="Int32" />
-        </EntityType>
-        <EntityType Name="V_BUGET_BY_WEEK">
-          <Key>
-            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
-            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
-            <PropertyRef Name="TOTAL" />
-          </Key>
-          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" Nullable="false" />
-          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" Nullable="false" />
-          <Property Name="TOTAL" Type="Double" Nullable="false" />
-          <Property Name="WEEK" Type="Int32" />
-          <Property Name="MONTH" Type="Int32" />
-          <Property Name="YEAR" Type="Int32" />
-          <Property Name="START_DATE" Type="DateTime" Precision="3" />
-          <Property Name="END_DATE" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="V_HOA_DON">
           <Key>
             <PropertyRef Name="MA_HOA_DON" />
@@ -3580,6 +3608,35 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="SO_LUONG_XUAT" Type="Double" Nullable="false" />
           <Property Name="SO_LUONG_TON" Type="Double" Nullable="false" />
         </EntityType>
+        <EntityType Name="V_RETURN_2_PROVIDER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="MA_NHA_CUNG_CAP" Type="Int32" />
+          <Property Name="MA_PHIEU_TRA" Type="Int32" />
+          <Property Name="NGAY_LAP_PHIEU" Type="DateTime" Precision="0" />
+          <Property Name="MA_NV_LAP_PHIEU" Type="Int32" />
+          <Property Name="GHI_CHU" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MA_SAN_PHAM" Type="Int32" />
+          <Property Name="SO_LUONG" Type="Double" />
+          <Property Name="DON_GIA" Type="Double" />
+          <Property Name="MA_KHO_XUAT" Type="Int32" />
+          <Property Name="SO_LUONG_TEMP" Type="Double" />
+          <Property Name="MA_DON_VI" Type="Int32" />
+          <Property Name="DON_GIA_TEMP" Type="Double" />
+        </EntityType>
+        <EntityType Name="V_TRA_HANG">
+          <Key>
+            <PropertyRef Name="MA_TRA_HANG" />
+          </Key>
+          <Property Name="MA_TRA_HANG" Type="Int32" Nullable="false" />
+          <Property Name="MA_KHACH_HANG" Type="Int32" />
+          <Property Name="TEN_KHACH_HANG" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NGAY_TRA" Type="DateTime" Precision="0" />
+          <Property Name="MA_NGUOI_NHAN" Type="Int32" />
+          <Property Name="TOTAL" Type="Double" />
+        </EntityType>
         <EntityType Name="V_TRA_NHAP_TRA_NCC">
           <Key>
             <PropertyRef Name="MA_TRA_HANG" />
@@ -3588,6 +3645,17 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="MA_TRA_HANG" Type="Int32" Nullable="false" />
           <Property Name="MA_SAN_PHAM" Type="Int32" />
           <Property Name="SO_LUONG" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="V_WARNING_PRODUCTS">
+          <Key>
+            <PropertyRef Name="MA_SAN_PHAM" />
+            <PropertyRef Name="TEN_SAN_PHAM" />
+          </Key>
+          <Property Name="MA_SAN_PHAM" Type="Int32" Nullable="false" />
+          <Property Name="TEN_SAN_PHAM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MA_DON_VI" Type="Int32" />
+          <Property Name="TEN_DON_VI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TON_KHO" Type="Double" />
         </EntityType>
         <EntityType Name="V_XUAT_KHO">
           <Key>
@@ -4792,8 +4860,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" />
-          <EntitySet Name="V_BUGET_BY_MONTH" EntityType="Self.V_BUGET_BY_MONTH" />
-          <EntitySet Name="V_BUGET_BY_WEEK" EntityType="Self.V_BUGET_BY_WEEK" />
           <EntitySet Name="V_HOA_DON" EntityType="Self.V_HOA_DON" />
           <EntitySet Name="V_HOA_DON_DISTICNT" EntityType="Self.V_HOA_DON_DISTICNT" />
           <EntitySet Name="V_IMPORT_DETAIL" EntityType="Self.V_IMPORT_DETAIL" />
@@ -4801,7 +4867,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="V_NHAP_KHO" EntityType="Self.V_NHAP_KHO" />
           <EntitySet Name="V_NHAP_XUAT_DETAIL" EntityType="Self.V_NHAP_XUAT_DETAIL" />
           <EntitySet Name="V_NHAP_XUAT_KHO" EntityType="Self.V_NHAP_XUAT_KHO" />
+          <EntitySet Name="V_RETURN_2_PROVIDER" EntityType="Self.V_RETURN_2_PROVIDER" />
+          <EntitySet Name="V_TRA_HANG" EntityType="Self.V_TRA_HANG" />
           <EntitySet Name="V_TRA_NHAP_TRA_NCC" EntityType="Self.V_TRA_NHAP_TRA_NCC" />
+          <EntitySet Name="V_WARNING_PRODUCTS" EntityType="Self.V_WARNING_PRODUCTS" />
           <EntitySet Name="V_XUAT_KHO" EntityType="Self.V_XUAT_KHO" />
           <AssociationSet Name="FK__CHI_TIET___CREAT__5070F446" Association="Self.FK__CHI_TIET___CREAT__5070F446">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
@@ -5219,6 +5288,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_EXPORT_REPORT" ReturnType="Collection(SmsModel.SP_EXPORT_REPORT_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5227,6 +5297,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_EXPORT_REPORT_DETAIL" ReturnType="Collection(SmsModel.SP_EXPORT_REPORT_DETAIL_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5235,6 +5306,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_EXPORT_REPORT_SUM" ReturnType="Collection(Double)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5301,6 +5373,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
             <Parameter Name="TEN_KHACH_HANG" Mode="In" Type="String" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
@@ -5353,6 +5426,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
@@ -5374,6 +5448,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_NHAP_XUAT" ReturnType="Collection(SmsModel.SP_GET_NHAP_XUAT_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5393,6 +5468,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_PHIEU_XUAT_KHO_BAN_LE" ReturnType="Collection(SmsModel.SP_GET_PHIEU_XUAT_KHO_BAN_LE_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_NHAN_VIEN_XUAT" Mode="In" Type="Int32" />
             <Parameter Name="TEN_NHAN_VIEN_XUAT" Mode="In" Type="String" />
             <Parameter Name="MA_KHACH_HANG" Mode="In" Type="Int32" />
@@ -5412,6 +5488,18 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_REFUND_DETAIL" ReturnType="Collection(SmsModel.SP_GET_REFUND_DETAIL_Result)">
             <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_REPORT_DEBT_COLLECTION" ReturnType="Collection(SmsModel.SP_GET_REPORT_DEBT_COLLECTION_Result)">
+            <Parameter Name="CUSTOMER_ID" Mode="In" Type="Int32" />
+            <Parameter Name="CUSTOMER_NAME" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_REPORT_RETURN_2_PROVIDER" ReturnType="Collection(SmsModel.SP_GET_REPORT_RETURN_2_PROVIDER_Result)">
+            <Parameter Name="PROVIDER_ID" Mode="In" Type="Int32" />
+            <Parameter Name="PROVIDER_NAME" Mode="In" Type="String" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_RETURN_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_RETURN_DETAIL_BY_ID_Result)">
             <Parameter Name="MA_TRA_HANG" Mode="In" Type="Int32" />
@@ -5466,6 +5554,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="SP_GET_VALUE_OF_INVENTORY" ReturnType="Collection(Double)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
@@ -5482,6 +5571,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_IMPORT_REPORTER" ReturnType="Collection(SmsModel.SP_IMPORT_REPORTER_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5490,6 +5580,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_IMPORT_REPORTER_DETAIL" ReturnType="Collection(SmsModel.SP_IMPORT_REPORTER_DETAIL_Result)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5498,6 +5589,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_IMPORT_REPORTER_SUM" ReturnType="Collection(Double)">
             <Parameter Name="KIND" Mode="In" Type="Int32" />
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
@@ -5526,7 +5618,9 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="STMA_GET_GIA_TRI_HANG_BAN_TON">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_KHO" Mode="In" Type="String" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
+            <Parameter Name="TEN_SAN_PHAM_PR" Mode="In" Type="String" />
             <Parameter Name="GIA_VON_HANG_BAN_TOTAL" Mode="InOut" Type="Double" />
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
@@ -5916,6 +6010,22 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Double" Name="TONG_TIEN" Nullable="false" />
           <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_REPORT_DEBT_COLLECTION_Result">
+          <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="false" />
+          <Property Type="String" Name="TEN_KHACH_HANG" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="NGAY_PHAT_SINH" Nullable="true" />
+          <Property Type="Double" Name="PHAT_SINH" Nullable="true" />
+          <Property Type="Double" Name="PHAT_SINH_BY_RETURN" Nullable="true" />
+          <Property Type="Double" Name="TOTAL" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_REPORT_RETURN_2_PROVIDER_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="MA_NHA_CUNG_CAP" Nullable="true" />
+          <Property Type="String" Name="TEN_NHA_CUNG_CAP" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="NGAY_LAP_PHIEU" Nullable="true" />
+          <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="TOTAL" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_GET_RETURN_DETAIL_BY_ID_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
@@ -6513,31 +6623,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="V_BUGET_BY_MONTH">
-            <EntityTypeMapping TypeName="SmsModel.V_BUGET_BY_MONTH">
-              <MappingFragment StoreEntitySet="V_BUGET_BY_MONTH">
-                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
-                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
-                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
-                <ScalarProperty Name="MONTH" ColumnName="MONTH" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="V_BUGET_BY_WEEK">
-            <EntityTypeMapping TypeName="SmsModel.V_BUGET_BY_WEEK">
-              <MappingFragment StoreEntitySet="V_BUGET_BY_WEEK">
-                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
-                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
-                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
-                <ScalarProperty Name="WEEK" ColumnName="WEEK" />
-                <ScalarProperty Name="MONTH" ColumnName="MONTH" />
-                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
-                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
-                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="V_HOA_DON">
             <EntityTypeMapping TypeName="SmsModel.V_HOA_DON">
               <MappingFragment StoreEntitySet="V_HOA_DON">
@@ -6643,12 +6728,54 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="V_RETURN_2_PROVIDER">
+            <EntityTypeMapping TypeName="SmsModel.V_RETURN_2_PROVIDER">
+              <MappingFragment StoreEntitySet="V_RETURN_2_PROVIDER">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MA_NHA_CUNG_CAP" ColumnName="MA_NHA_CUNG_CAP" />
+                <ScalarProperty Name="MA_PHIEU_TRA" ColumnName="MA_PHIEU_TRA" />
+                <ScalarProperty Name="NGAY_LAP_PHIEU" ColumnName="NGAY_LAP_PHIEU" />
+                <ScalarProperty Name="MA_NV_LAP_PHIEU" ColumnName="MA_NV_LAP_PHIEU" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+                <ScalarProperty Name="DON_GIA" ColumnName="DON_GIA" />
+                <ScalarProperty Name="MA_KHO_XUAT" ColumnName="MA_KHO_XUAT" />
+                <ScalarProperty Name="SO_LUONG_TEMP" ColumnName="SO_LUONG_TEMP" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="DON_GIA_TEMP" ColumnName="DON_GIA_TEMP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_TRA_HANG">
+            <EntityTypeMapping TypeName="SmsModel.V_TRA_HANG">
+              <MappingFragment StoreEntitySet="V_TRA_HANG">
+                <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="NGAY_TRA" ColumnName="NGAY_TRA" />
+                <ScalarProperty Name="MA_NGUOI_NHAN" ColumnName="MA_NGUOI_NHAN" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="V_TRA_NHAP_TRA_NCC">
             <EntityTypeMapping TypeName="SmsModel.V_TRA_NHAP_TRA_NCC">
               <MappingFragment StoreEntitySet="V_TRA_NHAP_TRA_NCC">
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
                 <ScalarProperty Name="SO_LUONG" ColumnName="SO_LUONG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_WARNING_PRODUCTS">
+            <EntityTypeMapping TypeName="SmsModel.V_WARNING_PRODUCTS">
+              <MappingFragment StoreEntitySet="V_WARNING_PRODUCTS">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="TON_KHO" ColumnName="TON_KHO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7198,6 +7325,30 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="TONG_TIEN" ColumnName="TONG_TIEN" />
                 <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
                 <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_REPORT_DEBT_COLLECTION" FunctionName="SmsModel.Store.SP_GET_REPORT_DEBT_COLLECTION">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_REPORT_DEBT_COLLECTION_Result">
+                <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
+                <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="NGAY_PHAT_SINH" ColumnName="NGAY_PHAT_SINH" />
+                <ScalarProperty Name="PHAT_SINH" ColumnName="PHAT_SINH" />
+                <ScalarProperty Name="PHAT_SINH_BY_RETURN" ColumnName="PHAT_SINH_BY_RETURN" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_REPORT_RETURN_2_PROVIDER" FunctionName="SmsModel.Store.SP_GET_REPORT_RETURN_2_PROVIDER">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_REPORT_RETURN_2_PROVIDER_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MA_NHA_CUNG_CAP" ColumnName="MA_NHA_CUNG_CAP" />
+                <ScalarProperty Name="TEN_NHA_CUNG_CAP" ColumnName="TEN_NHA_CUNG_CAP" />
+                <ScalarProperty Name="NGAY_LAP_PHIEU" ColumnName="NGAY_LAP_PHIEU" />
+                <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -7,15 +7,17 @@ using SMS.Models;
 using System.Data.SqlClient;
 using PagedList;
 using System.Web.Helpers;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class ReportController : Controller
     {
         //
         // GET: /Report/
-
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult DownloadDebitColecction(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
         {
@@ -111,8 +113,7 @@ namespace SMS.Controllers
             return View("../Report/ReportDebitColecction");
         }
 
-
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult downloadReportByArea(int? areaId, string areaName, DateTime? fromDate, DateTime? toDate)
         {
@@ -246,7 +247,7 @@ namespace SMS.Controllers
             return View("../Report/ReportByCustomer");
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult downloadReportBycustomer(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
         {
@@ -429,6 +430,7 @@ namespace SMS.Controllers
             return PartialView("ReportByCustomerPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult ReportByArea()
         {
             return View();
@@ -480,7 +482,7 @@ namespace SMS.Controllers
             return PartialView("ReportByAreaPartialView", model);
         }
 
-
+        [CustomActionFilter]
         public ActionResult ReportDebitColecction()
         {
             return View();
@@ -531,6 +533,8 @@ namespace SMS.Controllers
             model.Details = tonkho;
             return PartialView("ReportDebitColecctionPartialView", model);
         }
+
+        [CustomActionFilter]
         public ActionResult Return2ProviderReport()
         {
             return View();
@@ -602,11 +606,14 @@ namespace SMS.Controllers
 
             return PartialView("Return2ProviderReportPartialView", model);
         }
+
+        [CustomActionFilter]
         public ActionResult Index()
         {
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult MonthlyReport()
         {
             var ctx = new SmsContext();
@@ -630,6 +637,7 @@ namespace SMS.Controllers
             return null;
         }
 
+        [CustomActionFilter]
         public ActionResult WeeklyReport()
         {
             var ctx = new SmsContext();
@@ -675,6 +683,7 @@ namespace SMS.Controllers
             return PartialView("WeReportPartialView", model);
         }
         
+        [CustomActionFilter]
         public ActionResult DayReport()
         {
             return View();
@@ -709,6 +718,7 @@ namespace SMS.Controllers
             return PartialView("DayReportPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult MthReport()
         {
             return View();

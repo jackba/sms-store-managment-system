@@ -6,16 +6,19 @@ using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
 using System.Transactions;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class TraHangController : Controller
     {
         //
         // GET: /TraHang/
         
         
-
+        [CustomActionFilter]
         public ActionResult ReturnToProvider()
         {
             Return2Provider model = new Return2Provider();
@@ -29,7 +32,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
+        [CustomActionFilter]
         public ActionResult DeleteReturn2Provider(int id)
         {
             if (id < 0)
@@ -75,6 +78,7 @@ namespace SMS.Controllers
             }           
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ReturnToProvider(Return2Provider model)
         {
@@ -147,6 +151,7 @@ namespace SMS.Controllers
            
         }
 
+        [CustomActionFilter]
         public ActionResult EditReturnToProvider(int id)
         {
             EditReturn2Provider model = new EditReturn2Provider();
@@ -169,6 +174,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditReturnToProvider(EditReturn2Provider model)
         {
@@ -242,6 +248,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult ReturnNoBill()
         {
             var ctx = new SmsContext();
@@ -251,6 +258,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ReturnNoBill(ReturnNoBillModel model)
         {
@@ -362,6 +370,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult ListOfToProvider(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -409,7 +418,7 @@ namespace SMS.Controllers
             model.Count = detail.Count;
             return PartialView("ListOfToProviderPartialView", model);
         }
-
+        [CustomActionFilter]
         public ViewResult ShowReturnBill(int id)
         {
             var ctx = new SmsContext();
@@ -421,6 +430,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult deleteGetReturn(int id)
         {
             if (id < 0)
@@ -481,6 +491,7 @@ namespace SMS.Controllers
             
         }
 
+        [CustomActionFilter]
         public ViewResult EditGetReturn(int id)
         {
             var ctx = new SmsContext();
@@ -529,6 +540,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditGetReturn(ReturnBillModel model)
         {
@@ -637,6 +649,8 @@ namespace SMS.Controllers
                 }
             }
         }
+
+
         [HttpPost]
         public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
             DateTime? toDate, int? userId, string userName, int? currentPageIndex)
@@ -667,6 +681,7 @@ namespace SMS.Controllers
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult ReturnPurchaseList(string message, string messageInfor)
         {
             ViewBag.Message = message;
@@ -674,7 +689,7 @@ namespace SMS.Controllers
             return View();
         }
 
-
+        [CustomActionFilter]
         public ActionResult Show(int id, string message, string messageInfor)
         {
             var ctx = new SmsContext();
@@ -698,6 +713,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Show(InvoicesModel model)
         {
@@ -818,6 +834,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult Index(string message, string inforMessage)
         {
             ViewBag.Message = message;

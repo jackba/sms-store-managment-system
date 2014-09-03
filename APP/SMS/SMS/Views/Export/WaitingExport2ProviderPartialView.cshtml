@@ -58,9 +58,9 @@
                 <tr>
                     <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
-            }
-        }
-        @foreach (var dbHist in Model.TheList)
+            
+        
+        foreach (var dbHist in Model.TheList)
         {
             if (ImportDate != (DateTime)dbHist.NGAY_LAP_PHIEU)
             {
@@ -115,6 +115,14 @@
 
 
             </tr>
+        }
+            }
+            else
+            {
+                <tr>
+                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">Không có dữ liệu </td>
+                </tr>
+            }
         }
 
     </table>

@@ -13,12 +13,11 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [Authorize]
-    [HandleError]
-    
+    [HandleError]    
     public class KhachHangController : Controller
     {
+        
         [HttpPost]
-
         public PartialViewResult IndexPartialView(string searchString, string customerName, string customerKind, string customerArea,
             string customerAmountFrom, string customerAmountTo, string customerDebitFrom,
             string customerDebitTo, string ShowFlag, string sortOrder, string currentFilter, int? currentPageIndex)
@@ -183,6 +182,7 @@ namespace SMS.Controllers
             return result;
         }
         /*Tattt add 2014/05/10 end*/
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -198,6 +198,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(Models.KHACH_HANG khachHang)
         {
@@ -235,6 +236,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult UpdateDebit(int id, int? flg)
         {
@@ -264,6 +266,8 @@ namespace SMS.Controllers
                 return View("../Home/Error"); ;
             }
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult UpdateDebit(Models.KHACH_HANG khachHang)
         {
@@ -405,6 +409,7 @@ namespace SMS.Controllers
             return PartialView("showDebitHistPartialView", KhachHang);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult showDebitHist(int id, int? flg)
         {
@@ -485,6 +490,7 @@ namespace SMS.Controllers
             return PartialView("showOrderHistPartialView", KhachHang);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult showOrderHist(int id)
         {
@@ -515,14 +521,11 @@ namespace SMS.Controllers
             }
         }
 
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsMetadataManager"] && !(bool)Session["IsAccounting"])
-            {
-                return RedirectToAction("Index");
-            }
+            
             if (id <= 0)
             {
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
@@ -547,6 +550,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -572,6 +576,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult CancelHist(int id)
         {
@@ -603,6 +608,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(Models.KHACH_HANG khachHang)
         {
@@ -696,14 +702,14 @@ namespace SMS.Controllers
         }
 
 
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Warning()
         {
             return View();
         }
 
-       
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Show(int id, int? flg)
         {

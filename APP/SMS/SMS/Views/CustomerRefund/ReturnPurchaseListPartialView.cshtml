@@ -57,12 +57,11 @@
                 <tr>
                     <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
-            }
-        }
-        @{
+            
+       
             int i = 0;
-        }
-        @foreach (var dbHist in Model.detailReturnList)
+        
+        foreach (var dbHist in Model.detailReturnList)
         {
             i++;
             if (ImportDate != (DateTime)dbHist.NGAY_TRA)
@@ -106,6 +105,14 @@
                     }
                 </td>
             </tr>
+        }
+            }
+            else
+            {
+                <tr>
+                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">Không có dữ liệu</td>
+                </tr>
+            }
         }
 
     </table>

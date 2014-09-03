@@ -107,7 +107,7 @@
                 },
                 minLength: 1
             })
-            $('#fromDate').datepicker('setDate', 'today');
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $('#mainForm').submit();
         });
         $(document).ready(function () {

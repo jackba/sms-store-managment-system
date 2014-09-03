@@ -9,17 +9,17 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class ChuyenDoiDonViController : Controller
     {
         //
         // GET: /ChuyenDoiDonVi/
-
+        [CustomActionFilter]
         public ActionResult Index()
         {
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult AddNew()
         {
             return View();

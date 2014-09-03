@@ -13,7 +13,6 @@ using System.Web.UI;
 using System.Text;
 using SMS.App_Start;
 using System.Data;
-using System.Web.UI;
 using CsvHelper;
 using System.Transactions;
 
@@ -22,13 +21,13 @@ namespace SMS.Controllers
 
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class SanPhamController : Controller
     {
         public const string SEARCH_ADVANCE = "SearchAdvanceCondition";
         IPagedList<SanPhamDisplay> listResult = null;
 
         [HttpGet]
+        [CustomActionFilter]
         public ActionResult Index(string inforMessage, string message)
         {
             ViewBag.InforMessage = inforMessage;
@@ -37,7 +36,8 @@ namespace SMS.Controllers
             return View();
         }
 
-        [HttpGet]
+        [CustomActionFilter]
+        [HttpGet]        
         public ActionResult ListPriceProducts()
         {          
             return View();
@@ -102,6 +102,7 @@ namespace SMS.Controllers
             return true;
         }
 
+        [CustomActionFilter]
         public ActionResult importConvertCsv()
         {
             return View();
@@ -141,7 +142,7 @@ namespace SMS.Controllers
             return true;
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult importConvertCsv(HttpPostedFileBase file)
         {
@@ -305,7 +306,7 @@ namespace SMS.Controllers
             return View();
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult importCsv(HttpPostedFileBase file)
         {
@@ -569,6 +570,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult importCsv(string message, string inforMessage)
         {
             ViewBag.Message = message;
@@ -601,6 +603,7 @@ namespace SMS.Controllers
             return jresult;
         }
 
+        [CustomActionFilter]
         public ActionResult downloadConvertCSVTemplate()
         {
             Response.ClearContent();
@@ -886,6 +889,7 @@ namespace SMS.Controllers
             return result;
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ExportExcel(FormCollection collection)
         {
@@ -938,6 +942,7 @@ namespace SMS.Controllers
             return RedirectToAction("ListPriceProducts");
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -949,6 +954,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -978,6 +984,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult SearchAdvance(FormCollection collection)
         {
@@ -1043,6 +1050,8 @@ namespace SMS.Controllers
             IPagedList<SanPhamDisplay> listResult = GetListProductSearchAdvance(null, psa, null);
             return PartialView("SanPhamPV", listResult);
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SAN_PHAM productUpdated)
         {
@@ -1077,6 +1086,8 @@ namespace SMS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -1099,6 +1110,8 @@ namespace SMS.Controllers
                 return View("../Home/Error"); ;
             }
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SAN_PHAM productInsert)
         {
@@ -1412,6 +1425,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult downloadWarningList()
         {
             var ctx = new SmsContext();
@@ -1482,6 +1496,7 @@ namespace SMS.Controllers
             return PartialView("WarningPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Warning(string SearchString, int? page)
         {
@@ -1506,6 +1521,7 @@ namespace SMS.Controllers
 
 
         /*** CONVERT UNIT START **/
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult ConvertUnitOfProducts(string inforMessage, string message)
         {
@@ -1514,6 +1530,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult ConvertUnitOfProducts(string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
@@ -1574,6 +1591,7 @@ namespace SMS.Controllers
             return PartialView("ListConvertUnitPartialView", khachHangs);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNewConvertUnitOfProducts()
         {
@@ -1582,6 +1600,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNewConvertUnitOfProducts(SMS.Models.CHUYEN_DOI_DON_VI_TINH convertUnitInsert)
         {
@@ -1607,6 +1626,7 @@ namespace SMS.Controllers
             return Redirect("ConvertUnitOfProducts");
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult EditConvertUnitOfProducts(int id)
         {
@@ -1635,6 +1655,7 @@ namespace SMS.Controllers
 
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditConvertUnitOfProducts(SMS.Models.CHUYEN_DOI_DON_VI_TINH convertUnitUpdated)
         {
@@ -1691,6 +1712,8 @@ namespace SMS.Controllers
             }
 
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult DeleteConvertUnit(int id)
         {

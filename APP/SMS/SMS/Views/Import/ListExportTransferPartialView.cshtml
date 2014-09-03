@@ -49,7 +49,10 @@
             <td class='innerLast colwidth head '>  Sửa </td>
             <td class='innerLast colwidth head '>  Xóa </td>
         </tr>
-        @foreach (var dbHist in Model.TheList)
+        @if (Model.TheList != null && Model.TheList.Count > 0)
+        {
+            
+        foreach (var dbHist in Model.TheList)
         {
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth" title="Xem chi tiết hóa đơn xuất kho">
@@ -104,6 +107,15 @@
 
             </tr>
         }
+        }
+        else
+        {
+            
+                <tr>
+                    <td class="innerLast colwidth" colspan="8" style="background-color:lightgray">Không có dữ liệu </td>
+                </tr>
+        }
+        
     </table>
     <table width="100%">
         <tr>

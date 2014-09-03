@@ -5,14 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class SmsMessageController : Controller
     {
         //
         // GET: /SmsMessage/
-
+        [CustomActionFilter]
         public ActionResult AddNew()
         {
             var ctx = new SmsContext();
@@ -22,7 +25,7 @@ namespace SMS.Controllers
         }
 
         
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SMS_MESSAGES model)
         {
@@ -52,6 +55,7 @@ namespace SMS.Controllers
             }
         }
         
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -81,6 +85,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SMS_MESSAGES model)
         {
@@ -138,6 +143,8 @@ namespace SMS.Controllers
             ViewBag.MessageInfor = inforMessage;
             return View();
         }
+
+
         [HttpPost]
         public JsonResult FindGroupUser(string prefixText)
         {
@@ -152,6 +159,7 @@ namespace SMS.Controllers
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
         }
+
 
         [HttpPost]
         public PartialViewResult IndexPartialView(int? groupUserId, string groupUserName, string searchString, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)

@@ -8,7 +8,8 @@ using SMS.App_Start;
 
 namespace SMS.Controllers
 {
-    [CustomActionFilter]
+    [Authorize]
+    [HandleError]
     public class SaleReportController : Controller
     {
         //
@@ -18,6 +19,8 @@ namespace SMS.Controllers
         {
             return View();
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult SaleReport(DateTime? fromDate, DateTime? toDate, int? saleId, int? recieptID)
         {
@@ -29,6 +32,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult SaleReport(DateTime? fromDate, DateTime? toDate, int? saleId, int? recieptID, bool? flg)
         {

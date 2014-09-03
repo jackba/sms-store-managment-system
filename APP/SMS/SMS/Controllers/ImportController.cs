@@ -12,12 +12,15 @@ using System.Data;
 using System.IO;
 using System.Web.UI;
 using CsvHelper;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
-    
+    [Authorize]
+    [HandleError]  
     public class ImportController : Controller
     {
+        [CustomActionFilter]
         public ActionResult showDetail(int id)
         {
             return View();
