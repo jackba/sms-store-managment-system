@@ -47,16 +47,16 @@
             </tr>
             @{
     DateTime ImportDate = DateTime.Now;
-    if (Model.ResultList.Count() >= 1)
+    if (Model.ResultList != null && Model.ResultList.Count() >= 1)
     {
         ImportDate = (DateTime)Model.ResultList[0].NGAY_NHAP_XUAT;
 
         <tr>
             <td class="innerLast colwidth" colspan="4" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
         </tr>
-    }
-            }
-            @foreach (var dbHist in Model.ResultList)
+    
+            
+            foreach (var dbHist in Model.ResultList)
             {
                 if (ImportDate != (DateTime)dbHist.NGAY_NHAP_XUAT)
                 {
@@ -79,6 +79,14 @@
                         @dbHist.SO_LUONG_XUAT.ToString("0,0.00")
                     </td>
                 </tr>
+            }
+    }
+    else
+    {
+        <tr>
+                        <td class="innerLast colwidth" colspan="4" style="background-color:lightgray">Không có dữ liệu</td>
+                    </tr>
+    }
             }
         </table>
 

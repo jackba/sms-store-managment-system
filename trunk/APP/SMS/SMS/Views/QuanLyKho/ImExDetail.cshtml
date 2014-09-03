@@ -76,6 +76,7 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
+                    $('#StoreId').val("");
                 },
                 select: function (event, ui) {
                     $('#StoreName').val(ui.item.label);
@@ -84,6 +85,7 @@
                 },
                 minLength: 1
             });
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $('#mainForm').submit();
         });
         $(document).ready(function () {

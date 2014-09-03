@@ -11,16 +11,19 @@ using SMS.App_Start;
 
 namespace SMS.Controllers
 {
-    [CustomActionFilter]
+    [Authorize]
+    [HandleError]
     public class QuanLyKhoController : Controller
     {
-        //
-        // GET: /QuanLyKho/
 
+        [CustomActionFilter]
         public ActionResult Index()
         {
             return View();
         }
+
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult FifoReport()
         {
@@ -199,6 +202,7 @@ namespace SMS.Controllers
             return PartialView("FifoReportPartialView", model);
         }
 
+        
         [HttpPost]
         public PartialViewResult ImExDetailPartialViewResult(int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
@@ -236,8 +240,9 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
-            var tonkho = ctx.Database.SqlQuery<ImEx>("exec SP_GET_NHAP_XUAT @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<ImEx>("exec SP_GET_NHAP_XUAT @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -260,11 +265,17 @@ namespace SMS.Controllers
             return PartialView("ImExDetailPartialViewResult", model);
         }
 
+        /****************************************************************
+         * 
+         * 
+         ****************************************************************/
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult ImExDetail()
         {
             return View();
         }
+
         /****************************************************************
          * 
          * 
@@ -312,9 +323,10 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
-            var tonkho = ctx.Database.SqlQuery<ExportReportDetail>("exec SP_EXPORT_REPORT_DETAIL @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<ExportReportDetail>("exec SP_EXPORT_REPORT_DETAIL @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -334,9 +346,10 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ExportReportDetailModel model = new ExportReportDetailModel();
             model.ResultList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -350,7 +363,7 @@ namespace SMS.Controllers
          * 
          * 
          ****************************************************************/
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult ExportReportDetail(int? kind)
         {
@@ -406,9 +419,10 @@ namespace SMS.Controllers
                 StoreId = (int)Session["MyStore"];
             }
 
-            var tonkho = ctx.Database.SqlQuery<ExportRepot>("exec SP_EXPORT_REPORT @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<ExportRepot>("exec SP_EXPORT_REPORT @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName)? string.Empty: StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -427,9 +441,10 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ExportRepotModel model = new ExportRepotModel();
             model.ResultList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_EXPORT_REPORT_SUM @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -439,6 +454,7 @@ namespace SMS.Controllers
             return PartialView("ExportReportPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult ExportReport(int? kind)
         {
             var ctx = new SmsContext();
@@ -449,9 +465,7 @@ namespace SMS.Controllers
             ViewBag.InputKind = kind;
             return View();
         }
-
-
-        
+       
         [HttpPost]
         public PartialViewResult ImportRepoterPartialView(int? kind, int? StoreId, string StoreName, int? ProductId,
             string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
@@ -647,9 +661,10 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
             }
-            var tonkho = ctx.Database.SqlQuery<SP_IMPORT_REPORTER_DETAIL_Result>("exec SP_IMPORT_REPORTER_DETAIL @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var tonkho = ctx.Database.SqlQuery<SP_IMPORT_REPORTER_DETAIL_Result>("exec SP_IMPORT_REPORTER_DETAIL @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -671,9 +686,10 @@ namespace SMS.Controllers
 
             ImportReportDetail model = new ImportReportDetail();
             model.ResultList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_IMPORT_REPORTER_SUM @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
                 new SqlParameter("KIND", Convert.ToInt32(kind)),
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName)? string.Empty: StoreName),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? string.Empty : ProductName.Trim()),
                 new SqlParameter("FROM_DATE", fromDate),
@@ -758,8 +774,7 @@ namespace SMS.Controllers
             return View(model);
         }
         
-
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Inventory()
         {

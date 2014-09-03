@@ -11,12 +11,11 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class HangSanXuatController : Controller
     {
         //
         // GET: /HangSanXuat/
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
@@ -70,7 +69,7 @@ namespace SMS.Controllers
         }
 
        
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Index(string searchString)
         {
@@ -90,11 +89,13 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult AddNew()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SMS.Models.NHA_SAN_XUAT khuVuc)
         {
@@ -116,7 +117,7 @@ namespace SMS.Controllers
             return View();
         }
 
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -138,6 +139,8 @@ namespace SMS.Controllers
             }
 
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SMS.Models.NHA_SAN_XUAT khuVuc)
         {
@@ -156,6 +159,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {

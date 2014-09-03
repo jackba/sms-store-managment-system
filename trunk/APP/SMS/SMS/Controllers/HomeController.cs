@@ -13,22 +13,24 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [Authorize]
-    [HandleError]
-    [CustomActionFilter]
+    [HandleError]    
     public class HomeController : Controller
     {
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Import()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Export()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Return()
         {
@@ -111,21 +113,25 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult BanHang()
         {
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult QuanLyKho()
         {
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult DanhMuc()
         {
             return View();
         }
 
+        [CustomActionFilter]
         public ActionResult QuanTri()
         {
             return View();

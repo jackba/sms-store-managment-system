@@ -8,12 +8,15 @@ using System.Data;
 using PagedList;
 using System.Data.SqlClient;
 using System.Transactions;
-
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]   
     public class ExportController : Controller
     {
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Export2Provider(Export2ProviderModel model)
         {
@@ -73,6 +76,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult Export2Provider(int id, int? storeId)
         {
             if (id <= 0)
@@ -95,6 +99,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult DeleteExport2Provider(int id)
         {
             if (id < 0)
@@ -135,7 +140,7 @@ namespace SMS.Controllers
             return RedirectToAction("WaitingExport2Provider", new { @messageInfor = "Xóa phiếu xuất kho thành công." });
         }
 
-
+        [CustomActionFilter]
         public ActionResult DeleteExport(int id)
         {
             if (id <= 0)
@@ -186,7 +191,7 @@ namespace SMS.Controllers
             }
         }
 
-
+        [CustomActionFilter]
         public ActionResult WaitingExport2Provider()
         {
             ViewBag.InputKind = 0;
@@ -229,6 +234,7 @@ namespace SMS.Controllers
             return PartialView("WaitingExport2ProviderPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult EditCancelTicket(int id)
         {
             var ctx = new SmsContext();
@@ -251,6 +257,7 @@ namespace SMS.Controllers
             model.Detail = detail;
             return View(model);
         }
+
 
         [HttpPost]
         public ActionResult EditCancelTicket(EditCancelTicketModel model)
@@ -306,6 +313,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult ExportCancelList(string message, string inforMessage)
         {
             ViewBag.Message = message;
@@ -356,6 +364,7 @@ namespace SMS.Controllers
             return PartialView("ExportCancelListPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -407,6 +416,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult SaleExportList(string message, string inforMessage)
         {
             ViewBag.Message = message;
@@ -524,6 +534,7 @@ namespace SMS.Controllers
             return PartialView("SaleExportListPartialView", model);
         }
 
+
         [HttpPost]
         public PartialViewResult SaleExportListPartialView(int? storeId, string storeName, int? exporterId, string exporterName, int? customerId,
             string customerName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
@@ -602,7 +613,12 @@ namespace SMS.Controllers
                 Value = customerName
             };
 
-            
+            var storeNameParam = new SqlParameter
+            {
+                ParameterName = "TEN_KHO",
+                Value = string.IsNullOrWhiteSpace(storeName) ? string.Empty : storeName
+            };
+
             var fromDateParam = new SqlParameter
             {
                 ParameterName = "FROM_DATE",
@@ -616,8 +632,9 @@ namespace SMS.Controllers
             };
 
             ctx.Database.CommandTimeout = 300;
-            var exportList = ctx.Database.SqlQuery<SaleExportListModel>("exec SP_GET_PHIEU_XUAT_KHO_BAN_LE @MA_KHO, @MA_NHAN_VIEN_XUAT, @TEN_NHAN_VIEN_XUAT, @MA_KHACH_HANG, @TEN_KHACH_HANG, @FROM_DATE , @TO_DATE",
+            var exportList = ctx.Database.SqlQuery<SaleExportListModel>("exec SP_GET_PHIEU_XUAT_KHO_BAN_LE @MA_KHO, @TEN_KHO, @MA_NHAN_VIEN_XUAT, @TEN_NHAN_VIEN_XUAT, @MA_KHACH_HANG, @TEN_KHACH_HANG, @FROM_DATE , @TO_DATE",
                 storeIdParam,
+                storeNameParam,
                 exporterIdParam,
                 exporterNameParam,
                 customerIdParam,
@@ -641,17 +658,20 @@ namespace SMS.Controllers
             return PartialView("SaleExportListPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult ExportList()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult ExportListPartialView()
         {
             return PartialView("ExportListPartialView");
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Export(ExportModel model)
         {
@@ -714,6 +734,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         public ActionResult Export(int id, int? makho)
         {
             var ctx = new SmsContext();
@@ -730,13 +751,14 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
+        [CustomActionFilter]
         public ActionResult Index(string message, string messageInfor)
         {
             ViewBag.Message = message;
             ViewBag.MessageInfor = messageInfor;
             return View();
         }
+
 
         [HttpPost]
         public PartialViewResult PagingContent(DateTime? fromdate, DateTime? todate,
@@ -777,7 +799,7 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
 
-            var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
+            var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), storeName, fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
                 .Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CAN_XUAT_KHO_Result>();
             ExportModel model = new ExportModel();
             model.WaitingList = list.ToPagedList(pageIndex, pageSize);
@@ -833,7 +855,7 @@ namespace SMS.Controllers
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
 
-            var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
+            var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), storeName, fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
                 .Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CAN_XUAT_KHO_Result>();
             ExportModel model = new ExportModel();
             model.WaitingList = list.ToPagedList(pageIndex, pageSize);
@@ -847,6 +869,7 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult XuatHuy(ExportModelXuatHuy model)
         {
@@ -906,6 +929,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult XuatHuy()
         {
             var ctx = new SmsContext();

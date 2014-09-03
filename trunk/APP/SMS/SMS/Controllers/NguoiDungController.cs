@@ -16,7 +16,6 @@ namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
     public class NguoiDungController : Controller
     {
         //
@@ -80,6 +79,7 @@ namespace SMS.Controllers
             return View(nguoiDungs);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -92,6 +92,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -121,6 +122,7 @@ namespace SMS.Controllers
 
         }
         
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -151,6 +153,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SMS.Models.NGUOI_DUNG nguoiDung)
         {
@@ -197,6 +200,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SMS.Models.NGUOI_DUNG nguoiDung)
         {
@@ -258,25 +262,29 @@ namespace SMS.Controllers
             return null;
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult changePass()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult changePass(FormCollection form)
         {
+            var crypto = new SimpleCrypto.PBKDF2();
             String username = form["username"];
             String oldpass = form["oldpass"];
             String newpass = form["newpass"];
             String confirmpass = form["confirmpass"];
-
+            
             using (var ctx = new SmsContext())
             {
                 ViewData["errorcode"] = "99";
 
                 NGUOI_DUNG nd = ctx.NGUOI_DUNG.FirstOrDefault(n => n.USER_NAME == username);
+                oldpass = crypto.Compute(oldpass, nd.SALT);
                 if (nd != null)
                 {
                     if (!String.IsNullOrEmpty(oldpass))
@@ -289,7 +297,7 @@ namespace SMS.Controllers
                                 {
                                     if (newpass.Equals(confirmpass))
                                     {
-                                        var crypto = new SimpleCrypto.PBKDF2();
+                                        
                                         nd.MAT_KHAU = crypto.Compute(newpass);
                                         nd.SALT = crypto.Salt;
                                         ctx.SaveChanges();
@@ -351,6 +359,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Show(int id)
         {
@@ -374,6 +383,7 @@ namespace SMS.Controllers
             return result; 
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public JsonResult ResetPassword(int id)
         {

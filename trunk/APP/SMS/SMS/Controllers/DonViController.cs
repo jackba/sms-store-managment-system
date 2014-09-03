@@ -11,8 +11,7 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [Authorize]
-    [HandleError]
-    [CustomActionFilter]
+    [HandleError]   
     public class DonViController : Controller
     {
         //
@@ -62,6 +61,7 @@ namespace SMS.Controllers
             return result;
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
@@ -115,6 +115,7 @@ namespace SMS.Controllers
             return View(donViTinhs);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -122,6 +123,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -145,7 +147,7 @@ namespace SMS.Controllers
         }
 
        
-
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -171,7 +173,7 @@ namespace SMS.Controllers
             }
         }
 
-        
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SMS.Models.DON_VI_TINH donVi)
         {
@@ -190,6 +192,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SMS.Models.DON_VI_TINH donVi)
         {

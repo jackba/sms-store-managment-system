@@ -11,8 +11,7 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [Authorize]
-    [HandleError]
-    [CustomActionFilter]
+    [HandleError]    
     public class AccountController : Controller
     {
         public ActionResult Index()
@@ -104,8 +103,10 @@ namespace SMS.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [CustomActionFilter]
         public ActionResult Register(Models.NGUOI_DUNG user)
         {
+            var crypto = new SimpleCrypto.PBKDF2();
             try
             {
                 if (ModelState.IsValid)
@@ -120,7 +121,7 @@ namespace SMS.Controllers
 
                         newUser.USER_NAME = user.USER_NAME;
 
-                        newUser.MAT_KHAU = user.MAT_KHAU;
+                        newUser.MAT_KHAU = crypto.Compute(user.MAT_KHAU);
 
                         ctx.NGUOI_DUNG.Add(newUser);
 

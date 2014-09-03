@@ -94,7 +94,6 @@ namespace SMS.Controllers
             return PartialView("CollectionPartialView", model);
         }
 
-        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult CollectionPartialView(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
@@ -150,7 +149,6 @@ namespace SMS.Controllers
             return PartialView("CollectionPartialView", model);
         }
 
-        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult IndexPagingContent(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? salerId, string salerName,
@@ -218,7 +216,6 @@ namespace SMS.Controllers
             return PartialView("IndexPartialView", model);
         }
 
-        [CustomActionFilter]
         [HttpPost]
         public PartialViewResult IndexPartialView(DateTime? fromdate, DateTime? todate, 
             int? customerId, string customerName, int? salerId, string salerName,
@@ -492,8 +489,8 @@ namespace SMS.Controllers
             model.SmsMaster = master;
             return View(model);
         }
-        
 
+        
         public ActionResult ShowDetail(int id, int? flg, int? status )
         {
             var ctx = new SmsContext();

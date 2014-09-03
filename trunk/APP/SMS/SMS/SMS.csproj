@@ -369,6 +369,12 @@
     <Compile Include="Models\SP_GET_REFUND_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_REPORT_DEBT_COLLECTION_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_REPORT_RETURN_2_PROVIDER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_RETURN_DETAIL_BY_ID_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -385,9 +391,6 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_SMS_MESSAGES_Result.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SP_GET_STATISTICS_BY_MONTH_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
@@ -414,15 +417,6 @@
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_ALL_CUS_RETURN_BY_WEEK.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\V_BUGET_BY_MONTH.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\V_BUGET_BY_WEEK.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\V_HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -444,16 +438,16 @@
     <Compile Include="Models\V_NHAP_XUAT_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_STATISTICS_BY_MONTH.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\V_STATISTICS_BY_WEEK.cs">
+    <Compile Include="Models\V_RETURN_2_PROVIDER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_TRA_NHAP_TRA_NCC.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_WARNING_PRODUCTS.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_XUAT_KHO.cs">

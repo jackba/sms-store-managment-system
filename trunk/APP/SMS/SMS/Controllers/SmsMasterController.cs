@@ -9,6 +9,8 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [CustomActionFilter]
+    [Authorize]
+    [HandleError]
     public class SmsMasterController : Controller
     {
         //
@@ -218,6 +220,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public ActionResult Index(string MaxDebit1, string MaxDebit2, 
             string MaxDebit3, string MaxMonth1, string MaxMonth2, string MaxMonth3)

@@ -11,8 +11,7 @@ using SMS.App_Start;
 namespace SMS.Controllers
 {
     [Authorize]
-    [HandleError]
-    [CustomActionFilter]
+    [HandleError]    
     public class KhuVucController : Controller
     {
 
@@ -34,6 +33,7 @@ namespace SMS.Controllers
 
         //
         // GET: /KhuVuc/
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
@@ -86,6 +86,7 @@ namespace SMS.Controllers
             return View(khuVucs);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Index(string searchString)
         {
@@ -105,12 +106,14 @@ namespace SMS.Controllers
             return View();
         }
 
-
+        [CustomActionFilter]
+        [HttpGet]
         public ActionResult AddNew()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddNew(SMS.Models.KHU_VUC khuVuc)
         {
@@ -131,6 +134,8 @@ namespace SMS.Controllers
             }
             return View();
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -152,6 +157,8 @@ namespace SMS.Controllers
             }
 
         }
+
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult Edit(SMS.Models.KHU_VUC khuVuc)
         {
@@ -170,6 +177,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
         {

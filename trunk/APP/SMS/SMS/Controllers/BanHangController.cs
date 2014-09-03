@@ -21,11 +21,11 @@ namespace SMS.Controllers
 
     [Authorize]
     [HandleError]
-    [CustomActionFilter]
-    
+   
     public class BanHangController : Controller
     {
         [HttpPost]
+        [CustomActionFilter]
         public ActionResult Edit(EditHoaDonBanHang model)
         {
             var ctx = new SmsContext();
@@ -88,6 +88,7 @@ namespace SMS.Controllers
              }
         }
 
+        [CustomActionFilter]
         public ActionResult Edit(int id)
         {
             if (id < 0)
@@ -112,6 +113,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        [CustomActionFilter]
         public ActionResult AddNew(HoaDonBanHang hoaDon)
         {
             var ctx = new SmsContext();
@@ -191,7 +193,9 @@ namespace SMS.Controllers
             hoaDon.Units = units;            
             return View(hoaDon);
         }
+
         [HttpGet]
+        [CustomActionFilter]
         public ActionResult AddNew(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -204,6 +208,8 @@ namespace SMS.Controllers
             hoanDon.InforMessage = inforMessage;
             return View(hoanDon);
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult HoaDonBanHang(int MaHoaDon)
         {
@@ -225,6 +231,7 @@ namespace SMS.Controllers
             return View();
         }
         // Chinh sua hoa don - START
+        [CustomActionFilter]
         private KhachHangInfo getCustomerByBillNo(int MaHoaDon)
         {
             var ctx = new SmsContext();
@@ -243,6 +250,8 @@ namespace SMS.Controllers
                       }).FirstOrDefault();
             return hd;
         }
+
+        
         private List<ChiTiet_HoaDon> getDetailsByBillNo(int MaHoaDon)
         {
             var ctx = new SmsContext();
@@ -398,6 +407,7 @@ namespace SMS.Controllers
             return result;
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult SaveBill(int MaHoaDon, FormCollection collection)
         {
@@ -412,6 +422,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         private ActionResult insertBill(FormCollection collection)
         {
             int MaHD = -1;
@@ -532,6 +543,7 @@ namespace SMS.Controllers
             return Content(msgStringBuilder.ToString());
         }
 
+        [CustomActionFilter]
         private ActionResult updateBill(int MaHoaDon, FormCollection collection)
         {
             string SoHD = "" ;
@@ -659,6 +671,7 @@ namespace SMS.Controllers
             return Content(msgStringBuilder.ToString());
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult EditBill()
         {
@@ -670,7 +683,7 @@ namespace SMS.Controllers
             return View();
         }
         
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ExportExcel(FormCollection collection)
         {

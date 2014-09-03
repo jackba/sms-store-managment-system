@@ -6,19 +6,24 @@ using System.Web.Mvc;
 using SMS.Models;
 using PagedList;
 using System.Transactions;
+using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+    [Authorize]
+    [HandleError]
     public class CustomerRefundController : Controller
     {
         //
         // GET: /CustomerRefund/
 
+        [CustomActionFilter]
         public ActionResult Index()
         {
             return View();
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ReturnToProvider(ReturnToProviderModel model)
         {
@@ -86,7 +91,7 @@ namespace SMS.Controllers
              }
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult ImportRefund(RefundModel model)
         {
@@ -159,6 +164,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         public ActionResult ImportRefund(int id)
         {
             var ctx = new SmsContext();
@@ -180,7 +186,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
-
+        [CustomActionFilter]
         public ActionResult ReturnToProvider(int id)
         {
             var ctx = new SmsContext();
@@ -230,6 +236,7 @@ namespace SMS.Controllers
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 
+        [CustomActionFilter]
         public ActionResult ReturnPurchaseList(string message, string messageInfor)
         {
             ViewBag.Message = message;

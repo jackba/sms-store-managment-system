@@ -55,9 +55,9 @@
                 <tr>
                     <td class="innerLast colwidth" colspan="5" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
-            }
-        }
-        @foreach (var dbHist in Model.WaitingList)
+            
+        
+        foreach (var dbHist in Model.WaitingList)
         {
             if (ImportDate != (DateTime)dbHist.NGAY_BAN)
             {
@@ -97,7 +97,14 @@
 
             </tr>
         }
-
+            }
+            else
+            {
+                 <tr>
+                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">Không có dữ liệu </td>
+                </tr>
+            }
+        }
     </table>
 
     <table width="100%">
