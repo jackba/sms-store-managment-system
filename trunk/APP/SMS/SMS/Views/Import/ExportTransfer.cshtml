@@ -200,7 +200,8 @@
             return flg;
         }
 
-        function checkEnough(storeId, ProductId, quantity, convertor) {
+        function checkEnough(storeId, ProductId, quantity, convertor) {           
+
             var inventorNumber = 0;
             if (storeId != null && ProductId != null && quantity != null && convertor != null) {
                 $.ajax({
@@ -208,15 +209,17 @@
                     data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        var inventorNumber = data;
+                        inventorNumber = data;
+                        if (inventorNumber < (quantity * convertor)) {
+                            return false;
+                        } else {
+                            return true;
+                        };
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
-                if (inventorNumber < (quantity * convertor)) {
-                    return false;
-                } else {
-                    return true;
-                };
+                
+                
             }
         }
 

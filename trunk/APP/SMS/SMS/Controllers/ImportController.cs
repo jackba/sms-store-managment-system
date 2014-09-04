@@ -348,7 +348,10 @@ namespace SMS.Controllers
                     {
                         return RedirectToAction("Index", new { @message = "Phiếu nhập hàng không tồn tại, hoặc đã bị xóa. Vui lòng kiểm tra lại" });
                     }
-                    infor.MA_KHO = model.Infor.MA_KHO;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO = model.Infor.MA_KHO;
+                    }                    
                     infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
@@ -406,10 +409,10 @@ namespace SMS.Controllers
             var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
-            if (!(bool)Session["IsAdmin"])
-            {
-                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
-            }
+            //if (!(bool)Session["IsAdmin"])
+            //{
+            //    model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            //}
             model.Stores = stores;
             model.Providers = providers;
             model.Units = units;
@@ -429,10 +432,13 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
             ImportModel model = new ImportModel();
+            NHAP_KHO Infor = new NHAP_KHO();
+            model.Infor = Infor;
             if (!(bool)Session["IsAdmin"])
             {
                 model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
             }
+
             model.Stores = stores;
             model.Providers = providers;
             model.Units = units;
@@ -450,7 +456,14 @@ namespace SMS.Controllers
                 try
                 {
                     var infor = ctx.NHAP_KHO.Create();
-                    infor.MA_KHO = model.Infor.MA_KHO;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO = model.Infor.MA_KHO;
+                    }
+                    else
+                    {
+                        infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+                    }
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
                     infor.CREATE_AT = DateTime.Now;
@@ -711,7 +724,10 @@ namespace SMS.Controllers
                     {
                         return RedirectToAction("Index", new { @message = "Phiếu nhập hàng không tồn tại, hoặc đã bị xóa. Vui lòng kiểm tra lại" });
                     }
-                    infor.MA_KHO = model.Infor.MA_KHO;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO = model.Infor.MA_KHO;
+                    }                    
                     infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
@@ -769,10 +785,10 @@ namespace SMS.Controllers
             var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
-            if (!(bool)Session["IsAdmin"])
-            {
-                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
-            }
+            //if (!(bool)Session["IsAdmin"])
+            //{
+            //    model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            //}
             model.Stores = stores;
             model.Providers = providers;
             model.Units = units;
@@ -791,13 +807,9 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
             ImportTransferModel model = new ImportTransferModel();
-            if (!(bool)Session["IsAdmin"])
-            {
-                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-            }
-            model.Stores = stores;
-            model.Units = units;
             model.Infor = infor;
+            model.Stores = stores;
+            model.Units = units;            
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
             model.ExportDetail = detail;
             return View(model);
@@ -847,6 +859,10 @@ namespace SMS.Controllers
             if (todate == null)
             {
                 todate = SystemConstant.MAX_DATE;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                importStoreId = Convert.ToInt32(Session["MyStore"]);
             }
             var ctx = new SmsContext();
             var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
@@ -1101,7 +1117,14 @@ namespace SMS.Controllers
                 try
                 {
                     var infor = ctx.NHAP_KHO.Create();
-                    infor.MA_KHO = model.Infor.MA_KHO;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO = model.Infor.MA_KHO;
+                    }
+                    else
+                    {
+                        infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+                    }
                     infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
@@ -1159,6 +1182,8 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
             ImportModel model = new ImportModel();
+            NHAP_KHO Infor = new NHAP_KHO();
+            model.Infor = Infor;
             if(!(bool)Session["IsAdmin"]){
                 model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
             }

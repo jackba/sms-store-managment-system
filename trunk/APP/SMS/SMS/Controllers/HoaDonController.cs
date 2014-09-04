@@ -133,10 +133,11 @@ namespace SMS.Controllers
             {
                 salerId = Convert.ToInt32(Session["UserId"]);
             }
-            if (!(bool)Session["IsAdmin"] && (bool)Session["IsAccounting"])
-            {
-                accountantId = Convert.ToInt32(Session["UserId"]);
-            }
+            // Chưa thu tiền 
+            accountantId = 0;
+            accountantName = string.Empty;
+            //==============================
+
             var ctx = new SmsContext();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;

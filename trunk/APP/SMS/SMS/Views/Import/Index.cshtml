@@ -139,6 +139,7 @@
                 },
                 minLength: 1
             });
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $('#mainForm').submit();
         });
 

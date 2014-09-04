@@ -50,7 +50,11 @@
                 <td class='innerLast colwidth head '>  Sửa </td>
                 <td class='innerLast colwidth head '>  Xóa </td>
             </tr>
-            @foreach (var dbHist in Model.ImportList)
+            @if (Model.ImportList != null && Model.ImportList.Count > 0)
+             {
+                
+            
+                foreach (var dbHist in Model.ImportList)
             {
                 <tr class="inner column-hscroll alignCenter">
                     <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
@@ -111,6 +115,11 @@
                         
                     </td>
 
+                </tr>
+            }
+            }else{
+                <tr>
+                    <td class="innerLast alignCenter" style="background-color:lightgray" colspan="7"> Không có dữ liệu phù hợp</td>
                 </tr>
             }
         </table>
