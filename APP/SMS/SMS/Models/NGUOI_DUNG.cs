@@ -95,7 +95,7 @@ namespace SMS.Models
         public string TEN_NGUOI_DUNG { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập ngày sinh")]
         [Display(Name = "Ngày sinh")]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public System.DateTime NGAY_SINH { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập số chứng minh")]

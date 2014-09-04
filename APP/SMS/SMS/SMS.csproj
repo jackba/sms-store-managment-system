@@ -393,6 +393,7 @@
     <Compile Include="Models\SP_GET_SMS_MESSAGES_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_STATISTICS_BY_MONTH_Result.cs" />
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -417,6 +418,9 @@
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_ALL_CUS_RETURN_BY_WEEK.cs" />
+    <Compile Include="Models\V_BUGET_BY_MONTH.cs" />
+    <Compile Include="Models\V_BUGET_BY_WEEK.cs" />
     <Compile Include="Models\V_HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -441,6 +445,8 @@
     <Compile Include="Models\V_RETURN_2_PROVIDER.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_STATISTICS_BY_MONTH.cs" />
+    <Compile Include="Models\V_STATISTICS_BY_WEEK.cs" />
     <Compile Include="Models\V_TRA_HANG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>

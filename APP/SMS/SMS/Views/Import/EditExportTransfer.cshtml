@@ -195,16 +195,16 @@
                     url: "/Import/getInventory",
                     data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        var inventorNumber = data;                       
+                    success: function (data) {                        
+                        inventorNumber = data;                       
+                        if (inventorNumber < (quantity * convertor)) {
+                            return false;
+                        } else {
+                            return true;
+                        };
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                });
-                if (inventorNumber < (quantity * convertor)) {
-                    return false;
-                } else {
-                    return true;
-                };
+                });                
             }
         }
 
