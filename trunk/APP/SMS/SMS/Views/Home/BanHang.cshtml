@@ -36,6 +36,21 @@
         <img width="64" height="64" alt="edit" src="../../Content/images/buycart.png"></img>
         <span>BÁN HÀNG</span>
     </a>
+
+    @if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
+    {
+        
+
+        <a class="dashboard-module" href="@Url.Action("ReturnToProvider", "TraHang")">
+            <img width="64" height="64" alt="edit" src="../../Content/images/provider_back.png"></img>
+            <span>LẬP PHIẾU TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
+        </a>
+        
+        <a class="dashboard-module" href="@Url.Action("ListOfToProvider", "TraHang")">
+            <img width="64" height="64" alt="edit" src="../../Content/images/list2.jpg"></img>
+            <span>DS PHIẾU TRẢ HÀNG - NHÀ CUNG CẤP </span>
+        </a>
+    }
 @{
     if (Convert.ToBoolean(Session["IsAdmin"]) || Convert.ToBoolean(Session["IsAccounting"]))
     {
@@ -57,6 +72,12 @@
             <img width="64" height="64" alt="edit" src="../../Content/images/list2.jpg"></img>
             <span>DS CÁC PHIẾU TRẢ HÀNG TỪ KHÁCH HÀNG</span>
         </a>
+    
+        <a class="dashboard-module" href="@Url.Action("ReturnPurchaseList", "BanHang", new {@flag = 1 })">
+            <img width="64" height="64" alt="edit" src="../../Content/images/Chargeback.png"></img>
+            <span>DS NHẬN HÀNG TRẢ TỪ KHÁCH HÀNG</span>
+        </a>
+    
         <a class="dashboard-module" href="@Url.Action("MonthlyReport", "Report")">
             <img width="64" height="64" alt="edit" src="../../Content/images/report.jpg"></img>
             <span>BÁO CÁO DOANH THU TRONG NĂM (THÁNG)</span>

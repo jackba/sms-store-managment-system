@@ -172,9 +172,9 @@
                       ))
 {
     <hr style="width:100%" />
+    <div style="clear:both"></div>
     <div style="float:left">
         Loại &nbspxuất : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        <br />
         @if((bool)Session["IsAdmin"])
         {
             <div>
@@ -182,14 +182,12 @@
             @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
             </div>
         }
+        <div></div>
         @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
         Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
-    </div>
-    <div style="float:left">
         Ngày Mua: @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
         <input type="submit" value="Tìm kiếm" class="myButton" />
     </div>
-    <div style="clear:both"></div>
     <hr style="width:100%" />
     <div style="clear:both"></div>
 }
