@@ -51,7 +51,7 @@
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
-            if (Model.TheList != null && Model.TheList.Count() >= 1)
+            if (Model.TheList != null && Model.TheList.Count >= 1)
             {
                 ImportDate = (DateTime)Model.TheList[0].NGAY_LAP_PHIEU;
 
@@ -93,7 +93,7 @@
                 </td>
                 <td class="innerLast colwidth">
                     @{
-            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"] && dbHist.STATUS == 1)
+            if (((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"]) && dbHist.STATUS == 1)
                         {
                             <a href="@Url.Action("Export2Provider", "Export", new { id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
                                 <img width="16" height="16" alt="edit" src="~/Content/images/Export.jpg"></img>
@@ -103,7 +103,7 @@
                 </td>
                 <td class="innerLast colwidth">
                     @{
-            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"] && dbHist.STATUS != 1)
+            if ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] && dbHist.STATUS != 1)
             {
                 <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.MA_XUAT_KHO, @storeId = ViewBag.storeId })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>

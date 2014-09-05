@@ -50,7 +50,7 @@
         </tr>
         @{
             DateTime ImportDate = DateTime.Now;
-            if (Model.SaleExportList != null && Model.SaleExportList.Count() >= 1)
+            if (Model.ExportedList != null && Model.ExportedList.Count >= 1)
             {
                 ImportDate = (DateTime)Model.ExportedList[0].NGAY_BAN;
 

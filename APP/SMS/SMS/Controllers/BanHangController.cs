@@ -24,6 +24,47 @@ namespace SMS.Controllers
    
     public class BanHangController : Controller
     {
+        [CustomActionFilter]
+        public ActionResult ReturnPurchaseList(string message, string messageInfor)
+        {
+            ViewBag.Message = message;
+            ViewBag.MessageInfor = messageInfor;
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ReturnPurchaseListPartialView(string customerName, DateTime? fromDate,
+            DateTime? toDate, int? userId, string userName, int? currentPageIndex)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = string.Empty;
+                userId = 0;
+            }
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var ctx = new SmsContext();
+            var resultList = ctx.SP_GET_RETURN_LIST(customerName, fromDate, toDate, userId, userName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_RETURN_LIST_Result>();
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            CustomerReturn model = new CustomerReturn();
+            model.detailReturnList = resultList.ToPagedList(pageIndex, pageSize);
+            model.Count = resultList.Count;
+            ViewBag.CustomerName = customerName;
+            ViewBag.UserId = userId;
+            ViewBag.UserName = userName;
+            ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
+            ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            return PartialView("ReturnPurchaseListPartialView", model);
+        }
+
+
         [HttpPost]
         [CustomActionFilter]
         public ActionResult Edit(EditHoaDonBanHang model)
