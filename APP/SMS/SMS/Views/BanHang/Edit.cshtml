@@ -214,7 +214,7 @@
                             @Html.TextBoxFor(u => u.Details[i].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='innerLast colwidth '>
-                            @Html.Hidden("storeTemp", Model.Details[0].MA_KHO_XUAT, new { @class = "storeTemp" })
+                            @Html.Hidden("storeTemp", Model.Details[i].MA_KHO_XUAT, new { @class = "storeTemp" })
                             @Html.DropDownListFor(u => u.Details[i].MA_KHO_XUAT, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
                         </td>
                     </tr>
@@ -1265,11 +1265,11 @@
             tableCheck();
             headerCheck();
             $("#storeInformation").hide();
-            unitOnchange();            
-            storeChange();
+            unitOnchange();         
             onloadTotal();
             unitChange();
             counter();
+            storeChange();
         });
 
         function counter() {

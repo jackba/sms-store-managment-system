@@ -30,10 +30,11 @@
 }
 
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Return", "Home")">Xử lý hàng trả</a> >
-    <a href="@Url.Action("ReturnPurchaseList", "CustomerRefund")">Danh sách các phiếu nhận hàng trả </a>
+    <a href="@Url.Action("BanHang", "Home")">Bán hàng</a> >
+    <a href="@Url.Action("ReturnPurchaseList", "BanHang")">Lập phiếu trả hàng nhà cung cấp từ phiếu trả hàng </a>
     > @ViewBag.Title
 </div>
+
 
 <br />
 <hgroup class="title">
@@ -81,7 +82,6 @@
             <hr style="width:100%" />
             <input type="button" id="returnFirst" style="width:300px" value="Lập phiếu trả" onclick="return returnSubmit()" />
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("ReturnPurchaseList", "CustomerRefund")'" />
             <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                 <tr>
                     <td class='inner colwidth head ' width="5%;">
@@ -161,7 +161,6 @@
 
             <input type="button" id="returnLast" style="width:300px" value="Lập phiếu trả" onclick="return returnSubmit()" />
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("ReturnPurchaseList", "CustomerRefund")'" />
 
         </fieldset>
     </div>

@@ -2,10 +2,10 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Danh sách các phiếu trả hàng";
+    ViewBag.Title = "Nhập kho từ phiếu trả hàng";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Return", "Home")"> Xử lý hàng trả </a> > @ViewBag.Title
+    <a href="@Url.Action("QuanLyKho", "Home")"> Quản Lý kho</a> > @ViewBag.Title
 </div>
 
 <br />
@@ -22,7 +22,6 @@
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
-<br />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")

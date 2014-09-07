@@ -45,7 +45,6 @@
             @if ((bool)Session["IsStoremanager"] || (bool)Session["IsAdmin"])
             {
                 <td class='innerLast colwidth head '>  Nhập lại kho </td>
-                <td class='innerLast colwidth head '>  Trả hàng NCC </td>
             }
         </tr>
         @{
@@ -68,7 +67,7 @@
             {
                 ImportDate = (DateTime)dbHist.NGAY_TRA;
                 <tr>
-                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
+                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">@ImportDate.ToString("dd/MM/yyyy") </td>
                 </tr>
             }
             <tr class="inner column-hscroll alignCenter">
@@ -94,23 +93,13 @@
             }
                     }
                 </td>
-                <td class="innerLast colwidth">
-                    @{
-            if ((bool)Session["IsStoreManager"] || (bool)Session["IsAdmin"])
-            {
-                <a href="@Url.Action("ReturnToProvider", "CustomerRefund", new { id = @dbHist.MA_TRA_HANG })" class="button-module">
-                    <img width="16" height="16" alt="edit" src="~/Content/images/Chargeback.png"></img>
-                </a>
-            }
-                    }
-                </td>
             </tr>
         }
             }
             else
             {
                 <tr>
-                    <td class="innerLast colwidth" colspan="7" style="background-color:lightgray">Không có dữ liệu</td>
+                    <td class="innerLast colwidth" colspan="6" style="background-color:lightgray">Không có dữ liệu</td>
                 </tr>
             }
         }
