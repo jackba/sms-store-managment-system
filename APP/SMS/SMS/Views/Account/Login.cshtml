@@ -20,9 +20,14 @@
         $('#USER_NAME').focus();
         $('input').keyup(function (event) {
             // press Enter to submit
-            if (event.which === 13) {
-                login();
-            }
+            var pass = $("#MAT_KHAU").val();
+            var userName = $('#USER_NAME').val();
+            if (pass != '' && pass != null && userName != null && userName != '')
+            {
+                if (event.which === 13) {
+                    login();
+                }
+            }            
         });
     });
 

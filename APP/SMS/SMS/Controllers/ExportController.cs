@@ -246,10 +246,6 @@ namespace SMS.Controllers
                 return RedirectToAction("ExportCancelList", new { @message = "Không tìm thấy phiếu xuất hủy này, vui lòng kiểm tra lại" });
             }
             EditCancelTicketModel model = new EditCancelTicketModel();
-            if (!(bool)Session["IsAdmin"])
-            {
-                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-            }
             model.Stores = stores;
             model.Units = units;
             model.Infor = infor;
@@ -879,7 +875,14 @@ namespace SMS.Controllers
                 try
                 {
                     var infor = ctx.XUAT_KHO.Create();
-                    infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    }
+                    else
+                    {
+                        infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+                    }
                     //infor.MA_KHO = model.Infor.MA_KHO;
                     //infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
                     //infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
@@ -937,6 +940,8 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
             ExportModelXuatHuy model = new ExportModelXuatHuy();
+            XUAT_KHO Infor = new XUAT_KHO();
+            model.Infor = Infor;
             if (!(bool)Session["IsAdmin"])
             {
                 model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);

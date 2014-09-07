@@ -11,7 +11,14 @@
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
                     @Html.PagedListPager(Model.ResultList, currentPageIndex => Url.Action("FifoReportPartialView",
-                        new { currentPageIndex }),
+                                 new
+                                 {
+                                     currentPageIndex,
+                                     StoreId = ViewBag.StoreId,
+                                     StoreName = ViewBag.StoreName,
+                                     ProductId = ViewBag.ProductId,
+                                     ProductName = ViewBag.ProductName
+                                 }),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
             new AjaxOptions()
             {
@@ -91,7 +98,13 @@
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
                     @Html.PagedListPager(Model.ResultList, currentPageIndex => Url.Action("FifoReportPartialView",
-                        new { currentPageIndex }),
+                        new { 
+                            currentPageIndex,
+                            StoreId = ViewBag.StoreId,
+                            StoreName = ViewBag.StoreName,
+                            ProductId = ViewBag.ProductId,
+                            ProductName = ViewBag.ProductName
+                        }),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
             new AjaxOptions()
             {
