@@ -43,7 +43,44 @@
                 changeYear: true,
                 yearRange: "-60:+0"
             });
+
+            $('input.discount').focusout(
+                function (event) {
+                    checkDiscountInput(event);
+                }
+            );
         });
+
+        function checkDiscountInput(event) {
+
+            var obj = event.currentTarget;
+            if (obj.value == "") {
+                obj.value = "0";
+            }
+            if (removeCommas(obj.value) > 100) {
+                obj.focus();
+                obj.style.borderColor = "red";
+                obj.style.backgroundColor = "antiquewhite";
+                setDisableControl('btnSave_Top', true);
+                setDisableControl('btnSave_Bottom', true);
+            } else {
+                obj.style.borderColor = "#e2e2e2";
+                obj.style.backgroundColor = "white";
+                setDisableControl('btnSave_Top', false);
+                setDisableControl('btnSave_Bottom', false);
+            }
+            obj.value = parseFloat(obj.value);
+
+        }
+        /*remove comma from value input*/
+        function removeCommas(str) {
+            if (str != null && str != '') {
+                return (str.replace(/,/g, ''));
+            } else {
+                return null;
+            }
+
+        }
     </script>
     <style type="text/css">
         .required:after {
@@ -151,20 +188,20 @@
                             @Html.TextBoxFor(u => u.Details[0].TEN_SAN_PHAM, new { @class = "productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].SO_LUONG, new { @class = "quantity numberic" })
+                            @Html.TextBoxFor(u => u.Details[0].SO_LUONG, new { @class = "quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
                             
                             @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].DON_GIA, new { @class = "price numberic" })
+                            @Html.TextBoxFor(u => u.Details[0].DON_GIA, new { @class = "price numberic", @maxlength = "9" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic" })
+                            @Html.TextBoxFor(u => u.Details[0].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.Details[0].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
@@ -195,20 +232,20 @@
                             @Html.TextBoxFor(u => u.Details[i].TEN_SAN_PHAM, new { @class = "productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].SO_LUONG, new { @class = "quantity numberic" })
+                            @Html.TextBoxFor(u => u.Details[i].SO_LUONG, new { @class = "quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.Hidden("unitTemp", Model.Details[0].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
                             @Html.DropDownListFor(u => u.Details[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].DON_GIA, new { @class = "price numberic" })
+                            @Html.TextBoxFor(u => u.Details[i].DON_GIA, new { @class = "price numberic", @maxlength = "9" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.Details[i].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled"})
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic" })
+                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.Details[i].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
@@ -1261,7 +1298,8 @@
             numberOnly();
             productAutocomplete();
             productCodeAutocomplete();
-            quantityKeyPress();            
+            quantityKeyPress();
+            discountKeyPress();
             tableCheck();
             headerCheck();
             $("#storeInformation").hide();
@@ -1316,16 +1354,16 @@
                 '<input name="Details[' + row + '].TEN_SAN_PHAM" class="productName" id="Details_' + row + '__TEN_SAN_PHAM" type="text" value="">' +
                 '</td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].SO_LUONG" class="quantity numberic" id="Details_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
+                '<input name="Details[' + row + '].SO_LUONG" class="quantity numberic" maxlength = "7" id="Details_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
                 '<td class="inner colwidth ">' +
                 '<select name="Details[' + row + '].MA_SON_VI" class="unit " id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
                 '</select></td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].DON_GIA" class="price numberic" id="Details_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
+                '<input name="Details[' + row + '].DON_GIA" class="price numberic" maxlength = "9" id="Details_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
                 '</td><td class="inner colwidth ">' +
                 '<input name="Details[' + row + '].THANH_TIEN" disabled="disabled" class="total numberic" id="Details_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="discount numberic" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="discount numberic" maxlength = "4" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
                 '</td><td class="inner colwidth ">' +
                 '<input name="Details[' + row + '].THUC_THU" disabled="disabled" class="realTotal numberic" id="Details_' + row + '__THUC_THU" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +
@@ -1339,6 +1377,7 @@
             productCodeAutocomplete();
             getNumberOfRow();
             quantityKeyPress();
+            discountKeyPress();
             unitOnchange();
             tableCheck();
             headerCheck();
