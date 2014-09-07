@@ -18,6 +18,8 @@
     <script src="../../Content/js/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
@@ -30,8 +32,8 @@
 }
 
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Return", "Home")">Xử lý hàng trả</a> >
-    <a href="@Url.Action("ReturnPurchaseList", "CustomerRefund")">Danh sách các phiếu nhận hàng trả </a> 
+    <a href="@Url.Action("QuanLyKho", "Home")">Xử lý hàng trả</a> >
+    <a href="@Url.Action("ReturnPurchaseList", "CustomerRefund")">Danh sách các phiếu trả hàng </a> 
     > @ViewBag.Title
 </div>
 
@@ -78,7 +80,6 @@
             <hr style="width:100%" />
             <input type="button" id="returnFirst" style="width:300px" value="Nhập kho" onclick="return returnSubmit()" />
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("ReturnPurchaseList", "CustomerRefund")'" />
             <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
                 <tr>
                     <td class='inner colwidth head ' width="5%;">
@@ -157,7 +158,7 @@
 
             <input type="button" id="returnLast" style="width:300px" value="Nhập kho" onclick="return returnSubmit()" />
             <input type="button" value="Xoá" style="width:200px" onclick="deleteCheckedRow()" />
-            <input type="button" style="width:300px" value="Trở về danh sách hóa đơn" onclick="window.location.href='@Url.Action("ReturnPurchaseList", "CustomerRefund")'" />
+            
 
         </fieldset>
     </div>

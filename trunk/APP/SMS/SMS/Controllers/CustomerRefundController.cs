@@ -108,7 +108,14 @@ namespace SMS.Controllers
                    
 
                     var import = ctx.NHAP_KHO.Create();
-                    import.MA_KHO = model.MaKho;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        import.MA_KHO = model.MaKho;
+                    }
+                    else
+                    {
+                        import.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+                    }
                     import.NGAY_NHAP = model.NgayNhapKho;
                     import.LY_DO_NHAP = 1;
                     import.MA_PHIEU_TRA = model.Infor.MA_TRA_HANG;
