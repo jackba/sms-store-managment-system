@@ -8,10 +8,7 @@
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("QuanLyKho", "Home")"> Quản lý kho </a>
     > @ViewBag.Title
-
-    <br />
 </div>
-<br />
 <hgroup class="title">
     <h2> @ViewBag.Title </h2>
 </hgroup>
@@ -24,8 +21,6 @@
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
-
-<br />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -151,7 +146,6 @@
         </table>
         <div style="float:right">
             <input type="submit" value="Tìm kiếm" class="myButton" />
-            <input type="button" value="Xuất excel" id=" btnExport" onclick="tableToExcel('tblExport', 'Export')" class="myButton" />
         </div>
     <div style="clear:both"></div>
     <hr style="width:100%" />

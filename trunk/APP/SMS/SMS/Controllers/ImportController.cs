@@ -888,10 +888,10 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
             EditTransferModel model = new EditTransferModel();
-            if (!(bool)Session["IsAdmin"])
-            {
-                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-            }
+            //if (!(bool)Session["IsAdmin"])
+            //{
+            //    model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+            //}
             model.Stores = stores;
             model.Units = units;
             model.Infor = infor;
@@ -1098,6 +1098,8 @@ namespace SMS.Controllers
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             TransferModel model = new TransferModel();
+            XUAT_KHO ExportInfor = new XUAT_KHO();
+            model.ExportInfor = ExportInfor;
             if (!(bool)Session["IsAdmin"])
             {
                 model.ExportInfor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
