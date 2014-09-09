@@ -5,7 +5,7 @@
     ViewBag.Title = "Nhận trả hàng không hóa đơn.";
 }
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
-    <a href="@Url.Action("Return", "Home")"> Xử lý trả hàng </a> > @ViewBag.Title
+    <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> > @ViewBag.Title
 </div>
 
 <br />
@@ -16,6 +16,9 @@
 </hgroup>
 <hr />
 <h3>@ViewBag.Message</h3>
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
@@ -48,12 +51,18 @@
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
                     $('#customerId').val("");
+                    $("#DebitInfor").hide();
                 },
                 select: function (event, ui) {
                     $('#customerName').val(ui.item.label);
                     $('#customerId').val(ui.item.id);
-                    if (ui.item.debit > 0) {
-                        $("#CustomerDebit").html(ui.item.debit);
+                    if (ui.item.debit != '' && ui.item.debit != null && ui.item.debit > 0) {
+                        $("#CustomerDebit").val(ui.item.debit);
+                        $("#DebitInfor").show();
+                        formatNumberic();
+                    } else {
+                        $("#CustomerDebit").val(0);
+                        $("#DebitInfor").hide();
                     }
                     return false;
                 },
@@ -106,34 +115,33 @@
         </tr>        
     </table>
     <hr />
-    <table border="1" class="innerLast" style="width:100%">
-        <tr class="innerLast">
-            <td style=" background-color: lightblue;" colspan="2" class="innerLast">
-                <strong> Thông tin nợ gối đầu của khách hàng </strong>
-            </td>
+    <div id="DebitInfor">
+        <table border="1" class="innerLast" style="width:100%">
+            <tr class="innerLast">
+                <td style=" background-color: lightblue;" colspan="2" class="innerLast">
+                    <strong> Thông tin nợ gối đầu của khách hàng </strong>
+                </td>
             </tr>
-        <tr class="innerLast">
-            <td style="background-color: lightgray; width: 50%;" class="innerLast">
-                Số tiền khách nợ
-            </td>
-            <td class="innerLast numberic" id="CustomerDebit">
-
-            </td>
-        </tr>
-        <tr class="innerLast">
-            <td style="background-color:lightgray" class="innerLast">
-                Tổng tiền của hóa đơn
-            </td>
-            <td class="innerLast" id="totalOfBill">
-        </td>
-        <tr class="innerLast">
-            <td style="background-color:lightgray" class="innerLast">
-                Tiền trả lại cho khách
-            </td>
-            <td class="innerLast" id="totalOfBill"></td>
-        </tr>   
+            <tr class="innerLast">
+                <td style="background-color: lightgray; width: 50%;" class="innerLast">
+                    Số tiền khách nợ
+                </td>
+                <td class="innerLast " > <input type="text" class="numberic" id="CustomerDebit" disabled="disabled" readonly="readonly" /> </td>
+            </tr>
+            <tr class="innerLast">
+                <td style="background-color:lightgray" class="innerLast" >
+                    Tổng tiền của hóa đơn
+                </td>
+                <td class="innerLast " > <input type="text" class="numberic" id="totalOfBill" disabled="disabled"  readonly="readonly" /> </td>
+            <tr class="innerLast">
+                <td style="background-color:lightgray" class="innerLast">
+                    Tiền trả lại cho khách
+                </td>
+                <td class="innerLast " > <input type="text" class="numberic" id="totalReturn" disabled="disabled" readonly="readonly" /> </td>
+            </tr>
         </table>
-    <hr />
+        <hr />
+    </div>
     <input type="button" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" id="rowIndex" value="0" />
@@ -205,14 +213,21 @@
             var ppval = 1;
             var checkFlg = 0;
 
+            $('#message').empty();
+            var errorMessage = '';
+
             if ($("#returnDate").val() == null || $("#returnDate").val().trim() == "") {
-                alert("Chưa nhập ngày trả hàng. Vui lòng chọn ngày trả hàng.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Chưa nhập ngày trả hàng. Vui lòng chọn ngày trả hàng.";
             }
 
             if ($("#customerName").val() == null || $("#customerName").val().trim() == "") {
-                alert("Chưa nhập tên khách hàng. Vui lòng nhập tên khách hàng.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Chưa nhập tên khách hàng. Vui lòng nhập tên khách hàng.";
             }
             
             $('input.chcktbl').each(function () {
@@ -235,25 +250,41 @@
             });
 
             if (ppval == 0) {
-                alert("Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
             }
 
             if (pval == 0) {
-                alert("Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
             }
 
             if (row == 0) {
-                alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-                return false;
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
             }
             else if (rval == 0) {
-                alert("Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.");
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage +=  "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+            }
+
+            if (errorMessage != '') {
+                $('#message').append(errorMessage);
+                $('#message').append("<hr/>");
                 return false;
             } else {
+                $('#saveFlg').val(1);
                 $('#index').submit();
             }
+
         };
 
         function tableCheck() {
@@ -340,7 +371,7 @@
                     $this.val(num2 + DecimalSeparator + decPart);
                 } else {
                     $this.val(num2);
-                }
+                }                
             });
         }
 
@@ -625,21 +656,18 @@
                     }
                 }
             });
-
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(AllTotal).split(DecimalSeparator);
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
+            $("#totalOfBill").val(AllTotal);            
+            var debit = $("#CustomerDebit").val();
+            if (debit != null && debit != '') {
+                debit = debit.replace(/,/gi, "");
+                if (debit >= AllTotal) {
+                    $("#totalReturn").val("0");
+                } else {
+                    $("#totalReturn").val("(" + (AllTotal - debit) + ")") ;
+                }
             }
-            if (arParts.length > 1) {
-                $('strong.fall').text(num2 + DecimalSeparator + decPart);
-            } else {
-                $('strong.fall').text(num2);
-            }
+            formatNumberic();
+            $('strong.fall').text($("#totalOfBill").val());
         };
 
         $(document).ready(function () {
@@ -653,6 +681,7 @@
             tableCheck();
             headerCheck();
             $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+            $("#DebitInfor").hide();
         });
 
 
