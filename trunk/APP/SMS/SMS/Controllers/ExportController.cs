@@ -268,7 +268,10 @@ namespace SMS.Controllers
                     {
                         return RedirectToAction("ExportCancelList", new { @message = "Phiếu xuất hủy này không tồn tại, vui lòng liên hệ admin." });
                     }
-                    infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    }                    
                     infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
                     infor.UPDATE_AT = DateTime.Now;
                     infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);

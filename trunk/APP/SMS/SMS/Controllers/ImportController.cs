@@ -919,7 +919,10 @@ namespace SMS.Controllers
                     {
                         exInfor.ACTIVE = "A";
                     }
-                    exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    }                    
                     exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
                     exInfor.GHI_CHU = infor.GHI_CHU;
                     exInfor.NGAY_XUAT = infor.NGAY_XUAT;
@@ -1002,6 +1005,10 @@ namespace SMS.Controllers
             {
                 todate = SystemConstant.MAX_DATE;
             }
+            if (!(bool)Session["IsAdmin"])
+            {
+                exportStoreId = Convert.ToInt32(Session["MyStore"]);
+            }
             var ctx = new SmsContext();
             var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
                 Convert.ToInt32(importStoreId), fromDate, todate, Convert.ToInt32(userId), userFullName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_PHIEU_CHUYEN_KHO_Result>();
@@ -1039,7 +1046,14 @@ namespace SMS.Controllers
                     {
                         exInfor.ACTIVE = "A"; 
                     }
-                    exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    if ((bool)Session["IsAdmin"])
+                    {
+                        exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    }
+                    else
+                    {
+                        exInfor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+                    }
                     exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
                     exInfor.GHI_CHU = infor.GHI_CHU;
                     exInfor.NGAY_XUAT = infor.NGAY_XUAT;
