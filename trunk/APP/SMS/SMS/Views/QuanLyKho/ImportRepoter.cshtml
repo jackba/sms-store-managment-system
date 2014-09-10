@@ -175,9 +175,11 @@
                       ))
 {
     <hr style="width:100%" />
-    <div style="float:left">
+    <div>
         Loại nhập : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        <br />
+    </div>
+    <div style="float:left">
+      
         @if ((bool)Session["IsAdmin"])
         {
             <div>
@@ -185,6 +187,9 @@
                 @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
             </div>
         }
+       
+    </div>
+    <div>
         @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
         Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
     </div>

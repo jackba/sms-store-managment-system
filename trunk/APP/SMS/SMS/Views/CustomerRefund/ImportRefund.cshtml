@@ -19,7 +19,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
-
             $('.datePicker').datepicker({
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,
@@ -36,14 +35,15 @@
     <a href="@Url.Action("ReturnPurchaseList", "CustomerRefund")">Danh sách các phiếu trả hàng </a> 
     > @ViewBag.Title
 </div>
-
-<br />
 <hgroup class="title">
     <h2>@ViewBag.Title</h2>
 </hgroup>
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.MessageInfor </div>
 <hr style="width:100%" />
+<div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 @using (Html.BeginForm("ImportRefund", "CustomerRefund", FormMethod.Post, new { @name = "ImportRefund", @id = "ImportRefund" }))
 {
 
@@ -171,13 +171,20 @@
         var row = 0;
         var rval = 1;
         var checkFlg = 0;
+        $('#imessage').empty();
+        var errorMessage = '';
+
         if ($("#NgayNhapKho").val() == null || $("#NgayNhapKho").val().trim() == "") {
-            alert("Chưa nhập ngày. Vui lòng chọn ngày nhập kho");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Chưa nhập ngày. Vui lòng chọn ngày nhập kho");
         }
         if ($("#MaKho option:selected").val() == null || $("#MaKho option:selected").val().trim() == "") {
-            alert("Vui lòng chọn kho nhập");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Vui lòng chọn kho nhập");
         }
         
         $('input.chcktbl').each(function () {
@@ -187,32 +194,47 @@
                 var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
             
                 if (quantity == null || quantity == '' || quantity == 0) {
+                    quantity = 0;
                     rval = 0;
-                }else{
-                    if(untillQuantity < quantity){
-                        checkFlg = 1;
-                    }
                 }
+
+                if(untillQuantity < quantity){
+                    checkFlg = 1;
+                }
+                
                 row++;
             }
         });
 
         if(checkFlg == 1){
-            alert("Số lượng nhập kho không chính xác, có thể nhiều hơn số lượng trả. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Số lượng nhập kho không chính xác, có thể nhiều hơn số lượng trả. Vui lòng kiểm tra lại.");
         }
 
         if (row == 0) {
-            alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
         }
         else if (rval == 0) {
-            alert("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+        }
+
+
+        if (errorMessage != '') {
+            $('#imessage').append(errorMessage);
+            $('#imessage').append("<hr/>");
             return false;
-        }else
-        {
+        } else {
             $('#ImportRefund').submit();
         }
+   
     };
 
 

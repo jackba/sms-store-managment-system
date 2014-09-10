@@ -11,14 +11,15 @@
     <a href="@Url.Action("Index", "TraHang")">Trả hàng </a>
     > @ViewBag.Title
 </div>
-
-<br />
 <hgroup class="title">
     <h2>@ViewBag.Title</h2>
 </hgroup>
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.MessageInfor </div>
 <hr style="width:100%" />
+<div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 @using (Html.BeginForm("Show", "TraHang", FormMethod.Post, new { @name = "ShowDetail", @id = "ShowDetail" }))
 {
 
@@ -81,6 +82,7 @@
             <div class="right">
                 <label>@Model.Infor.DIA_CHI_GIAO_HANG</label>
             </div>
+           @*
             @if (Model.Infor.STATUS >= 2)
             {
                 <div class="left">
@@ -133,7 +135,7 @@
                     }
                     @to.ToString("0,0.00")
                 </label>
-            </div>
+            </div  >*@
             <div style="clear:both"></div>
             <hr style="width:100%" />
             @if (Model.Infor.MA_KHACH_HANG != null && Model.CustomerInformation.NO_GOI_DAU >0)
@@ -149,36 +151,24 @@
                             <td style="background-color:lightgray" class="innerLast">
                                 Số tiền khách nợ
                             </td>
-                            <td class="innerLast" id="CustomerDebit">
-                                @Model.CustomerInformation.NO_GOI_DAU.ToString("0,0.00")
+                            <td class="innerLast">
+                                @Html.TextBoxFor(u => u.CustomerInformation.NO_GOI_DAU, new {@id = "CustomerDebit", @class = "numberic", @readOnly = "readonly", @disabled = "disabled"})
                                 @Html.HiddenFor(u=> u.CustomerInformation.NO_GOI_DAU)
-
                             </td>
                         </tr>
                         <tr class="innerLast" >
                             <td style="background-color:lightgray" class="innerLast">
                                 Tổng tiền của hóa đơn
                             </td>
-                            <td class="innerLast" id="totalOfBill">
-                                @to.ToString("0,0.00")
-                            </td>
+    
+                            <td class="innerLast "> <input type="text" class="numberic" id="totalOfBill" disabled="disabled" readonly="readonly" /> </td>
+                            
                         </tr>
                         <tr class="innerLast">
                             <td style="background-color:lightgray" class="innerLast">
                                 Tổng tiền trả lại cho khách
-                            </td>
-                            <td class="innerLast" id="ttReturn">
-                               @{
-                double ttReturn = (double)Model.CustomerInformation.NO_GOI_DAU - (double)to;
-                if(ttReturn > 0){
-                    @("0")
-                }
-                else
-                {
-                    @((ttReturn*-1).ToString("0,0.00"))
-                }
-                               }
-                            </td>
+                            </td>                            
+                            <td class="innerLast "> <input type="text" class="numberic" id="totalReturn" disabled="disabled" readonly="readonly" /> </td>
                         </tr>
 
                     </table>
@@ -287,6 +277,8 @@
         var row = 0;
         var rval = 1;
         var checkFlg = 0;
+        $('#imessage').empty();
+        var errorMessage = '';
         $('input.chcktbl').each(function () {
             var flg = $('input.delFlg', $(this).parent().parent()).val();
             if (flg != 1) {
@@ -295,6 +287,7 @@
                 if (quantity == null || quantity == '' || quantity == 0) {
                     rval = 0;
                 } else {
+                    quantity.replace(/,/gi, "");
                     if (untillQuantity < quantity) {
                         checkFlg = 1;
                     }
@@ -303,18 +296,29 @@
             }
         });
         if (checkFlg == 1) {
-            alert("Số lượng trả không chính xác, có thể nhiều hơn số lượng đã mua. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += ("Số lượng trả không chính xác, có thể nhiều hơn số lượng đã mua. Vui lòng kiểm tra lại.");
         }
         if (row == 0) {
-            alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += ("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
         }
         else if (rval == 0) {
-            alert("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += ("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+        }
+
+        if (errorMessage != '') {
+            $('#imessage').append(errorMessage);
+            $('#imessage').append("<hr/>");
             return false;
-        }else
-        {
+        } else {
             $('#ShowDetail').submit();
         }
     };
@@ -355,20 +359,18 @@
             }
         });
 
-        var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-        var arParts = String(AllTotal).split(DecimalSeparator);
-        var intPart = arParts[0];
-        var decPart = (arParts.length > 1 ? arParts[1] : '');
-        var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-        var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-        if (decPart.length > 2) {
-            decPart = (decPart + '00').substr(0, 2);
+        $("#totalOfBill").val(AllTotal);
+        var debit = $("#CustomerDebit").val();
+        if (debit != null && debit != '') {
+            debit = debit.replace(/,/gi, "");
+            if (debit >= AllTotal) {
+                $("#totalReturn").val("0");
+            } else {
+                $("#totalReturn").val(AllTotal - debit);
+            }
         }
-        if (arParts.length > 1) {
-            $('strong.allTotal').text(num2 + DecimalSeparator + decPart);
-        } else {
-            $('strong.allTotal').text(num2);
-        }
+        formatNumberic();
+        $('strong.allTotal').text($("#totalOfBill").val());
     };
     function formatNumberic() {
         $('input.numberic').each(function () {
@@ -509,6 +511,12 @@
         else {
             $('input.chcktbl:not(:checked)').prop('checked', true);
         }
+    });
+
+
+    $(document).ready(function () {
+        formatNumberic();
+        getAllTotal();
     });
 
 </script>

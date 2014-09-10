@@ -81,12 +81,12 @@ namespace SMS.Controllers
                     refund.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     ctx.SaveChanges();
                     transaction.Complete();
-                    return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Lập phiếu trả hàng đến nhà cung cấp thành công." });
+                    return RedirectToAction("ListOfToProvider", "TraHang", new { @inforMessage = "Lập phiếu trả hàng đến nhà cung cấp thành công." });
                 }
                 catch(Exception)
                 {
                     Transaction.Current.Rollback();
-                    return RedirectToAction("ReturnPurchaseList", new { @message = "Lập phiếu trả hàng đến nhà cung cấp thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ListOfToProvider", "TraHang", new { @message = "Lập phiếu trả hàng đến nhà cung cấp thất bại, vui lòng liên hệ admin." });
                 }
              }
         }
@@ -244,10 +244,10 @@ namespace SMS.Controllers
         }
 
         [CustomActionFilter]
-        public ActionResult ReturnPurchaseList(string message, string messageInfor)
+        public ActionResult ReturnPurchaseList(string message, string inforMessage)
         {
             ViewBag.Message = message;
-            ViewBag.MessageInfor = messageInfor;
+            ViewBag.MessageInfor = @inforMessage;
             return View();
         }
 

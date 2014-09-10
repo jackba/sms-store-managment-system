@@ -52,17 +52,24 @@ namespace SMS.App_Start
                                (IsMetadataManager && u.IS_METEDATA_MANAGER == IsMetadataManager)
                             )
                         );
-                    if (permission == null)
+                    try
                     {
-                        filterContext.HttpContext.Session.Abandon();
-                        filterContext.HttpContext.Session.Clear();
-                        filterContext.HttpContext.Session.RemoveAll();
-                        FormsAuthentication.SignOut();
-                        filterContext.HttpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
-                        throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này. Vui lòng liên hệ admin để biết thêm phân quyền của bạn.");
+                        if (permission == null)
+                        {
+                            filterContext.HttpContext.Session.Abandon();
+                            filterContext.HttpContext.Session.Clear();
+                            filterContext.HttpContext.Session.RemoveAll();
+                            FormsAuthentication.SignOut();
+                            filterContext.HttpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddYears(-1);
+                            throw new NotImplementedException("Bạn không có quyền thực thi tác vụ này. Vui lòng liên hệ admin để biết thêm phân quyền của bạn.");
+                        }
+                        else
+                        {
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
+                        Console.Write(ex);
                     }
                 }
             }

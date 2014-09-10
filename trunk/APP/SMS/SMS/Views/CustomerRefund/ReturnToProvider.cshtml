@@ -35,14 +35,15 @@
     > @ViewBag.Title
 </div>
 
-
-<br />
 <hgroup class="title">
     <h2>@ViewBag.Title</h2>
 </hgroup>
 <div style="color:red">@ViewBag.Message </div>
 <div style="color:blue">@ViewBag.MessageInfor </div>
 <hr style="width:100%" />
+<div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
 @using (Html.BeginForm("ReturnToProvider", "CustomerRefund", FormMethod.Post, new { @name = "ReturnToProvider", @id = "ReturnToProvider" }))
 {
 
@@ -137,22 +138,28 @@
                         </td>
                         <td class="inner colwidth alignCenter">
                             @detail.TEN_DON_VI
-                            @Html.HiddenFor(model => Model.Detail[i].GIA_VON, new { @class = "numberic tdNumeric price" })
                         </td>
                         <td class="inner colwidth alignCenter">
-                            @Html.TextBoxFor(model => Model.Detail[i].GIA_VON, new { @class = "numberic tdNumeric quantity" })
+                            @Html.Hidden("Untill", Model.Detail[i].SO_LUONG_TRA, new { @id = i + "SO_LUONG_TRA", @class = "Untill" })
+                            @Html.TextBoxFor(model => Model.Detail[i].GIA_VON, new { @class = "numberic tdNumeric price" })
                         </td>
                         <td class="innerLast colwidth alignCenter">
-                            @Html.TextBoxFor(model => Model.Detail[i].TONG_TIEN, new { @class = "numberic tdNumeric quantity", @disabled = "disabled"})
+                            @Html.TextBoxFor(model => Model.Detail[i].TONG_TIEN, new { @class = "numberic tdNumeric total", @disabled = "disabled" })
                         </td>
                     </tr>
                 }
                 <tr style="background-color:lightgray">
-                    <td class="innerLast colwidth" colspan="6">
-                        <strong> Tồng số lượng của tất cả mặt hàng</strong>
+                    <td class="innerLast colwidth" colspan="3">
+                        <strong> Tồng số mặt hàng</strong>
                     </td>
                     <td class="innerLast colwidth numberic">
-                        <strong class="allTotal numberic">@totalAll.ToString("0,0.00")</strong>
+                        <strong class="numberOfrow"> </strong>
+                    </td>
+                    <td class="innerLast colwidth" colspan="2">
+                        <strong> Tồng  gía trị phiếu trả</strong>
+                    </td>
+                    <td class="innerLast colwidth numberic">
+                        <strong class="allTotal numberic"></strong>
                     </td>
                 </tr>
             </table>
@@ -173,45 +180,62 @@
         var row = 0;
         var rval = 1;
         var checkFlg = 0;
+        $('#imessage').empty();
+        var errorMessage = '';
+
         if ($("#ReturnDate").val() == null || $("#ReturnDate").val().trim() == "") {
-            alert("Chưa nhập ngày trả hàng. Vui lòng chọn ngày trả hàng.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Chưa nhập ngày trả hàng. Vui lòng chọn ngày trả hàng.");
         }
         if ($("#ProviderId option:selected").val() == null || $("#ProviderId option:selected").val().trim() == "") {
-            alert("Vui lòng chọn nhà cung cấp");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng chọn nhà cung cấp";
         }
         $('input.chcktbl').each(function () {
             var flg = $('input.delFlg', $(this).parent().parent()).val();
             if (flg != 1) {
                 var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
                 var untillQuantity = $('input.Untill', $(this).parent().parent()).val().replace(/,/gi, "");
-
                 if (quantity == null || quantity == '' || quantity == 0) {
                     rval = 0;
-                } else {
-                    if (untillQuantity < quantity) {
-                        checkFlg = 1;
-                    }
-                }
+                    quantity = 0;
+                } 
+                if (untillQuantity < quantity) {
+                    checkFlg = 1;
+                }                
                 row++;
             }
         });
 
         if (checkFlg == 1) {
-            alert("Số lượng trả về nhà sản xuất không chính xác, có thể nhiều hơn số lượng trả. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Số lượng trả về nhà sản xuất không chính xác, có thể nhiều hơn số lượng trả của khách hàng. Vui lòng kiểm tra lại.");
         }
 
         if (row == 0) {
-            alert("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
-            return false;
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.");
         }
         else if (rval == 0) {
-            alert("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage +=  ("Có ít nhất 1 mặt hàng với số lượng trả là 0, hoặc không được nhập số lượng trả. Vui lòng kiểm tra lại.");
+        }
+
+        if (errorMessage != '') {
+            $('#imessage').append(errorMessage);
+            $('#imessage').append("<hr/>");
             return false;
-        }else
-        {
+        } else {
             $('#ReturnToProvider').submit();
         }
     };
@@ -242,13 +266,14 @@
     function getAllTotal() {
         var AllTotal = 0;
         var total = 0;
-        $('td input.quantity').each(function () {
+        $('td input.total').each(function () {
             $this = $(this);
             $parent = $this.parent().parent();
-            if ($('input.delFlg', $parent).val() != 1)
-            {
+            if ($('input.delFlg', $parent).val() != 1) {
                 total = $this.val().replace(/,/gi, "");
-                AllTotal += parseFloat(total);
+                if (total != null && total != '') {
+                    AllTotal += parseFloat(total);
+                }
             }
         });
 
@@ -289,8 +314,23 @@
             }
         });
     }
+
+    function getNumberOfRow() {
+        var row = 0;
+        $('td input.quantity').each(function () {
+            var $this = $(this);
+            var $parent = $this.parent().parent();
+            if ($('input.delFlg', $parent).val() != 1) {
+                row++;
+            }
+        });
+       
+        $('strong.numberOfrow').text(row);
+    };
+
     $(document).ready(function () {
         formatNumberic();
+        $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
         $('input.numberic').keypress(function (key) {
             var keycode = (key.which) ? key.which : key.keyCode;
             //comparing pressed keycodes
@@ -329,47 +369,48 @@
         $('input.price').keyup(function (event) {
             var $this = $(this);
             var parent = $this.parent().parent();
-            var price = $('input.quantity', parent).val().replace(/,/gi, "");;
-            var tt = $this.val().replace(/,/gi, "") * price;
-
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(tt).split(DecimalSeparator);
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
-            }
-            if (arParts.length > 1) {
-                $('td.total', parent).text(num2 + DecimalSeparator + decPart);
+            var quantity = $('input.quantity', parent).val();
+            if (quantity == null || quantity == '') {
+                quantity = 0;
             } else {
-                $('td.total', parent).text(num2);
+                quantity = quantity.replace(/,/gi, "");
             }
+
+            var price = $this.val();
+            if (price == null || price == '') {
+                price = 0;
+            } else {
+                price = price.replace(/,/gi, "");
+            }
+            var tt = quantity * price;
+            $('td input.total', parent).val(tt);
             getAllTotal();
+            formatNumberic();
         });
         $('input.quantity').keyup(function (event) {
             var $this = $(this);
             var parent = $this.parent().parent();
-            var price = $('input.price', parent).val().replace(/,/gi, "");
-            var tt = $this.val().replace(/,/gi, "") * price;
-
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(tt).split(DecimalSeparator);
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
-            }
-            if (arParts.length > 1) {
-                $('td.total', parent).text(num2 + DecimalSeparator + decPart);
+            var price = $('input.price', parent).val();
+            if (price == null || price == '') {
+                price = 0;
             } else {
-                $('td.total', parent).text(num2);
+                price = price.replace(/,/gi, "");
             }
+            var quantity = $this.val();
+            if (quantity == null || quantity == '') {
+                quantity = 0;
+            } else {
+                quantity = quantity.replace(/,/gi, "");
+            }
+            var tt = quantity * price;
+            $('td input.total', parent).val(tt);
             getAllTotal();
+            formatNumberic();
         });
+        getAllTotal();
+        formatNumberic();
+        getNumberOfRow();
+
     });
     function deleteCheckedRow() {
         var rows = 0;

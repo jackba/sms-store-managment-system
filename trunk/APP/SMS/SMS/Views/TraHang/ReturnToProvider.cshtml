@@ -83,6 +83,7 @@
         </tr>
     </table>
     <hr />
+    <input type="hidden" value="" id="hdTotal"/>
     <input type="button" value="Lưu" style="width:200px;" onclick="return returnSubmit()" />
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
     <input type="hidden" id="rowIndex" value="0" />
@@ -124,7 +125,7 @@
                     @Html.TextBoxFor(u => u.Details[0].DON_GIA_TEMP, new { @class = "price numberic textbtl" })
                 </td>
                 <td class="innerLast colwidth">
-                    @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total textbtl", @disabled = "disabled" })
+                    @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total textbtl numberic", @disabled = "disabled" })
                 </td>
                 <td class="innerLast colwidth">
                     @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%", @class = "store " })
@@ -487,31 +488,47 @@
             $('input.price').keyup(function (event) {
                 var $this = $(this);
                 var parent = $this.parent().parent();
-                var price = $('input.quantity', parent).val().replace(/,/gi, "");
-                var tt = $this.val().replace(/,/gi, "") * price;
-
-                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-                var arParts = String(tt).split(DecimalSeparator);
-                var intPart = arParts[0];
-                var decPart = (arParts.length > 1 ? arParts[1] : '');
-                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                if (decPart.length > 2) {
-                    decPart = (decPart + '00').substr(0, 2);
-                }
-                if (arParts.length > 1) {
-                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
+                var quantity = $('input.quantity', parent).val();
+                if(quantity == null || quantity == ''){
+                    quantity = 0;
                 } else {
-                    $('td input.total', parent).val(num2);
-                }
+                    quantity = quantity.replace(/,/gi, "");
+                }               
+
+                var price = $this.val();
+                if (price == null || price == '') {
+                    price = 0;
+                } else {
+                    price = price.replace(/,/gi, "");
+                }                
+                var tt = quantity * price;
+                $('td input.total', parent).val(tt);
                 getAllTotal();
-            });
+                formatNumberic();
+            });            
         }
 
         function quantityKeyPress() {
-            $('input.quantity').keyup(function (event) {
+            $('input.quantity').keyup(function (event) {                
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                var price = $('input.price', parent).val();
+                if (price == null || price == '') {
+                    price = 0;
+                } else {
+                    price = price.replace(/,/gi, "");
+                }                
+                var quantity = $this.val();
+                if (quantity == null || quantity == '') {
+                    quantity = 0;
+                } else {
+                    quantity = quantity.replace(/,/gi, "");
+                }                
+                var tt = quantity * price;
+                $('td input.total', parent).val(tt);
                 getAllTotal();
-            });
+                formatNumberic();
+            });            
         }
 
         function checkDuplicate(val) {
@@ -676,7 +693,7 @@
         function getAllTotal() {
             var AllTotal = 0;
             var total = 0;
-            $('td input.quantity').each(function () {
+            $('td input.total').each(function () {
                 $this = $(this);
                 $parent = $this.parent().parent();
                 if ($('input.delFlg', $parent).val() != 1) {
@@ -709,6 +726,7 @@
             productAutocomplete();
             productCodeAutocomplete();
             quantityKeyPress();
+            priceKeyPress();
             unitOnchange();
             tableCheck();
             headerCheck();
@@ -738,10 +756,10 @@
                 '<td class="innerLast colwidth">' +
                 '<select name="Details[' + row + '].MA_DON_VI" class="unit textbtl" id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
                 '<td class="innerLast colwidth"><input name="Details[' + row + '].DON_GIA_TEMP" class="price numberic textbtl" id="Details_' + row + '__DON_GIA_TEMP" type="text" value="" data-val="true" data-val-number="The field DON_GIA_TEMP must be a number."></td>' +
-                '<td class="innerLast colwidth"><input name="Details' + row + '].THANH_TIEN" disabled="disabled" class="total textbtl" id="Details_' + row + '__THANH_TIEN" type="text" value="" data-val="true" data-val-number="The field THANH_TIEN must be a number."></td>' +
+                '<td class="innerLast colwidth"><input name="Details' + row + '].THANH_TIEN" disabled="disabled" class="numberic total textbtl" id="Details_' + row + '__THANH_TIEN" type="text" value="" data-val="true" data-val-number="The field THANH_TIEN must be a number."></td>' +
                 '<option value="">---------</option></select> </td>' +
                 '<td class="innerLast colwidth">' +
-                '<select name="Details[' + row + '].MA_KHO_XUAT" class="store textbtl" id="Details_ + row + __MA_KHO_XUAT" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_KHO_XUAT must be a number."><option value="">---------</option>' +
+                '<select name="Details[' + row + '].MA_KHO_XUAT" class="store textbtl " id="Details_ + row + __MA_KHO_XUAT" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_KHO_XUAT must be a number."><option value="">---------</option>' +
                 '</select></td>'+
                 '</tr>');
             $("#rowIndex").val(row);
@@ -751,9 +769,11 @@
             productCodeAutocomplete();
             getNumberOfRow();
             quantityKeyPress();
+            priceKeyPress();
             unitOnchange();
             tableCheck();
             headerCheck();
+            formatNumberic();
             //codeFocusout();
         };
 
