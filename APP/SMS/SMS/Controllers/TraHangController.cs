@@ -682,10 +682,10 @@ namespace SMS.Controllers
         }
 
         [CustomActionFilter]
-        public ActionResult ReturnPurchaseList(string message, string messageInfor)
+        public ActionResult ReturnPurchaseList(string message, string inforMessage)
         {
             ViewBag.Message = message;
-            ViewBag.MessageInfor = messageInfor;
+            ViewBag.MessageInfor = inforMessage;
             return View();
         }
 
