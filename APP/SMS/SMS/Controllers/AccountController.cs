@@ -8,12 +8,117 @@ using System.Web.Security;
 using System.Data.Entity.Validation;
 using SMS.App_Start;
 
+
 namespace SMS.Controllers
 {
     [Authorize]
     [HandleError]    
     public class AccountController : Controller
     {
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetPassword()
+        {
+            SecurityQuestion model = new SecurityQuestion();
+            var ctx = new SmsContext();
+            var questions = ctx.SECURITY_QUESTIONS.Where(u => u.ACTIVE == "A").ToList<SECURITY_QUESTIONS>();
+            model.Questions = questions;
+            model.QuestionId1 = 0;
+            model.QuestionId2 = 0;
+            model.QuestionId3 = 0;
+            return View(model);
+        }
+
+        
+        
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult GetPassword(SecurityQuestion model)
+        {
+            if (ModelState.IsValid)
+            {
+                var ctx = new SmsContext();
+                var questions = ctx.SECURITY_QUESTIONS.Where(u => u.ACTIVE == "A").ToList<SECURITY_QUESTIONS>();
+                model.Questions = questions;
+                var crypto = new SimpleCrypto.PBKDF2();
+                var usr = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.USER_NAME.ToLower() == model.userName.ToLower()).FirstOrDefault();
+                if (usr != null)
+                {
+                    if (string.IsNullOrEmpty(usr.EMAIL))
+                    {
+                        ViewBag.Message = "Account của bạn không có email để nhận mật khẩu mới. Vui lòng liên hệ admin để reset lại mật khẩu cho bạn.";
+                        return View(model);
+                    }
+                    var question1 = ctx.PERSONAL_QUESTIONS.Where(u => u.QUESTION_ID == model.QuestionId1 && u.USR_ID == usr.MA_NGUOI_DUNG).FirstOrDefault();
+                    if (question1 != null)
+                    {
+                        if (!(question1.ANSWER == crypto.Compute(model.Answer1, question1.ANSWER_SALT)))
+                        {
+                            model.QuestionId1 = 0;
+                            model.QuestionId2 = 0;
+                            model.QuestionId3 = 0;
+                            ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            return View(model);
+                        }
+                    }
+
+                    var question2 = ctx.PERSONAL_QUESTIONS.Where(u => u.QUESTION_ID == model.QuestionId2 && u.USR_ID == usr.MA_NGUOI_DUNG).FirstOrDefault();
+                    if (question2 != null)
+                    {
+                        if (!(question2.ANSWER == crypto.Compute(model.Answer2, question2.ANSWER_SALT)))
+                        {
+                            model.QuestionId1 = 0;
+                            model.QuestionId2 = 0;
+                            model.QuestionId3 = 0;
+                            ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            return View(model);
+                        }
+                    }
+
+                    var question3 = ctx.PERSONAL_QUESTIONS.Where(u => u.QUESTION_ID == model.QuestionId3 && u.USR_ID == usr.MA_NGUOI_DUNG).FirstOrDefault();
+                    if (question3 != null)
+                    {
+                        if (!(question3.ANSWER == crypto.Compute(model.Answer3, question3.ANSWER_SALT)))
+                        {
+                            model.QuestionId1 = 0;
+                            model.QuestionId2 = 0;
+                            model.QuestionId3 = 0;
+                            ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            return View(model);
+                        }
+                    }
+
+                    string newPass = SystemConstant.RandomString(8);
+                    try
+                    {
+                        
+                        usr.MAT_KHAU = crypto.Compute(newPass);
+                        usr.SALT = crypto.Salt;
+                        ctx.SaveChanges();
+                        SystemConstant.sendEmail(usr.EMAIL, "somewheremylover@gmail.com", "[Vân Phước - SMS] Mật khẩu mới", "Mật khẩu mới của bạn để đăng nhập vào hệ thống là " + newPass + ". Bạn nên thay đôi mật khẩu ngay sau khi đăng nhập.",
+                            "somewheremylover","DiemPhuong@123");
+                        ViewBag.InforMessage = "Mật khẩu đã được gửi đến email của bạn. Vui lòng đăng nhập email để lấy mật khẩu mới.";
+                        return View(model);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        ViewBag.Message = "Không thể cập nhật được mật khẩu mới cho bạn.";
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    model.QuestionId1 = 0;
+                    model.QuestionId2 = 0;
+                    model.QuestionId3 = 0;
+                    ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
+
         public ActionResult Index()
         {
             return View();

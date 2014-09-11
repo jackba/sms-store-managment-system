@@ -21,6 +21,7 @@ namespace SMS.Models
         public Nullable<System.DateTime> CREATE_AT { get; set; }
         public Nullable<System.DateTime> UPDATE_AT { get; set; }
         public string ACTIVE { get; set; }
+        public string ANSWER_SALT { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual SECURITY_QUESTIONS SECURITY_QUESTIONS { get; set; }

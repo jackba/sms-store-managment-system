@@ -1,5 +1,36 @@
-﻿@{
-    ViewBag.Title = "NguoiDung";
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "NGƯỜI DÙNG";
 }
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div class="grid_7">
 
-<h2>NguoiDung</h2>
+    <a class="dashboard-module" href="@Url.Action("Show", "Account")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/user.png"></img>
+        <span>THÔNG TIN CÁ NHÂN</span>
+    </a>
+    
+    <a class="dashboard-module" href="@Url.Action("changePass", "NguoiDung")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/config.jpg"></img>
+        <span>THAY ĐỔI MẬT KHẨU</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("SetQuestions", "NguoiDung")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/settings-icon.jpg"></img>
+        <span>CÂU HỎI BẢO MẬT</span>
+    </a>
+
+</div>
