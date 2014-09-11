@@ -140,6 +140,25 @@
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__6477ECF3" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__5CA1C101" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_PHI__336AA144" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SmsModel.EXPENS" Width="1.5" PointX="5.25" PointY="36.75" />
+        <EntityTypeShape EntityType="SmsModel.NHOM_SAN_PHAM" Width="1.5" PointX="5.25" PointY="69.625" />
+        <EntityTypeShape EntityType="SmsModel.PERSONAL_QUESTIONS" Width="1.5" PointX="13.5" PointY="44" />
+        <EntityTypeShape EntityType="SmsModel.SECURITY_QUESTIONS" Width="1.5" PointX="5.25" PointY="59.875" />
+        <EntityTypeShape EntityType="SmsModel.TON_KHO_MIN_MAX_KHO" Width="1.5" PointX="12.75" PointY="65.5" />
+        <AssociationConnector Association="SmsModel.FK__EXPENSES__CREATE__0EF836A4" />
+        <AssociationConnector Association="SmsModel.FK__EXPENSES__NGUOI___0E04126B" />
+        <AssociationConnector Association="SmsModel.FK__EXPENSES__UPDATE__0FEC5ADD" />
+        <AssociationConnector Association="SmsModel.FK__TON_KHO_M__MA_KH__15A53433" />
+        <AssociationConnector Association="SmsModel.FK__NHOM_SAN___CREAT__7BE56230" />
+        <AssociationConnector Association="SmsModel.FK__NHOM_SAN___UPDAT__7CD98669" />
+        <AssociationConnector Association="SmsModel.FK__PERSONAL___USR_I__084B3915" />
+        <AssociationConnector Association="SmsModel.FK__SECURITY___CREAT__02925FBF" />
+        <AssociationConnector Association="SmsModel.FK__SECURITY___UPDAT__038683F8" />
+        <AssociationConnector Association="SmsModel.FK__TON_KHO_M__CREAT__1699586C" />
+        <AssociationConnector Association="SmsModel.FK__TON_KHO_M__UPDAT__178D7CA5" />
+        <AssociationConnector Association="SmsModel.FK__SAN_PHAM__MA_NHO__7DCDAAA2" />
+        <AssociationConnector Association="SmsModel.FK__PERSONAL___QUEST__093F5D4E" />
+        <AssociationConnector Association="SmsModel.FK__TON_KHO_M__MA_SA__14B10FFA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
