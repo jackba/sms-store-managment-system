@@ -65,6 +65,11 @@ namespace SMS.Models
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+        public virtual DbSet<EXPENS> EXPENSES { get; set; }
+        public virtual DbSet<NHOM_SAN_PHAM> NHOM_SAN_PHAM { get; set; }
+        public virtual DbSet<PERSONAL_QUESTIONS> PERSONAL_QUESTIONS { get; set; }
+        public virtual DbSet<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
+        public virtual DbSet<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {

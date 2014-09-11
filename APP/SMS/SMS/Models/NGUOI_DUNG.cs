@@ -73,6 +73,9 @@ namespace SMS.Models
             this.SAN_PHAM1 = new HashSet<SAN_PHAM>();
             this.SMS_MASTER = new HashSet<SMS_MASTER>();
             this.SMS_MASTER1 = new HashSet<SMS_MASTER>();
+            this.SMS_MESSAGES = new HashSet<SMS_MESSAGES>();
+            this.SMS_MESSAGES1 = new HashSet<SMS_MESSAGES>();
+            this.SMS_MESSAGES2 = new HashSet<SMS_MESSAGES>();
             this.TRA_HANG_NCC = new HashSet<TRA_HANG_NCC>();
             this.TRA_HANG_NCC_CHI_TIET = new HashSet<TRA_HANG_NCC_CHI_TIET>();
             this.TRA_HANG_NCC1 = new HashSet<TRA_HANG_NCC>();
@@ -84,9 +87,16 @@ namespace SMS.Models
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
             this.XUAT_KHO2 = new HashSet<XUAT_KHO>();
-            this.SMS_MESSAGES = new HashSet<SMS_MESSAGES>();
-            this.SMS_MESSAGES1 = new HashSet<SMS_MESSAGES>();
-            this.SMS_MESSAGES2 = new HashSet<SMS_MESSAGES>();
+            this.EXPENSES = new HashSet<EXPENS>();
+            this.EXPENSES1 = new HashSet<EXPENS>();
+            this.EXPENSES2 = new HashSet<EXPENS>();
+            this.NHOM_SAN_PHAM = new HashSet<NHOM_SAN_PHAM>();
+            this.NHOM_SAN_PHAM1 = new HashSet<NHOM_SAN_PHAM>();
+            this.PERSONAL_QUESTIONS = new HashSet<PERSONAL_QUESTIONS>();
+            this.SECURITY_QUESTIONS = new HashSet<SECURITY_QUESTIONS>();
+            this.SECURITY_QUESTIONS1 = new HashSet<SECURITY_QUESTIONS>();
+            this.TON_KHO_MIN_MAX_KHO = new HashSet<TON_KHO_MIN_MAX_KHO>();
+            this.TON_KHO_MIN_MAX_KHO1 = new HashSet<TON_KHO_MIN_MAX_KHO>();
         }
     
         public int MA_NGUOI_DUNG { get; set; }
@@ -102,7 +112,6 @@ namespace SMS.Models
         [Display(Name = "Số CMND")]
         [StringLength(10, ErrorMessage = "Số CMND không hợp lệ", MinimumLength = 9)]
         public string SO_CHUNG_MINH { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]
         [Display(Name = "Địa chỉ")]
         [MaxLength(200)]
@@ -138,6 +147,7 @@ namespace SMS.Models
         [Display(Name = "Active")]
         public string ACTIVE { get; set; }
         public string SALT { get; set; }
+        public string EMAIL { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON1 { get; set; }
@@ -190,6 +200,9 @@ namespace SMS.Models
         public virtual ICollection<SAN_PHAM> SAN_PHAM1 { get; set; }
         public virtual ICollection<SMS_MASTER> SMS_MASTER { get; set; }
         public virtual ICollection<SMS_MASTER> SMS_MASTER1 { get; set; }
+        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES { get; set; }
+        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES1 { get; set; }
+        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES2 { get; set; }
         public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual ICollection<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual ICollection<TRA_HANG_NCC> TRA_HANG_NCC1 { get; set; }
@@ -201,8 +214,15 @@ namespace SMS.Models
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO2 { get; set; }
-        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES { get; set; }
-        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES1 { get; set; }
-        public virtual ICollection<SMS_MESSAGES> SMS_MESSAGES2 { get; set; }
+        public virtual ICollection<EXPENS> EXPENSES { get; set; }
+        public virtual ICollection<EXPENS> EXPENSES1 { get; set; }
+        public virtual ICollection<EXPENS> EXPENSES2 { get; set; }
+        public virtual ICollection<NHOM_SAN_PHAM> NHOM_SAN_PHAM { get; set; }
+        public virtual ICollection<NHOM_SAN_PHAM> NHOM_SAN_PHAM1 { get; set; }
+        public virtual ICollection<PERSONAL_QUESTIONS> PERSONAL_QUESTIONS { get; set; }
+        public virtual ICollection<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
+        public virtual ICollection<SECURITY_QUESTIONS> SECURITY_QUESTIONS1 { get; set; }
+        public virtual ICollection<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
+        public virtual ICollection<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO1 { get; set; }
     }
 }
