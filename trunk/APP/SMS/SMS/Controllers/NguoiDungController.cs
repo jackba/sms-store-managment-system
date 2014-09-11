@@ -11,6 +11,7 @@ using SMS.App_Start;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
+using System.Transactions;
 
 namespace SMS.Controllers
 {
@@ -20,6 +21,95 @@ namespace SMS.Controllers
     {
         //
         // GET: /DonVi/
+
+        [HttpGet]
+        public ActionResult SetQuestions()
+        {
+            SecurityQuestion model = new SecurityQuestion();
+            var ctx = new SmsContext();
+            var questions = ctx.SECURITY_QUESTIONS.Where(u => u.ACTIVE == "A").ToList<SECURITY_QUESTIONS>();
+            int userId = 0;
+            int.TryParse(Session["UserId"].ToString(), out userId);
+            var persionalQuestions = ctx.PERSONAL_QUESTIONS.Where(u => u.ACTIVE == "A" && u.USR_ID == userId).Take(3).ToList < PERSONAL_QUESTIONS>();
+            if (persionalQuestions != null && persionalQuestions.Count == 3)
+            {
+                model.QuestionId1 = (int)persionalQuestions[0].QUESTION_ID;
+                model.QuestionId2 = (int)persionalQuestions[1].QUESTION_ID;
+                model.QuestionId3 = (int)persionalQuestions[2].QUESTION_ID;
+            }
+            else
+            {
+                model.QuestionId1 = 0;
+                model.QuestionId2 = 0;
+                model.QuestionId3 = 0;
+            }
+            model.Questions = questions;
+            return View(model);
+        }
+
+
+        public ActionResult SetQuestions(SecurityQuestion model)
+        {
+            if (ModelState.IsValid)
+            {
+                var ctx = new SmsContext();
+                var questions = ctx.SECURITY_QUESTIONS.Where(u => u.ACTIVE == "A").ToList<SECURITY_QUESTIONS>();
+                model.Questions = questions;
+                var crypto = new SimpleCrypto.PBKDF2();
+                int userId = 0;
+                int.TryParse(Session["UserId"].ToString(), out userId);
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        ctx.PERSONAL_QUESTIONS.RemoveRange(ctx.PERSONAL_QUESTIONS.Where(x => x.USR_ID == userId));
+                        var question1 = ctx.PERSONAL_QUESTIONS.Create();
+                        question1.USR_ID = userId;
+                        question1.QUESTION_ID = model.QuestionId1;
+                        question1.ANSWER = crypto.Compute(model.Answer1);
+                        question1.ANSWER_SALT = crypto.Salt;
+                        question1.CREATE_AT = DateTime.Now;
+                        question1.UPDATE_AT = DateTime.Now;
+                        question1.ACTIVE = "A";
+                        ctx.PERSONAL_QUESTIONS.Add(question1);
+
+                        var question2 = ctx.PERSONAL_QUESTIONS.Create();
+                        question2.USR_ID = userId;
+                        question2.QUESTION_ID = model.QuestionId2;
+                        question2.ANSWER = crypto.Compute(model.Answer2);
+                        question2.ANSWER_SALT = crypto.Salt;
+                        question2.CREATE_AT = DateTime.Now;
+                        question2.UPDATE_AT = DateTime.Now;
+                        question2.ACTIVE = "A";
+                        ctx.PERSONAL_QUESTIONS.Add(question2);
+
+                        var question3 = ctx.PERSONAL_QUESTIONS.Create();
+                        question3.USR_ID = userId;
+                        question3.QUESTION_ID = model.QuestionId3;
+                        question3.ANSWER = crypto.Compute(model.Answer3);
+                        question3.ANSWER_SALT = crypto.Salt;
+                        question3.CREATE_AT = DateTime.Now;
+                        question3.UPDATE_AT = DateTime.Now;
+                        question3.ACTIVE = "A";
+                        ctx.PERSONAL_QUESTIONS.Add(question3);
+
+                        ctx.SaveChanges();
+                        transaction.Complete();
+                        ViewBag.InforMessage = "Cập nhật câu hỏi bảo mật thành công.";
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        Transaction.Current.Rollback();
+                        ViewBag.Message = "Có lỗi xảy ra trong quá trình cập nhật câu hỏi bảo mật.";
+                        return View(model);
+                    }
+                }
+            }
+            return View(model);
+        }
+
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {

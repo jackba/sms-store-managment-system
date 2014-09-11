@@ -366,6 +366,7 @@
           <Property Name="USR_ID" Type="int" />
           <Property Name="QUESTION_ID" Type="int" />
           <Property Name="ANSWER" Type="nvarchar" MaxLength="255" />
+          <Property Name="ANSWER_SALT" Type="nvarchar" MaxLength="255" />
           <Property Name="CREATE_AT" Type="date" />
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
@@ -1557,7 +1558,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PERSONAL___QUEST__093F5D4E">
+        <Association Name="FK__PERSONAL___QUEST__1D4655FB">
           <End Role="SECURITY_QUESTIONS" Type="Self.SECURITY_QUESTIONS" Multiplicity="0..1" />
           <End Role="PERSONAL_QUESTIONS" Type="Self.PERSONAL_QUESTIONS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1569,7 +1570,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PERSONAL___USR_I__084B3915">
+        <Association Name="FK__PERSONAL___USR_I__1C5231C2">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="PERSONAL_QUESTIONS" Type="Self.PERSONAL_QUESTIONS" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2942,11 +2943,11 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="NHOM_SAN_PHAM" EntitySet="NHOM_SAN_PHAM" />
           </AssociationSet>
-          <AssociationSet Name="FK__PERSONAL___QUEST__093F5D4E" Association="Self.FK__PERSONAL___QUEST__093F5D4E">
+          <AssociationSet Name="FK__PERSONAL___QUEST__1D4655FB" Association="Self.FK__PERSONAL___QUEST__1D4655FB">
             <End Role="SECURITY_QUESTIONS" EntitySet="SECURITY_QUESTIONS" />
             <End Role="PERSONAL_QUESTIONS" EntitySet="PERSONAL_QUESTIONS" />
           </AssociationSet>
-          <AssociationSet Name="FK__PERSONAL___USR_I__084B3915" Association="Self.FK__PERSONAL___USR_I__084B3915">
+          <AssociationSet Name="FK__PERSONAL___USR_I__1C5231C2" Association="Self.FK__PERSONAL___USR_I__1C5231C2">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="PERSONAL_QUESTIONS" EntitySet="PERSONAL_QUESTIONS" />
           </AssociationSet>
@@ -6544,6 +6545,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="SmsModel.FK__PERSONAL___USR_I__084B3915" FromRole="PERSONAL_QUESTIONS" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="SECURITY_QUESTIONS" Relationship="SmsModel.FK__PERSONAL___QUEST__093F5D4E" FromRole="PERSONAL_QUESTIONS" ToRole="SECURITY_QUESTIONS" />
+          <Property Name="ANSWER_SALT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SECURITY_QUESTIONS">
           <Key>
@@ -8161,6 +8163,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySetMapping Name="PERSONAL_QUESTIONS">
             <EntityTypeMapping TypeName="SmsModel.PERSONAL_QUESTIONS">
               <MappingFragment StoreEntitySet="PERSONAL_QUESTIONS">
+                <ScalarProperty Name="ANSWER_SALT" ColumnName="ANSWER_SALT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />

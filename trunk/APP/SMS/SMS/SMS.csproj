@@ -197,6 +197,9 @@
     <Compile Include="Models\DON_VI_TINH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EXPENS.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Export.cs" />
     <Compile Include="Models\GET_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
@@ -240,11 +243,21 @@
     <Compile Include="Models\NHOM_NGUOI_DUNG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NHOM_SAN_PHAM.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PERSONAL_QUESTIONS.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PHAN_QUYEN.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\SAN_PHAM.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityQuestion.cs" />
+    <Compile Include="Models\SECURITY_QUESTIONS.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SmsMaster.cs" />
@@ -406,6 +419,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_IMPORT_REPORTER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TON_KHO_MIN_MAX_KHO.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG.cs">
@@ -902,6 +918,8 @@
     <Content Include="Views\SanPham\importConvertCsv.cshtml" />
     <Content Include="Views\BanHang\ReturnPurchaseListPartialView.cshtml" />
     <Content Include="Views\BanHang\ReturnPurchaseList.cshtml" />
+    <Content Include="Views\Account\GetPassword.cshtml" />
+    <Content Include="Views\NguoiDung\SetQuestions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

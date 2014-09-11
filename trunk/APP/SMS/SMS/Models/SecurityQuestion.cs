@@ -10,7 +10,6 @@ namespace SMS.Models
     {
         public int Id { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string userName { get; set; }
 
