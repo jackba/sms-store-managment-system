@@ -15,20 +15,103 @@ namespace SMS.Controllers
     [HandleError]
     public class QuanLyKhoController : Controller
     {
+        [HttpPost]
+        public FileContentResult downloadMinMaxByStore(int? storeId, int? productGroupId, string productName, int? currentPageIndex)
+        {
+            //Response.ClearContent();
+            //Response.Buffer = true;
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            //Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
+            //Response.ContentType = "text/csv";
+            //Response.Charset = "UTF-8";
+            //Response.ContentEncoding = System.Text.Encoding.UTF8;
+            //Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Đơn vị tính\",");
+            fileStringBuilder.Append("\"Cơ số tối thiểu\",");
+            fileStringBuilder.Append("\"Cơ số tối đa\"");
+            Response.Output.Write(fileStringBuilder.ToString());
+            if (storeId == null)
+            {
+                storeId = 0;
+            }
+            if (productGroupId == null)
+            {
+                productGroupId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
+            var ctx = new SmsContext();
+            var MinMax = ctx.SP_GET_MIN_MAX_BY_STORE(storeId, productGroupId, productName).ToList<SP_GET_MIN_MAX_BY_STORE_Result>();
+            int i = 0;
+            foreach (var detail in MinMax)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + detail.MA_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_THIEU).ToString("#,###.##") + "\",");
+                fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_DA).ToString("#,###.##") + "\",");
+            }
+            //Response.Output.Write(fileStringBuilder.ToString());
+            //Response.Flush();
+            //Response.End();
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+            //var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            //var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            //MinMax model = new MinMax();
+            //model.Stores = stores;
+            //model.ProductGroups = productGroups;
+            //return View("MinMaxOfProductByStore", model);
+        }
+
+
 
         public ActionResult MinMaxOfProductByStore()
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
-            return View();
+            MinMax model = new MinMax();
+            model.Stores = stores;
+            model.ProductGroups = productGroups;
+            return View(model);
         }
 
-        public PartialViewResult MinMaxOfProductByStorePartialView(int? storeId, int? productGroupId)
+        public PartialViewResult MinMaxOfProductByStorePartialView(int? storeId, int? productGroupId, string productName, int? currentPageIndex)
         {
+            if (storeId == null)
+            {
+                storeId = 0;
+            }
+            if (productGroupId == null)
+            {
+                productGroupId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
             var ctx = new SmsContext();
-            
-            return PartialView();
+            var MinMax = ctx.SP_GET_MIN_MAX_BY_STORE(storeId, productGroupId, productName).ToList<SP_GET_MIN_MAX_BY_STORE_Result>();
+            IPagedList<SP_GET_MIN_MAX_BY_STORE_Result> tk = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            tk = MinMax.ToPagedList(pageIndex, pageSize);
+            MinMax model = new MinMax();
+            model.MinMaxList = tk;
+            ViewBag.StoreId = storeId;
+            ViewBag.ProductGroupId = productGroupId;
+            ViewBag.ProductName = productName;
+            ViewBag.Count = MinMax.Count;
+            return PartialView("MinMaxOfProductByStorePartialView", model);
         }
 
 

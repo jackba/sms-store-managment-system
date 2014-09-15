@@ -89,14 +89,26 @@ namespace SMS.Controllers
                     }
 
                     string newPass = SystemConstant.RandomString(8);
+                    var email = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL").FirstOrDefault();
+                    var emailUser = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_USR").FirstOrDefault();
+                    var emailPass = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_PASS").FirstOrDefault();
+
+                    if (email == null || string.IsNullOrEmpty(email.VALUE)
+                        || emailUser == null || string.IsNullOrEmpty(emailUser.VALUE)
+                        || emailPass == null || string.IsNullOrEmpty(emailPass.VALUE))
+                    {
+                        ViewBag.Message = "Hệ thống chưa được cấu hình để gửi email. Vui lòng liên hệ admin.";
+                        return View(model);
+                    };
+
                     try
                     {
                         
                         usr.MAT_KHAU = crypto.Compute(newPass);
                         usr.SALT = crypto.Salt;
                         ctx.SaveChanges();
-                        SystemConstant.sendEmail(usr.EMAIL, "somewheremylover@gmail.com", "[Vân Phước - SMS] Mật khẩu mới", "Mật khẩu mới của bạn để đăng nhập vào hệ thống là " + newPass + ". Bạn nên thay đôi mật khẩu ngay sau khi đăng nhập.",
-                            "somewheremylover","DiemPhuong@123");
+                        SystemConstant.sendEmail(usr.EMAIL, email.VALUE, "[Vân Phước - SMS] Mật khẩu mới", "Mật khẩu mới của bạn để đăng nhập vào hệ thống là " + newPass + ". Bạn nên thay đôi mật khẩu ngay sau khi đăng nhập.",
+                            emailUser.VALUE,emailPass.VALUE);
                         ViewBag.InforMessage = "Mật khẩu đã được gửi đến email của bạn. Vui lòng đăng nhập email để lấy mật khẩu mới.";
                         return View(model);
                     }

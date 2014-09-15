@@ -158,7 +158,75 @@ namespace SMS.Controllers
                     advertisementFooter.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     db.SaveChanges();
                 }
-                
+
+
+                var email = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL").FirstOrDefault();
+                if (email == null)
+                {
+                    email = db.SMS_MASTER.Create();
+                    email.NAME = "EMAIL";
+                    email.VALUE = model.Email;
+                    email.CREATE_AT = DateTime.Now;
+                    email.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    email.UPDATE_AT = DateTime.Now;
+                    email.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    email.ACTIVE = "A";
+                    db.SMS_MASTER.Add(email);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    email.VALUE = model.Email;
+                    email.UPDATE_AT = DateTime.Now;
+                    email.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+
+                var emailUser = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_USR").FirstOrDefault();
+                if (emailUser == null)
+                {
+                    emailUser = db.SMS_MASTER.Create();
+                    emailUser.NAME = "EMAIL_USR";
+                    emailUser.VALUE = model.EmailUserName;
+                    emailUser.CREATE_AT = DateTime.Now;
+                    emailUser.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    emailUser.UPDATE_AT = DateTime.Now;
+                    emailUser.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    emailUser.ACTIVE = "A";
+                    db.SMS_MASTER.Add(emailUser);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    emailUser.VALUE = model.EmailUserName;
+                    emailUser.UPDATE_AT = DateTime.Now;
+                    emailUser.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+
+                var emailPass = db.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_PASS").FirstOrDefault();
+                if (emailPass == null)
+                {
+                    emailPass = db.SMS_MASTER.Create();
+                    emailPass.NAME = "EMAIL_PASS";
+                    emailPass.VALUE = model.EmailPassword;
+                    emailPass.CREATE_AT = DateTime.Now;
+                    emailPass.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    emailPass.UPDATE_AT = DateTime.Now;
+                    emailPass.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    emailPass.ACTIVE = "A";
+                    db.SMS_MASTER.Add(emailPass);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    emailPass.VALUE = model.EmailPassword;
+                    emailPass.UPDATE_AT = DateTime.Now;
+                    emailPass.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    db.SaveChanges();
+                }
+                ViewBag.InforMessage = "Cập nhật thông tin thành công.";
+                return View(model);
             }
             return View(model);
         }
@@ -172,12 +240,18 @@ namespace SMS.Controllers
             var faxNumber = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "FAX_NUMBER").FirstOrDefault();
             var advertisementHeader = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_HEADER").FirstOrDefault();
             var advertisementFooter = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADVERTISEMENT_FOOTER").FirstOrDefault();
+            var email = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL").FirstOrDefault();
+            var emailUser = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_USR").FirstOrDefault();
+            var emailPass = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "EMAIL_PASS").FirstOrDefault();
             model.CompanyName = companyName == null ? "" : companyName.VALUE;
             model.Address = address == null ? "" : address.VALUE;
             model.AdvertisementHeader = advertisementHeader == null ? "" : advertisementHeader.VALUE;
             model.AdvertisementFooter = advertisementFooter == null ? "" : advertisementFooter.VALUE ;
             model.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
             model.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
+            model.Email = email == null ? "" : email.VALUE;
+            model.EmailUserName = emailUser == null? "" : emailUser.VALUE;
+            model.EmailPassword = emailPass == null ? "" : emailPass.VALUE;
             return View(model);
         }
 

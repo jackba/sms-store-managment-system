@@ -32,9 +32,16 @@
     <h2> @ViewBag.Title</h2>
 </hgroup>
 <hr />
+<div id="Informessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.InforMessage
+</div>
+<div id="Message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.Message
+</div>
 
 @using (Html.BeginForm("Config", "SmsMaster", FormMethod.Post, new { @id = "index" }))
 {
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
     <div>
         <table style="width:62%">
             <tr>
@@ -90,6 +97,31 @@
                     @Html.TextAreaFor(u => u.AdvertisementFooter)
                 </td>
             </tr>  
+            <tr>
+                <td class="center">
+                    Email
+                </td>
+                <td class="right required">
+                    @Html.TextBoxFor(u => u.Email)
+                </td>
+            </tr>  
+            <tr>
+                <td class="center">
+                    User Name
+                </td>
+                <td class="right required">
+                    @Html.TextBoxFor(u => u.EmailUserName)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="center">
+                    Mật khẩu
+                </td>
+                <td class="right required">
+                    @Html.PasswordFor(u => u.EmailPassword)
+                </td>
+            </tr>
         </table>
 
         <div>

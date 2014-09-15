@@ -249,7 +249,7 @@ namespace SMS.Controllers
 
         [CustomActionFilter]
         [HttpPost]
-        public ActionResult downloadReportBycustomer(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
+        public FileContentResult downloadReportBycustomer(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(customerName))
             {
@@ -288,15 +288,16 @@ namespace SMS.Controllers
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             var details = ctx.Database.SqlQuery<ReportByCustomer>("exec SP_REPORT_BY_CUSTOMER  @START_TIME, @END_TIME, @MA_KHACH_HANG, @TEN_KHACH_HANG ",
                FromDateParam, ToDateParam, customerIdParam, customerNameParam).ToList<ReportByCustomer>();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename= "+ fileName + ".xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "UTF-8";
-            Response.ContentEncoding = System.Text.Encoding.UTF8;
-            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            //Response.ClearContent();
+            //Response.Buffer = true;
+            //Response.AddHeader("content-disposition", "attachment; filename= "+ fileName + ".xls");
+            //Response.ContentType = "application/ms-excel";
+            //Response.Charset = "UTF-8";
+            //Response.ContentEncoding = System.Text.Encoding.UTF8;
+            //Response.HeaderEncoding = System.Text.Encoding.UTF8;
+            //Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
-            fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='5'> BÁO CÁO DOANH THU THEO KHU VỰC - KHÁCH HÀNG </td></tr>");
+            fileStringBuilder.Append("<table border=2 style=\"font-size:18px; font-family:'Times New Roman'\" ><tr><td bgcolor='#6495ED' style=\"font-size:18px;\" align='center' colspan='5'> BÁO CÁO DOANH THU THEO KHU VỰC - KHÁCH HÀNG </td></tr>");
             fileStringBuilder.Append("<tr>");
             fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tên khách hàng </td>");
             fileStringBuilder.Append("<td align='center' bgcolor='#E6E6FA' style=\"font-size:18px; font-family:'Times New Roman'\"> Tổng thực thu </td>");
@@ -372,11 +373,11 @@ namespace SMS.Controllers
             fileStringBuilder.Append("</tr>");
 
             fileStringBuilder.Append("</table>");
-
-            Response.Output.Write(fileStringBuilder.ToString());
-            Response.Flush();
-            Response.End();
-            return View("../Report/ReportByCustomer");
+            //Response.Output.Write(fileStringBuilder.ToString());
+            //Response.Flush();
+            //Response.End();
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "application/ms-excel", fileName + ".xls");
+            //return View("../Report/ReportByCustomer");
         }
 
 
