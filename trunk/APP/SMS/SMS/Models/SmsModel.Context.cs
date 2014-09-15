@@ -1303,5 +1303,22 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, tEN_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAM_PRParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
         }
+    
+        public virtual ObjectResult<SP_GET_MIN_MAX_BY_STORE_Result> SP_GET_MIN_MAX_BY_STORE(Nullable<int> sTORE_ID, Nullable<int> pRODUCT_GROUP_ID, string pRODUCT_NAME)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var pRODUCT_GROUP_IDParameter = pRODUCT_GROUP_ID.HasValue ?
+                new ObjectParameter("PRODUCT_GROUP_ID", pRODUCT_GROUP_ID) :
+                new ObjectParameter("PRODUCT_GROUP_ID", typeof(int));
+    
+            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
+                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
+                new ObjectParameter("PRODUCT_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_STORE_Result>("SP_GET_MIN_MAX_BY_STORE", sTORE_IDParameter, pRODUCT_GROUP_IDParameter, pRODUCT_NAMEParameter);
+        }
     }
 }
