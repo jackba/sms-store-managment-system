@@ -920,6 +920,7 @@
     <Content Include="Views\BanHang\ReturnPurchaseList.cshtml" />
     <Content Include="Views\Account\GetPassword.cshtml" />
     <Content Include="Views\NguoiDung\SetQuestions.cshtml" />
+    <Content Include="Views\QuanLyKho\MinMaxOfProductByStore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
