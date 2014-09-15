@@ -16,6 +16,22 @@ namespace SMS.Controllers
     public class QuanLyKhoController : Controller
     {
 
+        public ActionResult MinMaxOfProductByStore()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            return View();
+        }
+
+        public PartialViewResult MinMaxOfProductByStorePartialView(int? storeId, int? productGroupId)
+        {
+            var ctx = new SmsContext();
+            
+            return PartialView();
+        }
+
+
         [CustomActionFilter]
         public ActionResult Index()
         {
