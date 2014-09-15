@@ -32,5 +32,16 @@ namespace SMS.Models
 
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
+        public string EmailUserName { get; set; }
+
+        [Required]
+        public string EmailPassword { get; set; }
     }
 }
