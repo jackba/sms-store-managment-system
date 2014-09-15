@@ -72,7 +72,7 @@
                     success: function (response, status, request) {
                         var disp = request.getResponseHeader('Content-Disposition');
                         if (disp && disp.search('attachment') != -1) {
-                            var type = request.getResponseHeader('application/ms-excel');                            
+                            var type = request.getResponseHeader('text/csv');                            
                             var blob = new Blob([response], { type: type });                            
                             var index = disp.indexOf("=");
                             var fileName = disp.substr(index + 1 + "=".length);                       
