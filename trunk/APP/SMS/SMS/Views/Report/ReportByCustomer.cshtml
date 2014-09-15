@@ -21,7 +21,7 @@
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
-
+<script src="~/Content/js/FileSaver.js"></script>
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -69,20 +69,14 @@
                     url: "/Report/downloadReportBycustomer",
                     data: "{ 'customerId': '" + customerId + "' , 'customerName':'" + customerName + "' , 'fromDate': '"+ fromDate+"' , 'toDate': '"+ toDate + "'}",
                     type: "POST", contentType: "application/json; charset=utf-8",
-                    success: function(response, status, request) {
+                    success: function (response, status, request) {
                         var disp = request.getResponseHeader('Content-Disposition');
                         if (disp && disp.search('attachment') != -1) {
-                            var type = request.getResponseHeader('application/ms-excel');
-                            var blob = new Blob([response], { type : type });
-                            if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                                var fileName = new Date().getTime().toString() + ".xls";
-                                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                                window.navigator.msSaveBlob(blob, fileName);
-                            } else {
-                                var URL = window.URL || window.webkitURL;
-                                var downloadUrl = URL.createObjectURL(blob);
-                                window.location = downloadUrl;
-                            }
+                            var type = request.getResponseHeader('application/ms-excel');                            
+                            var blob = new Blob([response], { type: type });                            
+                            var index = disp.indexOf("=");
+                            var fileName = disp.substr(index + 1 + "=".length);                       
+                            saveAs(blob, fileName);
                         }
                     }
                 });

@@ -268,6 +268,7 @@ namespace SMS.Controllers
                 }
                 nguoidung.MA_NHOM_NGUOI_DUNG = nguoiDung.MA_NHOM_NGUOI_DUNG;
                 nguoidung.GHI_CHU = nguoiDung.GHI_CHU;
+                nguoidung.EMAIL = nguoiDung.EMAIL;
                 nguoidung.ACTIVE = "A";
                 nguoidung.UPDATE_AT = DateTime.Now;
                 nguoidung.UPDATE_BY = (int)Session["UserId"];
@@ -305,6 +306,7 @@ namespace SMS.Controllers
                 nguoidung.SO_CHUNG_MINH = nguoiDung.SO_CHUNG_MINH;
                 nguoidung.DIA_CHI = nguoiDung.DIA_CHI;
                 nguoidung.SO_DIEN_THOAI = nguoiDung.SO_DIEN_THOAI;
+                nguoidung.EMAIL = nguoiDung.EMAIL;
                 nguoidung.MA_KHO = nguoiDung.MA_KHO;
                 nguoidung.USER_NAME = nguoiDung.USER_NAME;
                 nguoidung.MAT_KHAU = crypto.Compute(nguoiDung.MAT_KHAU);

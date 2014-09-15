@@ -228,6 +228,7 @@
     <Compile Include="Models\KIEM_KHO_HISTORY.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MinMax.cs" />
     <Compile Include="Models\NGUOI_DUNG.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -359,6 +360,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_LIST_RETURN_TO_PROVIDERS_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_MIN_MAX_BY_STORE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_NHAP_XUAT_Result.cs">
@@ -631,6 +635,7 @@
     <Content Include="Content\images\settings-icon.jpg" />
     <Content Include="Content\images\user.png" />
     <Content Include="Content\images\Warning.png" />
+    <Content Include="Content\js\FileSaver.js" />
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\images\storage.png" />
     <Content Include="Content\js\jquery-ui-1.10.3.custom.js" />
@@ -921,6 +926,7 @@
     <Content Include="Views\Account\GetPassword.cshtml" />
     <Content Include="Views\NguoiDung\SetQuestions.cshtml" />
     <Content Include="Views\QuanLyKho\MinMaxOfProductByStore.cshtml" />
+    <Content Include="Views\QuanLyKho\MinMaxOfProductByStorePartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
