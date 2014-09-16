@@ -8,6 +8,9 @@ using System.Data.SqlClient;
 using PagedList;
 using System.Data;
 using SMS.App_Start;
+using System.IO;
+using CsvHelper;
+using System.Transactions;
 
 namespace SMS.Controllers
 {
@@ -15,17 +18,281 @@ namespace SMS.Controllers
     [HandleError]
     public class QuanLyKhoController : Controller
     {
-        [HttpPost]
-        public FileContentResult downloadMinMaxByStore(int? storeId, int? productGroupId, string productName, int? currentPageIndex)
+        private bool isFloat(string s)
         {
-            //Response.ClearContent();
-            //Response.Buffer = true;
+            float outNum =0;
+            return float.TryParse(s, out outNum);
+        }
+
+        [HttpPost]
+        public ActionResult importMinMax(MinMax model, HttpPostedFileBase file)
+        {
+            var ctx = new SmsContext();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            int storeId = 0;
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }else
+            {
+                storeId =(int)model.Infor.MA_KHO;
+            }
+            if (file != null)
+            {
+                var fp = Path.Combine(HttpContext.Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
+                file.SaveAs(fp);
+
+                if (Path.GetExtension(fp) == null || Path.GetExtension(fp).ToLower() != ".csv")
+                {
+                    ViewBag.Message = "Định dạng file không đúng. Vui lòng chọn lại file import.";
+                    return View();
+                }
+                ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
+                CsvReader csvReader = new CsvReader(csvParser);
+                string[] headers = { };
+                List<string[]> rows = new List<string[]>();
+                string[] row;
+
+                while (csvReader.Read())
+                {
+                    if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 6)
+                    {
+                        ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
+                        return View();
+                    }
+                    else
+                    {
+                        if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length > 0 && !headers.Any())
+                        {
+                            headers = csvReader.FieldHeaders;
+                        }
+                        row = new string[headers.Count()];
+                        for (int j = 0; j < headers.Count(); j++)
+                        {
+                            row[j] = csvReader.GetField(j);
+                        }
+                        rows.Add(row);
+                    }
+                }
+
+                bool flag = true;
+                int i = 1;
+
+
+                using (var transaction = new System.Transactions.TransactionScope())
+                {
+                    try
+                    {
+                        TON_KHO_MIN_MAX_KHO mm;
+                        float min, max;
+                        string smin, smax, sproductId;
+                        int productId = 0;
+                        foreach (var r in rows)
+                        {
+                            i++;
+                            smin = r[4].ToString();
+                            smax = r[5].ToString();
+                            sproductId = r[1].ToString();
+                            if (string.IsNullOrEmpty(smax))
+                            {
+                                smax = "0";
+                            }
+                            if (!float.TryParse(smin, out min) || !float.TryParse(smax, out max) || !int.TryParse(sproductId, out productId))
+                            {
+                                if (!flag)
+                                {
+                                    fileStringBuilder.Append("<br>");
+                                }
+                                flag = false;
+                                fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng " + i + ". Vui lòng kiểm tra ký tự số.");
+                            }
+                            else
+                            {
+                                mm = ctx.TON_KHO_MIN_MAX_KHO.Where(u => u.ACTIVE == "A" && u.MA_KHO == storeId && u.MA_SAN_PHAM == productId).FirstOrDefault();
+                                if (mm == null)
+                                {
+                                    mm = ctx.TON_KHO_MIN_MAX_KHO.Create();
+                                }
+                                mm.MA_SAN_PHAM = productId;
+                                mm.CO_SO_TOI_THIEU =min;
+                                mm.CO_SO_TOI_DA = max;
+                                mm.MA_KHO = storeId;
+                                mm.UPDATE_AT = DateTime.Now;
+                                mm.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                                
+                                mm.ACTIVE = "A";
+                                if (mm.ID <= 0 || mm.ID == null)
+                                {
+                                    mm.CREATE_AT = DateTime.Now;
+                                    mm.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                                    ctx.TON_KHO_MIN_MAX_KHO.Add(mm);
+                                }
+                                ctx.SaveChanges();
+                            }
+                        }
+                        if (flag)
+                        {
+                            transaction.Complete();
+                            return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Import danh sách thành công." });
+                        }
+                        else
+                        {
+                            Transaction.Current.Rollback();
+                            ViewBag.Message = fileStringBuilder.ToString();
+                            return View();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.ToString());
+                        ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                        return View();
+                    }
+                }
+                if (!(bool)Session["IsAdmin"])
+                {
+                    storeId = Convert.ToInt32(Session["MyStore"]);
+                }
+
+            }
+            else
+            {
+                ViewBag.Message = "Bạn chưa chọn file. Vui lòng chọn file import.";
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult importMinMax()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            MinMax model = new MinMax();
+            TON_KHO_MIN_MAX_KHO Infor = new TON_KHO_MIN_MAX_KHO();
+            model.Infor = Infor;
+            model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            model.Stores = stores;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditMinmax(MinMax model)
+        {
+            var ctx = new SmsContext();
+            var Infor = ctx.TON_KHO_MIN_MAX_KHO.Find(model.MinMaxInfor.ID);
+            if (Infor == null || Infor.ACTIVE != "A")
+            {
+                return RedirectToAction("MinMaxOfProductByStore", new { @message = "Không tồn tại khai báo này, có thể đã bị xóa bởi user khác. Vui lòng kiểm tra lại" });
+            }
+            try
+            {
+                Infor.CO_SO_TOI_THIEU = model.MinMaxInfor.CO_SO_TOI_THIEU;
+                Infor.CO_SO_TOI_DA = model.MinMaxInfor.CO_SO_TOI_DA;
+                Infor.UPDATE_AT = DateTime.Now;
+                Infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                ctx.SaveChanges();
+                return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Lưu thành công." });
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+                return RedirectToAction("MinMaxOfProductByStore", new { @Message = "Lưu thất bại. Vui lòng thử lại lần nữa." });
+            }
+        }
+        [HttpGet]
+        public ActionResult EditMinmax(int id)
+        {
+            var ctx = new SmsContext();
+            var Infor = ctx.SP_GET_MIN_MAX_BY_ID(id).FirstOrDefault();
+            if (Infor == null)
+            {
+                return RedirectToAction("MinMaxOfProductByStore", new { @message = "Không tồn tại khai báo này, có thể đã bị xóa bởi user khác. Vui lòng kiểm tra lại" });
+            }
+            MinMax model = new MinMax();
+            model.MinMaxInfor = Infor;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddMinMax(MinMax model)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            string message = "";
+            if (model.Infor.MA_SAN_PHAM == null)
+            {
+                message += "Bạn chưa nhập sản phẩm, vui lòng chọn sản phẩm.";
+            }
+            if (model.Infor.CO_SO_TOI_THIEU == null || model.Infor.CO_SO_TOI_THIEU == 0 )
+            {
+                message += "\n";
+                message += "Hãy nhập cơ số tối thiểu";
+            }
+            if (string.IsNullOrEmpty(message))
+            {
+                int storeId = 0;
+                if (!(bool)Session["IsAdmin"])
+                {
+                    storeId = Convert.ToInt32(Session["MyStore"]);
+                }
+                else
+                {
+                    storeId = (int)model.Infor.MA_KHO;
+                }
+
+                var mm = ctx.TON_KHO_MIN_MAX_KHO.Where(u => u.ACTIVE == "A" && u.MA_KHO == storeId && u.MA_SAN_PHAM == model.Infor.MA_SAN_PHAM).FirstOrDefault();
+                if (mm == null)
+                {
+                    mm = ctx.TON_KHO_MIN_MAX_KHO.Create();
+                }               
+                
+                if (!(bool)Session["IsAdmin"])
+                {
+                    mm.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+                }
+                else
+                {
+                    mm.MA_KHO = model.Infor.MA_KHO;
+                }
+                mm.MA_SAN_PHAM = model.Infor.MA_SAN_PHAM;
+                mm.CO_SO_TOI_THIEU = model.Infor.CO_SO_TOI_THIEU;
+                mm.CO_SO_TOI_DA = model.Infor.CO_SO_TOI_DA;
+               
+                mm.UPDATE_AT = DateTime.Now;
+                mm.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+               
+                mm.ACTIVE = "A";
+                if (mm.ID <= 0 || mm.ID == null)
+                {
+                    mm.CREATE_AT = DateTime.Now;
+                    mm.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.TON_KHO_MIN_MAX_KHO.Add(mm);
+                }                
+                ctx.SaveChanges();
+                return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Lưu thành công" });
+            }            
+            ViewBag.Message = message;
+            model.Stores = stores;
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult AddMinMax()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            MinMax model = new MinMax();
+            TON_KHO_MIN_MAX_KHO Infor = new TON_KHO_MIN_MAX_KHO();
+            model.Infor = Infor;
+            model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            model.Stores = stores;
+            return View(model);
+        }
+
+        [HttpPost]
+        public FileContentResult downloadMinMaxByStore(int? storeId, int? productGroupId, string productName)
+        {
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            //Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
-            //Response.ContentType = "text/csv";
-            //Response.Charset = "UTF-8";
-            //Response.ContentEncoding = System.Text.Encoding.UTF8;
-            //Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"Mã sản phẩm\",");
@@ -33,7 +300,6 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Đơn vị tính\",");
             fileStringBuilder.Append("\"Cơ số tối thiểu\",");
             fileStringBuilder.Append("\"Cơ số tối đa\"");
-            Response.Output.Write(fileStringBuilder.ToString());
             if (storeId == null)
             {
                 storeId = 0;
@@ -60,21 +326,12 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_THIEU).ToString("#,###.##") + "\",");
                 fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_DA).ToString("#,###.##") + "\",");
             }
-            //Response.Output.Write(fileStringBuilder.ToString());
-            //Response.Flush();
-            //Response.End();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
-            //var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
-            //var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
-            //MinMax model = new MinMax();
-            //model.Stores = stores;
-            //model.ProductGroups = productGroups;
-            //return View("MinMaxOfProductByStore", model);
         }
 
 
 
-        public ActionResult MinMaxOfProductByStore()
+        public ActionResult MinMaxOfProductByStore(string message, string inforMessage)
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
@@ -82,6 +339,8 @@ namespace SMS.Controllers
             MinMax model = new MinMax();
             model.Stores = stores;
             model.ProductGroups = productGroups;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
             return View(model);
         }
 

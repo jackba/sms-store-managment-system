@@ -14,7 +14,12 @@
 <hgroup class="title">
     <h2> @ViewBag.Title </h2>
 </hgroup>
-<h3>@ViewBag.Message</h3>
+<div id="Informessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.InforMessage
+</div>
+<div id="Message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.Message
+</div>
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
@@ -125,7 +130,12 @@
                 <input type="button" id="ExportExcel" value="Xuất excel" />
             </td>
             <td>
-                <input type="button" value="Thêm mới" />
+                @{
+                    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsStoreManager"] == true)
+                    {
+                            <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddMinMax","QuanLyKho")'" />
+                    }
+                }
             </td>
         </tr>
     </table>

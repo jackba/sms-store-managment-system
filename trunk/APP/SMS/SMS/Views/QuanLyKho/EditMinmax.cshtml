@@ -1,0 +1,249 @@
+﻿@model SMS.Models.MinMax
+@{
+    ViewBag.Title = "Sửa cơ số tối thiểu - cơ số tối đa";
+}
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("QuanLyKho", "Home")"> Quản lý kho </a> >
+    <a href="@Url.Action("MinMaxOfProductByStore", "QuanLyKho")"> Danh sách tồn kho tối thiểu - tối đa </a>
+    > @ViewBag.Title
+</div>
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<hr style="width:100%" />
+<input type="hidden" id="tempMessage" value="@ViewBag.Message" />
+<div id="Informessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.InforMessage
+</div>
+<div id="Message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+    @ViewBag.Message
+</div>
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+
+        function RemoveRougeChar(convertString) {
+            if (convertString.substring(0, 1) == ",") {
+                return convertString.substring(1, convertString.length)
+            }
+            return convertString;
+        }
+
+        function NumbericOnly(ctrl) {
+            $(ctrl).keypress(function (key) {
+                //getting key code of pressed key
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    alert(" You can enter only characters 0 to 9 ");
+                    return false;
+                }
+                else return true;
+            });
+
+        }
+
+        function formatNumberic() {
+            $('input.numberic').each(function () {
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        }
+
+        function numberOnly() {
+            $('input.numberic').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    return false;
+                }
+                else return true;
+
+            });
+            $('input.numberic').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        };
+        function formSubmit() {
+            $("#Message").empty();
+            var StoreId = $("#storeId").val();
+            var ProductId = $("#productId").val();
+            var min = $("#min").val();
+            var errorMessage = '';
+            if (StoreId == null || StoreId == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Bạn chưa chọn kho. Vui lòng chọn kho.";
+            }
+
+            if (ProductId == null || ProductId == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Bạn chưa chọn sản phẩm. Vui lòng chọn sản phẩm.";
+            }
+
+            if (min == null || min == '' || min == 0 || min == "0") {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa nhập cơ số tồn tối thiểu.";
+            }
+            if (errorMessage != '') {
+                $('#Message').append(errorMessage);
+                $('#Message').append("<hr/>");
+                return false;
+            }
+            else {
+                $('#mainform').submit();
+            }
+        }
+
+        $(document).ready(function () {
+            var message = $("#tempMessage").val();
+            if (message != null && tempMessage != '') {
+                $("#Message").val(message);
+            }
+
+            numberOnly();
+            formatNumberic();
+
+            $("#productName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggestWithUnitName", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        unitName: item.unitName,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                    $('#productId').val("");
+                    $('#unit').val("");
+                },
+                select: function (event, ui) {
+                    $('#productName').val(ui.item.label);
+                    $('#productId').val(ui.item.id);
+                    $('#unit').val(ui.item.unitName);
+                    return false;
+                },
+                minLength: 1
+
+            });
+
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+}
+
+@using (Html.BeginForm("EditMinmax", "QuanLyKho", FormMethod.Post, new { @id = "mainform" }))
+{
+    <div>
+        <fieldset>
+            <div>
+                <input type="button" style="width:300px" value="Nhập dữ liệu bằng file" />
+            </div>
+            <hr />
+            <div>
+                @Html.Label("Tên kho")
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.MinMaxInfor.TEN_KHO, new { @readOnly = "readOnly" })
+                @Html.HiddenFor(u => u.MinMaxInfor.MA_KHO, new { @id = "storeId" })
+                @Html.HiddenFor(u => u.MinMaxInfor.ID)
+            </div>
+            <div>
+                @Html.Label("Sản phẩm")
+            </div>
+            <div class="required">
+                @Html.HiddenFor(u => u.MinMaxInfor.MA_SAN_PHAM, new { @id = "productId" })
+                @Html.TextBoxFor(u => u.MinMaxInfor.TEN_SAN_PHAM, new { @readOnly = "readOnly" })
+            </div>
+            <div>
+                @Html.Label("Đơn vị tồn")
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.MinMaxInfor.TEN_DON_VI, new { @readOnly = "readOnly" })
+            </div>
+            <div>
+                @Html.Label("Số lượng tồn tối thiểu")
+            </div>
+            <div class="required">
+                @Html.TextBoxFor(u => u.MinMaxInfor.CO_SO_TOI_THIEU, new { @id = "min", @class = "numberic" })
+            </div>
+            <div>
+                @Html.Label("Số lượng tồn tối đa")
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.MinMaxInfor.CO_SO_TOI_DA, new { @id = "max", @class = "numberic" })
+            </div>
+            <div>
+                <input type="button" onclick="return formSubmit();" style="width:100px" value="Lưu" />       
+            </div>
+        </fieldset>
+    </div>
+}
