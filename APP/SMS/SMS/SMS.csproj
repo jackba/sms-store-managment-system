@@ -362,6 +362,9 @@
     <Compile Include="Models\SP_GET_LIST_RETURN_TO_PROVIDERS_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_MIN_MAX_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_MIN_MAX_BY_STORE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -927,6 +930,9 @@
     <Content Include="Views\NguoiDung\SetQuestions.cshtml" />
     <Content Include="Views\QuanLyKho\MinMaxOfProductByStore.cshtml" />
     <Content Include="Views\QuanLyKho\MinMaxOfProductByStorePartialView.cshtml" />
+    <Content Include="Views\QuanLyKho\AddMinMax.cshtml" />
+    <Content Include="Views\QuanLyKho\EditMinmax.cshtml" />
+    <Content Include="Views\QuanLyKho\importMinMax.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

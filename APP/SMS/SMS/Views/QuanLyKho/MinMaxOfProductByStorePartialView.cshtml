@@ -61,13 +61,13 @@
                 <td class="innerLast colwidth numberic">@Convert.ToDouble(dbHist.CO_SO_TOI_DA.ToString()).ToString("#,###.##") </td>
                 @if ((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"])
                 {
-                    <td class='inner alignCenter' style="width:50px;">
-                    <a href="@Url.Action("Edit", "DonVi", new { id = @dbHist.ID })" class="button-module">
+                    <td class='innerLast alignCenter' style="width:50px;">
+                    <a href="@Url.Action("EditMinMax", "QuanLyKho", new { id = @dbHist.ID })" class="button-module">
                         <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
                     </a>
                 </td>
-                <td class='inner alignCenter' style="width:50px;">
-                    <a href="@Url.Action("Delete", "DonVi", new { id = @dbHist.ID })" class="button-module" onclick="return deleteSubmit()">
+                <td class='innerLast alignCenter' style="width:50px;">
+                    <a href="@Url.Action("Delete", "QuanLyKho", new { id = @dbHist.ID })" class="button-module" onclick="return deleteSubmit()">
                         <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
                     </a>
                 </td>

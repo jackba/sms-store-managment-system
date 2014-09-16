@@ -1320,5 +1320,14 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_STORE_Result>("SP_GET_MIN_MAX_BY_STORE", sTORE_IDParameter, pRODUCT_GROUP_IDParameter, pRODUCT_NAMEParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_MIN_MAX_BY_ID_Result> SP_GET_MIN_MAX_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_ID_Result>("SP_GET_MIN_MAX_BY_ID", iDParameter);
+        }
     }
 }

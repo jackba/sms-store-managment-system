@@ -186,7 +186,7 @@ namespace SMS.Controllers
                     }
                 }
 
-                 bool flag = true;
+                bool flag = true;
                 int i = 1;
                 using (var transaction = new System.Transactions.TransactionScope())
                 {
@@ -739,6 +739,24 @@ namespace SMS.Controllers
             var result = Json(suggestedProducts.Take(5).ToList());
             return result;
         }
+
+        [HttpPost]
+        public JsonResult FindSuggestWithUnitName(string prefixText)
+        {
+            var ctx = new SmsContext();
+            var suggestedProducts = from x in ctx.SAN_PHAM
+                                    join u in ctx.DON_VI_TINH on x.MA_DON_VI equals u.MA_DON_VI
+                                    where (x.TEN_SAN_PHAM.StartsWith(prefixText) && x.ACTIVE.Equals("A"))
+                                    select new
+                                    {
+                                        id = x.MA_SAN_PHAM,
+                                        value = x.TEN_SAN_PHAM,
+                                        unitName = u.TEN_DON_VI
+                                    };
+            var result = Json(suggestedProducts.Take(5).ToList());
+            return result;
+        }
+
 
         [HttpPost]
         public JsonResult FindSuggestName(string prefixText)
