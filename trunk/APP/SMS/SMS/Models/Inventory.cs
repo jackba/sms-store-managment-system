@@ -129,4 +129,11 @@ namespace SMS.Models
         public double GIA_VON_HANG_BAN_TOTAL { get; set; }
         public double GIA_TRI_HANG_TON_TOTAL { get; set; }        
     }
+
+    public class InventoryByStoreModel
+    {
+        public int Count { get; set; }
+        public IPagedList<SP_GET_WARNING_BY_STORE_Result> WarningList { get; set; }
+    }
+
 }
