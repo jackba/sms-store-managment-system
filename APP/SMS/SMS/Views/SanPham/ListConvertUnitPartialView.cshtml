@@ -23,7 +23,11 @@
                         <td class='inner colwidth head'>
                             @*@Html.ActionLink("Tên sản phẩm", "ConvertUnitOfProducts", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex })*@
                             @Ajax.ActionLink("Tên sản phẩm", "ConvertUnitOfProducts",
-                                    new { ViewBag.CurrentPageIndex, sortOrder = ViewBag.NameSortParm, CurrentFilter = ViewBag.CurrentFilter },
+                                    new { ViewBag.CurrentPageIndex,
+                                          productGroupId = ViewBag.ProductGroupId,
+                                          sortOrder = ViewBag.NameSortParm,
+                                          CurrentFilter = ViewBag.CurrentFilter
+                                    },
                                     new AjaxOptions()
                                     {
                                         HttpMethod = "POST",
@@ -172,7 +176,10 @@
         <td>
             <div style="text-align: right;  padding-top: 3px; ">
                @Html.PagedListPager(Model, currentPageIndex => Url.Action("ConvertUnitOfProducts",
-                    new { currentPageIndex, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                    new { currentPageIndex, 
+                        productGroupId = ViewBag.ProductGroupId,
+                        sortOrder = ViewBag.CurrentSort, 
+                        currentFilter = ViewBag.CurrentFilter }),
                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
                     new AjaxOptions()
                     {

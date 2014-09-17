@@ -33,6 +33,9 @@ namespace SMS.Controllers
             ViewBag.InforMessage = inforMessage;
             ViewBag.Message = message;
             Session[SEARCH_ADVANCE] = null;
+            var ctx = new SmsContext();
+            var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            ViewBag.ProductGroups = productGroups;
             return View();
         }
 
@@ -604,16 +607,10 @@ namespace SMS.Controllers
         }
 
         [CustomActionFilter]
-        public ActionResult downloadConvertCSVTemplate()
+        [HttpPost]
+        public FileContentResult downloadConvertCSVTemplate(int? productGroupId, string CurrentFilter)
         {
-            Response.ClearContent();
-            Response.Buffer = true;
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
-            Response.ContentType = "text/csv";
-            Response.Charset = "UTF-8";
-            Response.ContentEncoding = System.Text.Encoding.UTF8;
-            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"ID\",");
@@ -629,7 +626,9 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Chiếc khấu 2\",");
             fileStringBuilder.Append("\"Chiếc khấu 3\"");
             var ctx = new SmsContext();
-            var converts = ctx.CHUYEN_DOI_DON_VI_TINH.Include("SAN_PHAM").Include("DON_VI_TINH").Where(u => u.ACTIVE == "A");
+            var converts = ctx.CHUYEN_DOI_DON_VI_TINH.Include("SAN_PHAM").Include("DON_VI_TINH").Where(u => u.ACTIVE == "A"
+                && (productGroupId == null || productGroupId == 0 ||  u.SAN_PHAM.MA_NHOM == productGroupId)
+                && (string.IsNullOrEmpty(CurrentFilter) || u.SAN_PHAM.TEN_SAN_PHAM.Contains(CurrentFilter)));
             int i = 0;
             foreach (var convert in converts)
             {
@@ -649,21 +648,13 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_2 == null ? "0" : ((Double)convert.CHIEC_KHAU_2).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_3 == null ? "0" : ((Double)convert.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
             }
-            Response.Output.Write(fileStringBuilder.ToString());
-            Response.Flush();
-            Response.End();
-            return View("../SanPham/ConvertUnitOfProducts");
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
-        public ActionResult downloadCSVTemplate()
+
+        [HttpPost]
+        public FileContentResult downloadCSVTemplate(int? productGroupId, string CurrentFilter)
         {
-            Response.ClearContent();
-            Response.Buffer = true;
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".csv");
-            Response.ContentType = "text/csv";
-            Response.Charset = "UTF-8";
-            Response.ContentEncoding = System.Text.Encoding.UTF8;
-            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"Mã sản phẩm\",");
@@ -681,7 +672,10 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Trọng lượng\",");
             fileStringBuilder.Append("\"Đặc tả\"");
             var ctx = new SmsContext();
-            var products = ctx.SAN_PHAM.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A").ToList<SAN_PHAM>();
+            var products = ctx.SAN_PHAM.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A" &&
+                (productGroupId == null || productGroupId  == 0|| u.MA_NHOM == productGroupId) &&
+                (string.IsNullOrEmpty(CurrentFilter) || u.TEN_SAN_PHAM.Contains(CurrentFilter))
+            ).ToList<SAN_PHAM>();
             int i = 0;
             foreach (var product in products)
             {
@@ -703,10 +697,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (product.CAN_NANG == null ? "" : ((Double)product.CAN_NANG).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + product.DAC_TA + "\",");
             }
-            Response.Output.Write(fileStringBuilder.ToString());
-            Response.Flush();
-            Response.End();
-            return View("../SanPham/Index");
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
         [HttpPost]
@@ -1545,12 +1536,15 @@ namespace SMS.Controllers
         {
             ViewBag.InforMessage = inforMessage;
             ViewBag.Message = message;
+            var ctx = new SmsContext();
+            var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            ViewBag.ProductGroups = productGroups;
             return View();
         }
 
         [CustomActionFilter]
         [HttpPost]
-        public PartialViewResult ConvertUnitOfProducts(string sortOrder, string CurrentFilter, int? currentPageIndex)
+        public PartialViewResult ConvertUnitOfProducts(int? productGroupId, string sortOrder, string CurrentFilter, int? currentPageIndex)
         {
              int pageSize = SystemConstant.ROWS;
 
@@ -1558,16 +1552,18 @@ namespace SMS.Controllers
 
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
-
+            ViewBag.ProductGroupId = productGroupId;
             var ctx = new SmsContext();
-            var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH
+            var theListContext = (from cd in ctx.CHUYEN_DOI_DON_VI_TINH                                  
                                   join sp in ctx.SAN_PHAM on cd.MA_SAN_PHAN equals sp.MA_SAN_PHAM
+                                  join gr in ctx.NHOM_SAN_PHAM on sp.MA_NHOM equals gr.MA_NHOM
                                   join dv1 in ctx.DON_VI_TINH on sp.MA_DON_VI equals dv1.MA_DON_VI
                                   join dv2 in ctx.DON_VI_TINH on cd.MA_DON_VI_VAO equals dv2.MA_DON_VI
                                   join u in ctx.NGUOI_DUNG on cd.CREATE_BY equals u.MA_NGUOI_DUNG
                                   join u1 in ctx.NGUOI_DUNG on cd.UPDATE_BY equals u1.MA_NGUOI_DUNG
                                   where
                                   (cd.ACTIVE == "A"
+                                  && (productGroupId == null || productGroupId == 0 || gr.MA_NHOM == productGroupId)
                                   && (string.IsNullOrEmpty(CurrentFilter) 
                                     || sp.TEN_SAN_PHAM.ToLower().Contains(CurrentFilter.Trim().ToLower())
                                     || dv1.TEN_DON_VI.ToLower().Contains(CurrentFilter.Trim().ToLower())

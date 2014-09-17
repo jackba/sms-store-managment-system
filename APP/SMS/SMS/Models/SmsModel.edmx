@@ -2298,6 +2298,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_GET_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
+          <Parameter Name="GROUP_ID" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
@@ -2434,6 +2435,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_GET_VALUE_OF_INVENTORY" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
+          <Parameter Name="GROUP_ID" Type="int" Mode="In" />
           <Parameter Name="MA_SAN_PHAM" Type="int" Mode="In" />
           <Parameter Name="TEN_SAN_PHAM" Type="nvarchar" Mode="In" />
         </Function>
@@ -2443,6 +2445,10 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
           <Parameter Name="STATAUS" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_WARNING_BY_STORE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="STORE_ID" Type="int" Mode="In" />
+          <Parameter Name="PRODUCT_NAME" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SP_HET_IM_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
@@ -5751,6 +5757,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_GET_INVENTORY" ReturnType="Collection(SmsModel.SP_GET_INVENTORY_Result)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
             <Parameter Name="TEN_KHO" Mode="In" Type="String" />
+            <Parameter Name="GROUP_ID" Mode="In" Type="Int32" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
@@ -5879,6 +5886,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <FunctionImport Name="SP_GET_VALUE_OF_INVENTORY" ReturnType="Collection(Double)">
             <Parameter Name="MA_KHO" Mode="In" Type="Int32" />
             <Parameter Name="TEN_KHO" Mode="In" Type="String" />
+            <Parameter Name="GROUP_ID" Mode="In" Type="Int32" />
             <Parameter Name="MA_SAN_PHAM" Mode="In" Type="Int32" />
             <Parameter Name="TEN_SAN_PHAM" Mode="In" Type="String" />
           </FunctionImport>
@@ -6015,7 +6023,11 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="PRODUCT_NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_MIN_MAX_BY_ID" ReturnType="Collection(SmsModel.SP_GET_MIN_MAX_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_WARNING_BY_STORE" ReturnType="Collection(SmsModel.SP_GET_WARNING_BY_STORE_Result)">
+            <Parameter Name="STORE_ID" Mode="In" Type="Int32" />
+            <Parameter Name="PRODUCT_NAME" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
@@ -6785,6 +6797,15 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="Double" Name="CO_SO_TOI_THIEU" Nullable="false" />
           <Property Type="Double" Name="CO_SO_TOI_DA" Nullable="false" />
           <Property Type="String" Name="GHI_CHU" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_WARNING_BY_STORE_Result">
+          <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="false" />
+          <Property Type="String" Name="TEN_SAN_PHAM" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CODE" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="MA_DON_VI" Nullable="true" />
+          <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="INVENTORY" Nullable="false" />
+          <Property Type="Double" Name="INVENTORY_MIN" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -8265,6 +8286,19 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="CO_SO_TOI_THIEU" ColumnName="CO_SO_TOI_THIEU" />
                 <ScalarProperty Name="CO_SO_TOI_DA" ColumnName="CO_SO_TOI_DA" />
                 <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_WARNING_BY_STORE" FunctionName="SmsModel.Store.SP_GET_WARNING_BY_STORE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_WARNING_BY_STORE_Result">
+                <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
+                <ScalarProperty Name="TEN_SAN_PHAM" ColumnName="TEN_SAN_PHAM" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="MA_DON_VI" ColumnName="MA_DON_VI" />
+                <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
+                <ScalarProperty Name="INVENTORY" ColumnName="INVENTORY" />
+                <ScalarProperty Name="INVENTORY_MIN" ColumnName="INVENTORY_MIN" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

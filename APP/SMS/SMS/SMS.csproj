@@ -152,6 +152,7 @@
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
     <Compile Include="Controllers\CustomerRefundController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HangSanXuatController.cs" />
     <Compile Include="Controllers\HoaDonController.cs" />
@@ -417,6 +418,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_GET_WAITING_EX_2_PROVIDER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_WARNING_BY_STORE_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_HET_IM_BY_ID_Result.cs">
@@ -933,6 +937,9 @@
     <Content Include="Views\QuanLyKho\AddMinMax.cshtml" />
     <Content Include="Views\QuanLyKho\EditMinmax.cshtml" />
     <Content Include="Views\QuanLyKho\importMinMax.cshtml" />
+    <Content Include="Views\Errors\NotFound.cshtml" />
+    <Content Include="Views\QuanLyKho\getWarningbyStoreId.cshtml" />
+    <Content Include="Views\QuanLyKho\getWarningbyStoreIdPtv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
