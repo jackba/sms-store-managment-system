@@ -11,7 +11,15 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using PagedList;
+
+    public class ExpenesModel
+    {
+        public int Kind { get; set; }
+        public int Count { get; set; }
+        public IPagedList<SP_GET_EXPENSES_Result> ResultList { get; set; } 
+    }
+
     public partial class EXPENS
     {
         public int ID { get; set; }

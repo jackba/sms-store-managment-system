@@ -1350,5 +1350,42 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WARNING_BY_STORE_Result>("SP_GET_WARNING_BY_STORE", sTORE_IDParameter, pRODUCT_NAMEParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_EXPENSES_Result> SP_GET_EXPENSES(Nullable<int> kIND, string rECIVER, Nullable<int> uSR_ID, string uSER_NAME, Nullable<double> tOTAL_FROM, Nullable<double> tOTAL_TO, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var rECIVERParameter = rECIVER != null ?
+                new ObjectParameter("RECIVER", rECIVER) :
+                new ObjectParameter("RECIVER", typeof(string));
+    
+            var uSR_IDParameter = uSR_ID.HasValue ?
+                new ObjectParameter("USR_ID", uSR_ID) :
+                new ObjectParameter("USR_ID", typeof(int));
+    
+            var uSER_NAMEParameter = uSER_NAME != null ?
+                new ObjectParameter("USER_NAME", uSER_NAME) :
+                new ObjectParameter("USER_NAME", typeof(string));
+    
+            var tOTAL_FROMParameter = tOTAL_FROM.HasValue ?
+                new ObjectParameter("TOTAL_FROM", tOTAL_FROM) :
+                new ObjectParameter("TOTAL_FROM", typeof(double));
+    
+            var tOTAL_TOParameter = tOTAL_TO.HasValue ?
+                new ObjectParameter("TOTAL_TO", tOTAL_TO) :
+                new ObjectParameter("TOTAL_TO", typeof(double));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPENSES_Result>("SP_GET_EXPENSES", kINDParameter, rECIVERParameter, uSR_IDParameter, uSER_NAMEParameter, tOTAL_FROMParameter, tOTAL_TOParameter, fROM_DATEParameter, tO_DATEParameter);
+        }
     }
 }
