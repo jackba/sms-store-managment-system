@@ -1,4 +1,4 @@
-﻿@model SMS.Models.GetInventoryModel
+﻿@model SMS.Models.InventoryByStoreModel
 @using PagedList.Mvc;
 
 @{
@@ -30,13 +30,10 @@
         $(document).ready(function () {
             $("#ExportExcel").click(function () {
                 var StoreId = $("#StoreId").val();
-                var StoreName = $("#StoreName").val();
-                var productGroupId = $("#productGroupId").val();
                 var productName = $("#ProductName").val();
-                var productId = $("#ProductId").val();
                 $.ajax({
-                    url: "/QuanLyKho/downloadCSV",
-                    data: "{ 'StoreId':'" + StoreId + "', 'productGroupId':'" + productGroupId + "','ProductId':'" + productId + "' ,'StoreName':'" + StoreName + "', 'ProductName': '" + productName + "'}",
+                    url: "/QuanLyKho/downloadtWarningbyStoreId",
+                    data: "{ 'storeId':'" + StoreId + "', 'productName': '" + productName + "'}",
                     type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (response, status, request) {
                         var disp = request.getResponseHeader('Content-Disposition');
@@ -78,36 +75,12 @@
 
             });
 
-            $("#StoreName").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/Kho/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; }, success:
-                            function (data) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.value,
-                                        id: item.id
-                                    }
-                                }))
-                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
-                    $('#StoreId').val("");
-                },
-                select: function (event, ui) {
-                    $('#StoreName').val(ui.item.label);
-                    $('#StoreId').val(ui.item.id);
-                    return false;
-                },
-                minLength: 1
-            });
+            
             $('#mainForm').submit();
         });
     </script>
 }
-@using (Ajax.BeginForm("InventoryPartialView", "QuanLyKho", new AjaxOptions()
+@using (Ajax.BeginForm("getWarningbyStoreIdPtv", "QuanLyKho", new AjaxOptions()
                             {
                                 HttpMethod = "POST",
                                 InsertionMode = InsertionMode.Replace,
@@ -119,22 +92,19 @@
 {
     <hr style="width:100%" />
     <div style="float:right">
-       @if((bool)Session["IsAdmin"])
-       { 
-           <div style="display:inline-block">
-            Kho - cửa hàng: @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-            @Html.Hidden("StoreId", ViewBag.StoreId as int?,  new { id = "StoreId" })
-            
-           </div>
-       }
-        <div style="display:inline-block">
-            @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
-            @Html.Hidden("ProductId", ViewBag.ProductId as int?,  new { id = "ProductId" })
+        @if ((bool)Session["IsAdmin"])
+        {
+            <div style="display:inline-block">
+                Kho - cửa hàng: @Html.DropDownList("StoreId", new SelectList(ViewBag.Stores, "MA_KHO", "TEN_KHO"), new { @id = "StoreId", style = "padding:5px;font-size:1.2em" })
+            </div>
+        }
+        <div style="display:inline-block">           
+            @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
             Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
             <input type="submit" value="Tìm kiếm" class="myButton" />
             <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />
         </div>
-       
+
     </div>
     <div style="clear:both"></div>
     <hr style="width:100%" />

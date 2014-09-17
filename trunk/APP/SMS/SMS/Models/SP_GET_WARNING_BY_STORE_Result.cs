@@ -11,12 +11,14 @@ namespace SMS.Models
 {
     using System;
     
-    public partial class SP_GET_INVENTORY_Result
+    public partial class SP_GET_WARNING_BY_STORE_Result
     {
         public int MA_SAN_PHAM { get; set; }
         public string TEN_SAN_PHAM { get; set; }
+        public string CODE { get; set; }
+        public Nullable<int> MA_DON_VI { get; set; }
         public string TEN_DON_VI { get; set; }
-        public double SO_LUONG_TON { get; set; }
-        public Nullable<double> VALUE { get; set; }
+        public double INVENTORY { get; set; }
+        public double INVENTORY_MIN { get; set; }
     }
 }

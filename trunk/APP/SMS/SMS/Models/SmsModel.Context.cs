@@ -629,7 +629,7 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_IMPORT_INFOR_BY_ID_Result>("SP_GET_IMPORT_INFOR_BY_ID", mA_NHAP_KHOParameter);
         }
     
-        public virtual ObjectResult<SP_GET_INVENTORY_Result> SP_GET_INVENTORY(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
+        public virtual ObjectResult<SP_GET_INVENTORY_Result> SP_GET_INVENTORY(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> gROUP_ID, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
                 new ObjectParameter("MA_KHO", mA_KHO) :
@@ -639,6 +639,10 @@ namespace SMS.Models
                 new ObjectParameter("TEN_KHO", tEN_KHO) :
                 new ObjectParameter("TEN_KHO", typeof(string));
     
+            var gROUP_IDParameter = gROUP_ID.HasValue ?
+                new ObjectParameter("GROUP_ID", gROUP_ID) :
+                new ObjectParameter("GROUP_ID", typeof(int));
+    
             var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
                 new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
@@ -647,7 +651,7 @@ namespace SMS.Models
                 new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
                 new ObjectParameter("TEN_SAN_PHAM", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_Result>("SP_GET_INVENTORY", mA_KHOParameter, tEN_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_INVENTORY_Result>("SP_GET_INVENTORY", mA_KHOParameter, tEN_KHOParameter, gROUP_IDParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
         }
     
         public virtual ObjectResult<Nullable<double>> SP_GET_INVENTORY_BY_PRO_STO_ID(Nullable<int> pRODUCT_ID, Nullable<int> sTORE_ID)
@@ -1066,7 +1070,7 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_VALUE_ALL_HOA_DON_Result>("SP_GET_VALUE_ALL_HOA_DON", fROM_DATEParameter, tO_DATEParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter, mA_NHAN_VIEN_BANParameter, tEN_NV_BANParameter, mA_NHAN_VIEN_TTParameter, tEN_NV_TTParameter, sTATUSParameter, mA_KHU_VUCParameter, tEN_KHU_VUCParameter);
         }
     
-        public virtual ObjectResult<Nullable<double>> SP_GET_VALUE_OF_INVENTORY(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
+        public virtual ObjectResult<Nullable<double>> SP_GET_VALUE_OF_INVENTORY(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> gROUP_ID, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
                 new ObjectParameter("MA_KHO", mA_KHO) :
@@ -1076,6 +1080,10 @@ namespace SMS.Models
                 new ObjectParameter("TEN_KHO", tEN_KHO) :
                 new ObjectParameter("TEN_KHO", typeof(string));
     
+            var gROUP_IDParameter = gROUP_ID.HasValue ?
+                new ObjectParameter("GROUP_ID", gROUP_ID) :
+                new ObjectParameter("GROUP_ID", typeof(int));
+    
             var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
                 new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
                 new ObjectParameter("MA_SAN_PHAM", typeof(int));
@@ -1084,7 +1092,7 @@ namespace SMS.Models
                 new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
                 new ObjectParameter("TEN_SAN_PHAM", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_VALUE_OF_INVENTORY", mA_KHOParameter, tEN_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("SP_GET_VALUE_OF_INVENTORY", mA_KHOParameter, tEN_KHOParameter, gROUP_IDParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter);
         }
     
         public virtual ObjectResult<SP_GET_WAITING_EX_2_PROVIDER_Result> SP_GET_WAITING_EX_2_PROVIDER(Nullable<int> sTORE_ID, string sTORE_NAME, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> sTATAUS)
@@ -1328,6 +1336,19 @@ namespace SMS.Models
                 new ObjectParameter("ID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_ID_Result>("SP_GET_MIN_MAX_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_WARNING_BY_STORE_Result> SP_GET_WARNING_BY_STORE(Nullable<int> sTORE_ID, string pRODUCT_NAME)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
+                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
+                new ObjectParameter("PRODUCT_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WARNING_BY_STORE_Result>("SP_GET_WARNING_BY_STORE", sTORE_IDParameter, pRODUCT_NAMEParameter);
         }
     }
 }

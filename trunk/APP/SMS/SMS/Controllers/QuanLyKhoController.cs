@@ -25,6 +25,79 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
+        public FileContentResult downloadtWarningbyStoreId(int storeId, string productName)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Đơn vị tính\",");
+            fileStringBuilder.Append("\"Tồn tối thiểu\",");
+            fileStringBuilder.Append("\"Tồn kho\"");
+            var ctx = new SmsContext();
+            var inventory = ctx.SP_GET_WARNING_BY_STORE(storeId, productName).ToList<SP_GET_WARNING_BY_STORE_Result>();
+            int i = 0;
+            foreach (var detail in inventory)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + detail.MA_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\"" + detail.INVENTORY_MIN.ToString("#,###,##") + "\",");
+                fileStringBuilder.Append("\"" + detail.INVENTORY.ToString("#,###,##") + "\",");
+            }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
+        public ActionResult getWarningbyStoreId()
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            ViewBag.Stores = stores;
+            return View();
+        }
+
+        public PartialViewResult getWarningbyStoreIdPtv(int storeId, string productName, int? currentPageIndex)
+        {
+            var ctx = new SmsContext();
+            var inventory = ctx.SP_GET_WARNING_BY_STORE(storeId, productName).ToList<SP_GET_WARNING_BY_STORE_Result>();
+            ViewBag.CurrentPageIndex = currentPageIndex;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;           
+            InventoryByStoreModel model = new InventoryByStoreModel();
+            model.Count = inventory.Count();
+            model.WarningList = inventory.ToPagedList(pageIndex, pageSize);
+            return PartialView("getWarningbyStoreIdPtv", model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                ViewBag.Message = "Không tìm thấy cấu hình tương ứng.";
+                return View("../Home/Error"); ;
+            }
+            var ctx = new SmsContext();
+            var donvi = ctx.TON_KHO_MIN_MAX_KHO.Find(id);
+            if (donvi != null && donvi.ACTIVE.Equals("A"))
+            {
+                donvi.ACTIVE = "I";
+                donvi.UPDATE_AT = DateTime.Now;
+                donvi.CREATE_BY = (int)Session["UserId"];
+                ctx.SaveChanges();
+                return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Xóa cấu hình thành công." });
+            }
+            else
+            {
+                return RedirectToAction("MinMaxOfProductByStore", new { @Message = "Không tồn tại cấu hình này. Vui lòng kiểm tra lại." });
+            }
+        }
+
+
+        [HttpPost]
         public ActionResult importMinMax(MinMax model, HttpPostedFileBase file)
         {
             var ctx = new SmsContext();
@@ -1136,11 +1209,60 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Inventory()
         {
+            var ctx = new SmsContext();
+            var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            ViewBag.ProductGroups = productGroups;
             return View();
         }
 
         [HttpPost]
-        public PartialViewResult InventoryPagingConent(int? StoreId, int? ProductId, string StoreName, string ProductName, int? currentPageIndex)
+        public FileContentResult downloadCSV(int? StoreId, int? productGroupId, int? ProductId, string StoreName, string ProductName)
+        {
+            var ctx = new SmsContext();
+            if (string.IsNullOrEmpty(StoreName))
+            {
+                StoreName = string.Empty;
+                StoreId = 0;
+            }
+            if (string.IsNullOrEmpty(ProductName))
+            {
+                ProductName = string.Empty;
+                ProductId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                StoreId = (int)Session["MyStore"];
+            }
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Tên đơn vị tính\",");
+            fileStringBuilder.Append("\"Số lượng tồn\"");
+            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+               new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
+               new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
+               new SqlParameter("GROUP_ID", Convert.ToInt32(productGroupId)),
+               new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
+               new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<Inventory>();
+             int i = 0;
+             foreach (var product in tonkho)
+             {
+                 fileStringBuilder.Append("\n");
+                 i += 1;
+                 fileStringBuilder.Append("\"" + i + "\",");
+                 fileStringBuilder.Append("\"" + product.MA_SAN_PHAM + "\",");
+                 fileStringBuilder.Append("\"" + product.TEN_SAN_PHAM + "\",");
+                 fileStringBuilder.Append("\"" + product.TEN_DON_VI + "\",");
+                 fileStringBuilder.Append("\"" + product.SO_LUONG_TON.ToString("#,###.##") + "\",");
+             }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
+
+        [HttpPost]
+        public PartialViewResult InventoryPagingConent(int? StoreId, int? productGroupId, int? ProductId, string StoreName, string ProductName, int? currentPageIndex)
         {
             var ctx = new SmsContext();
             if (string.IsNullOrEmpty(StoreName))
@@ -1162,9 +1284,10 @@ namespace SMS.Controllers
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
 
-            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                 new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
+                new SqlParameter("GROUP_ID", Convert.ToInt32(productGroupId)),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<Inventory>().Take(SystemConstant.MAX_ROWS);
             ViewBag.Count = tonkho.Count();
@@ -1174,9 +1297,10 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO,@GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                 new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
+                new SqlParameter("GROUP_ID", Convert.ToInt32(productGroupId)),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;
@@ -1184,7 +1308,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult InventoryPartialView(int? StoreId, int? ProductId, string StoreName, string ProductName, int? currentPageIndex)
+        public PartialViewResult InventoryPartialView(int? StoreId, int? productGroupId, int? ProductId, string StoreName, string ProductName, int? currentPageIndex)
         {
             var ctx = new SmsContext();
             if (string.IsNullOrEmpty(StoreName))
@@ -1206,9 +1330,10 @@ namespace SMS.Controllers
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
 
-            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                 new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
+                new SqlParameter("GROUP_ID", Convert.ToInt32(productGroupId)),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<Inventory>().Take(SystemConstant.MAX_ROWS);
             ViewBag.Count = tonkho.Count();
@@ -1218,9 +1343,10 @@ namespace SMS.Controllers
             tk = tonkho.ToPagedList(pageIndex, pageSize);
             GetInventoryModel model = new GetInventoryModel();
             model.InventoryList = tk;
-            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
+            var total = ctx.Database.SqlQuery<InventoryTotal>("exec SP_GET_VALUE_OF_INVENTORY @MA_KHO, @TEN_KHO,@GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                 new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
+                new SqlParameter("GROUP_ID", Convert.ToInt32(productGroupId)),
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;

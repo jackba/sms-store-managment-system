@@ -12,14 +12,13 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.MinMaxList, currentPageIndex => Url.Action("InventoryPagingConent",
+                    @Html.PagedListPager(Model.MinMaxList, currentPageIndex => Url.Action("MinMaxOfProductByStorePartialView",
                                                             new
                                                             {
                                                                 currentPageIndex,
-                                                                StoreId = ViewBag.StoreId,
-                                                                ProductId = ViewBag.ProductId,
-                                                                StoreName = ViewBag.StoreName,
-                                                                ProductName = ViewBag.ProductName
+                                                                ptoreId = ViewBag.StoreId,
+                                                                productGroupId = ViewBag.ProductGroupId,
+                                                                productName = ViewBag.ProductName,
                                                             }),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
             new AjaxOptions()
@@ -87,14 +86,13 @@
             </td>
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
-                    @Html.PagedListPager(Model.MinMaxList, currentPageIndex => Url.Action("InventoryPagingConent",
+                    @Html.PagedListPager(Model.MinMaxList, currentPageIndex => Url.Action("MinMaxOfProductByStorePartialView",
                                                             new
                                                             {
                                                                 currentPageIndex,
-                                                                StoreId = ViewBag.StoreId,
-                                                                ProductId = ViewBag.ProductId,
-                                                                StoreName = ViewBag.StoreName,
-                                                                ProductName = ViewBag.ProductName
+                                                                ptoreId = ViewBag.StoreId,
+                                                                productGroupId = ViewBag.ProductGroupId,
+                                                                productName = ViewBag.ProductName,
                                                             }),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
             new AjaxOptions()
@@ -112,3 +110,15 @@
     </table>
 
 </div>
+
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn xóa đơn vị tính này!");
+        if (r == true) {
+            document.forms["mainForm"].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>

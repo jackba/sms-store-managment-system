@@ -119,7 +119,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </td>
             <td> Nhóm sản phẩm&nbsp;&nbsp;&nbsp;&nbsp; </td>
-            <td> @Html.DropDownList("StoreId", new SelectList(@Model.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" }) 
+            <td> @Html.DropDownList("ProductGroups", new SelectList(@Model.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" }) 
                 &nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td> Sản phẩm&nbsp;&nbsp;&nbsp;&nbsp; </td>
             <td> @Html.TextBox("productName", ViewBag.productName as string,new { @id = "productName" })&nbsp;&nbsp;&nbsp;&nbsp;</td>

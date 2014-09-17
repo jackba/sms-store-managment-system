@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = "Danh sách sản phẩm";
 }
-
+<script src="~/Content/js/FileSaver.js"></script>
 <link href="../../Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/style.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/SanPham.css" rel="stylesheet" type="text/css" />
@@ -29,6 +29,27 @@
     //<![CDATA[ 
     /**AUTOCOMPLETE**/
     $(document).ready(function () {
+        $("#ExportExcel").click(function () {
+            var productGroupId = $("#productGroupId").val();
+            var productName = $("#CurrentFilter").val();
+            $.ajax({
+                url: "/SanPham/downloadCSVTemplate",
+                data: "{ 'productGroupId':'" + productGroupId + "' , 'CurrentFilter': '" + productName + "'}",
+                type: "POST", contentType: "application/json; charset=utf-8",
+                success: function (response, status, request) {
+                    var disp = request.getResponseHeader('Content-Disposition');
+                    if (disp && disp.search('attachment') != -1) {
+                        var type = request.getResponseHeader('text/csv');
+                        var blob = new Blob([response], { type: type });
+                        var index = disp.indexOf("=");
+                        var fileName = disp.substr(index + 1 + "=".length);
+                        saveAs(blob, fileName);
+                    }
+                }
+            });
+        });
+
+
         $("#CurrentFilter").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -381,28 +402,22 @@
                            new { @id = "mainForm" }
                       ))
 {
-    <div style="width: 100%">
-        @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
-        {
-        <hr style="width:100%" />
-        <input type="button" value="Download danh mục" class="myButton"
-               onclick="location.href='@Url.Action("downloadCSVTemplate", "SanPham")'" />
-        <input type="button" value="Import danh mục" class="myButton"
-               onclick="location.href='@Url.Action("importCsv", "SanPham")'" />
 
-        }
-    </div>
     <hr style="width:100%" />
     <div style="float:right ">
 
 
 
         <div style="float:right">
+            @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
             Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
             <input type="submit" value="Tìm kiếm" class="myButton" />
+            <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />
             @{
     if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
     {
+        <input type="button" value="Import CSV" class="myButton"
+               onclick="location.href='@Url.Action("importCsv", "SanPham")'" />
         <input type="button" value="Thêm Mới" class="myButton"
                onclick="location.href='@Url.Action("AddNew", "SanPham")'" />
                 <input type="button" value="    Báo giá  " class="myButton"
