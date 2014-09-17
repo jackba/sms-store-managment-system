@@ -2209,6 +2209,16 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
         <Function Name="SP_GET_EX_DETAIL_BY_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_GET_EXPENSES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="KIND" Type="int" Mode="In" />
+          <Parameter Name="RECIVER" Type="nvarchar" Mode="In" />
+          <Parameter Name="USR_ID" Type="int" Mode="In" />
+          <Parameter Name="USER_NAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="TOTAL_FROM" Type="float" Mode="In" />
+          <Parameter Name="TOTAL_TO" Type="float" Mode="In" />
+          <Parameter Name="FROM_DATE" Type="date" Mode="In" />
+          <Parameter Name="TO_DATE" Type="date" Mode="In" />
+        </Function>
         <Function Name="SP_GET_EXPORT_4_CANCEL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MA_KHO" Type="int" Mode="In" />
           <Parameter Name="TEN_KHO" Type="nvarchar" Mode="In" />
@@ -6029,6 +6039,16 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <Parameter Name="STORE_ID" Mode="In" Type="Int32" />
             <Parameter Name="PRODUCT_NAME" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="SP_GET_EXPENSES" ReturnType="Collection(SmsModel.SP_GET_EXPENSES_Result)">
+            <Parameter Name="KIND" Mode="In" Type="Int32" />
+            <Parameter Name="RECIVER" Mode="In" Type="String" />
+            <Parameter Name="USR_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USER_NAME" Mode="In" Type="String" />
+            <Parameter Name="TOTAL_FROM" Mode="In" Type="Double" />
+            <Parameter Name="TOTAL_TO" Mode="In" Type="Double" />
+            <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
+            <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -6806,6 +6826,16 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="String" Name="TEN_DON_VI" Nullable="true" MaxLength="50" />
           <Property Type="Double" Name="INVENTORY" Nullable="false" />
           <Property Type="Double" Name="INVENTORY_MIN" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_EXPENSES_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int16" Name="LOAI_CHI" Nullable="false" />
+          <Property Type="Int32" Name="NGUOI_CHI" Nullable="true" />
+          <Property Type="String" Name="TEN_NGUOI_DUNG" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TEN_NGUOI_NHAN" Nullable="true" MaxLength="255" />
+          <Property Type="DateTime" Name="NGAY_CHI" Nullable="true" />
+          <Property Type="Double" Name="TONG_CHI" Nullable="false" />
+          <Property Type="String" Name="GHI_CHU" Nullable="true" MaxLength="255" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -8299,6 +8329,20 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="TEN_DON_VI" ColumnName="TEN_DON_VI" />
                 <ScalarProperty Name="INVENTORY" ColumnName="INVENTORY" />
                 <ScalarProperty Name="INVENTORY_MIN" ColumnName="INVENTORY_MIN" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_EXPENSES" FunctionName="SmsModel.Store.SP_GET_EXPENSES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_EXPENSES_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LOAI_CHI" ColumnName="LOAI_CHI" />
+                <ScalarProperty Name="NGUOI_CHI" ColumnName="NGUOI_CHI" />
+                <ScalarProperty Name="TEN_NGUOI_DUNG" ColumnName="TEN_NGUOI_DUNG" />
+                <ScalarProperty Name="TEN_NGUOI_NHAN" ColumnName="TEN_NGUOI_NHAN" />
+                <ScalarProperty Name="NGAY_CHI" ColumnName="NGAY_CHI" />
+                <ScalarProperty Name="TONG_CHI" ColumnName="TONG_CHI" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
