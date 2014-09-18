@@ -10,6 +10,59 @@ namespace SMS.Controllers
 {
     public class ExpenseController : Controller
     {
+        [HttpGet]
+        public ActionResult EditExpense(int id)
+        {
+            return View();
+        }
+
+        
+
+        [HttpPost]
+        public FileContentResult downloadExpenses(int? kind, string reciever, int? userId, string userName, 
+            float? totalFrom, float? totalTo, DateTime? fromDate, DateTime? toDate)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Ngày chi tiền\",");
+            fileStringBuilder.Append("\"Người chi tiền\",");
+            fileStringBuilder.Append("\"Tên người nhận tiền\",");
+            fileStringBuilder.Append("\"Mục đích chi tiền\",");
+            fileStringBuilder.Append("\"Tổng tiền\"");
+            var ctx = new SmsContext();
+            var expenses = ctx.SP_GET_EXPENSES(Convert.ToInt32(kind), reciever, userId, userName, totalFrom, totalTo, fromDate, toDate).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_EXPENSES_Result>();
+            int i = 0;
+            string str = "";
+            foreach (var detail in expenses)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + ((DateTime)detail.NGAY_CHI).ToString("dd/MM/yyyy") + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_NGUOI_DUNG + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_NGUOI_NHAN + "\",");
+                switch (detail.LOAI_CHI)
+                {
+                    case 1: 
+                        str = "Chi mua hàng";
+                        break;
+                    case 2:
+                        str = "Chi cho vận chuyển";
+                        break;
+                    case 3:
+                        str = "Chi cho tiền lương nhân viên";
+                        break;
+                    case 4: 
+                        str = "Chi vào mục đích khác";
+                        break;
+                }
+                fileStringBuilder.Append("\"" + str + "\",");
+                fileStringBuilder.Append("\"" + detail.TONG_CHI.ToString("#,###,##") + "\",");
+            }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
         //
         // GET: /Expense/
         [HttpGet]
