@@ -1,1 +1,173 @@
-﻿
+﻿@model SMS.Models.ExpenesModel
+@using PagedList.Mvc;
+
+<div>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count lượt nhập kho </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.ResultList, currentPageIndex => Url.Action("IndexPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            importerId = ViewBag.ImporterId,
+                            importerName = ViewBag.ImporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.ToDate,
+                            reasonId = ViewBag.InputKind
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table width="100%">
+        <tr style="width:100%">
+            <td class='inner colwidth head '> STT </td>
+            <td class='inner colwidth head '> Ngày chi </td>
+            <td class='inner colwidth head '>  Người chi </td>
+            <td class='inner colwidth head '>  Người nhận tiền </td>
+            <td class='innerLast colwidth head '>  Tổng tiền chi </td>
+            <td class='innerLast colwidth head '>  Loại chi </td>
+            <td class='innerLast colwidth head '>  Sửa </td>
+            <td class='innerLast colwidth head '>  Xóa </td>
+        </tr>
+        @if (Model.ResultList != null && Model.ResultList.Count > 0)
+        {
+            int i = 0;
+            string loai_chi = "";
+            foreach (var dbHist in Model.ResultList)
+            {
+                i++;
+                <tr class="inner column-hscroll alignCenter">
+                    <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
+                        @i
+                    </td>
+                    <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
+                                @DateTime.Parse(dbHist.NGAY_CHI.ToString()).ToString("dd/MM/yyyy")                        
+                    </td>
+                    <td class="inner colwidth">
+                             @dbHist.TEN_NGUOI_DUNG
+                    </td>
+                    <td class="inner colwi  dth">
+                            @dbHist.TEN_NGUOI_NHAN
+                    </td>
+                    <td class="inner colwidth">
+                        @dbHist.TONG_CHI.ToString("#,###.##")
+                    </td>
+                    <td class="innerLast colwidth">
+                        @{
+                            switch (dbHist.LOAI_CHI)
+                            {
+                                case 1:
+                                    loai_chi = "Mua hàng";
+                                    break;
+                                case 2:
+                                    loai_chi = "Vận chuyển";
+                                    break;
+                                case 3:
+                                    loai_chi = "Lương nhân viên";
+                                    break;
+                                case 4:
+                                    loai_chi = "Mục đích khác";
+                                    break;
+                            }
+                        }
+                        @loai_chi
+                    </td>
+                    <td class='innerLast alignCenter' style="width:50px;">
+                       
+                        <a href="@Url.Action("Edit", "Import", new { id = @dbHist.ID })" class="button-module">
+                            <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                           
+                        </a>
+
+                    </td>
+                    <td class='innerLast alignCenter' style="width:50px;">
+                        @if (((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]))
+                        {
+                            <a href="@Url.Action("deleteImport", "Import", new { id = @dbHist.ID })" class="button class=" button-module" onclick="return deleteSubmit()">
+                                <img width="18" height="18" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                            </a>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="innerLast alignCenter" style="background-color:lightgray" colspan="8"> Không có dữ liệu phù hợp</td>
+            </tr>
+        }
+    </table>
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@Model.Count lượt nhập kho </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.ResultList, currentPageIndex => Url.Action("IndexPartialView",
+                        new
+                        {
+                            currentPageIndex,
+                            storeid = ViewBag.StoreId,
+                            storeName = ViewBag.storeName,
+                            providerId = ViewBag.ProviderId,
+                            providerName = ViewBag.ProviderName,
+                            importerId = ViewBag.ImporterId,
+                            importerName = ViewBag.ImporterName,
+                            fromDate = ViewBag.FromDate,
+                            todate = ViewBag.Todate,
+                            reasonId = ViewBag.InputKind
+                        }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+        new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "resultLoadingDiv",
+            UpdateTargetId = "mainDiv"
+        }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
+<script>
+    function deleteSubmit() {
+        var r = confirm("Bạn muốn phiếu nhập kho này!");
+        if (r == true) {
+            document.forms['mainForm'].submit();
+        }
+        else {
+            return false;
+        }
+    }
+</script>

@@ -11,6 +11,7 @@ namespace SMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using PagedList;
 
     public class ExpenesModel
@@ -23,11 +24,30 @@ namespace SMS.Models
     public partial class EXPENS
     {
         public int ID { get; set; }
+
+        [Required]
+        [Display(Name = "Mục đích chi")]
         public Nullable<short> LOAI_CHI { get; set; }
+
+        [Display(Name = "Người chi tiền")]
         public Nullable<int> NGUOI_CHI { get; set; }
+
+
+        [Required]
+        [Display(Name = "Tên người nhận tiền")]
         public string TEN_NGUOI_NHAN { get; set; }
+
+        [Required]
+        [Display(Name = "Ngày chi tiền")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> NGAY_CHI { get; set; }
+
+        [Required]
+        [Display(Name = "Tổng số tiền chi")]
         public Nullable<double> TONG_CHI { get; set; }
+
+        [Display(Name = "Ghi chú")]
         public string GHI_CHU { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
