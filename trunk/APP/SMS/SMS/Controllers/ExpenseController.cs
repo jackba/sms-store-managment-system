@@ -12,15 +12,47 @@ namespace SMS.Controllers
     {
         //
         // GET: /Expense/
-
-        public ActionResult AddExpense()
+        [HttpGet]
+        public ActionResult AddExpense(string message)
         {
+            ViewBag.Message = message;
             return View();
         }
 
-        public ActionResult Index()
+        [HttpPost]
+        public ActionResult AddExpense(EXPENS model)
+        {
+            if (ModelState.IsValid)
+            {
+                var ctx = new SmsContext();
+                var ex = ctx.EXPENSES.Create();
+                ex.ACTIVE = "A";
+                ex.GHI_CHU = model.GHI_CHU;
+                ex.LOAI_CHI = model.LOAI_CHI;
+                ex.NGAY_CHI = model.NGAY_CHI;
+                ex.NGUOI_CHI = Convert.ToInt32(Session["UserId"]);
+                ex.TEN_NGUOI_NHAN = model.TEN_NGUOI_NHAN;
+                ex.UPDATE_AT = DateTime.Now;
+                ex.CREATE_AT = DateTime.Now;
+                ex.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                ex.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                ex.TONG_CHI = model.TONG_CHI;
+                ctx.EXPENSES.Add(ex);
+                ctx.SaveChanges();
+                return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
+            }
+            else
+            {
+                return View();
+            }            
+        }
+
+
+        public ActionResult Index(string message, string inforMessage)
         {
             ExpenesModel model = new ExpenesModel();
+            ViewBag.Message = message;
+            ViewBag.InForMessage = inforMessage;
             model.Kind = 0;
             return View(model);
         }
