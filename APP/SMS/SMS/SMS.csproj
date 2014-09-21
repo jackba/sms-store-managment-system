@@ -151,6 +151,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChuyenDoiDonViController.cs" />
     <Compile Include="Controllers\CustomerRefundController.cs" />
+    <Compile Include="Controllers\NhomSanPham.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\ExpenseController.cs" />
@@ -537,6 +538,7 @@
     <Content Include="Content\css\960.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\screen.css" />
+    <Content Include="Content\NhomSanPham.css" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
@@ -947,6 +949,9 @@
     <Content Include="Views\Expense\Index.cshtml" />
     <Content Include="Views\Expense\IndexPtv.cshtml" />
     <Content Include="Views\Expense\AddExpense.cshtml" />
+    <Content Include="Views\NhomSanPham\AddNew.cshtml" />
+    <Content Include="Views\NhomSanPham\Edit.cshtml" />
+    <Content Include="Views\NhomSanPham\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

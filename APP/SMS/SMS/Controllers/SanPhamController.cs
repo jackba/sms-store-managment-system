@@ -701,11 +701,11 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult PagingContent(string sortOrder, string CurrentFilter, int? currentPageIndex)
+        public PartialViewResult PagingContent(string sortOrder, string CurrentFilter, int? currentPageIndex, FormCollection form)
         {
             if (Session[SEARCH_ADVANCE] == null)
             {
-                listResult = GetListProductNotSearchAdvance(sortOrder, CurrentFilter, currentPageIndex);
+                listResult = GetListProductNotSearchAdvance(sortOrder, CurrentFilter, currentPageIndex/*, form*/);
             }
             else
             {
@@ -957,6 +957,7 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             BindListDV(ctx);
+            BindListNhomSP(ctx);
             BindListNSX(ctx);
             SetModeTitle(false);
             SetDefaultValue();
@@ -979,6 +980,7 @@ namespace SMS.Controllers
             {
                 SetModeTitle(true);
                 BindListDV(ctx);
+                BindListNhomSP(ctx);
                 BindListNSX(ctx);
 
                 SetHiddenFields(sp);
@@ -1002,6 +1004,7 @@ namespace SMS.Controllers
             {
                 psa.TenSanPham = collection.Get("TenSanPham");
             }
+
             if (collection.AllKeys.Contains("KichThuoc"))
             {
                 psa.KichThuoc = collection.Get("KichThuoc");
@@ -1053,6 +1056,10 @@ namespace SMS.Controllers
                 psa.CoSoTo = collection.Get("CoSoTo");
             }
 
+            if (collection.AllKeys.Contains("NhomSanPham"))
+            {
+                psa.NhomSanPham = collection.Get("NhomSanPham");
+            }
 
             Session[SEARCH_ADVANCE] = psa;
 
@@ -1076,8 +1083,13 @@ namespace SMS.Controllers
             {
                 productUpdated.MA_NHA_SAN_XUAT = null;
             }
+            if (-1 == productUpdated.MA_NHOM)
+            {
+                productUpdated.MA_NHOM = null;
+            }
             sp.MA_DON_VI = productUpdated.MA_DON_VI;
             sp.MA_NHA_SAN_XUAT = productUpdated.MA_NHA_SAN_XUAT;
+            sp.MA_NHOM = productUpdated.MA_NHOM;
             sp.DAC_TA = productUpdated.DAC_TA;
             sp.GIA_BAN_1 = productUpdated.GIA_BAN_1;
             sp.GIA_BAN_2 = productUpdated.GIA_BAN_2;
@@ -1136,8 +1148,13 @@ namespace SMS.Controllers
             {
                 productInsert.MA_NHA_SAN_XUAT = null;
             }
+            if (-1 == productInsert.MA_NHOM)
+            {
+                productInsert.MA_NHOM = null;
+            }
             sp.MA_DON_VI = productInsert.MA_DON_VI;
             sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
+            sp.MA_NHOM = productInsert.MA_NHOM;
             sp.DAC_TA = productInsert.DAC_TA;
             sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
             sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
@@ -1172,6 +1189,19 @@ namespace SMS.Controllers
                 listDV.AddRange(dsDonVi);
             }
             ViewBag.dsDonVi = listDV;
+
+        }
+
+        private void BindListNhomSP(SmsContext ctx)
+        {
+            var listNhomSP = new List<NHOM_SAN_PHAM>();
+            listNhomSP.Add(new NHOM_SAN_PHAM { MA_NHOM = -1, TEN_NHOM = "Chọn nhóm sản phẩm" });
+            var dsNhomSP = (from s in ctx.NHOM_SAN_PHAM select s).ToList<NHOM_SAN_PHAM>();
+            if (null != dsNhomSP)
+            {
+                listNhomSP.AddRange(dsNhomSP);
+            }
+            ViewBag.dsNhomSP = listNhomSP;
 
         }
 
@@ -1231,7 +1261,7 @@ namespace SMS.Controllers
             ViewBag.CoSoMin = "0";
             ViewBag.CoSoMax = "0";
         }
-        private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex)
+        private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex/*, FormCollection form*/)
         {
 
             int pageSize = SystemConstant.ROWS;
@@ -1240,10 +1270,17 @@ namespace SMS.Controllers
 
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
+            //string maNhom = "";
+            //if (form.AllKeys.Contains("productGroupId")){
+            //    maNhom = form.Get("productGroupId");
+            //}
 
             var ctx = new SmsContext();
+
             var contentLst = (from s in ctx.SAN_PHAM
-                              where (s.ACTIVE == "A"
+                              where (
+                              s.ACTIVE == "A"
+                              //&& (String.IsNullOrEmpty(maNhom) || s.MA_NHOM.Equals(maNhom))
                               && (String.IsNullOrEmpty(CurrentFilter)
                               || s.TEN_SAN_PHAM.ToUpper().Contains(CurrentFilter.ToUpper())
                               || s.DAC_TA.ToUpper().Contains(CurrentFilter.ToUpper())
@@ -1254,17 +1291,17 @@ namespace SMS.Controllers
                               from dv in dv_join.DefaultIfEmpty()
                               join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
                               from nsx in nsx_join.DefaultIfEmpty()
+                              join nsp in ctx.NHOM_SAN_PHAM on s.MA_NHOM equals nsp.MA_NHOM into nsp_join
+                              from nsp in nsp_join.DefaultIfEmpty()
                               select new SanPhamDisplay
                               {
                                   SanPham = s,
                                   NguoiTao = u,
                                   NguoiCapNhat = u1,
                                   DonVi = dv,
-                                  NhaSanXuat = nsx
+                                  NhaSanXuat = nsx,
+                                  NhomSanPham = nsp
                               }).Take(SystemConstant.MAX_ROWS);
-
-
-
 
             IPagedList<SanPhamDisplay> DisplayContentLst = null;
 
@@ -1332,6 +1369,9 @@ namespace SMS.Controllers
                                
                                 && (String.IsNullOrEmpty(psa.DonViTinh)
                                 || s.DON_VI_TINH.TEN_DON_VI.ToUpper().Contains(psa.DonViTinh.ToUpper()))
+
+                                  && (String.IsNullOrEmpty(psa.NhomSanPham)
+                                || s.NHOM_SAN_PHAM.TEN_NHOM.ToUpper().Contains(psa.NhomSanPham.ToUpper()))
                                
                                 && (String.IsNullOrEmpty(psa.NhaSanXuat)
                                 || s.NHA_SAN_XUAT.TEN_NHA_SAN_XUAT.ToUpper().Contains(psa.NhaSanXuat.ToUpper()))
@@ -1356,8 +1396,13 @@ namespace SMS.Controllers
                               )
                               join u in ctx.NGUOI_DUNG on s.CREATE_BY equals u.MA_NGUOI_DUNG
                               join u1 in ctx.NGUOI_DUNG on s.CREATE_BY equals u1.MA_NGUOI_DUNG
+
                               join dv in ctx.DON_VI_TINH on s.MA_DON_VI equals dv.MA_DON_VI into dv_join
                               from dv in dv_join.DefaultIfEmpty()
+
+                              join nsp in ctx.NHOM_SAN_PHAM on s.MA_NHOM equals nsp.MA_NHOM into nsp_join
+                              from nsp in nsp_join.DefaultIfEmpty()
+
                               join dv in ctx.NHA_SAN_XUAT on s.MA_NHA_SAN_XUAT equals dv.MA_NHA_SAN_XUAT into nsx_join
                               from nsx in nsx_join.DefaultIfEmpty()
                               select new SanPhamDisplay
@@ -1366,7 +1411,9 @@ namespace SMS.Controllers
                                   NguoiTao = u,
                                   NguoiCapNhat = u1,
                                   DonVi = dv,
-                                  NhaSanXuat = nsx
+                                  NhaSanXuat = nsx,
+                                  NhomSanPham = nsp
+
                               }).Take(SystemConstant.MAX_ROWS);
 
 
