@@ -90,9 +90,9 @@ namespace SMS.Controllers
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
-            fileStringBuilder.Append("\"Ngày chi tiền\",");
-            fileStringBuilder.Append("\"Người chi tiền\",");
-            fileStringBuilder.Append("\"Tên người nhận tiền\",");
+            fileStringBuilder.Append("\"Ngày\",");
+            fileStringBuilder.Append("\"Bán hàng (Khách trả)\",");
+            fileStringBuilder.Append("\"Bán hàng (Khách nợ)\",");
             fileStringBuilder.Append("\"Mục đích chi tiền\",");
             fileStringBuilder.Append("\"Tổng tiền\"");
             var ctx = new SmsContext();
