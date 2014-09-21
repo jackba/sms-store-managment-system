@@ -1,0 +1,67 @@
+﻿<link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "BÁN HÀNG";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <br />
+                <h2> SMS - Store Managemanet System </h2>
+            </hgroup>
+        </div>
+    </section>
+}
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<div class="grid_7">
+   
+    <a class="dashboard-module" href="@Url.Action("MonthlyReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report.jpg"></img>
+        <span>BÁO CÁO DOANH THU TRONG NĂM (THÁNG)</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("WeeklyReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report1.jpg"></img>
+        <span>BÁO CÁO DOANH THU TRONG NĂM (TUẦN)</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("WeReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report2.jpg"></img>
+        <span>BÁO CÁO DOANH THU THEO TUẦN</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("MthReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report3.jpg"></img>
+        <span>BÁO CÁO DOANH THU THEO THÁNG</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("DayReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report4.jpg"></img>
+        <span>BÁO CÁO DOANH THU THEO NGÀY</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("Return2ProviderReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/Report6.png"></img>
+        <span>BÁO  CÁO TRẢ HÀNG CHO NHÀ CUNG CẤP</span>
+    </a>
+    <a class="dashboard-module" href="@Url.Action("ReportDebitColecction", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report5.jpg"></img>
+        <span>BÁO BÁO THU NỢ TỪ KHÁCH HÀNG</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ReportByArea", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report8.png"></img>
+        <span>BÁO BÁO DOANH THU THEO KHU VỰC</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("ReportByCustomer", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report7.png"></img>
+        <span>BÁO BÁO DOANH THEO KHÁCH HÀNG</span>
+    </a>
+
+    <a class="dashboard-module" href="@Url.Action("TotalReport", "Report")">
+        <img width="64" height="64" alt="edit" src="../../Content/images/report7.png"></img>
+        <span>BÁO BÁO TỔNG HỢP</span>
+    </a>
+
+
+</div>

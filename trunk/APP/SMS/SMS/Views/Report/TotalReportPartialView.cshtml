@@ -1,0 +1,97 @@
+﻿@model SMS.Models.ReportModel
+@using PagedList.Mvc;
+<div>
+    <table style="width:100%; font-family:'Times New Roman'" class="contentTable">
+        <tr>
+            <td class='inner colwidth alignCenter head '>
+                Ngày
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng thực thu
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng nợ gối đầu
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng trả hàng
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng chi
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng chi mua hàng
+            </td>
+            <td class='inner colwidth alignCenter head '>
+                Tổng thu nợ
+            </td>
+            <td class='innerLast colwidth alignCenter head '>
+                Tiền mặt 
+            </td>
+        </tr>
+        @{
+            double reciptTotal = 0;
+            double debitTotal = 0;
+            double returnTotal = 0;
+            double total = 0;
+            double tongChi = 0;
+            double tongNhapHang = 0;
+            double tongThuNo = 0;
+        }
+        @if (Model.TheList != null && Model.TheList.Count() > 0)
+        {
+            foreach (var detail in Model.TheList)
+            {
+                reciptTotal += detail.SO_TIEN_KHACH_TRA;
+                debitTotal += detail.SO_TIEN_NO_GOI_DAU;
+                returnTotal += detail.RETURN_TOTAL;
+                tongChi += detail.TONG_CHI;
+                tongNhapHang += detail.TONG_NHAP;
+                tongThuNo += detail.TONG_THU_NO;
+                total += detail.TOTAL;
+                <tr>
+                    <td class='innerLast colwidth alignCenter'>
+                        @detail.DAY.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.SO_TIEN_KHACH_TRA.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.SO_TIEN_NO_GOI_DAU.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.RETURN_TOTAL.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TONG_CHI.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TONG_NHAP.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TONG_THU_NO.ToString("#,####.##")
+                    </td>
+                    <td class='innerLast colwidth alignCenter '>
+                        @detail.TOTAL.ToString("#,####.##")
+                    </td>
+                </tr>
+            }
+            <tr style="font-weight:bold">
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray"></td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@reciptTotal.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@debitTotal.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@returnTotal.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@tongChi.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@tongNhapHang.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@tongThuNo.ToString("#,####.##")</td>
+                <td class='innerLast colwidth alignCenter' style="background-color:lightgray">@total.ToString("#,####.##")</td>
+            </tr>
+        }
+        else
+        {
+            <tr style="background-color:lightgray">
+                <td class='innerLast colwidth alignCenter' colspan="8">Không có dữ liệu</td>
+            </tr>
+        }
+    </table>
+
+</div>

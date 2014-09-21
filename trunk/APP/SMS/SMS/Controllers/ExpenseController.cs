@@ -6,22 +6,87 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 
+
 namespace SMS.Controllers
 {
     public class ExpenseController : Controller
     {
         [HttpGet]
-        public ActionResult EditExpense(int id)
+        public ActionResult Delete(int id)
         {
-            return View();
+            if (id < 0)
+            {
+                return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này" });
+            }
+            var ctx = new SmsContext();
+            var Ex = ctx.EXPENSES.Find(id);
+            if (Ex.ACTIVE != "A")
+            {
+                return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
+            }
+            else
+            {
+                Ex.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                Ex.UPDATE_AT = DateTime.Now;
+                Ex.ACTIVE = "I";
+                ctx.SaveChanges();
+                return RedirectToAction("Index", new { @inforMessage = "Xóa thành công." });
+            }
         }
 
-        
+
+        [HttpGet]
+        public ActionResult EditExpense(int id)
+        {
+            if (id < 0)
+            {
+                return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này" });
+            }
+            var ctx = new SmsContext();
+            var Ex = ctx.EXPENSES.Find(id);
+            if(Ex.ACTIVE != "A")
+            {
+                return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
+            }
+            return View(Ex);
+        }
+
+        [HttpPost]
+        public ActionResult EditExpense(EXPENS model)
+        {
+            if (ModelState.IsValid)
+            {
+                var ctx = new SmsContext();
+                var Ex = ctx.EXPENSES.Find(model.ID);
+                if (Ex != null && Ex.ACTIVE == "A")
+                {
+                    Ex.LOAI_CHI = model.LOAI_CHI;
+                    Ex.NGAY_CHI = model.NGAY_CHI;
+                    Ex.GHI_CHU = model.GHI_CHU;
+                    Ex.TEN_NGUOI_NHAN = model.TEN_NGUOI_NHAN;
+                    Ex.TONG_CHI = model.TONG_CHI;
+                    Ex.UPDATE_AT = DateTime.Now;
+                    Ex.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                    ctx.SaveChanges();
+                    return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
+                }
+            }
+            return View(model);
+        }
 
         [HttpPost]
         public FileContentResult downloadExpenses(int? kind, string reciever, int? userId, string userName, 
             float? totalFrom, float? totalTo, DateTime? fromDate, DateTime? toDate)
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = string.Empty;
+                userId = 0;
+            }  
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");

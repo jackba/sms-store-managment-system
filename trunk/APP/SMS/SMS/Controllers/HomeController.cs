@@ -16,6 +16,12 @@ namespace SMS.Controllers
     [HandleError]    
     public class HomeController : Controller
     {
+
+        public ActionResult Report()
+        {
+            return View();
+        }
+
         [CustomActionFilter]
         [HttpGet]
         public ActionResult Import()

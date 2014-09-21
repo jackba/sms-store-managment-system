@@ -52,6 +52,7 @@
     ckind.Text = "Chi tiêu khác";
     kinds.Add(ckind);
 }
+<script src="~/Content/js/FileSaver.js"></script>
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán hàng  </a>
     > @ViewBag.Title
@@ -143,6 +144,36 @@
         }
 
         $(document).ready(function () {
+
+            $("#ExportExcel").click(function () {
+                var kind = $("#kind").val();
+                var userName = $("#userName").val();
+                var userId = $("#userId").val();
+                var reciever = $("#reciever").val();
+                var totalFrom = $("#totalFrom").val();
+                var totalTo = $("#totalTo").val();
+                var fromDate = $("#fromDate").val();
+                var toDate = $("#toDate").val();
+                $.ajax({
+                    url: "/Expense/downloadExpenses",
+                    data: "{ 'kind':'" + kind + "' , 'reciever':'" +
+                        reciever + "' , 'userId':'" + userId + "' , 'userName':'" +
+                        userName + "' , 'totalFrom':'" + totalFrom + "' , 'totalTo':'" +
+                        totalTo + "' , 'fromDate':'" + fromDate + "' , 'toDate': '" + toDate + "'}",
+                    type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (response, status, request) {
+                        var disp = request.getResponseHeader('Content-Disposition');
+                        if (disp && disp.search('attachment') != -1) {
+                            var type = request.getResponseHeader('text/csv');
+                            var blob = new Blob([response], { type: type });
+                            var index = disp.indexOf("=");
+                            var fileName = disp.substr(index + 1 + "=".length);
+                            saveAs(blob, fileName);
+                        }
+                    }
+                });
+            });
+
             numberOnly(),
             formatNumberic();
 
@@ -264,7 +295,7 @@
                 Tổng chi:
             </td>
             <td>
-                @Html.TextBox("totalFrom", ViewBag.UserName as string, new { @id = "totalFrom" , @class = "numberic"}) ~ @Html.TextBox("totalFrom", ViewBag.UserName as string, new { @id = "totalFrom", @class = "numberic" }) 
+                @Html.TextBox("totalFrom", ViewBag.UserName as string, new { @id = "totalFrom" , @class = "numberic"}) ~ @Html.TextBox("totalTo", ViewBag.UserName as string, new { @id = "totalTo", @class = "numberic" }) 
              </td>
         </tr>
         <tr>
@@ -279,6 +310,7 @@
 
     <div style="float:left">
         <input type="submit" value="Tìm kiếm" class="myButton" />
+        <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />
     </div>
 
     <div style="clear:both"></div>
