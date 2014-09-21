@@ -149,7 +149,10 @@
                         {
                             <tr>
                                 <td class='inner column-hscroll toprow alignText'>
-                                    @sp.NhomSanPham.TEN_NHOM
+                                @if (sp.NhomSanPham != null)
+                                {    
+                                     @sp.NhomSanPham.TEN_NHOM
+                                }
                                 </td>
                                 <td class='inner column-hscroll toprow alignText'>
                                     @sp.SanPham.KICH_THUOC

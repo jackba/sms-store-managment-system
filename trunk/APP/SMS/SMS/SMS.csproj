@@ -164,6 +164,7 @@
     <Compile Include="Controllers\KhuVucController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
+    <Compile Include="Controllers\NhomSanPham.cs" />
     <Compile Include="Controllers\PhanQuyenController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\BanHangController.cs" />
