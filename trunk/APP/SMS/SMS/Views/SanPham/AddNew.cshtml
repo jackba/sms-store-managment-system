@@ -251,6 +251,22 @@
             </tr>
             <tr>
                 <td>
+                    <div>
+                        @Html.LabelFor(u => u.MA_NHOM)
+                        @Html.DropDownListFor(u => u.MA_NHOM, new SelectList(ViewBag.dsNhomSP, "MA_NHOM", "TEN_NHOM", ViewBag.NhomSelected))
+                    </div>
+                </td>
+
+                <td>
+                    <div>
+                      
+                    </div>
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
                     <div class="required">
                         @Html.LabelFor(u => u.MA_DON_VI)
                         @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(ViewBag.dsDonvi, "MA_DON_VI", "TEN_DON_VI", ViewBag.DVSelected))

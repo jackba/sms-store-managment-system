@@ -224,6 +224,16 @@
                         idFocus += 'CoSoFrom';
                     }
                     break;
+                case 9:
+                    if (!$("#R_NhomSanPham").length) {
+                        idCtrl = 'NhomSanPham';
+                        headerCtrl = 'Nhóm Sản Phẩm';
+                        isFromTo = false;
+
+                    } else {
+                        idFocus += 'NhomSanPham';
+                    }
+                    break;
             }
             // add new row in table         
             AppendNewRowToTable(idCtrl, headerCtrl, isFromTo, idFocus, extraValue);
@@ -276,6 +286,31 @@
                 },
                 select: function (event, ui) {
                     $('#TenSanPham').val(ui.item.label);
+                    return false;
+                },
+                minLength: 1
+
+            });
+        } else if (option == 9) {
+            $("#NhomSanPham").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/NhomSanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#NhomSanPham').val(ui.item.label);
                     return false;
                 },
                 minLength: 1
@@ -409,7 +444,8 @@
 
 
         <div style="float:right">
-            @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
+            @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm",
+                                        new { @id = "productGroupId", @name="productGroupName", style = "padding:5px;font-size:1.2em" })
             Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
             <input type="submit" value="Tìm kiếm" class="myButton" />
             <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />

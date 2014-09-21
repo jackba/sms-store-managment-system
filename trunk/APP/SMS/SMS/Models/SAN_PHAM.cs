@@ -20,6 +20,7 @@ namespace SMS.Models
         public NGUOI_DUNG NguoiTao { get; set; }
         public NGUOI_DUNG NguoiCapNhat { get; set; }
         public DON_VI_TINH DonVi { get; set; }
+        public NHOM_SAN_PHAM NhomSanPham { get; set; }
         public NHA_SAN_XUAT NhaSanXuat { get; set; }
     }
     public class ProductSA
@@ -37,6 +38,7 @@ namespace SMS.Models
         public string ChietKhauTo { get; set; }
         public string CoSoFrom { get; set; }
         public string CoSoTo { get; set; }
+        public string NhomSanPham { get; set; }
     }
     public partial class SAN_PHAM
     {
@@ -100,6 +102,7 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
          [Display(Name = "Code sản phẩm")]  
         public string CODE { get; set; }
+          [Display(Name = "Phân nhóm")]
         public Nullable<int> MA_NHOM { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
