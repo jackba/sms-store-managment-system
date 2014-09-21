@@ -15,6 +15,58 @@ namespace SMS.Controllers
     [HandleError]
     public class ReportController : Controller
     {
+
+        public FileContentResult downloadTotalReport(DateTime? fromDate, DateTime? toDate)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            var ctx = new SmsContext();
+            var tonkho = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY_ALL @START_TIME, @END_TIME",
+              fromDate, toDate).Take(SystemConstant.MAX_ROWS).ToList<Report>();
+            int i = 0;
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Ngày chi tiền\",");
+            fileStringBuilder.Append("\"Người chi tiền\",");
+            fileStringBuilder.Append("\"Tên người nhận tiền\",");
+            fileStringBuilder.Append("\"Mục đích chi tiền\",");
+            fileStringBuilder.Append("\"Tổng tiền\"");
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
+        [CustomActionFilter]
+        public ActionResult TotalReport()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult TotalReportPartialView(DateTime? fromDate, DateTime? toDate)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var tonkho = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY_ALL @START_TIME, @END_TIME",
+               FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
+            ReportModel model = new ReportModel();
+            model.TheList = tonkho;
+            return PartialView("TotalReportPartialView", model);
+        }
         //
         // GET: /Report/
         [CustomActionFilter]

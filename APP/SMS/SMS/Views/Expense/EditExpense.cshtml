@@ -1,5 +1,253 @@
-﻿@{
-    ViewBag.Title = "EditExpense";
-}
+﻿@model SMS.Models.EXPENS
 
-<h2>EditExpense</h2>
+@{
+    ViewBag.Title = "Chi tiêu";
+
+
+    List<SelectListItem> kinds = new List<SelectListItem>();
+    SelectListItem kind;
+    kind = new SelectListItem();
+    kind.Value = "1";
+    kind.Text = "Mua hàng";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "2";
+    kind.Text = "Vận chuyển";
+    kinds.Add(kind);
+
+    kind = new SelectListItem();
+    kind.Value = "3";
+    kind.Text = "Lương nhân viên";
+    kinds.Add(kind);
+    kind = new SelectListItem();
+    kind.Value = "4";
+    kind.Text = "Chi phí khác";
+    kinds.Add(kind);
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+
+
+        function numberOnly() {
+            $('input.numberic').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 31 && (keycode < 48 || keycode > 57) && keycode != 46) {
+                    return false;
+                }
+                else return true;
+
+            });
+            $('input.numberic').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        };
+
+        function RemoveRougeChar(convertString) {
+            if (convertString.substring(0, 1) == ",") {
+                return convertString.substring(1, convertString.length)
+            }
+            return convertString;
+        }
+        function formatNumberic() {
+            $('input.numberic').each(function () {
+                var $this = $(this);
+                var AmountWithCommas = $this.val();
+                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+                var arParts = String(AmountWithCommas).split(DecimalSeparator);
+
+                var intPart = arParts[0];
+                var decPart = (arParts.length > 1 ? arParts[1] : '');
+
+                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+                if (decPart.length > 2) {
+                    decPart = (decPart + '00').substr(0, 2);
+                }
+                if (arParts.length > 1) {
+                    $this.val(num2 + DecimalSeparator + decPart);
+                } else {
+                    $this.val(num2);
+                }
+            });
+        }
+        //Stop Form Submission of Enter Key Press
+        $(document).ready(function () {
+            numberOnly();
+            formatNumberic();
+            $("#userFullName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; }, success:
+                            function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.value,
+                                        id: item.id
+                                    }
+                                }))
+                            }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#userFullName').val(ui.item.label);
+                    return false;
+                },
+                minLength: 1
+            });
+
+
+            $('.datePicker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+    <a href="@Url.Action("HanHang", "Home")"> Danh mục </a> 
+    > @ViewBag.Title
+</div>
+<hgroup class="title">
+    <h2> @ViewBag.Title</h2>
+</hgroup>
+<hr style="width:100%" />
+<div id="message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+</div>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+@using (Html.BeginForm("EditExpense", "Expense", FormMethod.Post, new { @id = "mainfrom" }))
+{
+    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+    <div>
+        <fieldset>
+            <div>
+                @Html.HiddenFor(u=> u.ID)
+                @Html.LabelFor(u => u.LOAI_CHI)
+            </div>
+            <div>
+                @Html.DropDownListFor(u => u.LOAI_CHI, kinds, new { @id = "kind", style = "padding:5px;font-size:1.2em" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.TEN_NGUOI_NHAN)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.TEN_NGUOI_NHAN,new { @id = "userFullName" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.NGAY_CHI)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.NGAY_CHI, "{0:dd/MM/yyyy}", new { @id = "payDate", @class = "datePicker" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.TONG_CHI)
+            </div>
+            <div>
+                @Html.TextBoxFor(u => u.TONG_CHI, new { @id = "total", @class = "numberic" })
+            </div>
+            <div>
+                @Html.LabelFor(u => u.GHI_CHU)
+            </div>
+            <div>
+                @Html.TextAreaFor(u => u.GHI_CHU)
+            </div>
+
+            <div>
+                <input type="button" style="width:100px" value="Lưu" onclick="returnSubmit()" />
+            </div>
+        </fieldset>
+    </div>
+    <script>
+        function returnSubmit() {
+            $('#message').empty();
+            var kind = $("#kind").val();
+            var userFullName = $("#userFullName").val();
+            var payDate = $("#payDate").val();
+            var total = $("#total").val();
+            var errorMessage = '';
+            if (kind == null || kind == '' || kind == 0) {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng chọn mục đích chi.";
+            }
+
+            if (userFullName == null || userFullName == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng nhập người nhận tiền.";
+            }
+
+            if (payDate == null || payDate == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng nhập ngày chi tiền.";
+            }
+            if (total == null || total == '' || total == 0) {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Vui lòng nhập tổng số tiền phải chi.";
+            }
+            if (errorMessage != '') {
+                $('#message').append(errorMessage);
+                $('#message').append("<hr/>");
+                return false;
+            }
+            else {
+                $('#mainfrom').submit();
+            }
+        }
+
+    </script>
+
+
+}

@@ -12,6 +12,9 @@ namespace SMS.Models
         public double SO_TIEN_NO_GOI_DAU { get; set; }
         public double BUGET_TOTAL { get; set; }
         public double RETURN_TOTAL { get; set; }
+        public double TONG_CHI { get; set; }
+        public double TONG_NHAP { get; set; }
+        public double TONG_THU_NO { get; set; }
         public double TOTAL { get; set; }
         public int MONTH { get; set; }
         public int YEAR { get; set; }

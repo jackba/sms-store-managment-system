@@ -705,7 +705,7 @@ namespace SMS.Controllers
         {
             if (Session[SEARCH_ADVANCE] == null)
             {
-                listResult = GetListProductNotSearchAdvance(sortOrder, CurrentFilter, currentPageIndex/*, form*/);
+                listResult = GetListProductNotSearchAdvance(sortOrder, CurrentFilter, currentPageIndex , form );
             }
             else
             {
@@ -1261,7 +1261,7 @@ namespace SMS.Controllers
             ViewBag.CoSoMin = "0";
             ViewBag.CoSoMax = "0";
         }
-        private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex/*, FormCollection form*/)
+        private IPagedList<SanPhamDisplay> GetListProductNotSearchAdvance(string sortOrder, string CurrentFilter, int? currentPageIndex , FormCollection form)
         {
 
             int pageSize = SystemConstant.ROWS;
@@ -1270,17 +1270,18 @@ namespace SMS.Controllers
 
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
-            //string maNhom = "";
-            //if (form.AllKeys.Contains("productGroupId")){
-            //    maNhom = form.Get("productGroupId");
-            //}
+            int maNhom = 0;
+            if (form.AllKeys.Contains("productGroupId"))
+            {
+                int.TryParse(form.Get("productGroupId"), out maNhom);
+            }
 
             var ctx = new SmsContext();
 
             var contentLst = (from s in ctx.SAN_PHAM
                               where (
                               s.ACTIVE == "A"
-                              //&& (String.IsNullOrEmpty(maNhom) || s.MA_NHOM.Equals(maNhom))
+                              && (maNhom == 0 || s.MA_NHOM == maNhom)
                               && (String.IsNullOrEmpty(CurrentFilter)
                               || s.TEN_SAN_PHAM.ToUpper().Contains(CurrentFilter.ToUpper())
                               || s.DAC_TA.ToUpper().Contains(CurrentFilter.ToUpper())
