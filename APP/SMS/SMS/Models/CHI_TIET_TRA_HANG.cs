@@ -30,6 +30,7 @@ namespace SMS.Models
         public Nullable<int> MA_DON_VI { get; set; }
         public Nullable<double> SO_LUONG_TEMP { get; set; }
         public Nullable<double> DON_GIA_TEMP { get; set; }
+        public Nullable<double> PHAN_TRAM_KHAU_HAO { get; set; }
     
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
         public virtual SAN_PHAM SAN_PHAM { get; set; }
