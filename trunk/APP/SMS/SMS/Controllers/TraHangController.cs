@@ -281,13 +281,22 @@ namespace SMS.Controllers
                     ctx.TRA_HANG.Add(returnInfor);
                     ctx.SaveChanges();
                     double total = 0;
+                    double percent;
                     foreach (var detail in model.ReturnDetail)
                     {
                         CHI_TIET_TRA_HANG ct;
                         if (detail.DEL_FLG != 1)
                         {
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
-                            total += (double)detail.GIA_VON * (double)detail.SO_LUONG_TEMP;
+                            if (detail.PHAN_TRAM_KHAU_HAO == null)
+                            {
+                                percent = 0;
+                            }
+                            else
+                            {
+                                percent = (double)detail.PHAN_TRAM_KHAU_HAO;
+                            }
+                            total += (double)detail.GIA_VON * (double)detail.SO_LUONG_TEMP * (100 - percent)/100;
                             ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
                             ct.MA_DON_VI = detail.MA_DON_VI;
                             ct.SO_LUONG_TEMP = detail.SO_LUONG_TEMP;
@@ -300,6 +309,7 @@ namespace SMS.Controllers
                             ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                             ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                             ct.MA_TRA_HANG = returnInfor.MA_TRA_HANG;
+                            ct.PHAN_TRAM_KHAU_HAO = detail.PHAN_TRAM_KHAU_HAO;
                             ctx.CHI_TIET_TRA_HANG.Add(ct);
                             ctx.SaveChanges();
                         }
@@ -515,7 +525,7 @@ namespace SMS.Controllers
                         {
                             if (customer.NO_GOI_DAU == 0)
                             {
-                                customer.NGAY_PHAT_SINH_NO = DateTime.Now;
+                                customer.NGAY_PHAT_SINH_NO = null;
                             }
                             customer.NO_GOI_DAU = (decimal)customer.NO_GOI_DAU + (decimal)debitHist.PHAT_SINH;
                             customer.UPDATE_AT = DateTime.Now;
@@ -561,6 +571,7 @@ namespace SMS.Controllers
                     ctx.SaveChanges();
                     ctx.CHI_TIET_TRA_HANG.RemoveRange(ctx.CHI_TIET_TRA_HANG.Where(u => u.MA_TRA_HANG == returnInfor.MA_TRA_HANG));
                     double total = 0;
+                    double percent = 0;
                     foreach (var detail in model.Detail)
                     {
                         CHI_TIET_TRA_HANG ct;
@@ -568,12 +579,21 @@ namespace SMS.Controllers
                         {
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
                             ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
-                            total += (double)detail.DON_GIA * (double)detail.SO_LUONG;
+                            if (detail.PHAN_TRAM_KHAU_HAO == null)
+                            {
+                                percent = 0;
+                            }
+                            else
+                            {
+                                percent = (double)detail.PHAN_TRAM_KHAU_HAO;
+                            }
+                            total += (double)detail.DON_GIA * (double)detail.SO_LUONG*(100-percent)/100;
                             ct.MA_DON_VI = detail.MA_DON_VI;
                             ct.SO_LUONG_TEMP = detail.SO_LUONG;
                             ct.SO_LUONG_TRA = detail.SO_LUONG * detail.HE_SO;
                             ct.GIA_VON = detail.DON_GIA / detail.HE_SO;
                             ct.DON_GIA_TEMP = detail.DON_GIA;
+                            ct.PHAN_TRAM_KHAU_HAO = detail.PHAN_TRAM_KHAU_HAO;
                             ct.ACTIVE = "A";
                             ct.CREATE_AT = DateTime.Now;
                             ct.UPDATE_AT = DateTime.Now;

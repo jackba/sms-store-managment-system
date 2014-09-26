@@ -34,6 +34,7 @@ namespace SMS.Models
         public virtual DbSet<CHUYEN_DOI_DON_VI_TINH> CHUYEN_DOI_DON_VI_TINH { get; set; }
         public virtual DbSet<CONTROLLER_PERMISSION> CONTROLLER_PERMISSION { get; set; }
         public virtual DbSet<DON_VI_TINH> DON_VI_TINH { get; set; }
+        public virtual DbSet<EXPENS> EXPENSES { get; set; }
         public virtual DbSet<HOA_DON> HOA_DON { get; set; }
         public virtual DbSet<KHACH_HANG> KHACH_HANG { get; set; }
         public virtual DbSet<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
@@ -45,10 +46,14 @@ namespace SMS.Models
         public virtual DbSet<NHA_SAN_XUAT> NHA_SAN_XUAT { get; set; }
         public virtual DbSet<NHAP_KHO> NHAP_KHO { get; set; }
         public virtual DbSet<NHOM_NGUOI_DUNG> NHOM_NGUOI_DUNG { get; set; }
+        public virtual DbSet<NHOM_SAN_PHAM> NHOM_SAN_PHAM { get; set; }
+        public virtual DbSet<PERSONAL_QUESTIONS> PERSONAL_QUESTIONS { get; set; }
         public virtual DbSet<PHAN_QUYEN> PHAN_QUYEN { get; set; }
         public virtual DbSet<SAN_PHAM> SAN_PHAM { get; set; }
+        public virtual DbSet<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
         public virtual DbSet<SMS_MASTER> SMS_MASTER { get; set; }
         public virtual DbSet<SMS_MESSAGES> SMS_MESSAGES { get; set; }
+        public virtual DbSet<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
         public virtual DbSet<TRA_HANG> TRA_HANG { get; set; }
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
@@ -60,16 +65,12 @@ namespace SMS.Models
         public virtual DbSet<V_NHAP_KHO> V_NHAP_KHO { get; set; }
         public virtual DbSet<V_NHAP_XUAT_DETAIL> V_NHAP_XUAT_DETAIL { get; set; }
         public virtual DbSet<V_NHAP_XUAT_KHO> V_NHAP_XUAT_KHO { get; set; }
+        public virtual DbSet<V_REPORT_TOTAL> V_REPORT_TOTAL { get; set; }
         public virtual DbSet<V_RETURN_2_PROVIDER> V_RETURN_2_PROVIDER { get; set; }
         public virtual DbSet<V_TRA_HANG> V_TRA_HANG { get; set; }
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
-        public virtual DbSet<EXPENS> EXPENSES { get; set; }
-        public virtual DbSet<NHOM_SAN_PHAM> NHOM_SAN_PHAM { get; set; }
-        public virtual DbSet<PERSONAL_QUESTIONS> PERSONAL_QUESTIONS { get; set; }
-        public virtual DbSet<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
-        public virtual DbSet<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -325,6 +326,43 @@ namespace SMS.Models
                 new ObjectParameter("ID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EX_DETAIL_BY_ID_Result>("SP_GET_EX_DETAIL_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_EXPENSES_Result> SP_GET_EXPENSES(Nullable<int> kIND, string rECIVER, Nullable<int> uSR_ID, string uSER_NAME, Nullable<double> tOTAL_FROM, Nullable<double> tOTAL_TO, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
+        {
+            var kINDParameter = kIND.HasValue ?
+                new ObjectParameter("KIND", kIND) :
+                new ObjectParameter("KIND", typeof(int));
+    
+            var rECIVERParameter = rECIVER != null ?
+                new ObjectParameter("RECIVER", rECIVER) :
+                new ObjectParameter("RECIVER", typeof(string));
+    
+            var uSR_IDParameter = uSR_ID.HasValue ?
+                new ObjectParameter("USR_ID", uSR_ID) :
+                new ObjectParameter("USR_ID", typeof(int));
+    
+            var uSER_NAMEParameter = uSER_NAME != null ?
+                new ObjectParameter("USER_NAME", uSER_NAME) :
+                new ObjectParameter("USER_NAME", typeof(string));
+    
+            var tOTAL_FROMParameter = tOTAL_FROM.HasValue ?
+                new ObjectParameter("TOTAL_FROM", tOTAL_FROM) :
+                new ObjectParameter("TOTAL_FROM", typeof(double));
+    
+            var tOTAL_TOParameter = tOTAL_TO.HasValue ?
+                new ObjectParameter("TOTAL_TO", tOTAL_TO) :
+                new ObjectParameter("TOTAL_TO", typeof(double));
+    
+            var fROM_DATEParameter = fROM_DATE.HasValue ?
+                new ObjectParameter("FROM_DATE", fROM_DATE) :
+                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
+    
+            var tO_DATEParameter = tO_DATE.HasValue ?
+                new ObjectParameter("TO_DATE", tO_DATE) :
+                new ObjectParameter("TO_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPENSES_Result>("SP_GET_EXPENSES", kINDParameter, rECIVERParameter, uSR_IDParameter, uSER_NAMEParameter, tOTAL_FROMParameter, tOTAL_TOParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     
         public virtual ObjectResult<SP_GET_EXPORT_4_CANCEL_Result> SP_GET_EXPORT_4_CANCEL(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_NHAN_VIEN, string tEN_NHAN_VIEN, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
@@ -707,6 +745,32 @@ namespace SMS.Models
                 new ObjectParameter("USER_FULL_NAME", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_LIST_RETURN_TO_PROVIDERS_Result>("SP_GET_LIST_RETURN_TO_PROVIDERS", pROVIDER_IDParameter, pROVIDER_NAMEParameter, fLAGParameter, fROM_DATEParameter, tO_DATEParameter, uSER_IDParameter, uSER_FULL_NAMEParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_MIN_MAX_BY_ID_Result> SP_GET_MIN_MAX_BY_ID(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_ID_Result>("SP_GET_MIN_MAX_BY_ID", iDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_MIN_MAX_BY_STORE_Result> SP_GET_MIN_MAX_BY_STORE(Nullable<int> sTORE_ID, Nullable<int> pRODUCT_GROUP_ID, string pRODUCT_NAME)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var pRODUCT_GROUP_IDParameter = pRODUCT_GROUP_ID.HasValue ?
+                new ObjectParameter("PRODUCT_GROUP_ID", pRODUCT_GROUP_ID) :
+                new ObjectParameter("PRODUCT_GROUP_ID", typeof(int));
+    
+            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
+                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
+                new ObjectParameter("PRODUCT_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_STORE_Result>("SP_GET_MIN_MAX_BY_STORE", sTORE_IDParameter, pRODUCT_GROUP_IDParameter, pRODUCT_NAMEParameter);
         }
     
         public virtual ObjectResult<SP_GET_NHAP_XUAT_Result> SP_GET_NHAP_XUAT(Nullable<int> mA_KHO, string tEN_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
@@ -1120,6 +1184,19 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WAITING_EX_2_PROVIDER_Result>("SP_GET_WAITING_EX_2_PROVIDER", sTORE_IDParameter, sTORE_NAMEParameter, fROM_DATEParameter, tO_DATEParameter, sTATAUSParameter);
         }
     
+        public virtual ObjectResult<SP_GET_WARNING_BY_STORE_Result> SP_GET_WARNING_BY_STORE(Nullable<int> sTORE_ID, string pRODUCT_NAME)
+        {
+            var sTORE_IDParameter = sTORE_ID.HasValue ?
+                new ObjectParameter("STORE_ID", sTORE_ID) :
+                new ObjectParameter("STORE_ID", typeof(int));
+    
+            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
+                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
+                new ObjectParameter("PRODUCT_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WARNING_BY_STORE_Result>("SP_GET_WARNING_BY_STORE", sTORE_IDParameter, pRODUCT_NAMEParameter);
+        }
+    
         public virtual ObjectResult<SP_HET_IM_BY_ID_Result> SP_HET_IM_BY_ID(Nullable<int> iD)
         {
             var iDParameter = iD.HasValue ?
@@ -1253,6 +1330,100 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_IMPORT_TRANSFER", mA_PHIEU_CHUYENParameter, nGAY_NHAPParameter, mA_NHAN_VIENParameter, mA_KHOParameter, gHI_CHUParameter, rETURN_VALUE);
         }
     
+        public virtual ObjectResult<SP_REPORT_BY_CUSTOMER_Result> SP_REPORT_BY_CUSTOMER(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME, Nullable<int> mA_KHACH_HANG, string tEN_KHACH_HANG)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            var mA_KHACH_HANGParameter = mA_KHACH_HANG.HasValue ?
+                new ObjectParameter("MA_KHACH_HANG", mA_KHACH_HANG) :
+                new ObjectParameter("MA_KHACH_HANG", typeof(int));
+    
+            var tEN_KHACH_HANGParameter = tEN_KHACH_HANG != null ?
+                new ObjectParameter("TEN_KHACH_HANG", tEN_KHACH_HANG) :
+                new ObjectParameter("TEN_KHACH_HANG", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_CUSTOMER_Result>("SP_REPORT_BY_CUSTOMER", sTART_TIMEParameter, eND_TIMEParameter, mA_KHACH_HANGParameter, tEN_KHACH_HANGParameter);
+        }
+    
+        public virtual ObjectResult<SP_REPORT_BY_DAY_Result> SP_REPORT_BY_DAY(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_DAY_Result>("SP_REPORT_BY_DAY", sTART_TIMEParameter, eND_TIMEParameter);
+        }
+    
+        public virtual ObjectResult<SP_REPORT_BY_DAY_ALL_Result> SP_REPORT_BY_DAY_ALL(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_DAY_ALL_Result>("SP_REPORT_BY_DAY_ALL", sTART_TIMEParameter, eND_TIMEParameter);
+        }
+    
+        public virtual ObjectResult<SP_REPORT_BY_DAY_AND_AREA_Result> SP_REPORT_BY_DAY_AND_AREA(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME, Nullable<int> mA_KHU_VUC, string tEN_KHU_VUC)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            var mA_KHU_VUCParameter = mA_KHU_VUC.HasValue ?
+                new ObjectParameter("MA_KHU_VUC", mA_KHU_VUC) :
+                new ObjectParameter("MA_KHU_VUC", typeof(int));
+    
+            var tEN_KHU_VUCParameter = tEN_KHU_VUC != null ?
+                new ObjectParameter("TEN_KHU_VUC", tEN_KHU_VUC) :
+                new ObjectParameter("TEN_KHU_VUC", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_DAY_AND_AREA_Result>("SP_REPORT_BY_DAY_AND_AREA", sTART_TIMEParameter, eND_TIMEParameter, mA_KHU_VUCParameter, tEN_KHU_VUCParameter);
+        }
+    
+        public virtual ObjectResult<SP_REPORT_BY_MONTH_Result> SP_REPORT_BY_MONTH(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_MONTH_Result>("SP_REPORT_BY_MONTH", sTART_TIMEParameter, eND_TIMEParameter);
+        }
+    
+        public virtual ObjectResult<SP_REPORT_BY_WEEK_Result> SP_REPORT_BY_WEEK(Nullable<System.DateTime> sTART_TIME, Nullable<System.DateTime> eND_TIME)
+        {
+            var sTART_TIMEParameter = sTART_TIME.HasValue ?
+                new ObjectParameter("START_TIME", sTART_TIME) :
+                new ObjectParameter("START_TIME", typeof(System.DateTime));
+    
+            var eND_TIMEParameter = eND_TIME.HasValue ?
+                new ObjectParameter("END_TIME", eND_TIME) :
+                new ObjectParameter("END_TIME", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_REPORT_BY_WEEK_Result>("SP_REPORT_BY_WEEK", sTART_TIMEParameter, eND_TIMEParameter);
+        }
+    
         public virtual int SP_SALE_EXPORT(Nullable<int> mA_KHO, Nullable<int> mA_HOA_DON, Nullable<int> mA_NHAN_VIEN_THUC_HIEN, string tEN_KHACH_HANG, ObjectParameter rETURN_VALUE)
         {
             var mA_KHOParameter = mA_KHO.HasValue ?
@@ -1310,82 +1481,6 @@ namespace SMS.Models
                 new ObjectParameter("TEN_SAN_PHAM_PR", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("STMA_GET_GIA_TRI_HANG_BAN_TON", mA_KHOParameter, tEN_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAM_PRParameter, gIA_VON_HANG_BAN_TOTAL, gIA_TRI_HANG_TON_TOTAL);
-        }
-    
-        public virtual ObjectResult<SP_GET_MIN_MAX_BY_STORE_Result> SP_GET_MIN_MAX_BY_STORE(Nullable<int> sTORE_ID, Nullable<int> pRODUCT_GROUP_ID, string pRODUCT_NAME)
-        {
-            var sTORE_IDParameter = sTORE_ID.HasValue ?
-                new ObjectParameter("STORE_ID", sTORE_ID) :
-                new ObjectParameter("STORE_ID", typeof(int));
-    
-            var pRODUCT_GROUP_IDParameter = pRODUCT_GROUP_ID.HasValue ?
-                new ObjectParameter("PRODUCT_GROUP_ID", pRODUCT_GROUP_ID) :
-                new ObjectParameter("PRODUCT_GROUP_ID", typeof(int));
-    
-            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
-                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
-                new ObjectParameter("PRODUCT_NAME", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_STORE_Result>("SP_GET_MIN_MAX_BY_STORE", sTORE_IDParameter, pRODUCT_GROUP_IDParameter, pRODUCT_NAMEParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_MIN_MAX_BY_ID_Result> SP_GET_MIN_MAX_BY_ID(Nullable<int> iD)
-        {
-            var iDParameter = iD.HasValue ?
-                new ObjectParameter("ID", iD) :
-                new ObjectParameter("ID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_MIN_MAX_BY_ID_Result>("SP_GET_MIN_MAX_BY_ID", iDParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_WARNING_BY_STORE_Result> SP_GET_WARNING_BY_STORE(Nullable<int> sTORE_ID, string pRODUCT_NAME)
-        {
-            var sTORE_IDParameter = sTORE_ID.HasValue ?
-                new ObjectParameter("STORE_ID", sTORE_ID) :
-                new ObjectParameter("STORE_ID", typeof(int));
-    
-            var pRODUCT_NAMEParameter = pRODUCT_NAME != null ?
-                new ObjectParameter("PRODUCT_NAME", pRODUCT_NAME) :
-                new ObjectParameter("PRODUCT_NAME", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_WARNING_BY_STORE_Result>("SP_GET_WARNING_BY_STORE", sTORE_IDParameter, pRODUCT_NAMEParameter);
-        }
-    
-        public virtual ObjectResult<SP_GET_EXPENSES_Result> SP_GET_EXPENSES(Nullable<int> kIND, string rECIVER, Nullable<int> uSR_ID, string uSER_NAME, Nullable<double> tOTAL_FROM, Nullable<double> tOTAL_TO, Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE)
-        {
-            var kINDParameter = kIND.HasValue ?
-                new ObjectParameter("KIND", kIND) :
-                new ObjectParameter("KIND", typeof(int));
-    
-            var rECIVERParameter = rECIVER != null ?
-                new ObjectParameter("RECIVER", rECIVER) :
-                new ObjectParameter("RECIVER", typeof(string));
-    
-            var uSR_IDParameter = uSR_ID.HasValue ?
-                new ObjectParameter("USR_ID", uSR_ID) :
-                new ObjectParameter("USR_ID", typeof(int));
-    
-            var uSER_NAMEParameter = uSER_NAME != null ?
-                new ObjectParameter("USER_NAME", uSER_NAME) :
-                new ObjectParameter("USER_NAME", typeof(string));
-    
-            var tOTAL_FROMParameter = tOTAL_FROM.HasValue ?
-                new ObjectParameter("TOTAL_FROM", tOTAL_FROM) :
-                new ObjectParameter("TOTAL_FROM", typeof(double));
-    
-            var tOTAL_TOParameter = tOTAL_TO.HasValue ?
-                new ObjectParameter("TOTAL_TO", tOTAL_TO) :
-                new ObjectParameter("TOTAL_TO", typeof(double));
-    
-            var fROM_DATEParameter = fROM_DATE.HasValue ?
-                new ObjectParameter("FROM_DATE", fROM_DATE) :
-                new ObjectParameter("FROM_DATE", typeof(System.DateTime));
-    
-            var tO_DATEParameter = tO_DATE.HasValue ?
-                new ObjectParameter("TO_DATE", tO_DATE) :
-                new ObjectParameter("TO_DATE", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPENSES_Result>("SP_GET_EXPENSES", kINDParameter, rECIVERParameter, uSR_IDParameter, uSER_NAMEParameter, tOTAL_FROMParameter, tOTAL_TOParameter, fROM_DATEParameter, tO_DATEParameter);
         }
     }
 }
