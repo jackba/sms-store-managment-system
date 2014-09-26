@@ -36,26 +36,33 @@
             $("#customerName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/KhachHang/Find", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/KhachHang/FindDetailCustomer", data: "{ 'prefixText': '" + request.term + "' }",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
                                 response($.map(data, function (item) {
                                     return {
-                                        label: item.value,
-                                        value: item.value,
+                                        lable: item.name,
+                                        value: item.name,
                                         id: item.id,
+                                        cardNo: item.cardNo,
+                                        address: item.address,
+                                        fone: item.fone,
+                                        email: item.mail,
+                                        kind: item.kind,
                                         debit: item.debit
                                     }
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
                     $('#customerId').val("");
+                    $("#typeCustomers").val(3);
                     $("#DebitInfor").hide();
                 },
                 select: function (event, ui) {
                     $('#customerName').val(ui.item.label);
                     $('#customerId').val(ui.item.id);
+                    $("#typeCustomers").val(ui.item.kind);
                     if (ui.item.debit != '' && ui.item.debit != null && ui.item.debit > 0) {
                         $("#CustomerDebit").val(ui.item.debit);
                         $("#DebitInfor").show();
@@ -95,6 +102,18 @@
             <td class="required">
                 @Html.HiddenFor(u => u.ReturnInfor.MA_KHACH_HANG, new { @id = "customerId" })
                 @Html.TextBoxFor(u => u.ReturnInfor.TEN_KHACH_HANG, new { @id = "customerName" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Loại nghiệp vụ:
+            </td>
+            <td>
+                <select id="typeCustomers" class="ComboboxCustomer" style="padding: 5px; font-size: 1.2em">
+                    <option value="3"> L3 - 03 </option>
+                    <option value="2"> L2 - 02 </option>
+                    <option value="1"> L1 - 01 </option>
+                </select>
             </td>
         </tr>
         <tr>
@@ -156,6 +175,7 @@
                 <td class='inner colwidth head '> Số lượng </td>
                 <td class='inner colwidth head '> Đơn vị </td>
                 <td class='inner colwidth head '> Đơn giá </td>
+                <td class='inner colwidth head ' style="width:40px"> % </td>
                 <td class='innerLast colwidth head '> Thành tiền </td>
             </tr>
         </thead>
@@ -183,6 +203,9 @@
                 <td class='inner colwidth '>
                     @Html.TextBoxFor(u => u.ReturnDetail[0].GIA_VON, new { @class = "price textbtlReturn numberic" })
                 </td>
+                <td class='inner colwidth '>
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].PHAN_TRAM_KHAU_HAO, new { @class = "percent textbtlReturn numberic" })
+                </td>
                 <td class='innerLast colwidth '>
                     @Html.TextBoxFor(u => u.ReturnDetail[0].THANH_TIEN, new { @class = "total textbtlReturn numberic", @readOnly = true, @disabled = "disabled" })
                 </td>
@@ -190,13 +213,13 @@
         </tbody>
         <tfoot>
             <tr>
-                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="6"> </td>
+                <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="7"> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray">
                     <input type="button" value="Thêm dòng" onclick="addRow()" />
                 </td>
             </tr>
             <tr>
-                <td class='innerLast colwidth  ' colspan="3" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
+                <td class='innerLast colwidth  ' colspan="4" style="background-color:lightgray"> <strong>Tổng số các mặt hàng</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"><strong class="frows"> 1 </strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray" colspan="2"> <strong>Tổng hóa đơn</strong> </td>
                 <td class='innerLast alignCenter colwidth ' style="background-color:lightgray"> <strong class="fall"> 0 </strong>  </td>
@@ -417,11 +440,40 @@
         function GetFactorOfProduct(productId, unitId, convertor) {
             if (unitId != null && unitId != 'undefined') {
                 $.ajax({
-                    url: "/BanHang/FindFactorOfProduct",
+                    url: "/BanHang/FindFactorOfProduct1",
+                    //data: "{'maSP' : '" + productNo + "'}",
                     data: "{ 'maSP': '" + productId + "' , 'unitNo' : '" + unitId + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (data) {
+                        var parent = convertor.parent().parent();
+                        var kind = $("#typeCustomers").val();
                         convertor.val(data.heso);
+                        if (kind == 1) {
+                            $("input.price", parent).val(data.gia_ban_1 - data.chiec_khau_1*data.gia_ban_1/100);
+                            //$("input.discount", parent).val(data.chiec_khau_1);
+                        } else if (kind == 2) {
+                            $("input.price", parent).val(data.gia_ban_2 - data.chiec_khau_2 * data.gia_ban_2 / 100);
+                            //$("input.discount", parent).val(data.chiec_khau_2);
+                        } else {
+                            $("input.price", parent).val(data.gia_ban_3 - data.chiec_khau_3 * data.gia_ban_3 / 100);
+                            //$("input.discount", parent).val(data.chiec_khau_3);
+                        }
+
+
+                        var discount = $('input.percent', parent).val();
+                        var quality = $('input.quantity', parent).val();
+                        var price = $('input.price', parent).val();
+                        if (discount != '' && quality != '' && price != '') {
+                            discount = discount.replace(/,/gi, "");
+                            quality = quality.replace(/,/gi, "");
+                            price = price.replace(/,/gi, "");
+                            var total = quality * price;
+                            var realTotal = total - total * discount / 100;
+                            $('input.total', parent).val(realTotal);
+                            //$('input.realTotal', parent).val(realTotal);
+                            formatNumberic();
+                        }
+                       // counter();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
@@ -445,7 +497,8 @@
             $("input.code").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                        //url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -455,7 +508,7 @@
                                         name: item.name,
                                         code: item.code,
                                         id: item.id,
-                                        price: item.price
+                                        price: item.price * item.discount/100
                                     }
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -497,47 +550,43 @@
                 var parent = $this.parent().parent();
                 var price = $('input.quantity', parent).val().replace(/,/gi, "");
                 var tt = $this.val().replace(/,/gi, "") * price;
-
-                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-                var arParts = String(tt).split(DecimalSeparator);
-                var intPart = arParts[0];
-                var decPart = (arParts.length > 1 ? arParts[1] : '');
-                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                if (decPart.length > 2) {
-                    decPart = (decPart + '00').substr(0, 2);
-                }
-                if (arParts.length > 1) {
-                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
-                } else {
-                    $('td input.total', parent).val(num2);
-                }
+                var percent = $('input.percent', parent).val().replace(/,/gi, "");
+                tt = tt - tt * percent / 100;
+                $('td input.total', parent).val(tt);
                 getAllTotal();
+                formatNumberic();
             });
         }
+
+
+        function percentKeyPress() {
+            $('input.percent').keyup(function (event) {
+                var $this = $(this);
+                var parent = $this.parent().parent();
+                var quantity = $('input.quantity', parent).val().replace(/,/gi, "");
+                var price = $('input.price', parent).val().replace(/,/gi, "");
+                var percent = $this.val().replace(/,/gi, "");
+
+                var tt = quantity*price;
+                tt = tt - tt*percent/100; 
+                $('td input.total', parent).val(tt);
+                getAllTotal();
+                formatNumberic();
+            });
+        }
+
 
         function quantityKeyPress() {
             $('input.quantity').keyup(function (event) {
                 var $this = $(this);
                 var parent = $this.parent().parent();
                 var price = $('input.price', parent).val().replace(/,/gi, "");
-                var tt = $this.val().replace(/,/gi, "") * price;
-
-                var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-                var arParts = String(tt).split(DecimalSeparator);
-                var intPart = arParts[0];
-                var decPart = (arParts.length > 1 ? arParts[1] : '');
-                var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-                var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-                if (decPart.length > 2) {
-                    decPart = (decPart + '00').substr(0, 2);
-                }
-                if (arParts.length > 1) {
-                    $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
-                } else {
-                    $('td input.total', parent).val(num2);
-                }
+                var percent = $('input.percent', parent).val().replace(/,/gi, "");
+                var tt = $this.val().replace(/,/gi, "") * price ;
+                tt = tt - tt * percent / 100;
+                $('td input.total', parent).val(tt);
                 getAllTotal();
+                formatNumberic();
             });
         }
 
@@ -558,7 +607,8 @@
             $("input.productname").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                        //url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                        url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                         dataFilter: function (data) { return data; }, success:
                             function (data) {
@@ -567,7 +617,7 @@
                                         label: item.name,
                                         value: item.name,
                                         code: item.code,
-                                        price:item.price,
+                                        price: item.price - item.price * item.discount/100,
                                         id: item.id
                                     }
                                 }))
@@ -680,6 +730,7 @@
             unitOnchange();
             tableCheck();
             headerCheck();
+            percentKeyPress();
             $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $("#DebitInfor").hide();
         });
@@ -708,6 +759,8 @@
                 '<td class="inner colwidth">' +
                 '<input name="ReturnDetail[' + row + '].GIA_VON" class="price textbtlReturn numberic" id="ReturnDetail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
                 '<td class="innerLast colwidth">' +
+                '<input name="ReturnDetail[' + row + '].PHAN_TRAM_KHAU_HAO" class="percent textbtlReturn numberic" id="ReturnDetail_' + row + '__PHAN_TRAM_KHAU_HAO" type="text" value="" data-val="true" data-val-number="The field PHAN_TRAM_KHAU_HAO must be a number."> </td>' +
+                '<td class="innerLast colwidth">' +
                 '<input name="ReturnDetail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtlReturn numberic" id="ReturnDetail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
                 '</tr>');
             $("#rowIndex").val(row);
@@ -717,6 +770,7 @@
             productCodeAutocomplete();
             getNumberOfRow();
             quantityKeyPress();
+            percentKeyPress();
             priceKeyPress();
             unitOnchange();
             tableCheck();

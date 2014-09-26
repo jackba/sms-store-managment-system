@@ -176,7 +176,8 @@ namespace SMS.Controllers
                                      address = x.DIA_CHI,
                                      fone = x.SO_DIEN_THOAI,
                                      mail = x.EMAIL,
-                                     kind = x.KIND
+                                     kind = x.KIND,
+                                     debit = x.NO_GOI_DAU
                                  };
             var result = Json(suggestedUsers.Take(5).ToList());
             return result;

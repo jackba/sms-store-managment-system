@@ -248,6 +248,9 @@ div.divTitle{
     text-align:right;
 }
 
+.percent{
+    width:91%;
+}
 .tdNumeric{
     width:100px;
 }
