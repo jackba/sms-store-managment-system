@@ -64,6 +64,7 @@
           <Property Name="MA_DON_VI" Type="int" />
           <Property Name="SO_LUONG_TEMP" Type="float" />
           <Property Name="DON_GIA_TEMP" Type="float" />
+          <Property Name="PHAN_TRAM_KHAU_HAO" Type="float" />
         </EntityType>
         <EntityType Name="CHI_TIET_XUAT_KHO">
           <Key>
@@ -3220,6 +3221,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="SAN_PHAM" Relationship="Self.FK__CHI_TIET___MA_SA__6A30C649" FromRole="CHI_TIET_TRA_HANG" ToRole="SAN_PHAM" />
           <NavigationProperty Name="TRA_HANG" Relationship="Self.FK__CHI_TIET___MA_TR__693CA210" FromRole="CHI_TIET_TRA_HANG" ToRole="TRA_HANG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__CHI_TIET___UPDAT__6C190EBB" FromRole="CHI_TIET_TRA_HANG" ToRole="NGUOI_DUNG" />
+          <Property Name="PHAN_TRAM_KHAU_HAO" Type="Double" />
         </EntityType>
         <EntityType Name="CHI_TIET_XUAT_KHO">
           <Key>
@@ -6887,6 +6889,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySetMapping Name="CHI_TIET_TRA_HANG">
             <EntityTypeMapping TypeName="SmsModel.CHI_TIET_TRA_HANG">
               <MappingFragment StoreEntitySet="CHI_TIET_TRA_HANG">
+                <ScalarProperty Name="PHAN_TRAM_KHAU_HAO" ColumnName="PHAN_TRAM_KHAU_HAO" />
                 <ScalarProperty Name="MA_TRA_HANG" ColumnName="MA_TRA_HANG" />
                 <ScalarProperty Name="MA_SAN_PHAM" ColumnName="MA_SAN_PHAM" />
                 <ScalarProperty Name="SO_LUONG_TRA" ColumnName="SO_LUONG_TRA" />
