@@ -1237,9 +1237,11 @@ namespace SMS.Controllers
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"CODE\",");
             fileStringBuilder.Append("\"Tên sản phẩm\",");
             fileStringBuilder.Append("\"Tên đơn vị tính\",");
-            fileStringBuilder.Append("\"Số lượng tồn\"");
+            fileStringBuilder.Append("\"Số lượng tồn\",");
+            fileStringBuilder.Append("\"Giá vốn\"");
             var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
@@ -1253,9 +1255,11 @@ namespace SMS.Controllers
                  i += 1;
                  fileStringBuilder.Append("\"" + i + "\",");
                  fileStringBuilder.Append("\"" + product.MA_SAN_PHAM + "\",");
+                 fileStringBuilder.Append("\"" + product.CODE + "\",");
                  fileStringBuilder.Append("\"" + product.TEN_SAN_PHAM + "\",");
                  fileStringBuilder.Append("\"" + product.TEN_DON_VI + "\",");
                  fileStringBuilder.Append("\"" + product.SO_LUONG_TON.ToString("#,###.##") + "\",");
+                 fileStringBuilder.Append("\"" +  "" + "\",");
              }
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
