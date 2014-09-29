@@ -27,7 +27,7 @@ namespace SMS.Controllers
                                         id = x.MA_NHA_CUNG_CAP,
                                         value = x.TEN_NHA_CUNG_CAP
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 

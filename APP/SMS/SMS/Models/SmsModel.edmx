@@ -460,16 +460,6 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="TON_KHO_MIN_MAX_KHO">
           <Key>
             <PropertyRef Name="ID" />
@@ -2653,7 +2643,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="SECURITY_QUESTIONS" EntityType="Self.SECURITY_QUESTIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_MESSAGES" EntityType="Self.SMS_MESSAGES" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TON_KHO_MIN_MAX_KHO" EntityType="Self.TON_KHO_MIN_MAX_KHO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" Schema="dbo" store:Type="Tables" />
@@ -3930,16 +3919,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__SMS_MESSA__ID_NG__2334397B" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__SMS_MESSA__UPDAT__2610A626" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="Self.FK__SMS_MESSA__ID_NH__24285DB4" FromRole="SMS_MESSAGES" ToRole="NHOM_NGUOI_DUNG" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TON_KHO_MIN_MAX_KHO">
           <Key>
@@ -5652,7 +5631,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="SECURITY_QUESTIONS" EntityType="Self.SECURITY_QUESTIONS" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" />
           <EntitySet Name="SMS_MESSAGES" EntityType="Self.SMS_MESSAGES" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TON_KHO_MIN_MAX_KHO" EntityType="Self.TON_KHO_MIN_MAX_KHO" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" />
@@ -6790,6 +6768,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="String" Name="TEN_KHO" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="TEN_NHA_CUNG_CAP" Nullable="true" MaxLength="100" />
           <Property Type="Int16" Name="LY_DO_NHAP" Nullable="true" />
+          <Property Type="Double" Name="VAL" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SP_GET_IMPORT_DETAIL_BY_ID_Result">
           <Property Type="Int32" Name="MA_SAN_PHAM" Nullable="true" />
@@ -7617,17 +7596,6 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="SmsModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TON_KHO_MIN_MAX_KHO">
             <EntityTypeMapping TypeName="SmsModel.TON_KHO_MIN_MAX_KHO">
               <MappingFragment StoreEntitySet="TON_KHO_MIN_MAX_KHO">
@@ -8284,6 +8252,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="TEN_KHO" ColumnName="TEN_KHO" />
                 <ScalarProperty Name="TEN_NHA_CUNG_CAP" ColumnName="TEN_NHA_CUNG_CAP" />
                 <ScalarProperty Name="LY_DO_NHAP" ColumnName="LY_DO_NHAP" />
+                <ScalarProperty Name="VAL" ColumnName="VAL" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

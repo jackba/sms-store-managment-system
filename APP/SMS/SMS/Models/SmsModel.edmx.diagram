@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="182b483e911346fe81b920cb28d158f3" Name="Diagram1">
+      <Diagram DiagramId="1dc27ef0e2ab478e94f6b442f6d31101" Name="Diagram1">
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_HOA_DON" Width="1.5" PointX="7.5" PointY="70.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_NHAP_KHO" Width="1.5" PointX="5.25" PointY="58.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.CHI_TIET_TRA_HANG" Width="1.5" PointX="8.25" PointY="58" IsExpanded="true" />
@@ -31,27 +31,26 @@
         <EntityTypeShape EntityType="SmsModel.SECURITY_QUESTIONS" Width="1.5" PointX="5.25" PointY="121.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.SMS_MASTER" Width="1.5" PointX="5.25" PointY="125.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.SMS_MESSAGES" Width="1.5" PointX="5.25" PointY="63.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.TON_KHO_MIN_MAX_KHO" Width="1.5" PointX="9.75" PointY="70.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.TRA_HANG" Width="1.5" PointX="13.5" PointY="56.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC" Width="1.5" PointX="18.75" PointY="73.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.TRA_HANG_NCC_CHI_TIET" Width="1.5" PointX="12.75" PointY="70" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.XUAT_KHO" Width="1.5" PointX="21" PointY="70.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_BUGET_BY_MONTH" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_BUGET_BY_WEEK" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_HOA_DON" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_BUGET_BY_MONTH" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_BUGET_BY_WEEK" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_HOA_DON" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_HOA_DON_DISTICNT" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_IMPORT_DETAIL" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_MA_TRA_HANG" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_NHAP_KHO" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_IMPORT_DETAIL" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_MA_TRA_HANG" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_NHAP_KHO" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_NHAP_XUAT_DETAIL" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_NHAP_XUAT_KHO" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SmsModel.V_REPORT_TOTAL" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_RETURN_2_PROVIDER" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_TRA_HANG" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_TRA_NHAP_TRA_NCC" Width="1.5" PointX="10.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_WARNING_PRODUCTS" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmsModel.V_XUAT_KHO" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_RETURN_2_PROVIDER" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_TRA_HANG" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_TRA_NHAP_TRA_NCC" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_WARNING_PRODUCTS" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmsModel.V_XUAT_KHO" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
         <AssociationConnector Association="SmsModel.FK__CHI_TIET___CREAT__5070F446" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_HO__4E88ABD4" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__CHI_TIET___MA_KH__03F0984C" ManuallyRouted="false" />

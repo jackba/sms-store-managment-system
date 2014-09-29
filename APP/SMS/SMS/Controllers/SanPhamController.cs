@@ -744,7 +744,7 @@ namespace SMS.Controllers
                                         value = x.TEN_SAN_PHAM,
                                         unitName = u.TEN_DON_VI
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -761,7 +761,7 @@ namespace SMS.Controllers
                                         value = x.TEN_SAN_PHAM, 
                                         code = x.CODE
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -777,7 +777,7 @@ namespace SMS.Controllers
                                         value = x.CODE,
                                         name = x.TEN_SAN_PHAM
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -795,7 +795,7 @@ namespace SMS.Controllers
                                         name = x.TEN_SAN_PHAM,
                                         price = (x.GIA_BAN_3 == null ? 0 : x.GIA_BAN_3*90/100)
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -852,7 +852,7 @@ namespace SMS.Controllers
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 :
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -876,7 +876,7 @@ namespace SMS.Controllers
                                         discount = typeCustomer.Equals("1") ? x.CHIEC_KHAU_1 ?? 0 : 
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -894,7 +894,7 @@ namespace SMS.Controllers
                                         unitRoot = x.MA_DON_VI,
                                         unitName = u.TEN_DON_VI
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 

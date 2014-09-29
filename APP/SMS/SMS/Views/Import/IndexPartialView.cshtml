@@ -47,6 +47,7 @@
                 <td class='inner colwidth head '>  Người nhập kho  </td>
                 <td class='inner colwidth head '>  Kho nhập </td>
                 <td class='innerLast colwidth head '>  Nhà cung cấp </td>
+                <td class='innerLast colwidth head '>  Giá trị hóa đơn </td>
                 <td class='innerLast colwidth head '>  Sửa </td>
                 <td class='innerLast colwidth head '>  Xóa </td>
             </tr>
@@ -86,6 +87,9 @@
                     <td class="innerLast colwidth">
                         @dbHist.TEN_NHA_CUNG_CAP
                     </td>
+                    <td class="innerLast colwidth">
+                        @dbHist.VAL.ToString("#,###.##")
+                    </td>
                     <td class='innerLast alignCenter' style="width:50px;">
                         @if (((bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]) && @dbHist.LY_DO_NHAP != 1 && @dbHist.LY_DO_NHAP != 2 && @dbHist.LY_DO_NHAP != 3)
 {
@@ -119,7 +123,7 @@
             }
             }else{
                 <tr>
-                    <td class="innerLast alignCenter" style="background-color:lightgray" colspan="7"> Không có dữ liệu phù hợp</td>
+                    <td class="innerLast alignCenter" style="background-color:lightgray" colspan="8"> Không có dữ liệu phù hợp</td>
                 </tr>
             }
         </table>
