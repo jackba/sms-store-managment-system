@@ -172,6 +172,7 @@
           <Property Name="SO_TIEN_KHACH_TRA" Type="float" />
           <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" />
           <Property Name="MA_NHAN_VIEN_THU_TIEN" Type="int" />
+          <Property Name="SO_DIEN_THOAI" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="KHACH_HANG">
           <Key>
@@ -459,6 +460,16 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TON_KHO_MIN_MAX_KHO">
           <Key>
             <PropertyRef Name="ID" />
@@ -550,6 +561,36 @@
           <Property Name="UPDATE_AT" Type="date" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
           <Property Name="MA_PHIEU_TRA_NCC" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'STMA.dbo.V_BUGET_BY_MONTH' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_BUGET_BY_MONTH">
+          <Key>
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
+            <PropertyRef Name="TOTAL" />
+          </Key>
+          <Property Name="SO_TIEN_KHACH_TRA" Type="float" Nullable="false" />
+          <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" Nullable="false" />
+          <Property Name="TOTAL" Type="float" Nullable="false" />
+          <Property Name="MONTH" Type="int" />
+          <Property Name="YEAR" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'STMA.dbo.V_BUGET_BY_WEEK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_BUGET_BY_WEEK">
+          <Key>
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
+            <PropertyRef Name="TOTAL" />
+          </Key>
+          <Property Name="SO_TIEN_KHACH_TRA" Type="float" Nullable="false" />
+          <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" Nullable="false" />
+          <Property Name="TOTAL" Type="float" Nullable="false" />
+          <Property Name="WEEK" Type="int" />
+          <Property Name="YEAR" Type="int" />
+          <Property Name="START_DATE" Type="datetime" />
+          <Property Name="END_DATE" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'STMA.dbo.V_HOA_DON' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2110,6 +2151,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="dynTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="F_CHECK_REMAIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
           <Parameter Name="MA_HOA_DON" Type="int" Mode="In" />
         </Function>
@@ -2611,11 +2653,32 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="SECURITY_QUESTIONS" EntityType="Self.SECURITY_QUESTIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_MESSAGES" EntityType="Self.SMS_MESSAGES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TON_KHO_MIN_MAX_KHO" EntityType="Self.TON_KHO_MIN_MAX_KHO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_BUGET_BY_MONTH" EntityType="Self.V_BUGET_BY_MONTH" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_BUGET_BY_MONTH].[SO_TIEN_KHACH_TRA] AS [SO_TIEN_KHACH_TRA], 
+    [V_BUGET_BY_MONTH].[SO_TIEN_NO_GOI_DAU] AS [SO_TIEN_NO_GOI_DAU], 
+    [V_BUGET_BY_MONTH].[TOTAL] AS [TOTAL], 
+    [V_BUGET_BY_MONTH].[MONTH] AS [MONTH], 
+    [V_BUGET_BY_MONTH].[YEAR] AS [YEAR]
+    FROM [dbo].[V_BUGET_BY_MONTH] AS [V_BUGET_BY_MONTH]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_BUGET_BY_WEEK" EntityType="Self.V_BUGET_BY_WEEK" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_BUGET_BY_WEEK].[SO_TIEN_KHACH_TRA] AS [SO_TIEN_KHACH_TRA], 
+    [V_BUGET_BY_WEEK].[SO_TIEN_NO_GOI_DAU] AS [SO_TIEN_NO_GOI_DAU], 
+    [V_BUGET_BY_WEEK].[TOTAL] AS [TOTAL], 
+    [V_BUGET_BY_WEEK].[WEEK] AS [WEEK], 
+    [V_BUGET_BY_WEEK].[YEAR] AS [YEAR], 
+    [V_BUGET_BY_WEEK].[START_DATE] AS [START_DATE], 
+    [V_BUGET_BY_WEEK].[END_DATE] AS [END_DATE]
+    FROM [dbo].[V_BUGET_BY_WEEK] AS [V_BUGET_BY_WEEK]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_HOA_DON" EntityType="Self.V_HOA_DON" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [V_HOA_DON].[MA_HOA_DON] AS [MA_HOA_DON], 
@@ -3419,6 +3482,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Name="SO_TIEN_KHACH_TRA" Type="Double" />
           <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" />
           <Property Name="MA_NHAN_VIEN_THU_TIEN" Type="Int32" />
+          <Property Name="SO_DIEN_THOAI" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CHI_TIET_HOA_DON" Relationship="Self.FK__CHI_TIET___MA_HO__4E88ABD4" FromRole="HOA_DON" ToRole="CHI_TIET_HOA_DON" />
           <NavigationProperty Name="NGUOI_DUNG" Relationship="Self.FK__HOA_DON__CREATE___4BAC3F29" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NGUOI_DUNG1" Relationship="Self.FK__HOA_DON__EDIT_AP__4AB81AF0" FromRole="HOA_DON" ToRole="NGUOI_DUNG" />
@@ -3867,6 +3931,16 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="NGUOI_DUNG2" Relationship="Self.FK__SMS_MESSA__UPDAT__2610A626" FromRole="SMS_MESSAGES" ToRole="NGUOI_DUNG" />
           <NavigationProperty Name="NHOM_NGUOI_DUNG" Relationship="Self.FK__SMS_MESSA__ID_NH__24285DB4" FromRole="SMS_MESSAGES" ToRole="NHOM_NGUOI_DUNG" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TON_KHO_MIN_MAX_KHO">
           <Key>
             <PropertyRef Name="ID" />
@@ -3991,6 +4065,32 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <NavigationProperty Name="NHAP_KHO" Relationship="Self.FK__NHAP_KHO__MA_PHI__3B0BC30C" FromRole="XUAT_KHO" ToRole="NHAP_KHO" />
           <NavigationProperty Name="TRA_HANG" Relationship="Self.FK__TRA_HANG__MA_XUA__6477ECF3" FromRole="XUAT_KHO" ToRole="TRA_HANG" />
           <NavigationProperty Name="TRA_HANG_NCC" Relationship="Self.FK__XUAT_KHO__MA_PHI__336AA144" FromRole="XUAT_KHO" ToRole="TRA_HANG_NCC" />
+        </EntityType>
+        <EntityType Name="V_BUGET_BY_MONTH">
+          <Key>
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
+            <PropertyRef Name="TOTAL" />
+          </Key>
+          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" Nullable="false" />
+          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" Nullable="false" />
+          <Property Name="TOTAL" Type="Double" Nullable="false" />
+          <Property Name="MONTH" Type="Int32" />
+          <Property Name="YEAR" Type="Int32" />
+        </EntityType>
+        <EntityType Name="V_BUGET_BY_WEEK">
+          <Key>
+            <PropertyRef Name="SO_TIEN_KHACH_TRA" />
+            <PropertyRef Name="SO_TIEN_NO_GOI_DAU" />
+            <PropertyRef Name="TOTAL" />
+          </Key>
+          <Property Name="SO_TIEN_KHACH_TRA" Type="Double" Nullable="false" />
+          <Property Name="SO_TIEN_NO_GOI_DAU" Type="Double" Nullable="false" />
+          <Property Name="TOTAL" Type="Double" Nullable="false" />
+          <Property Name="WEEK" Type="Int32" />
+          <Property Name="YEAR" Type="Int32" />
+          <Property Name="START_DATE" Type="DateTime" Precision="3" />
+          <Property Name="END_DATE" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="V_HOA_DON">
           <Key>
@@ -5552,11 +5652,14 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <EntitySet Name="SECURITY_QUESTIONS" EntityType="Self.SECURITY_QUESTIONS" />
           <EntitySet Name="SMS_MASTER" EntityType="Self.SMS_MASTER" />
           <EntitySet Name="SMS_MESSAGES" EntityType="Self.SMS_MESSAGES" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TON_KHO_MIN_MAX_KHO" EntityType="Self.TON_KHO_MIN_MAX_KHO" />
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" />
+          <EntitySet Name="V_BUGET_BY_MONTH" EntityType="Self.V_BUGET_BY_MONTH" />
+          <EntitySet Name="V_BUGET_BY_WEEK" EntityType="Self.V_BUGET_BY_WEEK" />
           <EntitySet Name="V_HOA_DON" EntityType="Self.V_HOA_DON" />
           <EntitySet Name="V_HOA_DON_DISTICNT" EntityType="Self.V_HOA_DON_DISTICNT" />
           <EntitySet Name="V_IMPORT_DETAIL" EntityType="Self.V_IMPORT_DETAIL" />
@@ -6014,6 +6117,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
             <End Role="TRA_HANG_NCC" EntitySet="TRA_HANG_NCC" />
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
           </AssociationSet>
+          <FunctionImport Name="dynTable" />
           <FunctionImport Name="GET_HOA_DON" ReturnType="Collection(SmsModel.GET_HOA_DON_Result)">
             <Parameter Name="FROM_DATE" Mode="In" Type="DateTime" />
             <Parameter Name="TO_DATE" Mode="In" Type="DateTime" />
@@ -6661,6 +6765,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="SO_DIEN_THOAI" Nullable="true" MaxLength="20" />
           <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="true" />
           <Property Type="String" Name="TEN_NGUOI_BAN" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
@@ -7205,6 +7310,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
                 <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
                 <ScalarProperty Name="MA_NHAN_VIEN_THU_TIEN" ColumnName="MA_NHAN_VIEN_THU_TIEN" />
+                <ScalarProperty Name="SO_DIEN_THOAI" ColumnName="SO_DIEN_THOAI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7511,6 +7617,17 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SmsModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TON_KHO_MIN_MAX_KHO">
             <EntityTypeMapping TypeName="SmsModel.TON_KHO_MIN_MAX_KHO">
               <MappingFragment StoreEntitySet="TON_KHO_MIN_MAX_KHO">
@@ -7605,6 +7722,30 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
                 <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
                 <ScalarProperty Name="MA_PHIEU_TRA_NCC" ColumnName="MA_PHIEU_TRA_NCC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_BUGET_BY_MONTH">
+            <EntityTypeMapping TypeName="SmsModel.V_BUGET_BY_MONTH">
+              <MappingFragment StoreEntitySet="V_BUGET_BY_MONTH">
+                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
+                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+                <ScalarProperty Name="MONTH" ColumnName="MONTH" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_BUGET_BY_WEEK">
+            <EntityTypeMapping TypeName="SmsModel.V_BUGET_BY_WEEK">
+              <MappingFragment StoreEntitySet="V_BUGET_BY_WEEK">
+                <ScalarProperty Name="SO_TIEN_KHACH_TRA" ColumnName="SO_TIEN_KHACH_TRA" />
+                <ScalarProperty Name="SO_TIEN_NO_GOI_DAU" ColumnName="SO_TIEN_NO_GOI_DAU" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+                <ScalarProperty Name="WEEK" ColumnName="WEEK" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7792,6 +7933,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="dynTable" FunctionName="SmsModel.Store.dynTable" />
           <FunctionImportMapping FunctionImportName="GET_HOA_DON" FunctionName="SmsModel.Store.GET_HOA_DON">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SmsModel.GET_HOA_DON_Result">
@@ -8112,6 +8254,7 @@ warning 6002: The table/view 'STMA.dbo.V_XUAT_KHO' does not have a primary key d
                 <ScalarProperty Name="SO_HOA_DON" ColumnName="SO_HOA_DON" />
                 <ScalarProperty Name="MA_KHACH_HANG" ColumnName="MA_KHACH_HANG" />
                 <ScalarProperty Name="TEN_KHACH_HANG" ColumnName="TEN_KHACH_HANG" />
+                <ScalarProperty Name="SO_DIEN_THOAI" ColumnName="SO_DIEN_THOAI" />
                 <ScalarProperty Name="MA_NHAN_VIEN_BAN" ColumnName="MA_NHAN_VIEN_BAN" />
                 <ScalarProperty Name="TEN_NGUOI_BAN" ColumnName="TEN_NGUOI_BAN" />
                 <ScalarProperty Name="NGAY_BAN" ColumnName="NGAY_BAN" />

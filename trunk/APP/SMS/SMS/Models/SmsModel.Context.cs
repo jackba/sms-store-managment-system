@@ -53,11 +53,14 @@ namespace SMS.Models
         public virtual DbSet<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
         public virtual DbSet<SMS_MASTER> SMS_MASTER { get; set; }
         public virtual DbSet<SMS_MESSAGES> SMS_MESSAGES { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
         public virtual DbSet<TRA_HANG> TRA_HANG { get; set; }
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
+        public virtual DbSet<V_BUGET_BY_MONTH> V_BUGET_BY_MONTH { get; set; }
+        public virtual DbSet<V_BUGET_BY_WEEK> V_BUGET_BY_WEEK { get; set; }
         public virtual DbSet<V_HOA_DON> V_HOA_DON { get; set; }
         public virtual DbSet<V_HOA_DON_DISTICNT> V_HOA_DON_DISTICNT { get; set; }
         public virtual DbSet<V_IMPORT_DETAIL> V_IMPORT_DETAIL { get; set; }
@@ -71,6 +74,11 @@ namespace SMS.Models
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+    
+        public virtual int dynTable()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("dynTable");
+        }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {

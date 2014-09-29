@@ -17,6 +17,7 @@ namespace SMS.Models
         public string SO_HOA_DON { get; set; }
         public Nullable<int> MA_KHACH_HANG { get; set; }
         public string TEN_KHACH_HANG { get; set; }
+        public string SO_DIEN_THOAI { get; set; }
         public Nullable<int> MA_NHAN_VIEN_BAN { get; set; }
         public string TEN_NGUOI_BAN { get; set; }
         public Nullable<System.DateTime> NGAY_BAN { get; set; }
