@@ -83,6 +83,7 @@ namespace SMS.Models
         public Nullable<double> SO_TIEN_KHACH_TRA { get; set; }
         public Nullable<double> SO_TIEN_NO_GOI_DAU { get; set; }
         public Nullable<int> MA_NHAN_VIEN_THU_TIEN { get; set; }
+        public string SO_DIEN_THOAI { get; set; }
     
         public virtual ICollection<CHI_TIET_HOA_DON> CHI_TIET_HOA_DON { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG { get; set; }
