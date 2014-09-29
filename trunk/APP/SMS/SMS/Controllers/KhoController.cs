@@ -241,7 +241,7 @@ namespace SMS.Controllers
                                         id = x.MA_KHO,
                                         value = x.TEN_KHO
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 

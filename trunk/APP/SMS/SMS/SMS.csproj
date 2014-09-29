@@ -466,6 +466,12 @@
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_BUGET_BY_MONTH.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_BUGET_BY_WEEK.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_HOA_DON.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -972,6 +978,7 @@
     <Content Include="Views\Report\TotalReport.cshtml" />
     <Content Include="Views\Report\TotalReportPartialView.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
+    <Content Include="Views\HoaDon\PrintBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

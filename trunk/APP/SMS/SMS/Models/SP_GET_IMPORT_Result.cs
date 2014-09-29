@@ -23,5 +23,6 @@ namespace SMS.Models
         public string TEN_KHO { get; set; }
         public string TEN_NHA_CUNG_CAP { get; set; }
         public Nullable<short> LY_DO_NHAP { get; set; }
+        public double VAL { get; set; }
     }
 }

@@ -69,12 +69,10 @@
                     </td>
                     <td class="innerLast colwidth">
                         @{
-                            if (dbHist.STATUS >= 2 && ((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"]))
-                            {
-                                <a href="@Url.Action("Payment", "HoaDon", new { @id = @dbHist.MA_HOA_DON })" class="button-module">
+                                <a href="@Url.Action("PrintBill", "HoaDon", new { @id = @dbHist.MA_HOA_DON })" class="button-module">
                                     <img width="18" height="18" alt="edit" src="~/Content/images/print.png"></img>
                                 </a>
-                            }
+                            
                         }
 
                     </td>

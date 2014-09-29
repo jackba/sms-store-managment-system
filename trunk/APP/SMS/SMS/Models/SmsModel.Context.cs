@@ -53,7 +53,6 @@ namespace SMS.Models
         public virtual DbSet<SECURITY_QUESTIONS> SECURITY_QUESTIONS { get; set; }
         public virtual DbSet<SMS_MASTER> SMS_MASTER { get; set; }
         public virtual DbSet<SMS_MESSAGES> SMS_MESSAGES { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
         public virtual DbSet<TRA_HANG> TRA_HANG { get; set; }
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }

@@ -471,7 +471,7 @@ namespace SMS.Controllers
                                      id = x.MA_NGUOI_DUNG,
                                      value = x.TEN_NGUOI_DUNG
                                  };
-            var result = Json(suggestedUsers.Take(5).ToList());
+            var result = Json(suggestedUsers.Take(10).ToList());
             return result; 
         }
 

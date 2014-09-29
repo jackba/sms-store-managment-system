@@ -27,7 +27,7 @@ namespace SMS.Controllers
                                         id = x.MA_DON_VI,
                                         value = x.TEN_DON_VI
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -42,7 +42,7 @@ namespace SMS.Controllers
                                         id = x.MA_DON_VI,
                                         value = x.TEN_DON_VI
                                     };
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 
@@ -57,7 +57,7 @@ namespace SMS.Controllers
                                         id = x.MA_CHUYEN_DOI
                                     };
         
-            var result = Json(suggestedProducts.Take(5).ToList());
+            var result = Json(suggestedProducts.Take(10).ToList());
             return result;
         }
 

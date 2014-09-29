@@ -155,7 +155,7 @@ namespace SMS.Controllers
                                      id = x.MA_KHACH_HANG,  
                                      value = x.TEN_KHACH_HANG, 
                                  debit = x.NO_GOI_DAU}; 
-            var result = Json(suggestedUsers.Take(5).ToList()); 
+            var result = Json(suggestedUsers.Take(10).ToList()); 
             return result; 
         }
         /*Tattt add 2014/05/10 start*/
@@ -179,7 +179,7 @@ namespace SMS.Controllers
                                      kind = x.KIND,
                                      debit = x.NO_GOI_DAU
                                  };
-            var result = Json(suggestedUsers.Take(5).ToList());
+            var result = Json(suggestedUsers.Take(10).ToList());
             return result;
         }
         /*Tattt add 2014/05/10 end*/
