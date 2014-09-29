@@ -508,7 +508,7 @@
                                         name: item.name,
                                         code: item.code,
                                         id: item.id,
-                                        price: item.price * item.discount/100
+                                        price: item.price * (100 - item.discount)/100
                                     }
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }

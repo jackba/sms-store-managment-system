@@ -513,24 +513,13 @@
         });
     }
 
-    function unitOnchange() {
-        $("select.unit").change(function (event) {
-            var $this = $(this);
-            var parent = $this.parent().parent();
-            var productId = $('input.productId', parent).val();
-            var unitId = $('select.unit :selected').val();
-            var convertor = $('input.convertor', parent);
-            if (productId != null && productId != '' && unitId != null && unitId != '') {
-                GetFactorOfProduct(productId, unitId, convertor);
-            }
-        });
-    }
 
     function productCodeAutocomplete() {
         $("input.code").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                    // url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                    url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     dataFilter: function (data) { return data; }, success:
                         function (data) {
@@ -540,7 +529,7 @@
                                     name: item.name,
                                     code: item.code,
                                     id: item.id,
-                                    price: item.price
+                                    price: item.price *(100- item.discount) / 100
                                 }
                             }))
                         }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -672,7 +661,8 @@
         $("input.productname").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                    //url: "/SanPham/FindSuggestForReturn", data: "{ 'prefixText': '" + request.term + "' }",
+                    url: "/SanPham/FindSuggestByTypeCustomer", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
                     dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                     dataFilter: function (data) { return data; }, success:
                         function (data) {
@@ -681,7 +671,7 @@
                                     label: item.name,
                                     value: item.name,
                                     code: item.code,
-                                    price: item.price,
+                                    price: item.price - item.price * item.discount / 100,
                                     id: item.id
                                 }
                             }))
@@ -798,7 +788,7 @@
             var $this = $(this);
             var parent = $this.parent().parent();
             var productId = $('input.productId', parent).val();
-            var unitId = $('select.unit :selected').val();
+            var unitId = $this.val();
             var convertor = $('input.convertor', parent);
             if (productId != null && productId != '' && unitId != null && unitId != '') {
                 GetFactorOfProduct(productId, unitId, convertor);

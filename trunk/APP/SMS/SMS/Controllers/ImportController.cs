@@ -270,7 +270,9 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Số lượng\",");
             fileStringBuilder.Append("\"Giá vốn\"");            
             var ctx = new SmsContext();
+
             var products = ctx.SAN_PHAM.Include("DON_VI_TINH").Where(u => u.ACTIVE == "A").ToList<SAN_PHAM>();
+
             int i = 0;
             foreach (var product in products)
             {
