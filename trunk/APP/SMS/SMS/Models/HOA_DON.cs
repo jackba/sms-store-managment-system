@@ -37,6 +37,7 @@ namespace SMS.Models
         public string Ten_KH {get;set;}
         public DateTime? Ngay_Ban {get;set;}
         public DateTime? Ngay_Giao {get;set;}
+        public string Dien_Thoai { get; set; }
         public string Dia_Chi {get;set;}
     }
     public class ChiTiet_HoaDon{

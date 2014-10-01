@@ -103,6 +103,19 @@
                 @Html.TextBoxFor(u => u.Infor.SO_HOA_DON, new { @disabled = "disabled" })
             </td>
             <td>
+                Loại nghiệp vụ
+            </td>
+            <td>
+                <select id="typeCustomers" class="ComboboxCustomer">
+                    <option value="3"> L3 - 03 </option>
+                    <option value="2"> L2 - 02 </option>
+                    <option value="1"> L1 - 01 </option>
+                </select>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
                 Tên khách hàng :
             </td>
             <td class="required">
@@ -110,7 +123,12 @@
                 @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG, new { @id = "MaKhachHang" })
                 @Html.TextBoxFor(u => u.Infor.TEN_KHACH_HANG, new { @name = "TenKhachHang", @id = "TenKhachHang", @style = "margin-left: 2px;" })
             </td>
-            
+            <td>
+                Số điện thoại :
+            </td>
+            <td class="required">
+                @Html.TextBoxFor(u => u.Infor.SO_DIEN_THOAI, new { @name = "DienThoai", @id = "DienThoai", @class = "numberfone alignNumberic " })
+            </td>
         </tr>
         <tr>
             <td>
@@ -126,18 +144,7 @@
                 @Html.TextBoxFor(u => u.Infor.NGAY_GIAO, "{0:dd/MM/yyyy}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
             </td>
         </tr>
-        <tr>
-            <td>
-                Loại nghiệp vụ
-            </td>
-            <td>
-                <select id="typeCustomers" class="ComboboxCustomer">
-                    <option value="3"> L3 - 03 </option>
-                    <option value="2"> L2 - 02 </option>
-                    <option value="1"> L1 - 01 </option>
-                </select>
-            </td>
-        </tr>
+        
         <tr>
             <td>
                 Địa chỉ giao hàng:
@@ -656,6 +663,26 @@
                     $this.val(num2);
                 }
             });
+
+            // check input number fone 
+            $('input.numberfone').keypress(function (key) {
+                var keycode = (key.which) ? key.which : key.keyCode;
+                //comparing pressed keycodes
+
+                if (keycode > 47 && keycode < 58) {
+                    return true;
+                }
+                else return false;
+
+            });
+            $('input.numberfone').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) {
+                    //event.preventDefault();
+                    return true;
+                }
+
+            });
         };
 
 
@@ -1160,6 +1187,7 @@
             if (isSelected == true) {
                 $('#MaKhachHang').val(item.id);
                 $('#TenKhachHang').val(item.label);
+                $('#DienThoai').val(item.fone);
                 $('#DiaChi').val(item.address);
             }
 
@@ -1231,7 +1259,8 @@
                             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
                     $('#typeCustomers').val('3');
-                    
+                    $('#MaKhachHang').val('');
+                    $('#DienThoai').val('');
                 },
                 select: function (event, ui) {
                     $('#typeCustomers').val(ui.item.kind);

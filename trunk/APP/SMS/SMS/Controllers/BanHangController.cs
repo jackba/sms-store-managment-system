@@ -173,6 +173,7 @@ namespace SMS.Controllers
                     invoice.SO_HOA_DON = InvoiceNo;
                     invoice.NGAY_BAN = Infor.Ngay_Ban;
                     invoice.NGAY_GIAO = Infor.Ngay_Giao;
+                    invoice.SO_DIEN_THOAI = Infor.Dien_Thoai;
                     invoice.DIA_CHI_GIAO_HANG = Infor.Dia_Chi;
                     invoice.MA_KHACH_HANG = Infor.Ma_KH;
                     if (Convert.ToInt32(Infor.Ma_HD) > 0)

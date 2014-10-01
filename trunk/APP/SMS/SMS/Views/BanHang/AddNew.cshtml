@@ -93,6 +93,7 @@
                         function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                 });
                 $('#kindCustomer').val('3');
+                $('#DienThoai').val('');
                 $('#MaKhachHang').val('');
             },
             select: function (event, ui) {
@@ -256,6 +257,7 @@
         if (isSelected == true) {
             $('#MaKhachHang').val(item.id);
             $('#TenKhachHang').val(item.label);
+            $('#DienThoai').val(item.fone);
             $('#DiaChi').val(item.address);
         }
 
@@ -1054,6 +1056,26 @@
             }
          
         });
+        // check input number fone 
+        $('input.numberfone').keypress(function (key) {
+            var keycode = (key.which) ? key.which : key.keyCode;
+            //comparing pressed keycodes
+
+            if (keycode > 47 && keycode < 58) {
+                return true;
+            }
+            else return false;
+
+        });
+        $('input.numberfone').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                //event.preventDefault();
+                return true;
+            }
+
+        });
+
     };
 
     $(document).ready(function () {
@@ -1117,6 +1139,12 @@
                 errorMessage += "<br>";
             }
             errorMessage += "Chưa nhập ngày giao hàng. Vui lòng chọn ngày giao hàng.";
+        }
+        if ($("#DienThoai").val() == null || $("#DienThoai").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng nhập điện thoại để liên lạc.";
         }
         if ($("#DiaChi").val() == null || $("#DiaChi").val().trim() == "") {
             if (errorMessage != '') {
@@ -1224,7 +1252,7 @@
                         <br />
                         <div>
                            @Html.HiddenFor(u => u.KH_Info.Ma_KH, new { @id = "MaKhachHang"})
-                             @Html.TextBoxFor(u => u.KH_Info.Ten_KH, new { @name="TenKhachHang" ,@id="TenKhachHang", @style="margin-left: 2px;", @onkeypress="return disableEnterKey(event);" })
+                             @Html.TextBoxFor(u => u.KH_Info.Ten_KH, new { @name="TenKhachHang" ,@id="TenKhachHang", @style="margin-left: 2px;", @class="marginTopMinus10", @onkeypress="return disableEnterKey(event);" })
                             @*<input type="hidden" name="MaKhachHang" id="MaKhachHang" />*@
                             <input type="hidden" name="UserId" value="@ViewBag.UserId" />
                             <input type="hidden" id="MyStore" value="@ViewBag.MyStore" />
@@ -1249,37 +1277,41 @@
 
                         </div>
                     </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-
                     <td>
                         <div class="titleItem required">Ngày bán</div>
                         <br />
                         <div>
-                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Ban, "{0:dd/MM/yyyy}", new {@name="NgayBan", @id="NgayBan", @class = "datePicker "})
-           
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Ban, "{0:dd/MM/yyyy}", new { @name = "NgayBan", @id = "NgayBan", @class = "alignCenter datePicker marginTopMinus10" })
+
                         </div>
                     </td>
                     <td colspan="2">
                         <div class="titleItem required">Ngày giao hàng</div>
                         <br />
                         <div>
-                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Giao, "{0:dd/MM/yyyy}", new { @name = "NgayGiao", @id = "NgayGiao", @class = "datePicker " })
+                            @Html.TextBoxFor(u => u.KH_Info.Ngay_Giao, "{0:dd/MM/yyyy}", new { @name = "NgayGiao", @id = "NgayGiao", @class = " alignCenter datePicker marginTopMinus10" })
                         </div>
                     </td>
-                    <td></td>
                 </tr>
+               
                 <tr>
-                    <td colspan="3">
+                    <td>
+                        <div class="titleItem required">Điện thoại</div>
+                        <br />
+                        <div>
+                            @Html.TextBoxFor(u => u.KH_Info.Dien_Thoai, new { @name = "DienThoai", @id = "DienThoai", @class = "numberfone alignNumberic marginTopMinus10" })
+
+                        </div>
+                    </td>
+                    <td colspan="2">
                         <div class="titleItem required">Địa chỉ giao hàng</div>
                         <br />
                         <div>
-                            @Html.TextAreaFor(u => u.KH_Info.Dia_Chi, new { @name="DiaChi", @id="DiaChi", @class="alignText" })
+                            @Html.TextBoxFor(u => u.KH_Info.Dia_Chi, new { @name = "DiaChi", @id = "DiaChi", @class = "alignText marginTopMinus10", @style = "width:476px !important;" })
                 
                         </div>
                     </td>
+                    <td></td>
                 </tr>
             </table>
             <!--input information product-->

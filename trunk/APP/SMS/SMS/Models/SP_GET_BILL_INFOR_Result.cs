@@ -20,6 +20,7 @@ namespace SMS.Models
         public Nullable<int> MA_KHACH_HANG { get; set; }
         public Nullable<System.DateTime> NGAY_BAN { get; set; }
         public Nullable<System.DateTime> NGAY_GIAO { get; set; }
+        public string SO_DIEN_THOAI { get; set; }
         public string DIA_CHI_GIAO_HANG { get; set; }
         public Nullable<short> STATUS { get; set; }
     }
