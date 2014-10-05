@@ -74,11 +74,6 @@ namespace SMS.Models
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
     
-        public virtual int dynTable()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("dynTable");
-        }
-    
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
             var fROM_DATEParameter = fROM_DATE.HasValue ?

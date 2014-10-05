@@ -16,8 +16,14 @@
 <hgroup class="title">
     <h2>@ViewBag.Message</h2>
 </hgroup>
+
 <div class="grid_7">
    
+    <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+        <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> > Danh sách báo cáo
+    </div>
+    <br />
+
     <a class="dashboard-module" href="@Url.Action("MonthlyReport", "Report")">
         <img width="64" height="64" alt="edit" src="../../Content/images/report.jpg"></img>
         <span>BÁO CÁO DOANH THU TRONG NĂM (THÁNG)</span>
