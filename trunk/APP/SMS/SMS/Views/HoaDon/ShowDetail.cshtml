@@ -39,8 +39,8 @@
         <fieldset>
             <div class="left">
                 @Html.HiddenFor(u => u.Infor.MA_HOA_DON)
-                @Html.HiddenFor(u => u.customerDebit, new { @id = "cusDebit" })
-                @Html.HiddenFor(u => u.maxDebit, new { @id = "maxDebit" })
+                @Html.HiddenFor(u => u.customerDebit, new { @id = "icusDebit" })
+                @Html.HiddenFor(u => u.maxDebit, new { @id = "imaxDebit" })
                 @Html.HiddenFor(u => u.Infor.MA_KHACH_HANG, new {@id = "customerId" })
                 @Html.HiddenFor(u => u.Infor.TONG_TIEN, new { @id = "tongtien"})
                 @Html.HiddenFor(u => u.Infor.CHIEC_KHAU, new { @id = "ChiecKhau" })
@@ -327,8 +327,8 @@ else
             return false;
         } else {
             if ((customerId != null && customerId != '' && customerId != 0)) {
-                var cusDebit = $("#cusDebit").val();
-                var maxDebit = $("maxDebit").val();
+                var cusDebit = $("#icusDebit").val();
+                var maxDebit = $("#imaxDebit").val();
                 var debit = $("debitMoney").val();
                 if (cusDebit == null || cusDebit.trim() == '') {
                     cusDebit = 0;
@@ -346,7 +346,7 @@ else
                 } else {
                     debit.replace(/,/gi, "");
                 }
-                if (debit > 0 && maxDebit <= (cusDebit + debit)) {
+                if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
                     var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
                     if (r == true) {
                         var form = $("#ShowDetail");
@@ -375,8 +375,8 @@ else
             return false;
         } else {
             if ((customerId != null && customerId != '' && customerId != 0)) {
-                var cusDebit = $("#cusDebit").val();
-                var maxDebit = $("maxDebit").val();
+                var cusDebit = $("#icusDebit").val();
+                var maxDebit = $("#imaxDebit").val();
                 var debit = $("debitMoney").val();
                 if (cusDebit == null || cusDebit.trim() == '') {
                     cusDebit = 0;
@@ -394,7 +394,13 @@ else
                 } else {
                     debit.replace(/,/gi, "");
                 }
-                if (debit > 0 && maxDebit <= (cusDebit + debit)) {
+
+                alert(debit);
+                alert(maxDebit);
+                alert(cusDebit);
+                return false;
+
+                if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
                     var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
                     if (r == true) {
                         var form = $("#ShowDetail");

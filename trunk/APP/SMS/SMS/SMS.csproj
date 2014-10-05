@@ -564,6 +564,7 @@
     <Content Include="Content\css\960.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\screen.css" />
+    <Content Include="Content\images\alert.png" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\charge.png" />
@@ -572,9 +573,12 @@
     <Content Include="Content\images\customer.png" />
     <Content Include="Content\images\Download-Icon.png" />
     <Content Include="Content\images\download.jpg" />
+    <Content Include="Content\images\expense.png" />
     <Content Include="Content\images\ExportDataBlue.jpg" />
     <Content Include="Content\images\ExportTransfer.jpg" />
     <Content Include="Content\images\export_text.jpg" />
+    <Content Include="Content\images\group.png" />
+    <Content Include="Content\images\icon_256.png" />
     <Content Include="Content\images\import.png" />
     <Content Include="Content\images\import1.png" />
     <Content Include="Content\images\ImportDetailReport.jpg" />
