@@ -23,7 +23,17 @@ namespace SMS.Controllers
         [CustomActionFilter]
         public ActionResult showDetail(int id)
         {
-            return View();
+            var ctx = new SmsContext();
+            var infor = ctx.SP_GET_IMPORT_INFOR_BY_ID(id).FirstOrDefault();
+            var details = ctx.SP_GET_IMPORT_DETAIL_BY_ID(id).ToList();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            ImportDetailModel model = new ImportDetailModel();
+            model.Infor = infor;
+            model.Stores = stores;
+            model.Details = details;
+            var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
+            model.Units = units;
+            return View(model);
         }
      
         [HttpPost]

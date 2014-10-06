@@ -273,12 +273,30 @@ div.right{
     margin-left:1px;
     border-color:white !important;
     border-style:solid;
-    border-width:2px;
+    border-width:1px;
     display: inline-block; 
     background-color: lightgray; 
     width: 78%; height: 30px;
 }
 
+td.left{
+    padding: 2px,2px,2px,2px !important;
+    border-color:gray !important;
+    border-style:solid;
+    border-width:1px;
+    background-color: lightblue; 
+    width: 20%; height: 30px;
+}
+
+td.right{
+    padding: 2px,2px,2px,2px !important;
+    margin-left:1px;
+    border-color:gray !important;
+    border-style:solid;
+    border-width:2px;
+    background-color: lightsalmon; 
+    width: 78%; height: 30px;
+}
 .datePicker{
     width:200px;
 }
