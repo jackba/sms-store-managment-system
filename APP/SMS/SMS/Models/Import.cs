@@ -103,4 +103,12 @@ namespace SMS.Models
         public List<KHO> Stores { get; set; }
         public List<NHA_CUNG_CAP> Providers { get; set; }
     }
+
+    public class ImportDetailModel
+    {
+        public SP_GET_IMPORT_INFOR_BY_ID_Result Infor { get; set; }
+        public List<SP_GET_IMPORT_DETAIL_BY_ID_Result> Details { get; set; }
+        public List<KHO> Stores { get; set; }
+        public List<DON_VI_TINH> Units { get; set; }
+    }
 }
