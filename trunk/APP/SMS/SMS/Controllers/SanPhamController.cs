@@ -646,7 +646,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (convert.GIA_BAN_3 == null ? "0" : ((Double)convert.GIA_BAN_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_1 == null ? "0" : ((Double)convert.CHIEC_KHAU_1).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_2 == null ? "0" : ((Double)convert.CHIEC_KHAU_2).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
-                fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_3 == null ? "0" : ((Double)convert.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
+                fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_3 == null ? "0" : ((Double)convert.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\""));
             }
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
@@ -695,7 +695,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (product.CHIEC_KHAU_3 == null ? "" : ((Double)product.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + product.KICH_THUOC + "\",");
                 fileStringBuilder.Append("\"" + (product.CAN_NANG == null ? "" : ((Double)product.CAN_NANG).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
-                fileStringBuilder.Append("\"" + product.DAC_TA + "\",");
+                fileStringBuilder.Append("\"" + product.DAC_TA + "\"");
             }
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }

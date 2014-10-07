@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Báo cáo thu nợ";
 }
-
+<script src="~/Content/js/FileSaver.js"></script>
 <div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> 
     > <a href="@Url.Action("Report", "Home")"> Báo cáo </a> 
@@ -61,7 +61,6 @@
             $('#mainForm').submit();
         });
         $(document).ready(function () {
-
             $("#ExportExcel").click(function () {
                 var customerId = $("#customerId").val();
                 var customerName = $("#customerName").val();
@@ -76,15 +75,8 @@
                         if (disp && disp.search('attachment') != -1) {
                             var type = request.getResponseHeader('application/ms-excel');
                             var blob = new Blob([response], { type: type });
-                            if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                                var fileName = new Date().getTime().toString() + ".xls";
-                                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                                window.navigator.msSaveBlob(blob, fileName);
-                            } else {
-                                var URL = window.URL || window.webkitURL;
-                                var downloadUrl = URL.createObjectURL(blob);
-                                window.location = downloadUrl;
-                            }
+                            var fileName = new Date().getTime().toString() + ".xls";
+                            saveAs(blob, fileName);                            
                         }
                     }
                 });
