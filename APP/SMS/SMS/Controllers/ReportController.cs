@@ -15,7 +15,116 @@ namespace SMS.Controllers
     [HandleError]
     public class ReportController : Controller
     {
+        [CustomActionFilter]
+        [HttpPost]
+        public FileContentResult DownloadTotalReportPartialView(DateTime? fromDate, DateTime? toDate)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var tonkho = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY_ALL @START_TIME, @END_TIME",
+               FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
 
+            fileStringBuilder.Append("\"Ngày\",");
+            fileStringBuilder.Append("\"Tổng thu tiền bán hàng\",");
+            fileStringBuilder.Append("\"Tổng nợ gối đầu\",");
+            fileStringBuilder.Append("\"Tổng trả hàng\",");
+            fileStringBuilder.Append("\"Tổng chi tiêu\",");
+            fileStringBuilder.Append("\"Tổng chi tiêu mua hàng\",");
+            fileStringBuilder.Append("\"Tồng thu nợ\",");
+            fileStringBuilder.Append("\"Tiền mặt\"");
+            foreach (var detail in tonkho)
+            {
+                fileStringBuilder.Append("\n");
+                fileStringBuilder.Append("\"" + detail.DAY.ToString("dd/MM/yyyy") + "\",");
+                fileStringBuilder.Append("\"" + detail.SO_TIEN_KHACH_TRA.ToString("#,##0.##")+ "\",");
+                fileStringBuilder.Append("\"" + detail.SO_TIEN_NO_GOI_DAU.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.RETURN_TOTAL.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.TONG_CHI.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.TONG_NHAP.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.TONG_THU_NO.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.TOTAL.ToString("#,##0.##") + "\"");
+            }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
+        [CustomActionFilter]
+        [HttpPost]
+        public FileContentResult DownloadWeReportPartialView(DateTime? fromDate, DateTime? toDate)
+        {
+            var ctx = new SmsContext();
+            if (fromDate == null)
+            {
+                fromDate = SystemConstant.MIN_DATE;
+            }
+            if (toDate == null)
+            {
+                toDate = SystemConstant.MAX_DATE;
+            }
+            var FromDateParam = new SqlParameter
+            {
+                ParameterName = "START_TIME",
+                Value = Convert.ToDateTime(fromDate)
+            };
+            var ToDateParam = new SqlParameter
+            {
+                ParameterName = "END_TIME",
+                Value = Convert.ToDateTime(toDate)
+            };
+            var tonkho = ctx.Database.SqlQuery<ReportWeek>("exec SP_REPORT_BY_WEEK @START_TIME, @END_TIME",
+               FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<ReportWeek>();
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            
+            fileStringBuilder.Append("\"Tuần\",");
+            fileStringBuilder.Append("\"Ngày đầu tuần\",");
+            fileStringBuilder.Append("\"Ngày cuối tuần\",");
+            fileStringBuilder.Append("\"Tổng thực thu\",");
+            fileStringBuilder.Append("\"Tổng nợ gối đầu\",");
+            fileStringBuilder.Append("\"Tổng trả hàng\",");
+            fileStringBuilder.Append("\"Doanh thu sau cùng\"");
+
+            int year = 0;
+            foreach (var detail in tonkho)
+            {
+                fileStringBuilder.Append("\n");
+                if (year != detail.YEAR)
+                {
+                    year = detail.YEAR;
+                    fileStringBuilder.Append("\"" + detail.YEAR + "\"");
+                    fileStringBuilder.Append("\n");
+                }
+                fileStringBuilder.Append("\"" + detail.WEEK + "\",");
+                fileStringBuilder.Append("\"" + detail.START_DATE.ToString("dd/MM/yyyy") + "\",");
+                fileStringBuilder.Append("\"" + detail.END_DATE.ToString("dd/MM/yyyy") + "\",");
+                fileStringBuilder.Append("\"" + detail.SO_TIEN_KHACH_TRA.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.SO_TIEN_NO_GOI_DAU.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.RETURN_TOTAL.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.TOTAL.ToString("#,##0.##") + "\"");
+            }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+        
+
+        [CustomActionFilter]
         public FileContentResult downloadTotalReport(DateTime? fromDate, DateTime? toDate)
         {
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
@@ -71,7 +180,7 @@ namespace SMS.Controllers
         // GET: /Report/
         [CustomActionFilter]
         [HttpPost]
-        public ActionResult DownloadDebitColecction(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
+        public FileContentResult DownloadDebitColecction(int? customerId, string customerName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(customerName))
             {
@@ -110,13 +219,6 @@ namespace SMS.Controllers
             var deatils = ctx.Database.SqlQuery<ReportDebitColection>("exec SP_GET_REPORT_DEBT_COLLECTION @CUSTOMER_ID, @CUSTOMER_NAME, @FROM_DATE, @TO_DATE", customerIdParam, customerNameParam,
                 FromDateParam, ToDateParam).ToList<ReportDebitColection>();
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "UTF-8";
-            Response.ContentEncoding = System.Text.Encoding.UTF8;
-            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='6'> BÁO CÁO THU NỢ </td></tr>");
             fileStringBuilder.Append("<tr>");
@@ -156,18 +258,13 @@ namespace SMS.Controllers
             fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + byReturn.ToString("#,###.##") + " </td>");
             fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + total.ToString("#,###.##") + " </td>");
             fileStringBuilder.Append("</tr>");
-
             fileStringBuilder.Append("</table>");
-
-            Response.Output.Write(fileStringBuilder.ToString());
-            Response.Flush();
-            Response.End();
-            return View("../Report/ReportDebitColecction");
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
         [CustomActionFilter]
         [HttpPost]
-        public ActionResult downloadReportByArea(int? areaId, string areaName, DateTime? fromDate, DateTime? toDate)
+        public FileContentResult downloadReportByArea(int? areaId, string areaName, DateTime? fromDate, DateTime? toDate)
         {
             if (string.IsNullOrWhiteSpace(areaName))
             {
@@ -206,15 +303,8 @@ namespace SMS.Controllers
 
             var details = ctx.Database.SqlQuery<Report>("exec SP_REPORT_BY_DAY_AND_AREA  @START_TIME, @END_TIME, @MA_KHU_VUC, @TEN_KHU_VUC ",
                 FromDateParam, ToDateParam, customerIdParam,customerNameParam ).ToList<Report>();
+
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename= " + fileName + ".xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "UTF-8";
-            Response.ContentEncoding = System.Text.Encoding.UTF8;
-            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("<table border=2><tr><td bgcolor='#6495ED' style=\"font-size:18px; font-family:'Times New Roman'\" align='center' colspan='5'> BÁO CÁO DOANH THU THEO KHU VỰC </td></tr>");
             fileStringBuilder.Append("<tr>");
@@ -293,10 +383,7 @@ namespace SMS.Controllers
 
             fileStringBuilder.Append("</table>");
 
-            Response.Output.Write(fileStringBuilder.ToString());
-            Response.Flush();
-            Response.End();
-            return View("../Report/ReportByCustomer");
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
         [CustomActionFilter]

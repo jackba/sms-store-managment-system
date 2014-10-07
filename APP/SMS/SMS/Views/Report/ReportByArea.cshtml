@@ -14,8 +14,10 @@
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
+
 <h3 style="color:red">@ViewBag.Message</h3>
 <h3 style="color:blue">@ViewBag.InforMessage</h3>
+<script src="~/Content/js/FileSaver.js"></script>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
@@ -76,16 +78,9 @@
                         var disp = request.getResponseHeader('Content-Disposition');
                         if (disp && disp.search('attachment') != -1) {
                             var type = request.getResponseHeader('application/ms-excel');
-                            var blob = new Blob([response], { type : type });
-                            if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                                var fileName = new Date().getTime().toString() + ".xls";
-                                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                                window.navigator.msSaveBlob(blob, fileName);
-                            } else {
-                                var URL = window.URL || window.webkitURL;
-                                var downloadUrl = URL.createObjectURL(blob);
-                                window.location = downloadUrl;
-                            }
+                            var blob = new Blob([response], { type: type });
+                            var fileName = new Date().getTime().toString() + ".xls";
+                            saveAs(blob, fileName);
                         }
                     }
                 });

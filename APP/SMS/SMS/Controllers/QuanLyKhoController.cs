@@ -24,6 +24,7 @@ namespace SMS.Controllers
             return float.TryParse(s, out outNum);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public FileContentResult downloadtWarningbyStoreId(int storeId, string productName)
         {
@@ -52,6 +53,7 @@ namespace SMS.Controllers
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
+        [CustomActionFilter]
         public ActionResult getWarningbyStoreId()
         {
             var ctx = new SmsContext();
@@ -60,6 +62,7 @@ namespace SMS.Controllers
             return View();
         }
 
+        [CustomActionFilter]
         public PartialViewResult getWarningbyStoreIdPtv(int storeId, string productName, int? currentPageIndex)
         {
             var ctx = new SmsContext();
@@ -73,6 +76,7 @@ namespace SMS.Controllers
             return PartialView("getWarningbyStoreIdPtv", model);
         }
 
+        [CustomActionFilter]
         public ActionResult Delete(int id)
         {
             if (id <= 0)
@@ -96,7 +100,7 @@ namespace SMS.Controllers
             }
         }
 
-
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult importMinMax(MinMax model, HttpPostedFileBase file)
         {
@@ -235,6 +239,7 @@ namespace SMS.Controllers
             }
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult importMinMax()
         {
@@ -248,6 +253,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult EditMinmax(MinMax model)
         {
@@ -272,6 +278,8 @@ namespace SMS.Controllers
                 return RedirectToAction("MinMaxOfProductByStore", new { @Message = "Lưu thất bại. Vui lòng thử lại lần nữa." });
             }
         }
+
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult EditMinmax(int id)
         {
@@ -286,6 +294,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public ActionResult AddMinMax(MinMax model)
         {
@@ -349,6 +358,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpGet]
         public ActionResult AddMinMax()
         {
@@ -362,6 +372,7 @@ namespace SMS.Controllers
             return View(model);
         }
 
+        [CustomActionFilter]
         [HttpPost]
         public FileContentResult downloadMinMaxByStore(int? storeId, int? productGroupId, string productName)
         {
@@ -401,9 +412,8 @@ namespace SMS.Controllers
             }
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
-
-
-
+        
+        [CustomActionFilter]
         public ActionResult MinMaxOfProductByStore(string message, string inforMessage)
         {
             var ctx = new SmsContext();

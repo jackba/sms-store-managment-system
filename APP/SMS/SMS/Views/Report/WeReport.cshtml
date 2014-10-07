@@ -11,6 +11,7 @@
     > @ViewBag.Title
     <br />
 </div>
+<script src="~/Content/js/FileSaver.js"></script>
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
@@ -33,6 +34,26 @@
         $(document).ready(function () {
             $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
             $('#mainForm').submit();
+
+            $("#ExportExcel").click(function () {
+                var fromDate = $("#fromDate").val();
+                var toDate = $("#toDate").val();
+                $.ajax({
+                    url: "/Report/DownloadWeReportPartialView",
+                    data: "{ 'fromDate': '" + fromDate + "' , 'toDate': '" + toDate + "'}",
+                    type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (response, status, request) {                        
+                        var disp = request.getResponseHeader('Content-Disposition');
+                        if (disp && disp.search('attachment') != -1) {
+                            var type = request.getResponseHeader('text/csv');
+                            var blob = new Blob([response], { type: type });
+                            var fileName = new Date().getTime().toString() + ".csv";
+                            saveAs(blob, fileName);
+                        }
+                    }
+                });
+            });
+
         });
         $(document).ready(function () {
             $('.datePicker').datepicker({
@@ -82,7 +103,7 @@
                 <td>
                     @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
                     <input type="submit" value="Tìm kiếm" class="myButton" />
-                    <!--input type="button" value="Xuất excel" id="btnExport" class="myButton" /-->
+                    <input type="button" value="Xuất excel" id="ExportExcel" class="myButton">
                 </td>
             </tr>
         </table>
