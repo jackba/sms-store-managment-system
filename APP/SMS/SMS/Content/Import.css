@@ -277,7 +277,7 @@ div.right{
     display: inline-block; 
     background-color: lightgray; 
     width: 78%; height: 30px;
-}
+}*
 
 td.left{
     padding: 2px,2px,2px,2px !important;
