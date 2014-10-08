@@ -164,6 +164,7 @@
     <Compile Include="Controllers\KhuVucController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\NhaCungCapController.cs" />
+    <Compile Include="Controllers\NhomSanPham.cs" />
     <Compile Include="Controllers\PhanQuyenController.cs" />
     <Compile Include="Controllers\QuanLyKhoController.cs" />
     <Compile Include="Controllers\BanHangController.cs" />
@@ -690,6 +691,7 @@
     <Content Include="Content\KhuVuc.css" />
     <Content Include="Content\NguoiDung.css" />
     <Content Include="Content\NhaCungCap.css" />
+    <Content Include="Content\NhomSanPham.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\PhanQuyen.css" />
     <Content Include="Content\ConvertUnit.css" />
@@ -986,6 +988,9 @@
     <Content Include="Views\Report\TotalReportPartialView.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
     <Content Include="Views\HoaDon\PrintBill.cshtml" />
+    <Content Include="Views\NhomSanPham\AddNew.cshtml" />
+    <Content Include="Views\NhomSanPham\Edit.cshtml" />
+    <Content Include="Views\NhomSanPham\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

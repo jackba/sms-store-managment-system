@@ -90,6 +90,7 @@ namespace SMS.Controllers
                     }
                     infor.NGAY_BAN = model.Infor.NGAY_BAN;
                     infor.NGAY_GIAO = model.Infor.NGAY_GIAO;
+                    infor.SO_DIEN_THOAI = model.Infor.SO_DIEN_THOAI;
                     infor.DIA_CHI_GIAO_HANG = model.Infor.DIA_CHI_GIAO_HANG;
                     infor.UPDATE_AT = DateTime.Now;
                     infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
