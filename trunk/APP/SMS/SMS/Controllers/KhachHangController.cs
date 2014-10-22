@@ -187,10 +187,6 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult AddNew()
         {
-            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsMetadataManager"])
-            {
-                return RedirectToAction("Index");
-            }
             var ctx = new SmsContext();
             var khuVucList = (from s in ctx.KHU_VUC
                               where s.ACTIVE == "A"
