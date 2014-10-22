@@ -63,7 +63,7 @@
         hideRelationCustomer();
 
         $('#NgayBan').datepicker('setDate', 'today');
-        $('#NgayGiao').datepicker('setDate', 'today + 3');
+        $('#NgayGiao').datepicker('setDate', 'today');
 
 
         /**AUTOCOMPLETE**/
@@ -974,11 +974,11 @@
                 '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="unit " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
                 '</select></td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Gia_Ban" class="price numberic" maxlength = "9" id="lstChiTietHoaDon_' + row + '__Gia_Ban" type="text" value="" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Gia_Ban" class="price numberic" maxlength = "9" id="lstChiTietHoaDon_' + row + '__Gia_Ban" type="text" value="" readonly="True" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
                 '</td><td class="inner colwidth ">' +
                 '<input name="lstChiTietHoaDon[' + row + '].Thanh_Tien" disabled="disabled" class="total numberic" id="lstChiTietHoaDon_' + row + '__Thanh_Tien" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Phan_Tram_CK" class="discount numberic" maxlength = "4" id="lstChiTietHoaDon_' + row + '__Phan_Tram_CK" type="text" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Phan_Tram_CK" class="discount numberic" maxlength = "4" id="lstChiTietHoaDon_' + row + '__Phan_Tram_CK" type="text"  readonly="True" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
                 '</td><td class="inner colwidth ">' +
                 '<input name="lstChiTietHoaDon[' + row + '].Gia_Thuc" disabled="disabled" class="realTotal numberic" id="lstChiTietHoaDon_' + row + '__Gia_Thuc" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +
@@ -1449,13 +1449,13 @@
                             @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "price numberic", @maxlength = "9" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "price numberic", @maxlength = "9", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "discount numberic", @maxlength = "4" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "discount numberic", @maxlength = "4", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
@@ -1491,16 +1491,16 @@
                             @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Ban, new { @class = "price numberic", @maxlength = "9" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Ban, new { @class = "price numberic", @maxlength = "9", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Phan_Tram_CK, new { @class = "discount numberic" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Phan_Tram_CK, new { @class = "discount numberic", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled"  })
                         </td>
                         <td class='innerLast colwidth '>
                             @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
