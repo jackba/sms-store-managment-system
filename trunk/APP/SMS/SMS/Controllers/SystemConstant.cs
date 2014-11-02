@@ -15,7 +15,7 @@ namespace SMS.Controllers
         private static System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("vi-VN");
         public static DateTime MIN_DATE = getMinDate();
         public static DateTime MAX_DATE = DateTime.ParseExact("01/01/9999", "dd/MM/yyyy", cultureinfo);
-        public static string SALT = "2014";
+        public static string SALT = "SMS2014";
         public static DateTime getMinDate()
         {            
             return DateTime.ParseExact("01/01/2014", "dd/MM/yyyy", cultureinfo);
@@ -37,21 +37,28 @@ namespace SMS.Controllers
 
         public static void sendEmail(string mailTo, string mailFrom, string mailSubject, string mailBody, string username, string password)
         {
-            MailMessage mail = new MailMessage();
-            mail.To.Add(mailTo);
-            mail.From = new MailAddress(mailFrom);
-            mail.Subject = mailSubject;
-            string Body = mailBody;
-            mail.Body = Body;
-            mail.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient();
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 587;
-            smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential
-            (username, password);// Enter seders User name and password  
-            smtp.EnableSsl = true;
-            smtp.Send(mail);
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.To.Add(mailTo);
+                mail.From = new MailAddress(mailFrom);
+                mail.Subject = mailSubject;
+                string Body = mailBody;
+                mail.Body = Body;
+                mail.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential
+                (username, password);// Enter seders User name and password  
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
         }
 
     }
