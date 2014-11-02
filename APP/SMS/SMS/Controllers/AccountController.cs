@@ -101,6 +101,12 @@ namespace SMS.Controllers
                         return View(model);
                     };
 
+                    if (!EmailManager.CheckForInternetConnection())
+                    {
+                        ViewBag.Message = "Hệ thống dùng offline. Không thể gửi mail.";
+                        return View(model);
+                    }
+
                     try
                     {
                         
@@ -108,7 +114,8 @@ namespace SMS.Controllers
                         usr.SALT = crypto.Salt;
                         ctx.SaveChanges();
                         SystemConstant.sendEmail(usr.EMAIL, email.VALUE, "[Vân Phước - SMS] Mật khẩu mới", "Mật khẩu mới của bạn để đăng nhập vào hệ thống là " + newPass + ". Bạn nên thay đôi mật khẩu ngay sau khi đăng nhập.",
-                            emailUser.VALUE,emailPass.VALUE);
+                            emailUser.VALUE,
+                            EmailManager.Decrypt(emailPass.VALUE, SystemConstant.SALT));
                         ViewBag.InforMessage = "Mật khẩu đã được gửi đến email của bạn. Vui lòng đăng nhập email để lấy mật khẩu mới.";
                         return View(model);
                     }

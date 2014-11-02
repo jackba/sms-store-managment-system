@@ -209,7 +209,7 @@ namespace SMS.Controllers
                 {
                     emailPass = db.SMS_MASTER.Create();
                     emailPass.NAME = "EMAIL_PASS";
-                    emailPass.VALUE = model.EmailPassword;
+                    emailPass.VALUE = EmailManager.Encrypt(model.EmailPassword, SystemConstant.SALT);
                     emailPass.CREATE_AT = DateTime.Now;
                     emailPass.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                     emailPass.UPDATE_AT = DateTime.Now;
@@ -220,7 +220,7 @@ namespace SMS.Controllers
                 }
                 else
                 {
-                    emailPass.VALUE = model.EmailPassword;
+                    emailPass.VALUE = EmailManager.Encrypt(model.EmailPassword, SystemConstant.SALT);
                     emailPass.UPDATE_AT = DateTime.Now;
                     emailPass.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     db.SaveChanges();
