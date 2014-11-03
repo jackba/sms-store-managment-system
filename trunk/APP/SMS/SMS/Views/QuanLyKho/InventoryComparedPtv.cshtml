@@ -1,0 +1,109 @@
+﻿@model SMS.Models.CompareModel
+@using PagedList.Mvc;
+
+<div>
+
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count sản phầm </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.ComparedList, currentPageIndex => Url.Action("InventoryComparedPtv",
+                                                            new
+                                                            {
+                                                                currentPageIndex,
+                                                                storeId = ViewBag.StoreId,
+                                                                productGroupId = ViewBag.ProductGroupId,
+                                                                productId = ViewBag.ProductId,
+                                                                productName = ViewBag.ProductName,
+                                                                firstDate = ViewBag.FirstDate,
+                                                                secondDate = ViewBag.SecondDate                                                                
+                                                            }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                LoadingElementId = "resultLoadingDiv",
+                UpdateTargetId = "mainDiv"
+            }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table width="100%">
+        <tr style="width:100%">
+            <td class='inner colwidth head ' width="10%"> Mã sản phẩm </td>
+            <td class='inner colwidth head '> Tên sản phẩm </td>
+            <td class='inner colwidth head '> Đơn vị </td>
+            <td class='inner colwidth head ' id="FisrtDateHead">  </td>
+            <td class='innerLast colwidth head ' id="SecondDateHead">  </td>
+            <td class='innerLast colwidth head '>  Thay đổi </td>
+        </tr>
+        @foreach (var dbHist in Model.ComparedList)
+        {
+            <tr class="inner column-hscroll alignCenter">
+                <td class="inner colwidth">
+                    @dbHist.MA_SAN_PHAM
+                </td>
+                <td class="inner colwidth"> @dbHist.TEN_SAN_PHAM</td>
+                <td class="inner colwidth"> @dbHist.TEN_DON_VI</td>
+                <td class="inner colwidth numberic">@dbHist.INVEN_FIRST_DATE.ToString("0,0.00")</td>
+                <td class="inner colwidth numberic">@dbHist.INVEN_SECOND_DATE.ToString("0,0.00")</td>
+                <td class="innerLast colwidth numberic">@dbHist.COMPARED.ToString("0,0.00")</td>
+            </tr>
+        }
+    </table>
+
+
+    <table width="100%">
+        <tr>
+            <td>
+                <div style="text-align:left; padding-top:3px;">
+                    <label>@ViewBag.Count sản phầm </label>
+                </div>
+            </td>
+            <td>
+                <div style="text-align: right;  padding-top: 3px; ">
+                    @Html.PagedListPager(Model.ComparedList, currentPageIndex => Url.Action("InventoryComparedPtv",
+                                                            new
+                                                            {
+                                                                currentPageIndex,
+                                                                storeId = ViewBag.StoreId,
+                                                                productGroupId = ViewBag.ProductGroupId,
+                                                                productId = ViewBag.ProductId,
+                                                                productName = ViewBag.ProductName,
+                                                                firstDate = ViewBag.FirstDate,
+                                                                secondDate = ViewBag.SecondDate    
+                                                            }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                LoadingElementId = "resultLoadingDiv",
+                UpdateTargetId = "mainDiv"
+            }
+    ))
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#FisrtDateHead").html($("#firstDate").val());
+        $("#SecondDateHead").html($("#secondDate").val());
+    });
+    
+</script>

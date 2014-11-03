@@ -24,6 +24,112 @@ namespace SMS.Controllers
             return float.TryParse(s, out outNum);
         }
 
+        public ActionResult InventoryCompared(string message, string inforMessage)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            CompareModel model = new CompareModel();
+            model.Stores = stores;
+            model.ProductGroups = productGroups;
+            ViewBag.Message = message;
+            ViewBag.InforMessage = inforMessage;
+            return View(model);
+        }
+
+        public PartialViewResult InventoryComparedPtv(int? storeId, int? productGroupId, 
+            int? productId, string productName, DateTime firstDate, DateTime secondDate, int? currentPageIndex)
+        {
+            if (storeId == null)
+            {
+                storeId = 0;
+            }
+            if (productGroupId == null)
+            {
+                productGroupId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
+            var ctx = new SmsContext();
+
+            var tonkho = ctx.Database.SqlQuery<Compared>("exec SP_COMPARE_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @MA_NHOM, @FIRST_DATE, @SECOND_DATE ",
+                new SqlParameter("MA_KHO", Convert.ToInt32(storeId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(productId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(productName) ? "" : productName.Trim()),
+                new SqlParameter("MA_NHOM", Convert.ToInt32(productGroupId)),
+                new SqlParameter("FIRST_DATE", Convert.ToDateTime(firstDate)),
+                new SqlParameter("SECOND_DATE", Convert.ToDateTime(secondDate))).ToList<Compared>();
+            
+            IPagedList<Compared> tk = null;
+            int pageSize = SystemConstant.ROWS;
+            int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
+            tk = tonkho.ToPagedList(pageIndex, pageSize);
+
+            CompareModel model = new CompareModel();
+            model.ComparedList = tk;
+            ViewBag.StoreId = storeId;
+            ViewBag.ProductGroupId = productGroupId;
+            ViewBag.ProductName = productName;
+            ViewBag.FirstDate = firstDate.ToString("dd/MM/yyyy");
+            ViewBag.SecondDate = secondDate.ToString("dd/MM/yyyy");
+            ViewBag.Count = tonkho.Count;
+            return PartialView("InventoryComparedPtv", model);
+        }
+
+        public FileContentResult downloadCompared(int? storeId, int? productGroupId,
+            int? productId, string productName, DateTime firstDate, DateTime secondDate)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Mã sản phẩm\",");
+            fileStringBuilder.Append("\"Tên sản phẩm\",");
+            fileStringBuilder.Append("\"Đơn vị tính\",");
+            fileStringBuilder.Append("\"" + firstDate.ToString("dd/MM/yyyy") + "\",");
+            fileStringBuilder.Append("\"" + secondDate.ToString("dd/MM/yyyy") + "\",");
+            fileStringBuilder.Append("\"Thay đổi\"");
+            if (storeId == null)
+            {
+                storeId = 0;
+            }
+            if (productGroupId == null)
+            {
+                productGroupId = 0;
+            }
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
+            var ctx = new SmsContext();
+
+            var tonkho = ctx.Database.SqlQuery<Compared>("exec SP_COMPARE_INVENTORY @MA_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @MA_NHOM, @FIRST_DATE, @SECOND_DATE ",
+                new SqlParameter("MA_KHO", Convert.ToInt32(storeId)),
+                new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(productId)),
+                new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(productName) ? "" : productName.Trim()),
+                new SqlParameter("MA_NHOM", Convert.ToInt32(productGroupId)),
+                new SqlParameter("FIRST_DATE", Convert.ToDateTime(firstDate)),
+                new SqlParameter("SECOND_DATE", Convert.ToDateTime(secondDate))).ToList<Compared>();
+            
+            int i = 0;
+            foreach (var detail in tonkho)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + detail.MA_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_SAN_PHAM + "\",");
+                fileStringBuilder.Append("\"" + detail.TEN_DON_VI + "\",");
+                fileStringBuilder.Append("\"" + detail.INVEN_FIRST_DATE.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.INVEN_SECOND_DATE.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.COMPARED.ToString("#,##0.##") + "\",");
+            }
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
+
+
         [CustomActionFilter]
         [HttpPost]
         public FileContentResult downloadtWarningbyStoreId(int storeId, string productName)
@@ -47,8 +153,8 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + detail.MA_SAN_PHAM + "\",");
                 fileStringBuilder.Append("\"" + detail.TEN_SAN_PHAM + "\",");
                 fileStringBuilder.Append("\"" + detail.TEN_DON_VI + "\",");
-                fileStringBuilder.Append("\"" + detail.INVENTORY_MIN.ToString("#,###,##") + "\",");
-                fileStringBuilder.Append("\"" + detail.INVENTORY.ToString("#,###,##") + "\",");
+                fileStringBuilder.Append("\"" + detail.INVENTORY_MIN.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.INVENTORY.ToString("#,##0.##") + "\",");
             }
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }

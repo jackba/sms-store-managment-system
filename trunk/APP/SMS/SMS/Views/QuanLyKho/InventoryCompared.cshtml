@@ -1,8 +1,8 @@
-﻿@model SMS.Models.MinMax
+﻿@model SMS.Models.CompareModel
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Danh sách tồn kho tối thiểu - tối đa";
+    ViewBag.Title = "So sánh tồn kho";
 }
 
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
@@ -34,14 +34,22 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/themes/base/css")
     <script>
-        $(document).ready(function () {
+        $(document).ready(function () {            
+            $("#firstDate").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", 'today -1');
+            $("#secondDate").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+
             $("#ExportExcel").click(function () {
                 var storeId = $("#StoreId").val();
                 var productGroupId = $("#productGroupId").val();
+                var productId = $("#productId").val();
                 var productName = $("#productName").val();
+                var fisrtDate = $("#firstDate").val();
+                var secondDate = $("#secondDate").val();
+                alert(fisrtDate);
+                alert(secondDate);
                 $.ajax({
-                    url: "/QuanLyKho/downloadMinMaxByStore",
-                    data: "{ 'storeId': '" + storeId + "' , 'productGroupId':'" + productGroupId + "' , 'productName': '" + productName + "'}",
+                    url: "/QuanLyKho/downloadCompared",
+                    data: "{ 'storeId': '" + storeId + "' , 'productGroupId':'" + productGroupId + "' , 'productId':'" + productId + "' , 'productName':'" + productName + "' , 'firstDate':'" + fisrtDate + "' , 'secondDate': '" + secondDate + "'}",
                     type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (response, status, request) {
                         var disp = request.getResponseHeader('Content-Disposition');
@@ -72,8 +80,10 @@
                                 }))
                             }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
+                    $('#productId').val("");
                 },
-                select: function (event, ui) {
+                select: function (event, ui) {                    
+                    $('#productId').val(ui.item.id);
                     $('#productName').val(ui.item.label);
                     return false;
                 },
@@ -92,7 +102,7 @@
     </style>
 
 }
-@using (Ajax.BeginForm("MinMaxOfProductByStorePartialView", "QuanLyKho", new AjaxOptions()
+@using (Ajax.BeginForm("InventoryComparedPtv", "QuanLyKho", new AjaxOptions()
                             {
                                 HttpMethod = "POST",
                                 InsertionMode = InsertionMode.Replace,
@@ -106,36 +116,45 @@
     <table>
         <tr>
             <td> Kho&nbsp;&nbsp;&nbsp;&nbsp; </td>
-            <td> 
+            <td>
                 @if ((bool)Session["IsAdmin"])
-                    {
-                        @Html.DropDownList("StoreId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "------ Chọn  kho ------", new { @id = "storeId", style = "padding:5px;font-size:1.2em" })
-                    }
-                    else
-                    {
-                        @Html.DropDownList("StoreId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "------ Chọn  kho ------", new { @id = "storeId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em"})
-                    }
+                {
+                    @Html.DropDownList("storeId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho --------", new { @id = "storeId", style = "padding:5px;font-size:1.2em" })
+                }
+                else
+                {
+                    @Html.DropDownList("storeId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho --------", new { @id = "storeId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em" })
+                }
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </td>
             <td> Nhóm sản phẩm&nbsp;&nbsp;&nbsp;&nbsp; </td>
-            <td> @Html.DropDownList("ProductGroups", new SelectList(@Model.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" }) 
-                &nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                @Html.DropDownList("productGroupId", new SelectList(@Model.ProductGroups, "MA_NHOM", "TEN_NHOM"), "-Chọn nhóm sản phẩm-", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </td>
             <td> Sản phẩm&nbsp;&nbsp;&nbsp;&nbsp; </td>
-            <td> @Html.TextBox("productName", ViewBag.productName as string,new { @id = "productName" })&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+            @Html.Hidden("productId", ViewBag.productName as int?, new { @id = "productId" }) 
+            @Html.TextBox("productName", ViewBag.productName as string, new { @id = "productName" })&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                       
+        </tr>
+        <tr>
+            <td>
+                Ngày trước
+            </td>
+            <td>
+               @Html.TextBox("firstDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", @id = "firstDate" })
+            </td>
+            <td> Ngày sau </td>
+            <td>
+                @Html.TextBox("secondDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", @id = "secondDate" })
+            </td>
             <td>
                 <input type="submit" value="Tìm kiếm" />
             </td>
             <td>
                 <input type="button" id="ExportExcel" value="Xuất excel" />
-            </td>
-            <td>
-                @{
-                    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsStoreManager"] == true)
-                    {
-                            <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddMinMax","QuanLyKho")'" />
-                    }
-                }
-            </td>
+            </td> 
         </tr>
     </table>
     <div style="clear:both"></div>

@@ -569,8 +569,10 @@
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\category.jpg" />
+    <Content Include="Content\images\category.png" />
     <Content Include="Content\images\charge.png" />
     <Content Include="Content\images\Chargeback.png" />
+    <Content Include="Content\images\Compare1.png" />
     <Content Include="Content\images\config.jpg" />
     <Content Include="Content\images\customer.png" />
     <Content Include="Content\images\Download-Icon.png" />
@@ -761,6 +763,7 @@
     <Content Include="Images\alfresco-logo.png" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\logo2.png" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />
     <Content Include="Images\orderedList2.png" />
@@ -779,6 +782,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\WiLogo.png" />
     <Content Include="Models\SmsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmsModel.edmx</DependentUpon>
@@ -992,6 +996,8 @@
     <Content Include="Views\NhomSanPham\AddNew.cshtml" />
     <Content Include="Views\NhomSanPham\Edit.cshtml" />
     <Content Include="Views\NhomSanPham\Index.cshtml" />
+    <Content Include="Views\QuanLyKho\InventoryCompared.cshtml" />
+    <Content Include="Views\QuanLyKho\InventoryComparedPtv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
