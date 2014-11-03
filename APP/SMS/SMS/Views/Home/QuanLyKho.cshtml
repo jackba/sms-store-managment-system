@@ -19,6 +19,11 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 <div class="grid_7">
+    <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px; font-size:16px;">
+        Quản lý kho
+    </div>
+    <br />
+
      <a class="dashboard-module" href="@Url.Action("Warning", "SanPham")">
         <img width="64" height="64" alt="edit" src="../../Content/images/Warning.png"></img>
         <span>SẢN PHẦM CẦN NHẬP HÀNG</span>
@@ -47,7 +52,10 @@
     </a>
 
    
-   
+    <a class="dashboard-module" href="@Url.Action("InventoryCompared", "QuanLyKho")">
+        <img width="64" height="64" alt="edit" src="~/Content/images/Compare1.png"></img>
+        <span>SO SÁNH TỒN KHO</span>
+    </a>
 
     <a class="dashboard-module" href="@Url.Action("FifoReport", "QuanLyKho")">
         <img width="64" height="64" alt="edit" src="../../Content/images/FIFO114ds.png"></img>

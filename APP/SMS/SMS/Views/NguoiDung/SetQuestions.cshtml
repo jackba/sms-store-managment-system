@@ -8,9 +8,9 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>CỬA HÀNG TRANG THIẾT BỊ NGÀNH NƯỚC</h1>
+                <h1>CÔNG TY TRÁCH NHIỆM HỮU HẠN VÂN PHƯỚC</h1>
                 <br />
-                <h2> SMS - Store Managemanet System </h2>
+                <h2> SMS - Store Management System </h2>
             </hgroup>
         </div>
     </section>
@@ -22,110 +22,113 @@
         color: red;
     }
 </style>
-<br />
-<br />
-<br />
-<br />
-<h2> @ViewBag.Title</h2>
-<hr style="width:100%" />
-<div id="Informessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
-    @ViewBag.InforMessage
-</div>
-<div id="Message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
-    @ViewBag.Message
-</div>
-
-@using (Html.BeginForm("SetQuestions", "NguoiDung", FormMethod.Post, new { @id = "GetPassword" }))
-{
-    @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
-    <div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+<div class="grid_7">
+    <div style="height:45px;"></div>
+    <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+        <a href="@Url.Action("NguoiDung", "Home")"> Người dùng </a>
+        > @ViewBag.Title
     </div>
-    <div>
-        <table>
-            <tr>
-                <td>Câu hỏi 1</td>
-                <td class="required">@Html.DropDownListFor(u => u.QuestionId1, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId1", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
-                <td class="required">@Html.TextBoxFor(u => u.Answer1, new { @id = "Answer1" })</td>
-            </tr>
-            <tr>
-                <td>Câu hỏi 2</td>
-                <td class="required">@Html.DropDownListFor(u => u.QuestionId2, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId2", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
-                <td class="required">@Html.TextBoxFor(u => u.Answer2, new { @id = "Answer2" })</td>
-            </tr>
-            <tr>
-                <td>Câu hỏi 3</td>
-                <td class="required">@Html.DropDownListFor(u => u.QuestionId3, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId3", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
-                <td class="required">@Html.TextBoxFor(u => u.Answer3, new { @id = "Answer3" })</td>
-            </tr>
-        </table>
-        <input type="button" value="Gửi mật khẩu qua email" onclick="return formSunmit();" />
+    <h2> @ViewBag.Title</h2>
+    <hr style="width:100%" />
+    <div id="Informessage" style="color:blue; font-family:'Times New Roman'; font-size:16px;">
+        @ViewBag.InforMessage
     </div>
-}
-<script>
-    function formSunmit() {
-        $('#imessage').empty();
-        $('#Message').empty();
-        $('#InforMessage').empty();
-        var questionId1 = $("#QuestionId1").val();
-        var questionId2 = $("#QuestionId2").val();
-        var questionId3 = $("#QuestionId3").val();
-        var answer1 = $("#Answer1").val();
-        var answer2 = $("#Answer2").val();
-        var answer3 = $("#Answer3").val();
-        var errorMessage = '';
-        if (questionId1 == 0 || questionId1 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa chọn câu hỏi 1. Vui lòng chọn câu hỏi 1.";
-        }
-        if (answer1 == null || answer1 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa trả lời câu hỏi 1.";
-        }
-        if (questionId2 == 0 || questionId2 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa chọn câu hỏi 2. Vui lòng chọn câu hỏi 2.";
-        }
-        if (answer2 == null || answer2 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa trả lời câu hỏi 2.";
-        }
+    <div id="Message" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+        @ViewBag.Message
+    </div>
 
-        if (questionId3 == 0 || questionId3 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa chọn câu hỏi 3. Vui lòng chọn câu hỏi 3.";
-        }
-
-        if (answer3 == null || answer3 == '') {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Chưa trả lời câu hỏi 3.";
-        }
-
-        if (questionId1 == questionId2 || questionId1 == questionId3 || questionId2 == questionId3) {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Các câu hỏi không được giống nhau";
-        }
-        if (errorMessage != '') {
-            $('#imessage').append(errorMessage);
-            $('#imessage').append("<hr/> ");
-            return false;
-        }
-        else {
-            $('#GetPassword').submit();
-        }
-
+    @using (Html.BeginForm("SetQuestions", "NguoiDung", FormMethod.Post, new { @id = "GetPassword" }))
+    {
+        @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
+        <div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td>Câu hỏi 1</td>
+                    <td class="required">@Html.DropDownListFor(u => u.QuestionId1, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId1", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
+                    <td class="required">@Html.TextBoxFor(u => u.Answer1, new { @id = "Answer1" })</td>
+                </tr>
+                <tr>
+                    <td>Câu hỏi 2</td>
+                    <td class="required">@Html.DropDownListFor(u => u.QuestionId2, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId2", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
+                    <td class="required">@Html.TextBoxFor(u => u.Answer2, new { @id = "Answer2" })</td>
+                </tr>
+                <tr>
+                    <td>Câu hỏi 3</td>
+                    <td class="required">@Html.DropDownListFor(u => u.QuestionId3, new SelectList(@Model.Questions, "QUESTION_ID", "QUESTION"), "--------------Chọn câu hỏi---------------", new { @id = "QuestionId3", style = "padding:5px;font-size:1.2em", @class = "required" })</td>
+                    <td class="required">@Html.TextBoxFor(u => u.Answer3, new { @id = "Answer3" })</td>
+                </tr>
+            </table>
+            <input type="button" value="Lưu thay đổi" onclick="return formSunmit();" />
+        </div>
     }
-</script>
+</div>
+    <script>
+        function formSunmit() {
+            $('#imessage').empty();
+            $('#Message').empty();
+            $('#InforMessage').empty();
+            var questionId1 = $("#QuestionId1").val();
+            var questionId2 = $("#QuestionId2").val();
+            var questionId3 = $("#QuestionId3").val();
+            var answer1 = $("#Answer1").val();
+            var answer2 = $("#Answer2").val();
+            var answer3 = $("#Answer3").val();
+            var errorMessage = '';
+            if (questionId1 == 0 || questionId1 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn câu hỏi 1. Vui lòng chọn câu hỏi 1.";
+            }
+            if (answer1 == null || answer1 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa trả lời câu hỏi 1.";
+            }
+            if (questionId2 == 0 || questionId2 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn câu hỏi 2. Vui lòng chọn câu hỏi 2.";
+            }
+            if (answer2 == null || answer2 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa trả lời câu hỏi 2.";
+            }
+
+            if (questionId3 == 0 || questionId3 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa chọn câu hỏi 3. Vui lòng chọn câu hỏi 3.";
+            }
+
+            if (answer3 == null || answer3 == '') {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Chưa trả lời câu hỏi 3.";
+            }
+
+            if (questionId1 == questionId2 || questionId1 == questionId3 || questionId2 == questionId3) {
+                if (errorMessage != '') {
+                    errorMessage += "<br>";
+                }
+                errorMessage += "Các câu hỏi không được giống nhau";
+            }
+            if (errorMessage != '') {
+                $('#imessage').append(errorMessage);
+                $('#imessage').append("<hr/> ");
+                return false;
+            }
+            else {
+                $('#GetPassword').submit();
+            }
+
+        }
+    </script>

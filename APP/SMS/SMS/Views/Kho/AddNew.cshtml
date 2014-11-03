@@ -13,16 +13,14 @@
     }
 }
 
-<div style="background-color:lightgray; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
+<div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a> >
     <a href="@Url.Action("Index", "Kho")"> Danh sách kho - cửa hàng </a>
     > @ViewBag.Title
 </div>
-<br />
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
 <hr style="width:100%" />
 
 @using (Html.BeginForm())
@@ -52,7 +50,7 @@
                 @Html.LabelFor(u => u.MA_NGUOI_DUNG_DAU)
             </div>
             <div>
-                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG_DAU, theList, "--------------- Chọn người đứng đầu kho ---------------")
+                @Html.DropDownListFor(u => u.MA_NGUOI_DUNG_DAU, theList, "--------------- Chọn người đứng đầu kho ---------------", new { style = "padding:5px;font-size:1.2em" })
             </div>
             <div>
                 @Html.LabelFor(u => u.GHI_CHU)

@@ -141,7 +141,7 @@
                                         null,
                                         new
                                         {
-                                            style = " /*background: url('" + Url.Content("~/Images/logo.png") + "') no-repeat center right;*/ display:block; height:82px; width:282px; float:left;"
+                                            style = " background: url('" + Url.Content("~/Images/WiLogo.png") + "') no-repeat center right; display:block; height:82px; width:282px; float:left;"
                                         }
                                     )
             </div>
@@ -152,7 +152,7 @@
                 @if (Request.IsAuthenticated)
                 {
                     <nav>
-                        <ul id="menu">
+                        <ul id="menu" style="font-size:22px;">
                             <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "menuClass", @id = "Index" })</li>
                             @if (Convert.ToBoolean(Session["IsStoreManager"]) || Convert.ToBoolean(Session["IsAdmin"]))
                             {

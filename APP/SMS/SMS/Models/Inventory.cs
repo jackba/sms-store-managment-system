@@ -6,6 +6,25 @@ using System.Web;
 
 namespace SMS.Models
 {
+    public class Compared
+    {
+        public int MA_SAN_PHAM { get; set; }
+        public string TEN_SAN_PHAM { get; set; }
+        public int MA_DON_VI { get; set; }
+        public string TEN_DON_VI { get; set; }
+        public double INVEN_FIRST_DATE { get; set; }
+        public double INVEN_SECOND_DATE { get; set; }
+        public double COMPARED { get; set; }
+    }
+
+    public class CompareModel
+    {
+        public List<KHO> Stores { get; set; }
+        public List<NHOM_SAN_PHAM> ProductGroups { get; set; }
+        public List<SAN_PHAM> Products { get; set; }
+        public IPagedList<Compared> ComparedList { get; set; }
+    }
+
     public class Inventory
     {
         public int MA_SAN_PHAM { get; set; }
