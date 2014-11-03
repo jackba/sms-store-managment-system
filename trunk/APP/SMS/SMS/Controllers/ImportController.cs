@@ -170,14 +170,14 @@ namespace SMS.Controllers
                             {
                                 if (!checkInteger(r[0].ToString())
                                     || !checkNumber(r[5].ToString())
-                                    || !checkNumber(r[6].ToString()))
+                                    || (!"0".Equals(r[6].ToString()) && !checkNumber(r[6].ToString())))
                                 {
                                     if (!flag)
                                     {
                                         fileStringBuilder.Append("<br>");
                                     }
                                     flag = false;
-                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng, kiểm tra lại mã sản phẩm, số lượng và đơn giá." + i);
+                                    fileStringBuilder.Append("Lỗi dữ liệu tại dòng tại dòng, kiểm tra lại mã sản phẩm, số lượng và đơn giá. " + i);
                                 }
                                 else
                                 {
