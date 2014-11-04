@@ -28,6 +28,7 @@ namespace SMS.Controllers
                                      value = x.TEN_KHU_VUC
                                  };
             var result = Json(suggestedUsers.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -83,6 +84,7 @@ namespace SMS.Controllers
                     khuVucs = theListContext.OrderBy(DonVi => DonVi.KhuVuc.MA_KHU_VUC).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(khuVucs);
         }
 
@@ -103,6 +105,7 @@ namespace SMS.Controllers
                                   });
             ViewBag.CurrentFilter = searchString;
             ViewBag.theList = theListContext;
+            ctx.Dispose();
             return View();
         }
 
@@ -148,10 +151,12 @@ namespace SMS.Controllers
             KHU_VUC khuVuc = ctx.KHU_VUC.Find(id);
             if (khuVuc.ACTIVE.Equals("A"))
             {
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -192,10 +197,12 @@ namespace SMS.Controllers
             {
                 donvi.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }

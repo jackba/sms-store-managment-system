@@ -25,7 +25,7 @@
                 var productGroupId = $("#productGroupId").val();
                 var productName = $("#CurrentFilter").val();
                 $.ajax({
-                    url: "/SanPham/downloadCSVTemplate",
+                    url: "/SanPham/downloadConvertCSVTemplate",
                     data: "{ 'productGroupId':'" + productGroupId + "' , 'CurrentFilter': '" + productName + "'}",
                     type: "POST", contentType: "application/json; charset=utf-8",
                     success: function (response, status, request) {
@@ -118,8 +118,9 @@
         @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Chọn nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
         Từ khóa tìm kiếm: @Html.TextBox("CurrentFilter", ViewBag.CurrentFilter as string, new { id = "CurrentFilter" })
         <input type="submit" value="Tìm kiếm" class="myButton" />
-        <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />
+        
         @{
+         <input type="button" value="Export CSV" class="myButton" id="ExportExcel" />
         <input type="button" value="Import danh mục" class="myButton"
                 onclick="location.href='@Url.Action("importConvertCsv", "SanPham")'" />
         if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)

@@ -33,6 +33,7 @@ namespace SMS.Controllers
             model.Details = details;
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             model.Units = units;
+            ctx.Dispose();
             return View(model);
         }
      
@@ -188,8 +189,7 @@ namespace SMS.Controllers
                                     record.Name = r[3].ToString();
                                     record.UniName = r[4].ToString();
                                     record.Quantity = r[5].ToString();
-                                    record.Price = r[6].ToString();
-                                    
+                                    record.Price = r[6].ToString();                                  
 
                                     detail = ctx.CHI_TIET_NHAP_KHO.Create();
                                     detail.MA_NHAP_KHO = import.MA_NHAP_KHO;
@@ -203,7 +203,6 @@ namespace SMS.Controllers
                                     detail.ACTIVE = "A";
                                     ctx.CHI_TIET_NHAP_KHO.Add(detail);
                                     ctx.SaveChanges();
-
                                     thelist.Add(record);
                                 }
                             }
@@ -238,6 +237,7 @@ namespace SMS.Controllers
             }
             model.Stores = stores;
             model.StoreId = storeId;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -257,6 +257,7 @@ namespace SMS.Controllers
             model.Stores = stores;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -299,6 +300,7 @@ namespace SMS.Controllers
             Response.Output.Write(fileStringBuilder.ToString());
             Response.Flush();
             Response.End();
+            ctx.Dispose();
             return View("../Home/Import");
         }
 
@@ -343,6 +345,7 @@ namespace SMS.Controllers
             Response.Output.Write(fileStringBuilder.ToString());
             Response.Flush();
             Response.End();
+            ctx.Dispose();
             return View("../Home/Import");
         }
 
@@ -402,11 +405,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @messageInfor = "Sửa phiếu nhập điều chĩnh thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @message = "Sửa phiếu nhập điều chĩnh thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -432,6 +437,7 @@ namespace SMS.Controllers
             var detail = ctx.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT(id).ToList<SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result>();
             model.Infor = infor;
             model.Detail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -455,6 +461,7 @@ namespace SMS.Controllers
             model.Providers = providers;
             model.Units = units;
             ViewBag.InputKind = -1;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -510,11 +517,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @messageInfor = "Nhập điều chỉnh kho thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @message = "Nhập điều chỉnh kho thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -551,12 +560,14 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                         transaction.Complete();
+                        ctx.Dispose();
                         return RedirectToAction("ListExportTransfer", new { @inforMessage = "Xóa phiếu xuất chuyển kho thành công." });
                     }
                     catch (Exception ex)
                     {
                         Console.Write(ex.ToString());
                         Transaction.Current.Rollback();
+                        ctx.Dispose();
                         return RedirectToAction("ListExportTransfer", new { @message = "Xóa phiếu xuất chuyển kho  thất bại." });
                     }
                 }
@@ -607,12 +618,14 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                         transaction.Complete();
+                        ctx.Dispose();
                         return RedirectToAction("Index", new { @messageInfor = "Xóa phiếu nhập kho thành công." });
                     }
                     catch (Exception ex)
                     {
                         Console.Write(ex.ToString());
                         Transaction.Current.Rollback();
+                        ctx.Dispose();
                         return RedirectToAction("Index", new { @message = "Xóa phiếu nhập kho thất bại." });
                     }
                 }
@@ -620,6 +633,7 @@ namespace SMS.Controllers
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy phiếu nhập kho tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -652,6 +666,7 @@ namespace SMS.Controllers
                 StoreIdParam, ProductIdParam, returnValue).ToList<Object>().Take(SystemConstant.MAX_ROWS);
             var rv = returnValue.Value == DBNull.Value? 0: Convert.ToDouble(returnValue.Value);
             var result = Json(rv);
+            ctx.Dispose();
             return result;
         }
 
@@ -715,9 +730,11 @@ namespace SMS.Controllers
             var rv = returnValue.Value == DBNull.Value ? 0 : Convert.ToDouble(returnValue.Value);
             if (rv > 0)
             {
+                ctx.Dispose();
                 return RedirectToAction("ListWaitingImport", new { @inforMessage = "Lưu thành công" });
             }else
             {
+                ctx.Dispose();
                 return RedirectToAction("ListWaitingImport", new { @message = "Nhập kho thất bại, vui lòng kiểm tra lại" });
             }
         }
@@ -778,11 +795,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @messageInfor = "Sửa hóa đơn mua hàng thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @message = "Sửa hóa đơn mua hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -808,6 +827,7 @@ namespace SMS.Controllers
             var detail = ctx.SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT(id).ToList<SP_GET_IMPORT_DETAIL_BY_ID_4_EDIT_Result>();
             model.Infor = infor;
             model.Detail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -824,6 +844,7 @@ namespace SMS.Controllers
             model.Units = units;            
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
             model.ExportDetail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -840,6 +861,7 @@ namespace SMS.Controllers
             ViewBag.Stores = stores;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View();
         }
 
@@ -857,6 +879,7 @@ namespace SMS.Controllers
             ViewBag.Stores = stores;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View();
         }
 
@@ -889,6 +912,7 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.ImportStoreId = importStoreId;
             ViewBag.ExportStoreId = exportStoreId;
+            ctx.Dispose();
             return PartialView("ListWaitingImportPartialView", model);
         }
 
@@ -909,6 +933,7 @@ namespace SMS.Controllers
             model.Infor = infor;
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
             model.ExportDetail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -984,13 +1009,14 @@ namespace SMS.Controllers
                     }
 
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListExportTransfer", new { @messageInfor = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
-                    
+                    ctx.Dispose();
                     Transaction.Current.Rollback();
-                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." + ex.ToString() });
                 }
             }
         }
@@ -1036,6 +1062,7 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.ImportStoreId = importStoreId;
             ViewBag.ExportStoreId = exportStoreId;
+            ctx.Dispose();
             return PartialView("ListExportTransferPartialView", model);
         }
 
@@ -1109,11 +1136,13 @@ namespace SMS.Controllers
                         
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListExportTransfer", new { @inforMessage = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ListExportTransfer", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -1132,6 +1161,7 @@ namespace SMS.Controllers
             }
             model.Stores = stores;
             model.Units = units;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -1191,11 +1221,13 @@ namespace SMS.Controllers
                         }                        
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @messageInfor = "Nhập kho thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @message = "Nhập kho thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -1219,6 +1251,7 @@ namespace SMS.Controllers
             model.Providers = providers;
             model.Units = units;
             ViewBag.InputKind = -1;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -1272,6 +1305,7 @@ namespace SMS.Controllers
             ImportReportModel reportModel = new ImportReportModel();
             reportModel.ImportList = resultList.ToPagedList(pageIndex, pageSize);
             reportModel.PageCount = resultList.Count;
+            ctx.Dispose();
             return PartialView("IndexPartialView", reportModel);
         }
 

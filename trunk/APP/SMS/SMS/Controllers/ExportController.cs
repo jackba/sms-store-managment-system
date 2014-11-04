@@ -63,14 +63,18 @@ namespace SMS.Controllers
 
             if (returnVal == -1)
             {
+                ctx.Dispose();
                 return RedirectToAction("WaitingExport2Provider", new { @message = "Không thể xuất kho hóa đơn này. Lý do: có thể hóa đơn đã được xuất kho, hay đã bị hủy." });
             }
             else if (returnVal == 0)
             {
                 ViewBag.Message = "Không đủ số lượng để xuất kho";
+                ctx.Dispose();
+                //return RedirectToAction("WaitingExport2Provider", new { @message = "Không đủ số lượng để xuất kho." });
             }
             else
             {
+                ctx.Dispose();
                 return RedirectToAction("WaitingExport2Provider", new { @messageInfor = "Xuất kho thành công" });
             }
             return View(model);
@@ -89,6 +93,7 @@ namespace SMS.Controllers
             if (Infor == null)
             {
                 ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
+                ctx.Dispose();
                 return View("../Home/Error");
             }
             var details = ctx.SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID(Convert.ToInt32(storeId), id).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_DE_OF_RE_2_PR_BY_ST_AND_INV_ID_Result>();
@@ -96,6 +101,7 @@ namespace SMS.Controllers
             model.TheList = details;
             model.Infor = Infor;
             model.StoreId = Convert.ToInt32(storeId);
+            ctx.Dispose();
             return View(model);
         }
 
@@ -110,6 +116,7 @@ namespace SMS.Controllers
             var infor = ctx.XUAT_KHO.Find(id);
             if (infor == null || infor.ACTIVE != "A")
             {
+                ctx.Dispose();
                 return RedirectToAction("WaitingExport2Provider", new { @message = "Không tồn tại phiếu xuất kho này. Vui lòng kiểm tra lại" });
             }
             using (var transaction = new System.Transactions.TransactionScope())
@@ -129,14 +136,17 @@ namespace SMS.Controllers
                         ctx.SaveChanges();
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("WaitingExport2Provider", new { @message = "Hủy phiếu trả thất bại, vui lòng liên hệ admin." });
                 }
             }
+            ctx.Dispose();
             return RedirectToAction("WaitingExport2Provider", new { @messageInfor = "Xóa phiếu xuất kho thành công." });
         }
 
@@ -171,14 +181,14 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                         transaction.Complete();
+                        ctx.Dispose();
                         return RedirectToAction("ExportCancelList", new { @messageInfor = "Xóa phiếu xuất kho thành công." });
-                        
-                        
                     }
                     catch (Exception ex)
                     {
                         Console.Write(ex.ToString());
                         Transaction.Current.Rollback();
+                        ctx.Dispose();
                         return RedirectToAction("ExportCancelList", new { @message = "Xóa phiếu xuất kho thất bại." });
                     }
                 }
@@ -187,6 +197,7 @@ namespace SMS.Controllers
             else
             {
                 ViewBag.Message = "Không tìm thấy xuất kho tương ứng.";
+                ctx.Dispose();
                 return View("../Home/Error"); ;
             }
         }
@@ -231,6 +242,7 @@ namespace SMS.Controllers
             WaitingExport2ProviderListModel model = new WaitingExport2ProviderListModel();
             model.TheList = thelist.ToPagedList(pageIndex, pageSize);
             model.Count = thelist.Count;
+            ctx.Dispose();
             return PartialView("WaitingExport2ProviderPartialView", model);
         }
 
@@ -251,6 +263,7 @@ namespace SMS.Controllers
             model.Infor = infor;
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
             model.Detail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -302,11 +315,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ExportCancelList", new { @inforMessage = "Sửa phiếu xuất hủy thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ExportCancelList", new { @message = "Sửa phiếu xuất hủy thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -360,6 +375,7 @@ namespace SMS.Controllers
             ViewBag.ExporterName = exporterName;
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
+            ctx.Dispose();
             return PartialView("ExportCancelListPartialView", model);
         }
 
@@ -402,14 +418,17 @@ namespace SMS.Controllers
                 int returnVal = Convert.ToInt32(returnValue.Value);
                 if (returnVal == 1)
                 {
+                    ctx.Dispose();
                     return RedirectToAction("SaleExportList", new { @inforMessage = "Hủy thành công!" });
                 }else
                 {
+                    ctx.Dispose();
                     return RedirectToAction("SaleExportList", new { @message = "Không thể hủy phiếu xuất kho này! Vui lòng thực hiện lại lần nữa." });
                 }
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy phiếu xuất kho tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -530,6 +549,7 @@ namespace SMS.Controllers
             ViewBag.ExporterName = exporterName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -654,6 +674,7 @@ namespace SMS.Controllers
             ViewBag.ExporterName = exporterName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("SaleExportListPartialView", model);
         }
 
@@ -717,6 +738,7 @@ namespace SMS.Controllers
 
             if(returnVal == -1)
             {
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @message = "Không thể xuất kho hóa đơn này. Lý do: có thể hóa đơn đã được xuất kho, hay đã bị hủy." });
             }
             else if (returnVal == 0)
@@ -724,12 +746,14 @@ namespace SMS.Controllers
                 ViewBag.Message = "Không đủ số lượng để xuất kho";
             }else
             {
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @messageInfor = "Xuất kho thành công" });
             }
             var infor = ctx.SP_GET_HOA_DON_INFO(model.Infor.MA_HOA_DON).FirstOrDefault();
             var detailList = ctx.SP_GET_HD_DETAIL_FOR_EXPORT(Convert.ToInt32(model.storeId), Convert.ToInt32(model.Infor.MA_HOA_DON)).ToList<SP_GET_HD_DETAIL_FOR_EXPORT_Result>();
             model.DetailList = detailList;
             model.Infor = infor;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -747,6 +771,7 @@ namespace SMS.Controllers
             model.DetailList = detailList;
             model.Infor = infor;
             model.storeId = Convert.ToInt32(makho);
+            ctx.Dispose();
             return View(model);
         }
 
@@ -810,6 +835,7 @@ namespace SMS.Controllers
             ViewBag.CustomerName = customerName;
             ViewBag.Todate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.Fromdate = ((DateTime)fromdate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -865,6 +891,7 @@ namespace SMS.Controllers
             ViewBag.CustomerName = customerName;
             ViewBag.Todate = ((DateTime)todate).ToString("dd/MM/yyyy");
             ViewBag.Fromdate = ((DateTime)fromdate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -925,11 +952,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ExportCancelList", new { @inforMessage = "Xuất hủy thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ExportCancelList", new { @message = "Xuất hủy thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -952,6 +981,7 @@ namespace SMS.Controllers
             model.Stores = stores;
             model.Units = units;
             ViewBag.InputKind = -1;
+            ctx.Dispose();
             return View(model);
         }
     }

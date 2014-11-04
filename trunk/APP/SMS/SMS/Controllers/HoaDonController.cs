@@ -28,6 +28,7 @@ namespace SMS.Controllers
                                         value = x.SO_HOA_DON
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -91,6 +92,7 @@ namespace SMS.Controllers
             InvoicesNoReciveModel model = new InvoicesNoReciveModel();
             model.Invoices = list.ToPagedList(pageIndex, pageSize);
             model.PageCount = list.Count;
+            ctx.Dispose();
             return PartialView("CollectionPartialView", model);
         }
 
@@ -214,6 +216,7 @@ namespace SMS.Controllers
             ViewBag.customerName = customerName;
             ViewBag.salerName = salerName;
             ViewBag.accountantName = accountantName;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -281,6 +284,7 @@ namespace SMS.Controllers
             ViewBag.customerName = customerName;
             ViewBag.salerName = salerName;
             ViewBag.accountantName = accountantName;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -337,12 +341,14 @@ namespace SMS.Controllers
             {
                 ViewBag.Message = "Không đủ số lượng để xuất kho. Vui lòng kiểm tra lại hóa đơn.";
                 ViewBag.Status = 0;
+                ctx.Dispose();
                 return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = flg, @status = 0 });
             }
             else if (returnVal == -1)
             {
                 ViewBag.Message = "Hóa đơn đã được thu tiền. Không thể thu tiền hóa đơn này";
                 ViewBag.Status = -1;
+                ctx.Dispose();
                 return RedirectToAction("ShowDetail", new { @id = model.Infor.MA_HOA_DON, @flg = flg, @status = -1 });
             }
             var invoiceInfor = ctx.SP_GET_HOA_DON_INFO(model.Infor.MA_HOA_DON).FirstOrDefault();
@@ -364,6 +370,7 @@ namespace SMS.Controllers
             master.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
             master.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
             model.SmsMaster = master;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -390,6 +397,7 @@ namespace SMS.Controllers
             master.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
             master.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
             model.SmsMaster = master;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -417,6 +425,7 @@ namespace SMS.Controllers
             master.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
             master.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
             model.SmsMaster = master;
+            ctx.Dispose();
             return View(model);
         }
                 
@@ -492,6 +501,7 @@ namespace SMS.Controllers
                 ctx.SaveChanges();
             }else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy  hóa đơn tương ứng.";
                 return View("../Home/Error");
             }
@@ -514,6 +524,7 @@ namespace SMS.Controllers
             master.PhoneNumber = phoneNumber == null ? "" : phoneNumber.VALUE;
             master.FaxNumber = faxNumber == null ? "" : faxNumber.VALUE;
             model.SmsMaster = master;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -565,6 +576,7 @@ namespace SMS.Controllers
                 ViewBag.Message = "Hóa đơn đã được thu tiền. Không thể thu tiền hóa đơn này";
                 ViewBag.Status = -1;
             }
+            ctx.Dispose();
             return View(model);
         }
 
@@ -651,6 +663,7 @@ namespace SMS.Controllers
                     }
                 }
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
@@ -709,6 +722,7 @@ namespace SMS.Controllers
             var infor = ctx.SP_GET_HOA_DON_INFO(model.Infor.MA_HOA_DON).FirstOrDefault();
             model.Infor = infor;
             model.detailList = detailList;
+            ctx.Dispose();
             return RedirectToAction("Index"); 
         }
     }

@@ -72,6 +72,7 @@ namespace SMS.App_Start
                         Console.Write(ex);
                     }
                 }
+                ctx.Dispose();
             }
         }
 

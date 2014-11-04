@@ -28,6 +28,7 @@ namespace SMS.Controllers
                                         value = x.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -43,6 +44,7 @@ namespace SMS.Controllers
                                         value = x.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -58,6 +60,7 @@ namespace SMS.Controllers
                                     };
         
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -112,6 +115,7 @@ namespace SMS.Controllers
                     donViTinhs = theListContext.OrderBy(DonVi => DonVi.DonVi.MA_DON_VI).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(donViTinhs);
         }
 
@@ -137,10 +141,12 @@ namespace SMS.Controllers
             if (donvi.ACTIVE.Equals("A"))
             {
                 ViewBag.donVi = donvi;
+                ctx.Dispose();
                 return View(donvi);
             }else
             {
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                ctx.Dispose();
                 return View("../Home/Error"); ;
             }
            
@@ -164,11 +170,13 @@ namespace SMS.Controllers
                 donvi.UPDATE_AT = DateTime.Now;
                 donvi.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
+                ctx.Dispose();
                 return View("../Home/Error"); ;
             }
         }

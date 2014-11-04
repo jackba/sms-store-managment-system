@@ -65,6 +65,7 @@ namespace SMS.Controllers
                     khuVucs = theListContext.OrderBy(DonVi => DonVi.HangSanXuat.MA_NHA_SAN_XUAT).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(khuVucs);
         }
 
@@ -86,6 +87,7 @@ namespace SMS.Controllers
                                   });
             ViewBag.CurrentFilter = searchString;
             ViewBag.theList = theListContext;
+            ctx.Dispose();
             return View();
         }
 
@@ -130,10 +132,12 @@ namespace SMS.Controllers
             NHA_SAN_XUAT khuVuc = ctx.NHA_SAN_XUAT.Find(id);
             if (khuVuc.ACTIVE.Equals("A"))
             {
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy hãng sản xuất tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -174,10 +178,12 @@ namespace SMS.Controllers
             {
                 donvi.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy hãng sản xuất tương ứng";
                 return View("../Home/Error"); ;
             }

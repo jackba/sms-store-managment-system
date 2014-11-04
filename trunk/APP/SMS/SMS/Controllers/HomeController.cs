@@ -58,6 +58,7 @@ namespace SMS.Controllers
             int groupUserId = (int)Session["GroupUserId"];
             model = ctx.SMS_MESSAGES.Include("NGUOI_DUNG1").OrderByDescending(uh => uh.ID)
                 .FirstOrDefault(uh => uh.ACTIVE == "A" && (uh.ID_NHOM_NGUOI_NHAN == groupUserId || uh.ID_NHOM_NGUOI_NHAN == null));
+            ctx.Dispose();
             return PartialView("SmsMessage", model);
         }
         [HttpPost]
@@ -84,6 +85,7 @@ namespace SMS.Controllers
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
             ViewBag.SearchString = SearchString;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -106,6 +108,7 @@ namespace SMS.Controllers
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
+            ctx.Dispose();
             return View(model);
         }
 

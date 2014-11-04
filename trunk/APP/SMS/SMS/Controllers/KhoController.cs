@@ -79,6 +79,7 @@ namespace SMS.Controllers
                     khuVucs = theListContext.OrderBy(DonVi => DonVi.Kho.MA_KHO).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(khuVucs);
         }
 
@@ -103,6 +104,7 @@ namespace SMS.Controllers
                                       NguoiCapNhat = u1
                                   });
             ViewBag.theList = theListContext.ToList<KhoModel>();
+            ctx.Dispose();
             return View();
         }
 
@@ -115,6 +117,7 @@ namespace SMS.Controllers
                            where s.ACTIVE == "A"
                                  select s).ToList<NGUOI_DUNG>();
             ViewBag.nguoiDungList = nguoiDungList;
+            ctx.Dispose();
             return View();
         }
 
@@ -145,6 +148,7 @@ namespace SMS.Controllers
                                  where s.ACTIVE == "A"
                                  select s).ToList<NGUOI_DUNG>();
             ViewBag.nguoiDungList = nguoiDungList;
+            ctx.Dispose();
             return View();
         }
 
@@ -165,10 +169,12 @@ namespace SMS.Controllers
             ViewBag.nguoiDungList = nguoiDungList;
             if (khuVuc.ACTIVE.Equals("A"))
             {
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -200,6 +206,7 @@ namespace SMS.Controllers
                                  where s.ACTIVE == "A"
                                  select s).ToList<NGUOI_DUNG>();
             ViewBag.nguoiDungList = nguoiDungList;
+            ctx.Dispose();
             return View();
         }
 
@@ -220,10 +227,12 @@ namespace SMS.Controllers
                 khuVuc.UPDATE_AT = DateTime.Now;
                 khuVuc.UPDATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }

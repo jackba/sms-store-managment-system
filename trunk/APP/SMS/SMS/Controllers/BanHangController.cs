@@ -61,6 +61,7 @@ namespace SMS.Controllers
             ViewBag.UserName = userName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 
@@ -79,7 +80,10 @@ namespace SMS.Controllers
             {
                 return RedirectToAction("Index", "HoaDon", new { @message = "Hóa đơn đã được thu tiền. Bạn không được phép sửa hóa đơn này." }); 
             }
-             using (var transaction = new System.Transactions.TransactionScope())
+            TransactionOptions transOptions = new TransactionOptions();
+            transOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            transOptions.Timeout = TransactionManager.MaximumTimeout;
+            using (var transaction = new System.Transactions.TransactionScope(TransactionScopeOption.Required, transOptions))
             {
                 try
                 {
@@ -119,12 +123,14 @@ namespace SMS.Controllers
                         ctx.SaveChanges();
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("Index", "HoaDon", new { @inforMessage = "Lưu hóa đơn bán hàng thành công." });
                 }
                  catch(Exception ex)
                 {
                     Console.Write(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("Index", "HoaDon", new { @message = "Lưu hóa đơn thất bại. Vui lòng liên hệ admin." });
                 }
              }
@@ -151,6 +157,7 @@ namespace SMS.Controllers
             model.Units = units;
             model.Infor = Infor;
             model.Details = details;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -166,7 +173,10 @@ namespace SMS.Controllers
             hoaDon.Store = stores;
             hoaDon.Units = units;           
             string InvoiceNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
-            using (var transaction = new System.Transactions.TransactionScope())
+            TransactionOptions transOptions = new TransactionOptions();
+            transOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            transOptions.Timeout = TransactionManager.MaximumTimeout;
+            using (var transaction = new System.Transactions.TransactionScope(TransactionScopeOption.Required, transOptions))
             {
                 try
                 {
@@ -222,12 +232,14 @@ namespace SMS.Controllers
                     }
                     transaction.Complete();
                     hoaDon.InforMessage = "Lưu hóa đơn thành công.";
+                    ctx.Dispose();
                     return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     hoaDon.Message = "Lưu hóa đơn thất bại, vui lòng kiểm tra lại hóa đơn hoặc liên hệ admin. ";
                 }
             }
@@ -249,6 +261,7 @@ namespace SMS.Controllers
             hoanDon.Units = units;
             hoanDon.Message = message;
             hoanDon.InforMessage = inforMessage;
+            ctx.Dispose();
             return View(hoanDon);
         }
 
@@ -269,8 +282,10 @@ namespace SMS.Controllers
 
                 hdbh.KH_Info = getCustomerByBillNo(MaHoaDon);
                 hdbh.lstChiTietHoaDon = getDetailsByBillNo(MaHoaDon);
+                ctx.Dispose();
                 return View(hdbh);
             }
+            ctx.Dispose();
             return View();
         }
         // Chinh sua hoa don - START
@@ -291,6 +306,7 @@ namespace SMS.Controllers
                           Ngay_Giao = x.NGAY_GIAO,
                           Dia_Chi = x.DIA_CHI_GIAO_HANG
                       }).FirstOrDefault();
+            ctx.Dispose();
             return hd;
         }
 
@@ -317,6 +333,7 @@ namespace SMS.Controllers
                           Ma_Don_Vi = sp.DON_VI_TINH.MA_DON_VI,
                           Ten_Don_Vi = sp.DON_VI_TINH.TEN_DON_VI
                       }).ToList();
+            ctx.Dispose();
             return lstChiTietHD;
         }
         // Chinh sua hoa don - END 
@@ -333,14 +350,14 @@ namespace SMS.Controllers
                                  };
             
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
         [HttpPost]
 
         public JsonResult FindStore()
         {
-            var ctx = new SmsContext();
-            
+            var ctx = new SmsContext();            
             var store = from x in ctx.KHOes
                                     where (x.ACTIVE.Equals("A"))
                                     select new
@@ -349,6 +366,7 @@ namespace SMS.Controllers
                                         name = x.TEN_KHO
                                     };
             var result = Json(store.ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -388,7 +406,7 @@ namespace SMS.Controllers
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
-            
+            ctx.Dispose();
             return result;
         }
 
@@ -398,6 +416,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             ObjectResult<SP_GET_DON_VI_TINH_Result> resultDonViTinh = ctx.SP_GET_DON_VI_TINH(int.Parse(maSP));
             var result = Json(resultDonViTinh.Take(100).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -411,9 +430,11 @@ namespace SMS.Controllers
                 if (int.Parse(unitNo) == dvt.MA_DON_VI)
                 {
                    var result = Json(new { heso =  dvt.HE_SO });
+                   ctx.Dispose();
                    return result;
                 }
             }
+            ctx.Dispose();
             return null;
         }
 
@@ -434,6 +455,7 @@ namespace SMS.Controllers
                                      chiec_khau_2 = result.CHIEC_KHAU_2,
                                      chiec_khau_3 = result.CHIEC_KHAU_3,
             });
+            ctx.Dispose();
             return jresult;
         }
 
@@ -447,6 +469,7 @@ namespace SMS.Controllers
                 new SqlParameter("INPUT_ID", productNo)).ToList<CheckingStoreModel>().Take(SystemConstant.MAX_ROWS);
             
             var result = Json(tonkho.ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -723,6 +746,7 @@ namespace SMS.Controllers
             ViewBag.KhoList = ListKho;
             ViewBag.UserId = Session["UserId"];
             ViewBag.MyStore = Session["MyStore"];
+            ctx.Dispose();
             return View();
         }
         

@@ -28,6 +28,7 @@ namespace SMS.Controllers
                                         value = x.TEN_NHA_CUNG_CAP
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -85,6 +86,7 @@ namespace SMS.Controllers
                     khuVucs = theListContext.OrderBy(DonVi => DonVi.NhaCungCap.MA_NHA_CUNG_CAP).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(khuVucs);
         }
 
@@ -110,6 +112,7 @@ namespace SMS.Controllers
                                   });
             ViewBag.CurrentFilter = searchString;
             ViewBag.theList = theListContext;
+            ctx.Dispose();
             return View();
         }
 
@@ -158,10 +161,12 @@ namespace SMS.Controllers
             NHA_CUNG_CAP khuVuc = ctx.NHA_CUNG_CAP.Find(id);
             if (khuVuc.ACTIVE.Equals("A"))
             {
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy nhà cung cấp.";
                 return View("../Home/Error"); ;
             }
@@ -186,6 +191,7 @@ namespace SMS.Controllers
                 khuVucNew.UPDATE_AT = DateTime.Now;
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             return View();
@@ -206,10 +212,12 @@ namespace SMS.Controllers
             {
                 donvi.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy nhà cung cấp tương ứng.";
                 return View("../Home/Error"); ;
             }
