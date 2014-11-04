@@ -26,6 +26,7 @@ namespace SMS.Controllers
             model.QuestionId1 = 0;
             model.QuestionId2 = 0;
             model.QuestionId3 = 0;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -47,6 +48,7 @@ namespace SMS.Controllers
                     if (string.IsNullOrEmpty(usr.EMAIL))
                     {
                         ViewBag.Message = "Account của bạn không có email để nhận mật khẩu mới. Vui lòng liên hệ admin để reset lại mật khẩu cho bạn.";
+                        ctx.Dispose();
                         return View(model);
                     }
                     var question1 = ctx.PERSONAL_QUESTIONS.Where(u => u.QUESTION_ID == model.QuestionId1 && u.USR_ID == usr.MA_NGUOI_DUNG).FirstOrDefault();
@@ -58,6 +60,7 @@ namespace SMS.Controllers
                             model.QuestionId2 = 0;
                             model.QuestionId3 = 0;
                             ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            ctx.Dispose();
                             return View(model);
                         }
                     }
@@ -71,6 +74,7 @@ namespace SMS.Controllers
                             model.QuestionId2 = 0;
                             model.QuestionId3 = 0;
                             ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            ctx.Dispose();
                             return View(model);
                         }
                     }
@@ -84,6 +88,7 @@ namespace SMS.Controllers
                             model.QuestionId2 = 0;
                             model.QuestionId3 = 0;
                             ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                            ctx.Dispose();
                             return View(model);
                         }
                     }
@@ -98,12 +103,14 @@ namespace SMS.Controllers
                         || emailPass == null || string.IsNullOrEmpty(emailPass.VALUE))
                     {
                         ViewBag.Message = "Hệ thống chưa được cấu hình để gửi email. Vui lòng liên hệ admin.";
+                        ctx.Dispose();
                         return View(model);
                     };
 
                     if (!EmailManager.CheckForInternetConnection())
                     {
                         ViewBag.Message = "Hệ thống dùng offline. Không thể gửi mail.";
+                        ctx.Dispose();
                         return View(model);
                     }
 
@@ -117,12 +124,14 @@ namespace SMS.Controllers
                             emailUser.VALUE,
                             EmailManager.Decrypt(emailPass.VALUE, SystemConstant.SALT));
                         ViewBag.InforMessage = "Mật khẩu đã được gửi đến email của bạn. Vui lòng đăng nhập email để lấy mật khẩu mới.";
+                        ctx.Dispose();
                         return View(model);
                     }
                     catch(Exception ex)
                     {
                         Console.Write(ex.ToString());
                         ViewBag.Message = "Không thể cập nhật được mật khẩu mới cho bạn.";
+                        ctx.Dispose();
                         return View(model);
                     }
                 }
@@ -132,9 +141,10 @@ namespace SMS.Controllers
                     model.QuestionId2 = 0;
                     model.QuestionId3 = 0;
                     ViewBag.Message = "Dữ liệu của bạn không trùng khớp với thông tin của hệ thống.";
+                    ctx.Dispose();
                     return View(model);
-                }
-            }
+                }                
+            }            
             return View(model);
         }
 
@@ -215,6 +225,7 @@ namespace SMS.Controllers
             int id = (int)Session["UserId"];
             var ctx = new SmsContext();
             var User = ctx.NGUOI_DUNG.Include("KHO").Include("NHOM_NGUOI_DUNG").Single(us => us.MA_NGUOI_DUNG == id);
+            ctx.Dispose();
             return View(User);
         }
 

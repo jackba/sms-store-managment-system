@@ -28,6 +28,7 @@ namespace SMS.Controllers
                                         value = x.TEN_NHOM
                                     };
             var result = Json(suggestedProducts.Take(5).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -43,6 +44,7 @@ namespace SMS.Controllers
                                         value = x.TEN_NHOM
                                     };
             var result = Json(suggestedProducts.Take(5).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -99,6 +101,7 @@ namespace SMS.Controllers
                     nhomSPList = theListContext.OrderBy(Nhom => Nhom.NhomSanPham.MA_NHOM).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(nhomSPList);
         }
 
@@ -124,9 +127,11 @@ namespace SMS.Controllers
             if (nhomSP.ACTIVE.Equals("A"))
             {
                 ViewBag.donVi = nhomSP;
+                ctx.Dispose();
                 return View(nhomSP);
             }else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy nhóm sản phẩm tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -151,10 +156,12 @@ namespace SMS.Controllers
                 nhomSP.UPDATE_AT = DateTime.Now;
                 nhomSP.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy nhóm sản phẩm tương ứng.";
                 return View("../Home/Error"); ;
             }

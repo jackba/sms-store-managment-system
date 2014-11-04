@@ -44,6 +44,7 @@ namespace SMS.Controllers
                 model.QuestionId3 = 0;
             }
             model.Questions = questions;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -96,12 +97,14 @@ namespace SMS.Controllers
                         ctx.SaveChanges();
                         transaction.Complete();
                         ViewBag.InforMessage = "Cập nhật câu hỏi bảo mật thành công.";
+                        ctx.Dispose();
                         return View(model);
                     }
                     catch (Exception ex)
                     {
                         Console.Write(ex.ToString());
                         Transaction.Current.Rollback();
+                        ctx.Dispose();
                         ViewBag.Message = "Có lỗi xảy ra trong quá trình cập nhật câu hỏi bảo mật.";
                         return View(model);
                     }
@@ -166,6 +169,7 @@ namespace SMS.Controllers
                     nguoiDungs = theListContext.OrderBy(nd => nd.NguoiDung.MA_NGUOI_DUNG).ToPagedList(pageIndex, pageSize);
                     break;
             }
+            ctx.Dispose();
             return View(nguoiDungs);
         }
 
@@ -202,10 +206,12 @@ namespace SMS.Controllers
                 BindNhomNguoiDung();
 
                 ViewBag.nguoiDung = nguoidung;
+                ctx.Dispose();
                 return View(nguoidung);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -234,10 +240,12 @@ namespace SMS.Controllers
                 nguoidung.UPDATE_AT = DateTime.Now;
                 nguoidung.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -286,8 +294,10 @@ namespace SMS.Controllers
                 BindNhomNguoiDung();
 
                 ViewBag.nguoiDung = nguoidung1;
+                ctx.Dispose();
                 return View(nguoidung1);
             }
+            ctx.Dispose();
             return View();
         }
 
@@ -457,6 +467,7 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var User = ctx.NGUOI_DUNG.Include("KHO").Include("NHOM_NGUOI_DUNG").Single(us => us.MA_NGUOI_DUNG == id);
+            ctx.Dispose();
             return View(User);
         }
 
@@ -472,6 +483,7 @@ namespace SMS.Controllers
                                      value = x.TEN_NGUOI_DUNG
                                  };
             var result = Json(suggestedUsers.Take(10).ToList());
+            ctx.Dispose();
             return result; 
         }
 
@@ -512,6 +524,7 @@ namespace SMS.Controllers
 
                 //Deserializing it into an object that will contain each of the keys and their values
                 yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
                 return Json(yourOjbect);
             }
             else
@@ -519,6 +532,7 @@ namespace SMS.Controllers
                 ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
                 data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
                 yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
                 return Json(yourOjbect);
             }
         }

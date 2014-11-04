@@ -31,9 +31,13 @@ namespace SMS.Controllers
             var refund = ctx.TRA_HANG.Find(model.Infor.MA_TRA_HANG);
             if (refund.RETURN_FLG != null && (bool)refund.RETURN_FLG)
             {
+                ctx.Dispose();
                 return RedirectToAction("ReturnPurchaseList", new { @message = "Phiếu trả hàng này đã được lập phiếu trả cho nhà cung cấp, vui lòng liên hệ admin." });
             }
-             using (var transaction = new System.Transactions.TransactionScope())
+            TransactionOptions transOptions = new TransactionOptions();
+            transOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            transOptions.Timeout = TransactionManager.MaximumTimeout;
+            using (var transaction = new System.Transactions.TransactionScope(TransactionScopeOption.Required, transOptions))
             {
                 try
                 {
@@ -81,11 +85,13 @@ namespace SMS.Controllers
                     refund.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     ctx.SaveChanges();
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", "TraHang", new { @inforMessage = "Lập phiếu trả hàng đến nhà cung cấp thành công." });
                 }
                 catch(Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", "TraHang", new { @message = "Lập phiếu trả hàng đến nhà cung cấp thất bại, vui lòng liên hệ admin." });
                 }
              }
@@ -99,13 +105,16 @@ namespace SMS.Controllers
             var refund = ctx.TRA_HANG.Find(model.Infor.MA_TRA_HANG);
             if (refund.IMPORT_FLG != null && (bool)refund.IMPORT_FLG)
             {
+                ctx.Dispose();
                 return RedirectToAction("ReturnPurchaseList", new { @message = "Phiếu trả hàng này đã được nhập kho, vui lòng liên hệ admin." });
             }
-            using (var transaction = new System.Transactions.TransactionScope())
+            TransactionOptions transOptions = new TransactionOptions();
+            transOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            transOptions.Timeout = TransactionManager.MaximumTimeout;
+            using (var transaction = new System.Transactions.TransactionScope(TransactionScopeOption.Required, transOptions))
             {
                 try
-                {
-                   
+                {                  
 
                     var import = ctx.NHAP_KHO.Create();
                     if ((bool)Session["IsAdmin"])
@@ -160,12 +169,13 @@ namespace SMS.Controllers
                     ctx.SaveChanges();
 
                     transaction.Complete();
-
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhập kho - nhận trả hàng thành công." });
                 }
                 catch (Exception)
                 {                    
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @message = "Nhập kho thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -190,6 +200,7 @@ namespace SMS.Controllers
             }
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             ViewBag.Kho = stores;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -200,6 +211,7 @@ namespace SMS.Controllers
             var refund = ctx.TRA_HANG.Find(id);
             if (refund.ACTIVE != "A")
             {
+                ctx.Dispose();
                 return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Không tìm thấy phiếu trả hàng nào tương ứng." });
             }
             var refundDetail = ctx.SP_GET_REFUND_DETAIL(id).ToList<SP_GET_REFUND_DETAIL_Result>();
@@ -208,6 +220,7 @@ namespace SMS.Controllers
             model.Detail = refundDetail;
             var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             ViewBag.Providers = providers;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -240,6 +253,7 @@ namespace SMS.Controllers
             ViewBag.UserName = userName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 

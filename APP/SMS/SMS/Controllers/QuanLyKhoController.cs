@@ -34,6 +34,7 @@ namespace SMS.Controllers
             model.ProductGroups = productGroups;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -75,6 +76,7 @@ namespace SMS.Controllers
             ViewBag.FirstDate = firstDate.ToString("dd/MM/yyyy");
             ViewBag.SecondDate = secondDate.ToString("dd/MM/yyyy");
             ViewBag.Count = tonkho.Count;
+            ctx.Dispose();
             return PartialView("InventoryComparedPtv", model);
         }
 
@@ -125,6 +127,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + detail.INVEN_SECOND_DATE.ToString("#,##0.##") + "\",");
                 fileStringBuilder.Append("\"" + detail.COMPARED.ToString("#,##0.##") + "\",");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -156,6 +159,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + detail.INVENTORY_MIN.ToString("#,##0.##") + "\",");
                 fileStringBuilder.Append("\"" + detail.INVENTORY.ToString("#,##0.##") + "\",");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -165,6 +169,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             ViewBag.Stores = stores;
+            ctx.Dispose();
             return View();
         }
 
@@ -179,6 +184,7 @@ namespace SMS.Controllers
             InventoryByStoreModel model = new InventoryByStoreModel();
             model.Count = inventory.Count();
             model.WarningList = inventory.ToPagedList(pageIndex, pageSize);
+            ctx.Dispose();
             return PartialView("getWarningbyStoreIdPtv", model);
         }
 
@@ -198,10 +204,12 @@ namespace SMS.Controllers
                 donvi.UPDATE_AT = DateTime.Now;
                 donvi.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Xóa cấu hình thành công." });
             }
             else
             {
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @Message = "Không tồn tại cấu hình này. Vui lòng kiểm tra lại." });
             }
         }
@@ -316,12 +324,14 @@ namespace SMS.Controllers
                         if (flag)
                         {
                             transaction.Complete();
+                            ctx.Dispose();
                             return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Import danh sách thành công." });
                         }
                         else
                         {
                             Transaction.Current.Rollback();
                             ViewBag.Message = fileStringBuilder.ToString();
+                            ctx.Dispose();
                             return View();
                         }
                     }
@@ -329,6 +339,7 @@ namespace SMS.Controllers
                     {
                         Console.Write(ex.ToString());
                         ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
+                        ctx.Dispose();
                         return View();
                     }
                 }
@@ -356,6 +367,7 @@ namespace SMS.Controllers
             model.Infor = Infor;
             model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
             model.Stores = stores;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -367,6 +379,7 @@ namespace SMS.Controllers
             var Infor = ctx.TON_KHO_MIN_MAX_KHO.Find(model.MinMaxInfor.ID);
             if (Infor == null || Infor.ACTIVE != "A")
             {
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @message = "Không tồn tại khai báo này, có thể đã bị xóa bởi user khác. Vui lòng kiểm tra lại" });
             }
             try
@@ -376,6 +389,7 @@ namespace SMS.Controllers
                 Infor.UPDATE_AT = DateTime.Now;
                 Infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Lưu thành công." });
             }
             catch (Exception ex)
@@ -393,10 +407,12 @@ namespace SMS.Controllers
             var Infor = ctx.SP_GET_MIN_MAX_BY_ID(id).FirstOrDefault();
             if (Infor == null)
             {
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @message = "Không tồn tại khai báo này, có thể đã bị xóa bởi user khác. Vui lòng kiểm tra lại" });
             }
             MinMax model = new MinMax();
             model.MinMaxInfor = Infor;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -457,10 +473,12 @@ namespace SMS.Controllers
                     ctx.TON_KHO_MIN_MAX_KHO.Add(mm);
                 }                
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("MinMaxOfProductByStore", new { @inforMessage = "Lưu thành công" });
             }            
             ViewBag.Message = message;
             model.Stores = stores;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -475,6 +493,7 @@ namespace SMS.Controllers
             model.Infor = Infor;
             model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
             model.Stores = stores;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -516,6 +535,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_THIEU).ToString("#,###.##") + "\",");
                 fileStringBuilder.Append("\"" + ((Double)detail.CO_SO_TOI_DA).ToString("#,###.##") + "\",");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
         
@@ -530,6 +550,7 @@ namespace SMS.Controllers
             model.ProductGroups = productGroups;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -559,6 +580,7 @@ namespace SMS.Controllers
             ViewBag.ProductGroupId = productGroupId;
             ViewBag.ProductName = productName;
             ViewBag.Count = MinMax.Count;
+            ctx.Dispose();
             return PartialView("MinMaxOfProductByStorePartialView", model);
         }
 
@@ -660,6 +682,7 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
+            ctx.Dispose();
             return PartialView("FifoReportPartialView", model);
         }
 
@@ -746,6 +769,7 @@ namespace SMS.Controllers
             ViewBag.ProductName = ProductName;
             ViewBag.StoreId = StoreId;
             ViewBag.ProductId = ProductId;
+            ctx.Dispose();
             return PartialView("FifoReportPartialView", model);
         }
 
@@ -809,6 +833,7 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy"); ;
             ImExModel model = new ImExModel();
             model.ResultList = tk;
+            ctx.Dispose();
             return PartialView("ImExDetailPartialViewResult", model);
         }
 
@@ -903,6 +928,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return PartialView("ExportReportDetailPartialView", model);
         }
 
@@ -921,6 +947,7 @@ namespace SMS.Controllers
                 kind = -1;
             }
             ViewBag.InputKind = kind;
+            ctx.Dispose();
             return View();
         }
 
@@ -998,6 +1025,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return PartialView("ExportReportPartialView", model);
         }
 
@@ -1010,6 +1038,7 @@ namespace SMS.Controllers
                 kind = -1;
             }
             ViewBag.InputKind = kind;
+            ctx.Dispose();
             return View();
         }
        
@@ -1088,6 +1117,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return PartialView("ImportRepoterPartialView", model);
         }
 
@@ -1100,6 +1130,7 @@ namespace SMS.Controllers
                 kind = -1;
             }
             ViewBag.InputKind = kind;
+            ctx.Dispose();
             return View();
         }
 
@@ -1167,6 +1198,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -1243,6 +1275,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return PartialView("ImportRepoterDetailPartialView", model);
         }
 
@@ -1253,6 +1286,7 @@ namespace SMS.Controllers
                 kind = -1;
             }
             ViewBag.InputKind = kind;
+            ctx.Dispose();
             return View();
         }
         
@@ -1318,6 +1352,7 @@ namespace SMS.Controllers
                 new SqlParameter("TO_DATE", toDate)
                 ).ToList<InventoryTotal>().First();
             model.VALUE = (double)total.VALUE;
+            ctx.Dispose();
             return View(model);
         }
         
@@ -1328,6 +1363,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
             ViewBag.ProductGroups = productGroups;
+            ctx.Dispose();
             return View();
         }
 
@@ -1377,6 +1413,7 @@ namespace SMS.Controllers
                  fileStringBuilder.Append("\"" + product.SO_LUONG_TON.ToString("#,###.##") + "\",");
                  fileStringBuilder.Append("\"" +  "" + "\",");
              }
+             ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -1424,6 +1461,7 @@ namespace SMS.Controllers
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;
+            ctx.Dispose();
             return PartialView("InventoryPartialView", model);
         }
 
@@ -1470,6 +1508,7 @@ namespace SMS.Controllers
                 new SqlParameter("MA_SAN_PHAM", Convert.ToInt32(ProductId)),
                 new SqlParameter("TEN_SAN_PHAM", string.IsNullOrEmpty(ProductName) ? "" : ProductName.Trim())).ToList<InventoryTotal>().First();
             model.VALUE = total.VALUE;
+            ctx.Dispose();
             return PartialView("InventoryPartialView", model);
         }
 

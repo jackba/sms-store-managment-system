@@ -63,6 +63,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + detail.TONG_THU_NO.ToString("#,##0.##") + "\",");
                 fileStringBuilder.Append("\"" + detail.TOTAL.ToString("#,##0.##") + "\"");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -139,6 +140,7 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Tên người nhận tiền\",");
             fileStringBuilder.Append("\"Mục đích chi tiền\",");
             fileStringBuilder.Append("\"Tổng tiền\"");
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -174,6 +176,7 @@ namespace SMS.Controllers
                FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
             ReportModel model = new ReportModel();
             model.TheList = tonkho;
+            ctx.Dispose();
             return PartialView("TotalReportPartialView", model);
         }
         //
@@ -259,6 +262,7 @@ namespace SMS.Controllers
             fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + total.ToString("#,###.##") + " </td>");
             fileStringBuilder.Append("</tr>");
             fileStringBuilder.Append("</table>");
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -382,7 +386,7 @@ namespace SMS.Controllers
             fileStringBuilder.Append("</tr>");
 
             fileStringBuilder.Append("</table>");
-
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -502,8 +506,8 @@ namespace SMS.Controllers
             fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + returnTotal.ToString("#,##0.##") + " </td>");
             fileStringBuilder.Append("<td align='right' bgcolor='#C0C0C0' style=\"font-size:18px; font-family:'Times New Roman'\"> " + total.ToString("#,##0.##") + " </td>");
             fileStringBuilder.Append("</tr>");
-
             fileStringBuilder.Append("</table>");
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "application/ms-excel", fileName + ".xls");
         }
 
@@ -554,7 +558,7 @@ namespace SMS.Controllers
                FromDateParam, ToDateParam, customerIdParam, customerNameParam).Take(SystemConstant.MAX_ROWS).ToList<ReportByCustomer>();
             ReportByCustomerModel model = new ReportByCustomerModel();
             model.TheList = tonkho;
-
+            ctx.Dispose();
             return PartialView("ReportByCustomerPartialView", model);
         }
 
@@ -606,7 +610,7 @@ namespace SMS.Controllers
                 FromDateParam, ToDateParam, customerIdParam,customerNameParam ).Take(SystemConstant.MAX_ROWS).ToList<Report>();
             ReportModel model = new ReportModel();
             model.TheList = tonkho;
-
+            ctx.Dispose();
             return PartialView("ReportByAreaPartialView", model);
         }
 
@@ -659,6 +663,7 @@ namespace SMS.Controllers
                 FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<ReportDebitColection>();
             ReportDebitColectionModel model = new ReportDebitColectionModel();
             model.Details = tonkho;
+            ctx.Dispose();
             return PartialView("ReportDebitColecctionPartialView", model);
         }
 
@@ -677,6 +682,7 @@ namespace SMS.Controllers
                         xValue: tonkho.Select(x => x.MONTH).ToArray(),
                         yValues: tonkho.Select(x => x.TOTAL).ToArray()
                       ).AddTitle("Biểu đồ doanh thu sau khi trừ trả hàng").Write();
+            ctx.Dispose();
             return null;
         }
 
@@ -731,7 +737,7 @@ namespace SMS.Controllers
             ViewBag.ProviderName = providerName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
-
+            ctx.Dispose();
             return PartialView("Return2ProviderReportPartialView", model);
         }
 
@@ -750,6 +756,7 @@ namespace SMS.Controllers
             ReportModel model = new ReportModel();
             model.TheList = tonkho;
             model.Total = total;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -762,6 +769,7 @@ namespace SMS.Controllers
                         xValue: tonkho.Select(x => x.WEEK).ToArray(),
                         yValues: tonkho.Select(x => x.TOTAL).ToArray()
                       ).AddTitle("Biểu đồ doanh thu sau khi trừ trả hàng").Write();
+            ctx.Dispose();
             return null;
         }
 
@@ -774,6 +782,7 @@ namespace SMS.Controllers
             ReportWeekModel model = new ReportWeekModel();
             model.TheList = tonkho;
             model.Total = total;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -808,6 +817,7 @@ namespace SMS.Controllers
                FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<ReportWeek>();
             ReportWeekModel model = new ReportWeekModel();
             model.TheList = tonkho;
+            ctx.Dispose();
             return PartialView("WeReportPartialView", model);
         }
         
@@ -843,6 +853,7 @@ namespace SMS.Controllers
                FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
             ReportModel model = new ReportModel();
             model.TheList = tonkho;
+            ctx.Dispose();
             return PartialView("DayReportPartialView", model);
         }
 
@@ -879,6 +890,7 @@ namespace SMS.Controllers
                FromDateParam, ToDateParam).Take(SystemConstant.MAX_ROWS).ToList<Report>();
             ReportModel model = new ReportModel();
             model.TheList = tonkho;
+            ctx.Dispose();
             return PartialView("MthReportPartialView", model);
         }
     }

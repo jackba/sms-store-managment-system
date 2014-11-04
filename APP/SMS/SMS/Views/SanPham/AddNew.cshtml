@@ -9,11 +9,10 @@
 </div>
 
 
-<div class="divTitle">
+<div>
     <h2>@ViewBag.Title </h2>
     <hr />
 </div>
-
 
 <link href="~/Content/SanPham.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
@@ -202,178 +201,179 @@
         
     }
 </script>
-<div id="divMsg" >
-    <div id="msgErr" style="display: none;" class="validation-summary-errors">
-        Hãy kiểm tra các giá trị :
-        <div id="ErrProduct" style="display: none; margin-left: 15px">+ Tên sản phẩm</div>
-        <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị tính</div>
-        <hr />
-    </div>
-</div>
-<div>
-    @using (Html.BeginForm(@ViewBag.Mode == "CREATE" ? "AddNew" : "Edit", "SanPham", FormMethod.Post, new { @id = "frmMain" }))
-    {
-        @Html.HiddenFor(u => u.MA_SAN_PHAM)
-
-        <table class="fixed" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-                <td width="37%">
-                    <div class="required">
-                        @Html.LabelFor(u => u.TEN_SAN_PHAM)
-                        @Html.TextBoxFor(u => u.TEN_SAN_PHAM)
-                    </div>
-                </td>
-                <td>
-                    <div class="required">
-                        <strong>CODE</strong> @Html.TextBoxFor(u => u.CODE)
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.KICH_THUOC)
-                        @Html.TextBoxFor(u => u.KICH_THUOC)
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CAN_NANG)
-                        <input id="CAN_NANG" maxlength="10" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID" })
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.MA_NHOM)
-                        @Html.DropDownListFor(u => u.MA_NHOM, new SelectList(ViewBag.dsNhomSP, "MA_NHOM", "TEN_NHOM", ViewBag.NhomSelected))
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                      
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
-            <tr>
-                <td>
-                    <div class="required">
-                        @Html.LabelFor(u => u.MA_DON_VI)
-                        @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(ViewBag.dsDonvi, "MA_DON_VI", "TEN_DON_VI", ViewBag.DVSelected))
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.MA_NHA_SAN_XUAT)
-                        @Html.DropDownListFor(u => u.MA_NHA_SAN_XUAT, new SelectList(ViewBag.dsNSX, "MA_NHA_SAN_XUAT", "TEN_NHA_SAN_XUAT", ViewBag.NSXSelected))
-
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div>
-                        <div>
-                            @Html.LabelFor(u => u.DAC_TA)
-                            @Html.TextAreaFor(u => u.DAC_TA)
-                        </div>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.GIA_BAN_1)
-                        <input id="GIA_BAN_1" maxlength="10" value="@ViewBag.GiaBan1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.GIA_BAN_1, new { @id = "GiaBan1ID" })
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.GIA_BAN_2)
-                        <input id="GIA_BAN_2" maxlength="10" value="@ViewBag.GiaBan2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.GIA_BAN_2, new { @id = "GiaBan2ID" })
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.GIA_BAN_3)
-                        <input id="GIA_BAN_3" maxlength="10" value="@ViewBag.GiaBan3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.GIA_BAN_3, new { @id = "GiaBan3ID" })
-                    </div>
-                </td>
-
-            </tr>
-
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CHIEC_KHAU_1)
-                        <input id="CHIET_KHAU_1" maxlength="2" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CHIEC_KHAU_1, new { @id = "ChietKhau1ID" })
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CHIEC_KHAU_2)
-                        <input id="CHIET_KHAU_2" maxlength="2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2ID" })
-
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CHIEC_KHAU_3)
-                        <input id="CHIET_KHAU_3" maxlength="2" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CHIEC_KHAU_3, new { @id = "ChietKhau3ID" })
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CO_SO_TOI_THIEU)
-                        <input id="CO_SO_TOI_THIEU" maxlength="10" value="@ViewBag.CoSoMin" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CO_SO_TOI_THIEU, new { @id = "CoSoMinID" })
-                    </div>
-                </td>
-
-                <td>
-                    <div>
-                        @Html.LabelFor(u => u.CO_SO_TOI_DA)
-                        <input id="CO_SO_TOI_DA" maxlength="12" value="@ViewBag.CoSoMax" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
-                        @Html.HiddenFor(u => u.CO_SO_TOI_DA, new { @id = "CoSoMaxID" })
-
-                    </div>
-                </td>
-                <td></td>
-
-            </tr>
-        </table>
-
-        <div class="divTitle">
+    <div id="divMsg">
+        <div id="msgErr" style="display: none;" class="validation-summary-errors">
+            Hãy kiểm tra các giá trị :
+            <div id="ErrProduct" style="display: none; margin-left: 15px">+ Tên sản phẩm</div>
+            <div id="ErrUnit" style="display: none; margin-left: 15px"> + Đơn vị tính</div>
             <hr />
-            <input type="button" style="width:100px" onclick="submitForm();" value="Lưu" />
-            <span> </span>
-            <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
         </div>
+    </div>
 
-    }
-</div>
+    <div>
+        @using (Html.BeginForm(@ViewBag.Mode == "CREATE" ? "AddNew" : "Edit", "SanPham", FormMethod.Post, new { @id = "frmMain" }))
+        {
+            @Html.HiddenFor(u => u.MA_SAN_PHAM)
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td width="37%">
+                        <div class="required">
+                            @Html.LabelFor(u => u.TEN_SAN_PHAM)
+                            @Html.TextBoxFor(u => u.TEN_SAN_PHAM)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="required">
+                            <strong>CODE</strong> @Html.TextBoxFor(u => u.CODE)
+                        </div>
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.KICH_THUOC)
+                            @Html.TextBoxFor(u => u.KICH_THUOC)
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CAN_NANG)
+                            <input id="CAN_NANG" maxlength="10" value="@ViewBag.CanNang" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CAN_NANG, new { @id = "CanNangID" })
+                        </div>
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.MA_NHOM)
+                            @Html.DropDownListFor(u => u.MA_NHOM, new SelectList(ViewBag.dsNhomSP, "MA_NHOM", "TEN_NHOM", ViewBag.NhomSelected), new { @style = "padding:5px;font-size:1.2em" })
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+
+                        </div>
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div class="required">
+                            @Html.LabelFor(u => u.MA_DON_VI)
+                            @Html.DropDownListFor(u => u.MA_DON_VI, new SelectList(ViewBag.dsDonvi, "MA_DON_VI", "TEN_DON_VI", ViewBag.DVSelected), new { @style = "padding:5px;font-size:1.2em" })
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.MA_NHA_SAN_XUAT)
+                            @Html.DropDownListFor(u => u.MA_NHA_SAN_XUAT, new SelectList(ViewBag.dsNSX, "MA_NHA_SAN_XUAT", "TEN_NHA_SAN_XUAT", ViewBag.NSXSelected), new { @style = "padding:5px;font-size:1.2em" })
+
+                        </div>
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <div>
+                                @Html.LabelFor(u => u.DAC_TA)
+                                @Html.TextAreaFor(u => u.DAC_TA)
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.GIA_BAN_1)
+                            <input id="GIA_BAN_1" maxlength="10" value="@ViewBag.GiaBan1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.GIA_BAN_1, new { @id = "GiaBan1ID" })
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.GIA_BAN_2)
+                            <input id="GIA_BAN_2" maxlength="10" value="@ViewBag.GiaBan2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.GIA_BAN_2, new { @id = "GiaBan2ID" })
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.GIA_BAN_3)
+                            <input id="GIA_BAN_3" maxlength="10" value="@ViewBag.GiaBan3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.GIA_BAN_3, new { @id = "GiaBan3ID" })
+                        </div>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CHIEC_KHAU_1)
+                            <input id="CHIET_KHAU_1" maxlength="2" value="@ViewBag.ChietKhau1" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CHIEC_KHAU_1, new { @id = "ChietKhau1ID" })
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CHIEC_KHAU_2)
+                            <input id="CHIET_KHAU_2" maxlength="2" value="@ViewBag.ChietKhau2" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CHIEC_KHAU_2, new { @id = "ChietKhau2ID" })
+
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CHIEC_KHAU_3)
+                            <input id="CHIET_KHAU_3" maxlength="2" value="@ViewBag.ChietKhau3" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CHIEC_KHAU_3, new { @id = "ChietKhau3ID" })
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CO_SO_TOI_THIEU)
+                            <input id="CO_SO_TOI_THIEU" maxlength="10" value="@ViewBag.CoSoMin" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CO_SO_TOI_THIEU, new { @id = "CoSoMinID" })
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            @Html.LabelFor(u => u.CO_SO_TOI_DA)
+                            <input id="CO_SO_TOI_DA" maxlength="12" value="@ViewBag.CoSoMax" type="text" class="numberic" onkeydown="NumbericOnly(this);" />
+                            @Html.HiddenFor(u => u.CO_SO_TOI_DA, new { @id = "CoSoMaxID" })
+
+                        </div>
+                    </td>
+                    <td></td>
+
+                </tr>
+            </table>
+
+            <div >
+                <hr />
+                <input type="button" style="width:100px" onclick="submitForm();" value="Lưu" />
+                <span> </span>
+                <input type="button" style="width:100px" value="Trở về" onclick="location.href='@Url.Action("Index", "SanPham")'" />
+            </div>
+
+        }
+    </div>

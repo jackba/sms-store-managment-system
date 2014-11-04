@@ -1,18 +1,18 @@
 ﻿@if (Request.IsAuthenticated)
 {
     <text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Show", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        Xin chào: @Html.ActionLink(Session["UserName"].ToString(), "Show", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            <a href="javascript:document.getElementById('logoutForm').submit()">Thoát</a>
         }
         | @Html.ActionLink("Thay đổi mật khẩu","changePass","NguoiDung")
     </text>
 }
 else
 {
-    <ul>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    <!--ul>
+        <li>@Html.ActionLink("Đăng nhập", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </!--ul-->
 }

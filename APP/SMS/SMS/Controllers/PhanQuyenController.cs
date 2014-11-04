@@ -39,6 +39,7 @@ namespace SMS.Controllers
             model.RoleList = list.ToPagedList(pageIndex, pageSize);
             ViewBag.SearchString = SearchString;
             model.PageCount = list.Count;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
 
@@ -75,10 +76,12 @@ namespace SMS.Controllers
                 BindNhomNguoiDung();
 
                 ViewBag.phanQuyen = phanquyen;
+                ctx.Dispose();
                 return View(phanquyen);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy phân quyền tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -102,10 +105,12 @@ namespace SMS.Controllers
                 phanquyen.UPDATE_AT = DateTime.Now;
                 phanquyen.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy phân quyền tương ứng.";
                 return View("../Home/Error"); ;
             }

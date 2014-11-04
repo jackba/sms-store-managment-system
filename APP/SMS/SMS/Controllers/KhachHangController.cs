@@ -122,6 +122,7 @@ namespace SMS.Controllers
                               select s).ToList<KHU_VUC>();
             ViewBag.khuVucList = khuVucList;
             ViewBag.CustomerAutocomplete = khuVucList.ToArray();
+            ctx.Dispose();
             return PartialView("IndexPartialView", khachHangs);
         }
 
@@ -139,7 +140,7 @@ namespace SMS.Controllers
             ViewBag.CustomerArea = 0;
             ViewBag.CusomerKind = 0;
             ViewBag.ShowFlag = 0;
-
+            ctx.Dispose();
             return View();
         }
 
@@ -155,7 +156,8 @@ namespace SMS.Controllers
                                      id = x.MA_KHACH_HANG,  
                                      value = x.TEN_KHACH_HANG, 
                                  debit = x.NO_GOI_DAU}; 
-            var result = Json(suggestedUsers.Take(10).ToList()); 
+            var result = Json(suggestedUsers.Take(10).ToList());
+            ctx.Dispose();
             return result; 
         }
         /*Tattt add 2014/05/10 start*/
@@ -180,6 +182,7 @@ namespace SMS.Controllers
                                      debit = x.NO_GOI_DAU
                                  };
             var result = Json(suggestedUsers.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
         /*Tattt add 2014/05/10 end*/
@@ -192,6 +195,7 @@ namespace SMS.Controllers
                               where s.ACTIVE == "A"
                               select s).ToList<KHU_VUC>();
             ViewBag.khuVucList = khuVucList;
+            ctx.Dispose();
             return View();
         }
 
@@ -221,6 +225,7 @@ namespace SMS.Controllers
                 khuVucNew.CREATE_BY = (int)Session["UserId"];
                 db.KHACH_HANG.Add(khuVucNew);
                 db.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
@@ -255,10 +260,12 @@ namespace SMS.Controllers
                                   where s.ACTIVE == "A"
                                   select s).ToList<KHU_VUC>();
                 ViewBag.khuVucList = khuVucList;
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -344,6 +351,7 @@ namespace SMS.Controllers
             }
             var ctx = new SmsContext();
             KHACH_HANG khuVuc = ctx.KHACH_HANG.Find((int)khachHang.MA_KHACH_HANG);
+            ctx.Dispose();
             return View(khuVuc);
         }
 
@@ -403,6 +411,7 @@ namespace SMS.Controllers
             ViewBag.CustomerId = customerId;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");;
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");;
+            ctx.Dispose();
             return PartialView("showDebitHistPartialView", KhachHang);
         }
 
@@ -427,11 +436,13 @@ namespace SMS.Controllers
             {
                 KhachHangModel model = new KhachHangModel();
                 model.KhachHang = khuVuc;
+                ctx.Dispose();
                 return View(model);
             }
             else
             {
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
+                ctx.Dispose();
                 return View("../Home/Error"); ;
             }
         }
@@ -484,6 +495,7 @@ namespace SMS.Controllers
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ViewBag.currentPageIndex = currentPageIndex;
+            ctx.Dispose();
             return PartialView("showOrderHistPartialView", KhachHang);
         }
 
@@ -509,10 +521,12 @@ namespace SMS.Controllers
             {
                 KhachHangModel KhachHang = new KhachHangModel();
                 KhachHang.KhachHang = khuVuc;
+                ctx.Dispose();
                 return View(KhachHang);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -536,12 +550,12 @@ namespace SMS.Controllers
                                   where s.ACTIVE == "A"
                                   select s).ToList<KHU_VUC>();
                 ViewBag.khuVucList = khuVucList;
-
-                
+                ctx.Dispose();
                 return View(khuVuc);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khu vực tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -564,10 +578,12 @@ namespace SMS.Controllers
                 khachHang.UPDATE_AT = DateTime.Now;
                 khachHang.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy khách hàng tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -594,12 +610,13 @@ namespace SMS.Controllers
                 khachHang.NO_GOI_DAU = khachHang.NO_GOI_DAU + (decimal)donvi.PHAT_SINH;
                 donvi.UPDATE_AT = DateTime.Now;
                 donvi.CREATE_BY = (int)Session["UserId"];
-
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("showDebitHist", new { id = donvi.MA_KHACH_HANG });
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
                 return View("../Home/Error"); ;
             }
@@ -631,6 +648,7 @@ namespace SMS.Controllers
                 khuVucNew.UPDATE_AT = DateTime.Now;
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
@@ -639,6 +657,7 @@ namespace SMS.Controllers
                                   where s.ACTIVE == "A"
                                   select s).ToList<KHU_VUC>();
                 ViewBag.khuVucList = khuVucList;
+                ctx.Dispose();
                 return View();
             }
         }
@@ -695,6 +714,7 @@ namespace SMS.Controllers
             KhachHangModel khachHangModel = new KhachHangModel();
             khachHangModel.WarningList = khachHangHists;
             ViewBag.CurrentFilter = SearchString;
+            ctx.Dispose();
             return PartialView("WarningPartialView", khachHangModel);
         }
 
@@ -720,10 +740,12 @@ namespace SMS.Controllers
             var donvi = ctx.KHACH_HANG.Include("KHU_VUC").Single(kh => kh.MA_KHACH_HANG == id);
             if (donvi.ACTIVE.Equals("A"))
             {
+                ctx.Dispose();
                 return View(donvi);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy chứng từ tương ứng";
                 return View("../Home/Error"); ;
             }

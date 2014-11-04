@@ -22,6 +22,7 @@ namespace SMS.Controllers
             var Ex = ctx.EXPENSES.Find(id);
             if (Ex.ACTIVE != "A")
             {
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
             }
             else
@@ -30,6 +31,7 @@ namespace SMS.Controllers
                 Ex.UPDATE_AT = DateTime.Now;
                 Ex.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @inforMessage = "Xóa thành công." });
             }
         }
@@ -46,8 +48,10 @@ namespace SMS.Controllers
             var Ex = ctx.EXPENSES.Find(id);
             if(Ex.ACTIVE != "A")
             {
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
             }
+            ctx.Dispose();
             return View(Ex);
         }
 
@@ -68,10 +72,12 @@ namespace SMS.Controllers
                     Ex.UPDATE_AT = DateTime.Now;
                     Ex.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     ctx.SaveChanges();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
                 }
                 else
                 {
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @message = "Không tồn tại phiếu chi này. Phiếu chi này đã bị xóa." });
                 }
             }
@@ -125,6 +131,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + str + "\",");
                 fileStringBuilder.Append("\"" + detail.TONG_CHI.ToString("#,###,##") + "\",");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -157,6 +164,7 @@ namespace SMS.Controllers
                 ex.TONG_CHI = model.TONG_CHI;
                 ctx.EXPENSES.Add(ex);
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
             }
             else
@@ -197,6 +205,7 @@ namespace SMS.Controllers
             ViewBag.ToTalTo = totalTo;
             ViewBag.FromDate = fromDate;
             ViewBag.ToDate = toDate;
+            ctx.Dispose();
             return PartialView("IndexPtv", model);
         }
 
