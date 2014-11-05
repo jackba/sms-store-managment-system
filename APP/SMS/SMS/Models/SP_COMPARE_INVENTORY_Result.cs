@@ -11,15 +11,14 @@ namespace SMS.Models
 {
     using System;
     
-    public partial class SP_GET_MIN_MAX_BY_STORE_Result
+    public partial class SP_COMPARE_INVENTORY_Result
     {
-        public int ID { get; set; }
-        public Nullable<int> MA_KHO { get; set; }
         public int MA_SAN_PHAM { get; set; }
         public string TEN_SAN_PHAM { get; set; }
-        public double CO_SO_TOI_THIEU { get; set; }
-        public double CO_SO_TOI_DA { get; set; }
-        public int MA_DON_VI { get; set; }
+        public Nullable<int> MA_DON_VI { get; set; }
         public string TEN_DON_VI { get; set; }
+        public Nullable<double> INVEN_FIRST_DATE { get; set; }
+        public Nullable<double> INVEN_SECOND_DATE { get; set; }
+        public Nullable<double> COMPARED { get; set; }
     }
 }

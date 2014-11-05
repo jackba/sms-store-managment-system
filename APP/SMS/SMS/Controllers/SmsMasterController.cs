@@ -252,6 +252,7 @@ namespace SMS.Controllers
             model.Email = email == null ? "" : email.VALUE;
             model.EmailUserName = emailUser == null? "" : emailUser.VALUE;
             model.EmailPassword = emailPass == null ? "" : emailPass.VALUE;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -290,7 +291,7 @@ namespace SMS.Controllers
                 }
                    
             }
-
+            ctx.Dispose();
             return View();
         }
 
@@ -331,7 +332,7 @@ namespace SMS.Controllers
 
                 var sms6 = ctx.SMS_MASTER.FirstOrDefault(u => u.NAME.Equals("MAX_MOUNTH_KIND_3") && u.ACTIVE.Equals("A"));
                 sms6.VALUE = int.Parse(MaxMonth3).ToString();
-
+                ctx.Dispose();
                 ctx.SaveChanges();
             }
             return View();

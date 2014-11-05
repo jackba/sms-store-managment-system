@@ -60,7 +60,7 @@
 
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> >
-    @if ((int)ViewBag.flg == 1)
+    @if ((int)Model.flg == 1)
     {
          <a href="@Url.Action("Index", "KhachHang")"> Danh sách khách hàng </a>
     }
@@ -70,18 +70,19 @@
     }
     > Thay đổi công nợ
 </div>
-<br />
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
 <hr style="width:100%" />
-
 <h3 style="color:red;">@ViewBag.Message</h3>
-<div>
-    @using (Html.BeginForm(new { @name = "updateDebit"}))
-    {
 
+<div id="imessage" style="color:red; font-family:'Times New Roman'; font-size:16px;">
+
+</div>
+<div>
+    @Html.HiddenFor(u => u.flg)
+    @using (Html.BeginForm("UpdateDebit", "KhachHang", FormMethod.Post, new { @id = "updateDebit", @name = "updateDebit", }))
+    {
         @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
         <div>
             <fieldset>
@@ -158,14 +159,16 @@
                     @Html.Label("Số tiền trả:")
                 </div>
                 <div style="display:inline-block; width:70%">
-                    <input id="amount" name="amount" value="@ViewBag.amount" type="text" class="numberic" runat="server" />
+                    @Html.TextBoxFor(u => u.SoTienKhachTra, new { @id = "amount", @name = "amount", @class = "numberic" })
+                    <!--input id="amount" name="amount" value="@ViewBag.amount" type="text" class="numberic" runat="server" /-->
                 </div>
 
                 <div style="display:inline-block; width:20%">
                     @Html.Label("Ngày trả:")
                 </div>
                 <div style="display:inline-block; width:70%">
-                    <input id="returnDate" name="returnDate" value="@ViewBag.returnDate" type="text" class="datePicker" runat="server" />
+                    @Html.TextBoxFor(u => u.NgayTraNo, "{0:dd/MM/yyyy}", new { @id = "returnDate", @name = "returnDate", @class = "datePicker" })
+                    @*<input id="returnDate" name="returnDate" value="@ViewBag.returnDate" type="text" class="datePicker" runat="server" />*@
                 </div>
                 <div style="display:inline-block; width:20%">
                     @Html.Label("Số tiền nợ:")
@@ -177,26 +180,46 @@
                     @Html.Label("Ghi chú:")
                 </div>
                 <div style="display:inline-block; width:70%">
-                <textarea id="note" name="note">
+                   @Html.TextAreaFor(u => u.NTextNotes, new { @id = "note", @name = "note" })
+                @*<textarea id="note" name="note">
                         @ViewBag.note
-                </textarea>
+                </textarea>*@
                 </div>
                 <div>
-                    <input type="submit" style="width:100px" value="Lưu" />
-                    <span> </span>
-@if ((int)ViewBag.flg == 1)
-{
-     <input type="button" style="width:300px" value=">> Trở về danh sách khách hàng >> " onclick="window.location.href='@Url.Action("Index","KhachHang")'" />
-}
-else
-{
-     <input type="button" style="width:380px" value=">> Trở về danh sách khách hàng - warning >> " onclick="window.location.href='@Url.Action("Warning","KhachHang")'" />
-}
-                   
+                    <input type="button" style="width:100px" value="Lưu" onclick="return fSubmit();"/>       
                 </div>
             </fieldset>
         </div>
         <script>
+
+            function fSubmit() {
+                $("#imessage").empty();
+                var amount = $("#amount").val();
+                var returnDate = $("#returnDate").val();
+                var i = 0;
+                var errorMessage = '';
+                if (amount == null || amount == '' || amount == "0") {
+                    i++;
+                    errorMessage += (i + ". Vui lòng nhập số tiền khách trả.");
+                }
+
+                if (returnDate == null || returnDate == '') {
+                    i++;
+                    if (errorMessage != '') {
+                        errorMessage += "<br/>";
+                    }
+                    errorMessage += (i + ". Vui lòng nhập ngày khách thanh toán.");
+                }
+
+                if (errorMessage != '') {
+                    $('#imessage').append(errorMessage);
+                    $('#imessage').append("<hr class='mydashed'/>");
+                    return false;
+                }
+                else {
+                    $('#updateDebit').submit();
+                }
+            }
 
             $(document).ready(function () {
                 $('.datePicker').datepicker({

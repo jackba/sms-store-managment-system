@@ -13,9 +13,11 @@
             <td>
                 <div style="text-align: right;  padding-top: 3px; ">
                  @Html.PagedListPager(Model.InventoryList, currentPageIndex => Url.Action("InventoryPagingConent",
-                                                            new { currentPageIndex, 
+                                                            new { 
+                                                                currentPageIndex, 
                                                                 StoreId = ViewBag.StoreId, 
                                                                 ProductId = ViewBag.ProductId,
+                                                                productGroupId = ViewBag.ProductGroupId,
                                                                 StoreName = ViewBag.StoreName,
                                                                 ProductName = ViewBag.ProductName
                                                             }),
@@ -80,6 +82,7 @@
                                                                 currentPageIndex,
                                                                 StoreId = ViewBag.StoreId,
                                                                 ProductId = ViewBag.ProductId,
+                                                                productGroupId = ViewBag.ProductGroupId,
                                                                 StoreName = ViewBag.StoreName,
                                                                 ProductName = ViewBag.ProductName
                                                             }),

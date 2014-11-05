@@ -97,8 +97,8 @@ namespace SMS.Controllers
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"Ngày\",");
-            fileStringBuilder.Append("\"Bán hàng (Khách trả)\",");
-            fileStringBuilder.Append("\"Bán hàng (Khách nợ)\",");
+            fileStringBuilder.Append("\"Tên người chi\",");
+            fileStringBuilder.Append("\"Tên người nhận\",");
             fileStringBuilder.Append("\"Mục đích chi tiền\",");
             fileStringBuilder.Append("\"Tổng tiền\"");
             var ctx = new SmsContext();

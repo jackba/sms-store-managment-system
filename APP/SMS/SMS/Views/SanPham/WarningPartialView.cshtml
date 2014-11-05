@@ -25,8 +25,23 @@
     </tr>
 </table>
 
+<style>
+    
+    .required:after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+    }
 
-<table width="100%">
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+<table width="100%" class="contentTable">
     <tr style="width:100%">
         <td class='inner colwidth head ' width="20%"> Tên sản phẩm </td>
         <td class='inner colwidth head ' width="15%"> Đơn vị </td>
@@ -48,67 +63,67 @@
         </td>
     </tr>
     @{
-        if(ViewBag.tonKho != null && ViewBag.tonKho.Count > 0)
-        { 
-        foreach (var tonKho in ViewBag.tonKho)
+        if (ViewBag.tonKho != null && ViewBag.tonKho.Count > 0)
         {
-            <tr>
-                <td class="inner colwidth"> @tonKho.TEN_SAN_PHAM </td>
-                <td class="inner colwidth"> @tonKho.TEN_DON_VI   </td>
-                @{
-            int j = 0;
-            foreach (var Kho in ViewBag.KhoList)
+            foreach (var tonKho in ViewBag.tonKho)
             {
-                j++;
-                if (j <= 5)
+                <tr>
+                    <td class="inner colwidth"> @tonKho.TEN_SAN_PHAM </td>
+                    <td class="inner colwidth"> @tonKho.TEN_DON_VI   </td>
+                    @{
+                int j = 0;
+                foreach (var Kho in ViewBag.KhoList)
                 {
-                    switch (j)
+                    j++;
+                    if (j <= 5)
                     {
-                        case 1:
+                        switch (j)
+                        {
+                            case 1:
 
-                            <td class="inner colwidth">
-                                @tonKho.TON_KHO_1.ToString("0,0.00")
+                                <td class="inner colwidth numberic">
+                                    @tonKho.TON_KHO_1.ToString("0,0.00")
+                                </td>
+                                break;
+                            case 2:
+
+                            <td class="inner colwidth numberic">
+                                @tonKho.TON_KHO_2.ToString("0,0.00")
                             </td>
-                            break;
-                        case 2:
+                                break;
+                            case 3:
 
-                        <td class="inner colwidth">
-                            @tonKho.TON_KHO_2.ToString("0,0.00")
-                        </td>
-                            break;
-                        case 3:
+                            <td class="inner colwidth numberic">
+                                @tonKho.TON_KHO_3.ToString("0,0.00")
+                            </td>
+                                break;
+                            case 4:
 
-                        <td class="inner colwidth">
-                            @tonKho.TON_KHO_3.ToString("0,0.00")
-                        </td>
-                            break;
-                        case 4:
+                            <td class="inner colwidth numberic">
+                                @tonKho.TON_KHO_4.ToString("0,0.00")
+                            </td>
+                                break;
+                            case 5:
 
-                        <td class="inner colwidth">
-                            @tonKho.TON_KHO_4.ToString("0,0.00")
-                        </td>
-                            break;
-                        case 5:
-
-                        <td class="inner colwidth">
-                            @tonKho.TON_KHO_5.ToString("0,0.00")
-                        </td>
-                            break;
+                            <td class="inner colwidth numberic">
+                                @tonKho.TON_KHO_5.ToString("0,0.00")
+                            </td>
+                                break;
+                        }
                     }
                 }
+}
+                    <td class="innerLast colwidth numberic">
+                        @tonKho.TOTAL.ToString("0,0.00")
+                    </td>
+                </tr>
             }
-                }
-                <td class="innerLast colwidth">
-                    @tonKho.TOTAL.ToString("0,0.00")
-                </td>
-            </tr>
-        }
         }
         else
         {
             int colspan = 3 + i;
             <tr>
-                <td  colspan="@colspan" class="innerLast alignCenter"  style="background-color:lightgray">Tất cả các sản phẩm đều có sớ lượng tồn trong vùng an toàn.</td>
+                <td colspan="@colspan" class="innerLast alignCenter" style="background-color:lightgray">Tất cả các sản phẩm đều có sớ lượng tồn trong vùng an toàn.</td>
             </tr>
         }
     }

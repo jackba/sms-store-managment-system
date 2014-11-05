@@ -29,6 +29,7 @@ namespace SMS.Controllers
             model.Units = units;
             model.Stores = stores;
             model.Providers = providers;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -67,12 +68,14 @@ namespace SMS.Controllers
                         ctx.SaveChanges();
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @inforMessage = "Hủy phiếu trả hàng nhà cung cấp thành công." });
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @message = "Hủy phiếu trả thất bại, vui lòng liên hệ admin." });
                 }
             }           
@@ -138,13 +141,16 @@ namespace SMS.Controllers
                         }
 
                     }
+
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @inforMessage = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -171,6 +177,7 @@ namespace SMS.Controllers
             model.Infor = infor;
             model.Details = details;
             model.Count = details.Count();
+            ctx.Dispose();
             return View(model);
         }
 
@@ -237,12 +244,14 @@ namespace SMS.Controllers
 
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @inforMessage = "Lưu thành công" });
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ListOfToProvider", new { @message = "Lưu thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -255,6 +264,7 @@ namespace SMS.Controllers
             ReturnNoBillModel model = new ReturnNoBillModel();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             model.Units = units;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -370,11 +380,13 @@ namespace SMS.Controllers
                     }
                     ctx.SaveChanges();
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -387,6 +399,7 @@ namespace SMS.Controllers
             ViewBag.Flag = 0;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
+            ctx.Dispose();
             return View();
         }
 
@@ -426,6 +439,7 @@ namespace SMS.Controllers
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
             model.Detail = detail.ToPagedList(pageIndex, pageSize);
             model.Count = detail.Count;
+            ctx.Dispose();
             return PartialView("ListOfToProviderPartialView", model);
         }
         [CustomActionFilter]
@@ -437,6 +451,7 @@ namespace SMS.Controllers
             var detail = ctx.SP_GET_RETURN_DETAIL_BY_ID(id).ToList<SP_GET_RETURN_DETAIL_BY_ID_Result>();
             model.Infor = infor;
             model.Detail = detail;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -489,12 +504,14 @@ namespace SMS.Controllers
                     }
                     ctx.SaveChanges();
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Xóa phiếu trả hàng thành công." });
                 }
                 catch (Exception ex)
                 {
                     Transaction.Current.Rollback();
                     Console.Write(ex.ToString());
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @message = "Xóa phiếu trả hàng thất bại." });
                 }
             }
@@ -546,7 +563,7 @@ namespace SMS.Controllers
                 }
                 model.Customer = customer;
             }
-            
+            ctx.Dispose();
             return View(model);
         }
 
@@ -660,11 +677,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -698,6 +717,7 @@ namespace SMS.Controllers
             ViewBag.UserName = userName;
             ViewBag.FromDate = ((DateTime)fromDate).ToString("dd/MM/yyyy");
             ViewBag.Todate = ((DateTime)toDate).ToString("dd/MM/yyyy");
+            ctx.Dispose();
             return PartialView("ReturnPurchaseListPartialView", model);
         }
 
@@ -730,6 +750,7 @@ namespace SMS.Controllers
             model.detailReturnList = detailList;
             ViewBag.Message = message;
             ViewBag.MessageInfor = messageInfor;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -844,11 +865,13 @@ namespace SMS.Controllers
                         }
                     }
                     transaction.Complete();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @inforMessage = "Nhận trả hàng thành công." });
                 }
                 catch (Exception)
                 {                    
                     Transaction.Current.Rollback();
+                    ctx.Dispose();
                     return RedirectToAction("ReturnPurchaseList", new { @message = "Nhận trả hàng thất bại, vui lòng liên hệ admin." });
                 }
             }
@@ -899,6 +922,7 @@ namespace SMS.Controllers
             ViewBag.ToDate = ((DateTime)toDate).ToString("dd/MM/yyyy");
             ViewBag.CustomerId = customerId;
             ViewBag.CustomerName = customerName;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
     }

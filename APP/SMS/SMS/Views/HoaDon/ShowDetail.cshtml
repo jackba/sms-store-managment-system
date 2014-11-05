@@ -395,11 +395,6 @@ else
                     debit.replace(/,/gi, "");
                 }
 
-                alert(debit);
-                alert(maxDebit);
-                alert(cusDebit);
-                return false;
-
                 if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
                     var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
                     if (r == true) {

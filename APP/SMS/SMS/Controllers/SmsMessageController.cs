@@ -21,6 +21,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(uh => uh.ACTIVE == "A").ToList<NHOM_NGUOI_DUNG>();
             ViewBag.GroupUserList = nhomNguoiDung;
+            ctx.Dispose();
             return View();
         }
 
@@ -44,6 +45,7 @@ namespace SMS.Controllers
                 smsMessage.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                 ctx.SMS_MESSAGES.Add(smsMessage);
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
             }
             else
@@ -51,6 +53,7 @@ namespace SMS.Controllers
                 var ctx = new SmsContext();
                 var nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(uh => uh.ACTIVE == "A").ToList<NHOM_NGUOI_DUNG>();
                 ViewBag.GroupUserList = nhomNguoiDung;
+                ctx.Dispose();
                 return View();
             }
         }
@@ -76,10 +79,12 @@ namespace SMS.Controllers
                 donvi.UPDATE_AT = DateTime.Now;
                 donvi.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index", new { @inforMessage = "Xóa thành công." });
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy tin nhắn tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -95,6 +100,7 @@ namespace SMS.Controllers
             {
                 if (model.ID_NGUOI_GUI != (int)Session["UserId"])
                 {
+                    ctx.Dispose();
                     ViewBag.Message = "Bạn không phải là người tạo ra tin nhắn này, bạn không có quyền thay đổi nó.";
                     ViewBag.GroupUserList = nhomNguoiDung;
                     return View(model);
@@ -107,6 +113,7 @@ namespace SMS.Controllers
                     sms.UPDATE_AT = DateTime.Now;
                     sms.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                     ctx.SaveChanges();
+                    ctx.Dispose();
                     return RedirectToAction("Index", new { @inforMessage = "Lưu thành công." });
                 }
             }
@@ -128,10 +135,12 @@ namespace SMS.Controllers
                 ViewBag.donVi = donvi;
                 var nhomNguoiDung = ctx.NHOM_NGUOI_DUNG.Where(uh => uh.ACTIVE == "A").ToList<NHOM_NGUOI_DUNG>();
                 ViewBag.GroupUserList = nhomNguoiDung;
+                ctx.Dispose();
                 return View(donvi);
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -157,6 +166,7 @@ namespace SMS.Controllers
                                         value = x.TEN_NHOM
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -188,6 +198,7 @@ namespace SMS.Controllers
             ViewBag.GroupUserId = groupUserId;
             ViewBag.GroupUserName = groupUserName;
             ViewBag.SearchString = searchString;
+            ctx.Dispose();
             return PartialView("IndexPartialView", model);
         }
     }

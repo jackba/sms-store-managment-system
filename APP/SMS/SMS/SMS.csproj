@@ -56,6 +56,9 @@
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcFlash.Core">
+      <HintPath>..\packages\MvcFlash.Core.2.0.1\lib\net40\MvcFlash.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -288,6 +291,9 @@
     <Compile Include="Models\SMS_MESSAGES.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_COMPARE_INVENTORY_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_EXPORT_REPORT_DETAIL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -466,6 +472,9 @@
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_ALL_CUS_RETURN_BY_WEEK.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_BUGET_BY_MONTH.cs">
@@ -778,11 +787,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Images\widthLogo.jpg" />
+    <Content Include="Images\WiLogo.png" />
     <EntityDeploy Include="Models\SmsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Images\WiLogo.png" />
     <Content Include="Models\SmsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmsModel.edmx</DependentUpon>
