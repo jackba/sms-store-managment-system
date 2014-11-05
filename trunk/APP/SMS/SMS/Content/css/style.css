@@ -84,3 +84,33 @@ button.mySaveButton, button.mySaveButton{
 }
 
 
+
+.alignLeft{
+    text-align:left;
+}
+
+.alignCenter{
+    text-align:center;
+}
+.alignNumberic{
+    text-align:right;
+}
+
+.numberic{
+    text-align:right;
+}
+
+
+.required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+}
+
+table.contentTable tr:nth-child(even) {
+    background: #E2F7FF;
+}
+
+table.contentTable tr:nth-child(odd) {
+    background: #FFF;
+}

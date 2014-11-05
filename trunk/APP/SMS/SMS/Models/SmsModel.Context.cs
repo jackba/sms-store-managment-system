@@ -58,6 +58,7 @@ namespace SMS.Models
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
+        public virtual DbSet<V_ALL_CUS_RETURN_BY_WEEK> V_ALL_CUS_RETURN_BY_WEEK { get; set; }
         public virtual DbSet<V_BUGET_BY_MONTH> V_BUGET_BY_MONTH { get; set; }
         public virtual DbSet<V_BUGET_BY_WEEK> V_BUGET_BY_WEEK { get; set; }
         public virtual DbSet<V_HOA_DON> V_HOA_DON { get; set; }
@@ -117,6 +118,56 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GET_SUM_HOA_DON_BY_CUS_ID_Result>("GET_SUM_HOA_DON_BY_CUS_ID", fROM_DATEParameter, tO_DATEParameter, mA_KHACH_HANGParameter);
         }
     
+        public virtual ObjectResult<SP_COMPARE_INVENTORY_Result> SP_COMPARE_INVENTORY(Nullable<int> mA_KHO, Nullable<int> mA_SAN_PHAM, string tEN_SAN_PHAM, Nullable<int> mA_NHOM, Nullable<System.DateTime> fIRST_DATE, Nullable<System.DateTime> sECOND_DATE)
+        {
+            var mA_KHOParameter = mA_KHO.HasValue ?
+                new ObjectParameter("MA_KHO", mA_KHO) :
+                new ObjectParameter("MA_KHO", typeof(int));
+    
+            var mA_SAN_PHAMParameter = mA_SAN_PHAM.HasValue ?
+                new ObjectParameter("MA_SAN_PHAM", mA_SAN_PHAM) :
+                new ObjectParameter("MA_SAN_PHAM", typeof(int));
+    
+            var tEN_SAN_PHAMParameter = tEN_SAN_PHAM != null ?
+                new ObjectParameter("TEN_SAN_PHAM", tEN_SAN_PHAM) :
+                new ObjectParameter("TEN_SAN_PHAM", typeof(string));
+    
+            var mA_NHOMParameter = mA_NHOM.HasValue ?
+                new ObjectParameter("MA_NHOM", mA_NHOM) :
+                new ObjectParameter("MA_NHOM", typeof(int));
+    
+            var fIRST_DATEParameter = fIRST_DATE.HasValue ?
+                new ObjectParameter("FIRST_DATE", fIRST_DATE) :
+                new ObjectParameter("FIRST_DATE", typeof(System.DateTime));
+    
+            var sECOND_DATEParameter = sECOND_DATE.HasValue ?
+                new ObjectParameter("SECOND_DATE", sECOND_DATE) :
+                new ObjectParameter("SECOND_DATE", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_COMPARE_INVENTORY_Result>("SP_COMPARE_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, mA_NHOMParameter, fIRST_DATEParameter, sECOND_DATEParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
         public virtual int SP_DELETE_EXPORT_4_SALE(Nullable<int> mA_XUAT_KHO, Nullable<int> mA_NHAN_VIEN_TH, ObjectParameter rETURN_VALUE)
         {
             var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
@@ -128,6 +179,19 @@ namespace SMS.Models
                 new ObjectParameter("MA_NHAN_VIEN_TH", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_EXPORT_4_SALE", mA_XUAT_KHOParameter, mA_NHAN_VIEN_THParameter, rETURN_VALUE);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
         public virtual int SP_EXPORT_4_RETURN_2_PROVIDER(Nullable<int> iD, Nullable<int> sTORE_ID, Nullable<int> uSER_ID, Nullable<System.DateTime> eXPORT_DATE, ObjectParameter rETURN_VALUE)

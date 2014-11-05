@@ -10,16 +10,14 @@
 namespace SMS.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_GET_MIN_MAX_BY_STORE_Result
+    public partial class V_ALL_CUS_RETURN_BY_WEEK
     {
-        public int ID { get; set; }
-        public Nullable<int> MA_KHO { get; set; }
-        public int MA_SAN_PHAM { get; set; }
-        public string TEN_SAN_PHAM { get; set; }
-        public double CO_SO_TOI_THIEU { get; set; }
-        public double CO_SO_TOI_DA { get; set; }
-        public int MA_DON_VI { get; set; }
-        public string TEN_DON_VI { get; set; }
+        public double TOTAL { get; set; }
+        public Nullable<int> WEEK { get; set; }
+        public Nullable<int> YEAR { get; set; }
+        public Nullable<System.DateTime> START_DATE { get; set; }
+        public Nullable<System.DateTime> END_DATE { get; set; }
     }
 }

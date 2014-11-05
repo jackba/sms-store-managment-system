@@ -1,7 +1,7 @@
 ﻿@if (Request.IsAuthenticated)
 {
     <text>
-        Xin chào: @Html.ActionLink(Session["UserName"].ToString(), "Show", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
+        Xin chào: @Html.ActionLink(Session["UserName"] == null ? "" : Session["UserName"].ToString(), "Show", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             @Html.AntiForgeryToken()

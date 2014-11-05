@@ -109,5 +109,11 @@ namespace SMS.Models
         public virtual KHU_VUC KHU_VUC { get; set; }
         public virtual ICollection<KHACH_HANG_DEBIT_HIST> KHACH_HANG_DEBIT_HIST { get; set; }
         public virtual NGUOI_DUNG NGUOI_DUNG1 { get; set; }
+
+        public double SoTienKhachTra { get; set; }
+        public DateTime NgayTraNo { get; set; }
+        public int? flg { get; set; }
+        public string NTextNotes { get; set; }
+
     }
 }

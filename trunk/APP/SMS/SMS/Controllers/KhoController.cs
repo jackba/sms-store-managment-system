@@ -251,6 +251,7 @@ namespace SMS.Controllers
                                         value = x.TEN_KHO
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 

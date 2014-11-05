@@ -337,3 +337,7 @@ td{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.alignLeft{
+    text-align:left;
+}

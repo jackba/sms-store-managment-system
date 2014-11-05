@@ -29,6 +29,7 @@ namespace SMS.Controllers
             toDate = toDate == null ? SystemConstant.MAX_DATE : toDate;
             var resultList = ctx.SP_GET_HOA_DON(fromDate, toDate, saleId, recieptID).ToList<SP_GET_HOA_DON_Result>();
             ViewBag.Count = resultList.Count();
+            ctx.Dispose();
             return View();
         }
 

@@ -254,6 +254,7 @@ namespace SMS.Controllers
             }
             var ctx = new SmsContext();
             KHACH_HANG khuVuc = ctx.KHACH_HANG.Find(id);
+            khuVuc.flg = flg;
             if (khuVuc.ACTIVE.Equals("A"))
             {
                 var khuVucList = (from s in ctx.KHU_VUC
@@ -275,23 +276,26 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult UpdateDebit(Models.KHACH_HANG khachHang)
         {
+           
+            //string a = Request.Form["amount"];
+            decimal amount = (decimal)khachHang.SoTienKhachTra;
+            //Decimal.TryParse(a, out amount);
 
-            string a = Request.Form["amount"];
-            decimal amount = 0;
-            Decimal.TryParse(a, out amount);
+           // a = Request.Form["returnDate"];
+            DateTime returnDate = khachHang.NgayTraNo;
 
-            a = Request.Form["returnDate"];
-            DateTime returnDate = DateTime.MinValue;
-            if (!String.IsNullOrEmpty(a))
+            if (khachHang.NgayTraNo != null)
             {
-                returnDate = DateTime.ParseExact(a, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                ViewBag.returnDate = returnDate.ToString("dd/MM/yyyy");
+                //returnDate = DateTime.ParseExact(a, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                //ViewBag.returnDate = returnDate.ToString("dd/MM/yyyy");
             }
             else
             {
                 ViewBag.Message = "Vui lòng nhập đầy đủ thông tin.";                
                 ViewBag.returnDate = "";
             }
+
+
             decimal oldDebit = khachHang.NO_GOI_DAU;
             decimal newDebit = khachHang.NO_GOI_DAU - amount;
             if (amount == 0)
@@ -309,7 +313,7 @@ namespace SMS.Controllers
 
             int flg = Convert.ToInt32(Request.Form["flg"]);
 
-            string note = Request.Form["note"];
+            string note = khachHang.NTextNotes;
             ViewBag.note = note;
             
             if (amount != 0 && returnDate != DateTime.MinValue)
@@ -332,7 +336,7 @@ namespace SMS.Controllers
                 debitHist.NO_TRUOC = (double)oldDebit;
                 debitHist.NO_SAU = (double)newDebit;
                 debitHist.PHAT_SINH = (double)amount;
-                debitHist.GHI_CHU = note.Trim();
+                debitHist.GHI_CHU = string.IsNullOrWhiteSpace(note)? "":  note.Trim();
                 debitHist.ACTIVE = "A";
                 debitHist.UPDATE_AT = DateTime.Now;
                 debitHist.CREATE_AT = DateTime.Now;
@@ -340,19 +344,18 @@ namespace SMS.Controllers
                 debitHist.CREATE_BY = (int)Session["UserId"];
                 db.KHACH_HANG_DEBIT_HIST.Add(debitHist);
                 db.SaveChanges();
+                db.Dispose();
                 if (flg == 1)
                 {
                     return RedirectToAction("Index");
                 }
                 else
                 {
+                    
                     return RedirectToAction("Warning");
                 }
             }
-            var ctx = new SmsContext();
-            KHACH_HANG khuVuc = ctx.KHACH_HANG.Find((int)khachHang.MA_KHACH_HANG);
-            ctx.Dispose();
-            return View(khuVuc);
+            return View(khachHang);
         }
 
         [HttpPost]

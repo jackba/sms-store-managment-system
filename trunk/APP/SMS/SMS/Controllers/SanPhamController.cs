@@ -36,6 +36,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
             ViewBag.ProductGroups = productGroups;
+            ctx.Dispose();
             return View();
         }
 
@@ -50,7 +51,6 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var product = ctx.SAN_PHAM.Where(u => u.ACTIVE == "A" && u.CODE.ToLower() == code.ToLower()).FirstOrDefault();
-            ctx.Dispose();
             if (product != null)
             {
                 ctx.Dispose();
@@ -291,11 +291,13 @@ namespace SMS.Controllers
                         if (flag)
                         {
                             transaction.Complete();
+                            ctx.Dispose();
                             return RedirectToAction("ConvertUnitOfProducts", new { @inforMessage = "Import danh sách sản phẩm thành công." });
                         }
                         else
                         {
                             Transaction.Current.Rollback();
+                            ctx.Dispose();
                             ViewBag.Message = fileStringBuilder.ToString();
                             return View();
                         }
@@ -303,6 +305,7 @@ namespace SMS.Controllers
                     catch (Exception ex)
                     {
                         Console.Write(ex.ToString());
+                        ctx.Dispose();
                         ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
                         return View();
                     }
@@ -623,6 +626,7 @@ namespace SMS.Controllers
                 chiec_khau_2 = result.CHIEC_KHAU_2,
                 chiec_khau_3 = result.CHIEC_KHAU_3,
             });
+            ctx.Dispose();
             return jresult;
         }
 
@@ -668,6 +672,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_2 == null ? "0" : ((Double)convert.CHIEC_KHAU_2).ToString("#,###.##").Replace("\"", "\"\"") + "\","));
                 fileStringBuilder.Append("\"" + (convert.CHIEC_KHAU_3 == null ? "0" : ((Double)convert.CHIEC_KHAU_3).ToString("#,###.##").Replace("\"", "\"\"") + "\""));
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -725,6 +730,7 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + (product.MA_NHOM == null ? "" : product.NHOM_SAN_PHAM.TEN_NHOM).Replace("\"", "\"\"") + "\",");
                 fileStringBuilder.Append("\"" + product.DAC_TA + "\"");
             }
+            ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
         }
 
@@ -756,6 +762,7 @@ namespace SMS.Controllers
                                      value = x.TEN_SAN_PHAM
                                  };
             var result = Json(suggestedProducts.Take(5).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -773,6 +780,7 @@ namespace SMS.Controllers
                                         unitName = u.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -790,6 +798,7 @@ namespace SMS.Controllers
                                         code = x.CODE
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -806,6 +815,7 @@ namespace SMS.Controllers
                                         name = x.TEN_SAN_PHAM
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -824,6 +834,7 @@ namespace SMS.Controllers
                                         price = (x.GIA_BAN_3 == null ? 0 : x.GIA_BAN_3*90/100)
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -856,6 +867,7 @@ namespace SMS.Controllers
             {
                 ton_kho = rv.ToString("#.##"),
             });
+            ctx.Dispose();
             return jresult;
         }
 
@@ -881,6 +893,7 @@ namespace SMS.Controllers
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -905,6 +918,7 @@ namespace SMS.Controllers
                                                     (typeCustomer.Equals("2") ? x.CHIEC_KHAU_2 ?? 0 : x.CHIEC_KHAU_3 ?? 0)
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -923,6 +937,7 @@ namespace SMS.Controllers
                                         unitName = u.TEN_DON_VI
                                     };
             var result = Json(suggestedProducts.Take(10).ToList());
+            ctx.Dispose();
             return result;
         }
 
@@ -989,6 +1004,7 @@ namespace SMS.Controllers
             BindListNSX(ctx);
             SetModeTitle(false);
             SetDefaultValue();
+            ctx.Dispose();
             return View();
         }
 
@@ -1012,12 +1028,13 @@ namespace SMS.Controllers
                 BindListNSX(ctx);
 
                 SetHiddenFields(sp);
-
+                ctx.Dispose();
                 return View("../SanPham/AddNew", sp);
 
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = msg; 
                 return View("../Home/Error"); ;
             }
@@ -1151,10 +1168,12 @@ namespace SMS.Controllers
             {
                 sp.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("Index");
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = "Không tìm thấy đơn vị tương ứng.";
                 return View("../Home/Error"); ;
             }
@@ -1354,6 +1373,7 @@ namespace SMS.Controllers
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.CurrentFilter = CurrentFilter;
             ViewBag.DisplayContentLst = DisplayContentLst;
+            ctx.Dispose();
             return DisplayContentLst;
         }
 
@@ -1469,6 +1489,7 @@ namespace SMS.Controllers
             ViewBag.CurrentPageIndex = pageIndex;
             ViewBag.CurrentFilterAdvance = psa;
             ViewBag.DisplayContentLst = DisplayContentLst;
+            ctx.Dispose();
             return DisplayContentLst;
         }
 
@@ -1514,6 +1535,7 @@ namespace SMS.Controllers
         public ActionResult downloadWarningList()
         {
             var ctx = new SmsContext();
+            ctx.Database.CommandTimeout = 300;
             var details = ctx.Database.SqlQuery<SP_GET_TON_KHO_ALERT>("exec SP_GET_TON_KHO_ALERT @NAME ", 
                 new SqlParameter("NAME", string.Empty)).ToList<SP_GET_TON_KHO_ALERT>();
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
@@ -1551,7 +1573,7 @@ namespace SMS.Controllers
             Response.Output.Write(fileStringBuilder.ToString());
             Response.Flush();
             Response.End();
-
+            ctx.Dispose();
             return View("../Sanpham/Warning");
         }
 
@@ -1578,6 +1600,7 @@ namespace SMS.Controllers
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
+            ctx.Dispose();
             return PartialView("WarningPartialView", model);
         }
 
@@ -1601,6 +1624,7 @@ namespace SMS.Controllers
             ViewBag.tonKho = tk;
             GetTonKhoAlertModel model = new GetTonKhoAlertModel();
             model.WarningList = tk;
+            ctx.Dispose();
             return View(model);
         }
 
@@ -1615,6 +1639,7 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
             ViewBag.ProductGroups = productGroups;
+            ctx.Dispose();
             return View();
         }
 
@@ -1677,7 +1702,7 @@ namespace SMS.Controllers
 
             ViewBag.CurrentFilter = CurrentFilter;
 
-
+            ctx.Dispose();
             return PartialView("ListConvertUnitPartialView", khachHangs);
         }
 
@@ -1713,6 +1738,7 @@ namespace SMS.Controllers
 
             ctx.CHUYEN_DOI_DON_VI_TINH.Add(conUnit);
             ctx.SaveChanges();
+            ctx.Dispose();
             return Redirect("ConvertUnitOfProducts");
         }
 
@@ -1733,12 +1759,13 @@ namespace SMS.Controllers
                 SetModeUnitTitle(true);
 
                 SetHiddenConvertUnitFields(cddv);
-
+                ctx.Dispose();
                 return View("../SanPham/AddNewConvertUnitOfProducts", cddv);
 
             }
             else
             {
+                ctx.Dispose();
                 ViewBag.Message = msg;
                 return View("../Home/Error"); ;
             }
@@ -1768,6 +1795,7 @@ namespace SMS.Controllers
                 cddv.UPDATE_BY = (int)Session["UserId"];
 
                 db.SaveChanges();
+                db.Dispose();
                 return RedirectToAction("ConvertUnitOfProducts");
             }
 
@@ -1798,6 +1826,7 @@ namespace SMS.Controllers
                 ViewBag.InputUnitName = dv.TEN_DON_VI ;
                 ViewBag.HeSo = cddv.HE_SO;
                 DON_VI_TINH dvroot = ctx.DON_VI_TINH.Find(sp.MA_DON_VI);
+                ctx.Dispose();
                 ViewBag.UnitName = dvroot.TEN_DON_VI;
             }
 
@@ -1819,11 +1848,13 @@ namespace SMS.Controllers
             {
                 cddv.ACTIVE = "I";
                 ctx.SaveChanges();
+                ctx.Dispose();
                 return RedirectToAction("ConvertUnitOfProducts");
             }
             else
             {
                 ViewBag.Message = msg;
+                ctx.Dispose();
                 return View("../Home/Error"); ;
             }
         }

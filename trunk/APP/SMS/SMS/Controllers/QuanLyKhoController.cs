@@ -220,6 +220,8 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            model.Stores = stores;
             int storeId = 0;
             if (!(bool)Session["IsAdmin"])
             {
@@ -236,7 +238,7 @@ namespace SMS.Controllers
                 if (Path.GetExtension(fp) == null || Path.GetExtension(fp).ToLower() != ".csv")
                 {
                     ViewBag.Message = "Định dạng file không đúng. Vui lòng chọn lại file import.";
-                    return View();
+                    return View(model);
                 }
                 ICsvParser csvParser = new CsvParser(new StreamReader(file.InputStream));
                 CsvReader csvReader = new CsvReader(csvParser);
@@ -249,7 +251,7 @@ namespace SMS.Controllers
                     if (csvReader.FieldHeaders != null && csvReader.FieldHeaders.Length != 6)
                     {
                         ViewBag.Message = "Định dạng file CSV không đúng. Vui lòng kiểm tra lại.";
-                        return View();
+                        return View(model);
                     }
                     else
                     {
@@ -332,7 +334,7 @@ namespace SMS.Controllers
                             Transaction.Current.Rollback();
                             ViewBag.Message = fileStringBuilder.ToString();
                             ctx.Dispose();
-                            return View();
+                            return View(model);
                         }
                     }
                     catch (Exception ex)
@@ -340,7 +342,7 @@ namespace SMS.Controllers
                         Console.Write(ex.ToString());
                         ViewBag.Message = "Lỗi dữ liệu tại dòng tại dòng " + i + ". Có lỗi xảy ra trong quá trình import. Vui lòng liên hệ admin.";
                         ctx.Dispose();
-                        return View();
+                        return View(model);
                     }
                 }
                 if (!(bool)Session["IsAdmin"])
@@ -352,7 +354,7 @@ namespace SMS.Controllers
             else
             {
                 ViewBag.Message = "Bạn chưa chọn file. Vui lòng chọn file import.";
-                return View();
+                return View(model);
             }
         }
 
@@ -1440,7 +1442,7 @@ namespace SMS.Controllers
             ViewBag.StoreName = StoreName;
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
-
+            ViewBag.ProductGroupId = productGroupId;
             var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),
                 new SqlParameter("TEN_KHO", string.IsNullOrWhiteSpace(StoreName) ? string.Empty : StoreName),
@@ -1487,6 +1489,7 @@ namespace SMS.Controllers
             ViewBag.StoreName = StoreName;
             ViewBag.ProductId = ProductId;
             ViewBag.ProductName = ProductName;
+            ViewBag.ProductGroupId = productGroupId;
 
             var tonkho = ctx.Database.SqlQuery<Inventory>("exec SP_GET_INVENTORY @MA_KHO, @TEN_KHO, @GROUP_ID, @MA_SAN_PHAM, @TEN_SAN_PHAM ",
                 new SqlParameter("MA_KHO", Convert.ToInt32(StoreId)),

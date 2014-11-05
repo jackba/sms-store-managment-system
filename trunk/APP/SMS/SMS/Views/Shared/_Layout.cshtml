@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title </title>
     <link href="~/Content/images/logo.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="~/Content/images/logo.ico" rel="icon" type="image/x-icon" />
+
     <meta name="viewport" content="width=device-width" />
     <!--Ngoc added: make sure no cache-->
     <meta http-equiv="CACHE-CONTROL" content="no-cache, no-store, must-revalidate">
@@ -22,7 +24,12 @@
             type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/DatePickerReady.js")"
             type="text/javascript"></script>
-      
+
+    <script src="@Url.Content("~/Content/js/jquery.cookie.js")"
+            type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/jQuery.flashMessage.js")"
+            type="text/javascript"></script>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
@@ -177,7 +184,7 @@
         </header>
     <div id="body">
         @RenderSection("featured", required: false)
-        <section class="content-wrapper main-content clear-fix">
+        <section class="content-wrapper main-content clear-fix">            
                 @RenderBody()
             </section>
     </div>
