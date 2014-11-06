@@ -196,7 +196,7 @@ namespace SMS.Controllers
                 donVitinh.UPDATE_AT = DateTime.Now;
                 donVitinh.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }

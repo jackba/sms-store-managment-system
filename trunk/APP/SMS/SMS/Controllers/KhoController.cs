@@ -141,7 +141,7 @@ namespace SMS.Controllers
                 khuVucNew.CREATE_BY = (int)Session["UserId"];
                 db.KHOes.Add(khuVucNew);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công");
             }
             var ctx = new SmsContext();
             var nguoiDungList = (from s in ctx.NGUOI_DUNG
@@ -199,7 +199,7 @@ namespace SMS.Controllers
                 khuVucNew.UPDATE_AT = DateTime.Now;
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công"); ;
             }
             var ctx = new SmsContext();
             var nguoiDungList = (from s in ctx.NGUOI_DUNG

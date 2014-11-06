@@ -16,14 +16,12 @@
     <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a> 
     > Danh sách đơn vị tính
 </div>
-<br />
+@Html.Partial("_Flash")
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<div style="clear:both"></div>
-@Html.Partial("_Flash")
-<div style="clear:both"></div>
 <hr style="width:100%" />
+
 @using (Html.BeginForm("Index", "DonVi", FormMethod.Get))
 {
     <div style="float:right">
