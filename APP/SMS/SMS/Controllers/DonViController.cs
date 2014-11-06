@@ -68,6 +68,7 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult Index(string searchString, string sortOrder, string currentFilter, int? page)
         {
+
             var ctx = new SmsContext();
             if (!String.IsNullOrEmpty(searchString) &&( page == null || page == 0))
             {
@@ -217,7 +218,7 @@ namespace SMS.Controllers
                     donVitinh.CREATE_BY = (int)Session["UserId"];
                     db.DON_VI_TINH.Add(donVitinh);
                     db.SaveChanges();
-                    return Redirect("Index");
+                    return RedirectToAction("Index").Success("Lưu thành công.");
                 }
                 return View();
         }

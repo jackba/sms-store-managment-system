@@ -1,0 +1,14 @@
+﻿<script src="~/Scripts/jQuery.flashMessage.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+<link href="~/Content/flash-messages.css" rel="stylesheet" />
+<div id="flash-messages" class="alert-message" style="display:none;">
+    <a class="close" href="#" style="display:none">&times;</a>
+    <p style="color: #3c763d; background-color: #dff0d8; border-color: #d6e9c6;"></p>
+</div>
+<script type="text/javascript">
+
+    jQuery(function ($) {
+        // Your code.
+        $("#flash-messages").flashMessage();
+    })
+</script>
