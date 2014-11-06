@@ -56,10 +56,6 @@
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MvcFlashMessages, Version=0.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MvcFlashMessages.0.2.2\lib\MvcFlashMessages.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -579,7 +575,6 @@
     <Content Include="Content\css\960.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\screen.css" />
-    <Content Include="Content\flash-messages.css" />
     <Content Include="Content\images\bill.png" />
     <Content Include="Content\images\buycart.png" />
     <Content Include="Content\images\category.jpg" />
