@@ -10,6 +10,22 @@
     ViewBag.Title = "Danh mục nhóm sản phẩm";
 }
 
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a> 
     > Danh sách nhóm sản phẩm
@@ -53,7 +69,7 @@
                     </table>
                 </div>
                 <div id='divfrozen' class='frozen'>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen contentTable' id="contentFrozen">
                         @foreach (var nhom in Model)
                         {
                             <tr>
@@ -93,7 +109,7 @@
                     </table>
                 </div>
                 <div id='contentscroll' class='content' onscroll='reposHead(this);'>
-                    <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                    <table border="0" cellpadding="0" cellspacing="0" class='content contentTable' id='innercontent'>
                         @foreach (var nhom in Model)
                         {
                             <tr>
@@ -102,39 +118,42 @@
                             if ((bool)Session["IsAdmin"] == true)
                             {
                                 <td class='inner  alignCenter' style="width:70px;"> @nhom.NguoiTao.TEN_NGUOI_DUNG </td>
-                                <td class='inner  alignCenter' style="width:70px;"> 
-                                @{
-                                    if (@nhom.NhomSanPham.CREATE_AT != null)
-                                    { 
-                                        @DateTime.Parse(@nhom.NhomSanPham.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
-                                    }
-                                }</td>
-                                <td class='inner  alignCenter' style="width:70px;"> @nhom.NguoiCapNhat.TEN_NGUOI_DUNG </td>
-                                <td class='inner  alignCenter' style="width:70px;"> 
-                                @{
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                        @{
+                                if (@nhom.NhomSanPham.CREATE_AT != null)
+                                {
+                                    @DateTime.Parse(@nhom.NhomSanPham.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                }
+                                        }
+                                    </td>
+                                    <td class='inner  alignCenter' style="width:70px;"> @nhom.NguoiCapNhat.TEN_NGUOI_DUNG </td>
+                                    <td class='inner  alignCenter' style="width:70px;">
+                                        @{
                                 if (@nhom.NhomSanPham.UPDATE_AT != null)
                                 {
                                     @DateTime.Parse(@nhom.NhomSanPham.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
                                 }
-                                }</td>
+                                        }
+                                    </td>
                             }
                             if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                             {
-                                        <td class='inner alignCenter' style="width:50px;">
-                                            <a href="@Url.Action("Edit", "NhomSanPham", new { id = @nhom.NhomSanPham.MA_NHOM})" class="button-module">
-                                                <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                                            </a>
-                                        </td>
-                                        <td class='inner alignCenter' style="width:50px;">
-                                            <a href="@Url.Action("Delete", "NhomSanPham", new { id = @nhom.NhomSanPham.MA_NHOM})" class="button-module" onclick="return deleteSubmit()">
-                                                <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
-                                            </a>
-                                        </td>
-                                    }
-    }
+                                <td class='inner alignCenter' style="width:50px;">
+                                    <a href="@Url.Action("Edit", "NhomSanPham", new { id = @nhom.NhomSanPham.MA_NHOM})" class="button-module">
+                                        <img width="16;" height="16;" alt="edit" src="~/Content/images/edit-icon.png"></img>
+                                    </a>
+                                </td>
+                                    <td class='inner alignCenter' style="width:50px;">
+                                        <a href="@Url.Action("Delete", "NhomSanPham", new { id = @nhom.NhomSanPham.MA_NHOM})" class="button-module" onclick="return deleteSubmit()">
+                                            <img width="16" height="16" alt="edit" src="~/Content/images/edit_delete.png"></img>
+                                        </a>
+                                    </td>
+                            }
+                                }
                             </tr>
-                        }     
-                </table>
+                        }
+                    </table>
+
                 </div>
             </td>
         </tr>

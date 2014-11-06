@@ -1,8 +1,23 @@
 ﻿@model PagedList.IPagedList<SMS.Models.ChuyenDoiDonViTinhModel>
 @using PagedList.Mvc;
 
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
 
-<table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+
+<table border="0" cellpadding="0" cellspacing="0" style="width:100%" >
     <tr>
         <td class='tablefrozencolumn' width="15%">
             <div id='divroot' class='root'>
@@ -40,7 +55,7 @@
                 </table>
             </div>
             <div id='divfrozen' class='frozen'>
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen' id="contentFrozen">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class='frozen contentTable' id="contentFrozen">
                     @foreach (var donvi in Model)
                     {
                         <tr>
@@ -104,7 +119,7 @@
                 </table>
             </div>
             <div id='contentscroll' class='content' onscroll='reposHead(this);'>
-                <table border="0" cellpadding="0" cellspacing="0" class='content' id='innercontent'>
+                <table border="0" cellpadding="0" cellspacing="0" class='content contentTable' id='innercontent'>
                     @foreach (var donvi in Model)
                     {
                         <tr>
@@ -121,19 +136,20 @@
                         if ((bool)Session["IsAdmin"] == true)
                         {
                             <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiTao.TEN_NGUOI_DUNG </td>
-                                <td class='inner  alignCenter' style="width:70px;"> 
-                            @if (donvi.ChuyenDoiDonVi.CREATE_AT != null)
-                            {
-                                @DateTime.Parse(@donvi.ChuyenDoiDonVi.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
-                            }</td>
+                                <td class='inner  alignCenter' style="width:70px;">
+                                    @if (donvi.ChuyenDoiDonVi.CREATE_AT != null)
+                                    {
+                                        @DateTime.Parse(@donvi.ChuyenDoiDonVi.CREATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                    }
+                                </td>
                                 <td class='inner  alignCenter' style="width:70px;"> @donvi.NguoiCapNhat.TEN_NGUOI_DUNG </td>
                                 <td class='inner  alignCenter' style="width:70px;">
-                            
-                            @if (donvi.ChuyenDoiDonVi.UPDATE_AT != null)
-                            {
-                                @DateTime.Parse(@donvi.ChuyenDoiDonVi.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
-                            }
-                             </td>
+
+                                    @if (donvi.ChuyenDoiDonVi.UPDATE_AT != null)
+                                    {
+                                        @DateTime.Parse(@donvi.ChuyenDoiDonVi.UPDATE_AT.ToString()).ToString("dd/MM/yyyy")
+                                    }
+                                </td>
                         }
                         if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
                         {

@@ -19,6 +19,7 @@ namespace SMS.App_Start
 
         void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
         {
+           
             if (filterContext.HttpContext.Request.IsAuthenticated)
             {
                 string currentController = filterContext.HttpContext.Request.RequestContext.RouteData.GetRequiredString("controller");

@@ -205,6 +205,7 @@ namespace SMS.Controllers
         [HttpPost]
         public ActionResult AddNew(SMS.Models.DON_VI_TINH donVi)
         {
+            Response.Cookies.Add(new HttpCookie("FlashMessage", "Data processed") { Path = "/" });
                 if (ModelState.IsValid)
                 {
                     var db = new SmsContext();
