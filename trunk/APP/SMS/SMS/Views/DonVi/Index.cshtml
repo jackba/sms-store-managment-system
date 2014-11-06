@@ -1,5 +1,7 @@
 ﻿@model PagedList.IPagedList<SMS.Models.DonViTinh>
 @using PagedList.Mvc;
+
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/DonVi.css" rel="stylesheet" type="text/css" />
@@ -18,11 +20,10 @@
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
-
+<div style="clear:both"></div>
+@Html.Partial("_Flash")
+<div style="clear:both"></div>
 <hr style="width:100%" />
-
-
 @using (Html.BeginForm("Index", "DonVi", FormMethod.Get))
 {
     <div style="float:right">
