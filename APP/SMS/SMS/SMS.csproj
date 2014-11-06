@@ -820,8 +820,6 @@
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
-    <Content Include="Scripts\jquery-ui-1.9.0.js" />
-    <Content Include="Scripts\jquery-ui-1.9.0.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jQuery.flashMessage.js" />
     <Content Include="Scripts\jquery.ui.core.js" />
