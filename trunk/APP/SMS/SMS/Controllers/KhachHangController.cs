@@ -20,6 +20,28 @@ namespace SMS.Controllers
     [HandleError]    
     public class KhachHangController : Controller
     {
+        public FileContentResult downloadCSV(string SearchString)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Tên khách hàng\",");
+            fileStringBuilder.Append("\"Doanh số\",");
+            fileStringBuilder.Append("\"Công nợ\",");
+            fileStringBuilder.Append("\"Ngày phát sinh nợ\",");
+            fileStringBuilder.Append("\"Mã thẻ khách hàng\",");
+            fileStringBuilder.Append("\"Loại khách hàng\",");
+            fileStringBuilder.Append("\"Số điện thoại\",");
+            fileStringBuilder.Append("\"Email\",");
+            fileStringBuilder.Append("\"Địa chỉ\",");
+            fileStringBuilder.Append("\"Khu vực\"");
+            var ctx = new SmsContext();
+            var khList = ctx.Database.SqlQuery<KHACH_HANG_RESULT>(" exec GET_KHACH_HANG_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<KHACH_HANG_RESULT>();
+            
+            ctx.Dispose();
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+
+        }
 
         [HttpPost]
         public FileContentResult downloadCSV(
