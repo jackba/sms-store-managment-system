@@ -12,10 +12,110 @@ using SMS.App_Start;
 
 namespace SMS.Controllers
 {
+
+        
+
+
     [Authorize]
     [HandleError]    
     public class KhachHangController : Controller
     {
+
+        [HttpPost]
+        public FileContentResult downloadCSV(
+            string searchString, string customerName, string customerKind, string customerArea,
+            string customerAmountFrom, string customerAmountTo, string customerDebitFrom,
+            string customerDebitTo,string ShowFlag)
+        {
+            string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
+            System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
+            fileStringBuilder.Append("\"STT\",");
+            fileStringBuilder.Append("\"Tên khách hàng\",");
+            fileStringBuilder.Append("\"Doanh số\",");
+            fileStringBuilder.Append("\"Công nợ\",");
+            fileStringBuilder.Append("\"Ngày phát sinh nợ\",");
+            fileStringBuilder.Append("\"Mã thẻ khách hàng\",");
+            fileStringBuilder.Append("\"Loại khách hàng\",");
+            fileStringBuilder.Append("\"Số điện thoại\",");
+            fileStringBuilder.Append("\"Email\",");
+            fileStringBuilder.Append("\"Địa chỉ\",");
+            fileStringBuilder.Append("\"Khu vực\"");
+            int kind = string.IsNullOrEmpty(customerKind) ? 0 : int.Parse(customerKind);
+            int areaId = string.IsNullOrEmpty(customerArea) ? 0 : int.Parse(customerArea);
+            decimal amountFrom = 0;
+            decimal.TryParse(string.IsNullOrEmpty(customerAmountFrom) ? "0" : customerAmountFrom.Replace("'", ""), out amountFrom);
+            decimal amountTo = 0;
+            decimal.TryParse(string.IsNullOrEmpty(customerAmountTo) ? "0" : customerAmountTo.Replace("'", ""), out amountTo);
+            decimal debitFrom = 0;
+            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom) ? "0" : customerDebitFrom.Replace(",", ""), out debitFrom);
+            decimal debitTo = 0;
+            decimal.TryParse(string.IsNullOrEmpty(customerDebitFrom) ? "0" : customerDebitFrom.Replace(",", ""), out debitTo);
+            var ctx = new SmsContext();
+
+            var theListContext = (from KhachHang in ctx.KHACH_HANG
+                                  join KhuVuc in ctx.KHU_VUC
+                                  on KhachHang.MA_KHU_VUC equals KhuVuc.MA_KHU_VUC into kv
+                                  from kVuc in kv.DefaultIfEmpty()
+                                  join u in ctx.NGUOI_DUNG on KhachHang.CREATE_BY equals u.MA_NGUOI_DUNG
+                                  join u1 in ctx.NGUOI_DUNG on KhachHang.UPDATE_BY equals u1.MA_NGUOI_DUNG
+                                  where
+                                  (KhachHang.ACTIVE == "A"
+                                  && (String.IsNullOrEmpty(searchString)
+                                  || KhachHang.TEN_KHACH_HANG.ToUpper().Contains(searchString.ToUpper())
+                                  || KhachHang.MA_THE_KHACH_HANG.ToUpper().Contains(searchString.ToUpper())
+                                  || KhachHang.SO_DIEN_THOAI.ToUpper().Contains(searchString.ToUpper())
+                                  || kVuc.TEN_KHU_VUC.ToUpper().Contains(searchString.ToUpper()))
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerName) || KhachHang.TEN_KHACH_HANG.ToUpper().Contains(customerName.ToUpper()))
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerKind) || "0".Equals(customerKind) || KhachHang.KIND == kind)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerArea) || "0".Equals(customerArea) || KhachHang.MA_KHU_VUC == areaId)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountFrom) || KhachHang.DOANH_SO >= amountFrom)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountTo) || KhachHang.DOANH_SO <= amountTo)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerAmountTo) || KhachHang.DOANH_SO <= amountTo)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerDebitFrom) || KhachHang.NO_GOI_DAU >= debitFrom)
+                                  && (string.IsNullOrEmpty(ShowFlag) || "0".Equals(ShowFlag) || string.IsNullOrEmpty(customerDebitTo) || KhachHang.NO_GOI_DAU <= debitTo)
+                                  )
+                                  select new KhachHangModel
+                                  {
+                                      KhachHang = KhachHang,
+                                      KhuVuc = kVuc,
+                                      NguoiCapNhat = u1,
+                                      NguoiTao = u
+                                  });
+
+            string ckind = "";
+            int i = 0;
+            foreach (var product in theListContext)
+            {
+                fileStringBuilder.Append("\n");
+                i += 1;
+                fileStringBuilder.Append("\"" + i + "\",");
+                fileStringBuilder.Append("\"" + product.KhachHang.TEN_KHACH_HANG + "\",");
+                fileStringBuilder.Append("\"" + (product.KhachHang.DOANH_SO == null ? "" : ((Double)product.KhachHang.DOANH_SO).ToString("#,###.##")).Replace("\"", "\"\"") + "\",");
+                fileStringBuilder.Append("\"" + (product.KhachHang.NO_GOI_DAU == null ? "" : ((Double)product.KhachHang.NO_GOI_DAU).ToString("#,###.##")).Replace("\"", "\"\"") + "\",");
+                fileStringBuilder.Append("\"" + (product.KhachHang.NGAY_PHAT_SINH_NO == null ? "" : ((DateTime)product.KhachHang.NGAY_PHAT_SINH_NO).ToString("dd/MM/yyyy")).Replace("\"", "\"\"") + "\",");
+                fileStringBuilder.Append("\"" + product.KhachHang.MA_THE_KHACH_HANG + "\",");
+                if (product.KhachHang.KIND == 1)
+                {
+                    ckind = "Công ty, công trình";
+                }
+                else if (product.KhachHang.KIND == 2)
+                {
+                    ckind = "Thân thiết";
+                }
+                else
+                {
+                    ckind = "Thường";
+                }
+                fileStringBuilder.Append("\"" + ckind + "\",");
+                fileStringBuilder.Append("\"" + product.KhachHang.SO_DIEN_THOAI + "\",");
+                fileStringBuilder.Append("\"" + product.KhachHang.EMAIL + "\",");
+                fileStringBuilder.Append("\"" + product.KhachHang.DIA_CHI + "\",");
+                fileStringBuilder.Append("\"" + (product.KhuVuc == null ? "" : product.KhuVuc.TEN_KHU_VUC).Replace("\"", "\"\"") + "\"");
+            }
+            ctx.Dispose();
+            return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
+        }
+
         
         [HttpPost]
         public PartialViewResult IndexPartialView(string searchString, string customerName, string customerKind, string customerArea,
@@ -226,7 +326,7 @@ namespace SMS.Controllers
                 db.KHACH_HANG.Add(khuVucNew);
                 db.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công");
             }
             else
             {
@@ -347,12 +447,12 @@ namespace SMS.Controllers
                 db.Dispose();
                 if (flg == 1)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index").Success("Lưu thành công");
                 }
                 else
                 {
-                    
-                    return RedirectToAction("Warning");
+
+                    return RedirectToAction("Warning").Success("Lưu thành công");
                 }
             }
             return View(khachHang);
@@ -652,7 +752,7 @@ namespace SMS.Controllers
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công"); ;
             }
             else
             {

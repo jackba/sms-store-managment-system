@@ -8,6 +8,7 @@
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
+<script src="~/Content/js/FileSaver.js"></script>
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -65,6 +66,40 @@
 
             });
             $('#mainForm').submit();
+            
+            $("input.ExportExcel").click(function () {
+                var searchString = $("#SearchString").val();
+                var customerName = $("#customerName").val();
+                var customerKind = $("#customerKind").val();
+                var customerArea = $("#customerArea").val();
+                var customerAmountFrom = $("#customerAmountFrom").val();
+                var customerAmountTo = $("#customerAmountTo").val();
+                var customerDebitFrom = $("#customerDebitFrom").val();
+                var customerDebitTo = $("#customerDebitTo").val();
+                var ShowFlag = $("#ShowFlag").val();
+
+                $.ajax({
+                    url: "/KhachHang/downloadCSV",
+                    data: "{ 'searchString': '" + searchString + "' , 'customerName': '" + 
+                        customerName + "' , 'customerKind': '" + 
+                        customerKind + "' , 'customerArea': '" + 
+                        customerArea + "' , 'customerAmountFrom': '" + 
+                        customerAmountFrom + "' , 'customerAmountTo': '" + 
+                        customerAmountTo + "' , 'customerDebitFrom': '" + 
+                        customerDebitFrom + "' , 'customerDebitTo': '" + 
+                        customerDebitTo + "' , 'ShowFlag': '" + ShowFlag + "'}",
+                    type: "POST", contentType: "application/json; charset=utf-8",
+                    success: function (response, status, request) {
+                        var disp = request.getResponseHeader('Content-Disposition');
+                        if (disp && disp.search('attachment') != -1) {
+                            var type = request.getResponseHeader('text/csv');
+                            var blob = new Blob([response], { type: type });
+                            var fileName = new Date().getTime().toString() + ".csv";
+                            saveAs(blob, fileName);
+                        }
+                    }
+                });
+            });
         });
     </script>
 }
@@ -129,9 +164,11 @@
    
 }
 
+
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán Hàng </a> > Danh sách khách hàng
 </div>
+@Html.Partial("_Flash")
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
@@ -162,7 +199,7 @@
                 <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew", "KhachHang")'" />
     }
             }
-            <!--input type="button" value="Xuất excel" id="btnExport" class="myButton" /-->
+            <input type="button" value="Xuất excel" id="btnExport" class="ExportExcel" />
         </p>
     </div>
     <div style="clear:both"></div>
@@ -196,7 +233,7 @@
         </div>
         <div style="float:right">
             <input type="submit" value="Tìm kiếm" class="myButton" />
-            <!--input type="button" value="Xuất excel" id="btnExport" class="myButton" /-->
+            <input type="button" value="Xuất excel" id="btnExportSecond" class="ExportExcel">
         </div>
         @Html.Hidden("ShowFlag", ViewBag.ShowFlag as string, new { @id = "ShowFlag" })
         <div style="clear:both"></div>
