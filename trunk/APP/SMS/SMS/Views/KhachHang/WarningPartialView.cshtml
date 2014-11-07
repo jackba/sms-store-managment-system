@@ -1,5 +1,22 @@
 ﻿@model SMS.Models.KhachHangModel
 @using PagedList.Mvc;
+
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+
 <div>
     <table style="width:100%">
         <tr>
@@ -32,10 +49,10 @@
             </td>
         </tr>
     </table>
-    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" id="MainTable">
+    <table border="1" cellpadding="0" cellspacing="0" style="width:100%" class="contentTable" id="MainTable">
         <tr>
             <td class='inner colwidth head ' width="20%">
-                 @Ajax.ActionLink("Tên khách hàng", "WarningPartialView",
+                @Ajax.ActionLink("Tên khách hàng", "WarningPartialView",
                 new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex },
                 new AjaxOptions()
                             {
@@ -43,7 +60,7 @@
                                 InsertionMode = InsertionMode.Replace,
                                 LoadingElementId = "resultLoadingDiv",
                                 UpdateTargetId = "mainDiv"
-                })
+                            })
 
             </td>
             <td class='inner colwidth head ' width="25%">
@@ -61,10 +78,10 @@
                                 InsertionMode = InsertionMode.Replace,
                                 LoadingElementId = "resultLoadingDiv",
                                 UpdateTargetId = "mainDiv"
-                })
+                            })
             </td>
             <td class='innerLast colwidth head ' title="Nhân viên thực hiện" width="15%">
-                 @Ajax.ActionLink("Ngày phát sinh nợ", "WarningPartialView", 
+                @Ajax.ActionLink("Ngày phát sinh nợ", "WarningPartialView",
                 new { sortOrder = ViewBag.DateSortParam, currentFilter = ViewBag.CurrentFilter, page = ViewBag.CurrentPageIndex },
                 new AjaxOptions()
                             {
@@ -103,32 +120,34 @@
                     </a>
                 </td>
 
-                <td class="innerLast colwidth">@if (@dbHist.NGAY_PHAT_SINH_NO != null)
-                                               {
-                                                   @DateTime.Parse(@dbHist.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
-                                               }
-                    
+                <td class="innerLast colwidth">
+                    @if (@dbHist.NGAY_PHAT_SINH_NO != null)
+                    {
+                        @DateTime.Parse(@dbHist.NGAY_PHAT_SINH_NO.ToString()).ToString("dd/MM/yyyy")
+                    }
+
+            </td>
+            @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+            {
+                <td class='innerLast alignCenter' style="width:50px;">
+                    <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @dbHist.MA_KHACH_HANG, @flg = 2 })" class="button-module">
+                        <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                    </a>
                 </td>
-                @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
-                {
-                    <td class='innerLast alignCenter' style="width:50px;">
-                        <a href="@Url.Action("UpdateDebit", "KhachHang", new { id = @dbHist.MA_KHACH_HANG, @flg = 2 })" class="button-module">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
-                        </a>
-                    </td>
-                }
-                else
-                {
-                    <td class='inner alignCenter' style="width:50px;">
-                        <a href="#" class="button-module" onclick="return false;">
-                            <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
-                        </a>
-                    </td>
-                }
-            </tr>
+            }
+            else
+            {
+                <td class='inner alignCenter' style="width:50px;">
+                    <a href="#" class="button-module" onclick="return false;">
+                        <img width="18" height="18" alt="edit" src="~/Content/images/Credit-icon.png"></img>
+                    </a>
+                </td>
+            }
+        </tr>
 
         }
     </table>
+
     <table style="width:100%">
         <tr>
             <td>

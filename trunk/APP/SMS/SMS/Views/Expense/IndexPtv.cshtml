@@ -1,6 +1,23 @@
 ﻿@model SMS.Models.ExpenesModel
 @using PagedList.Mvc;
 
+
+<style type="text/css">
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+
+    table.contentTable tr:nth-child(even) {
+        background: #E2F7FF;
+    }
+
+    table.contentTable tr:nth-child(odd) {
+        background: #FFF;
+    }
+</style>
+
 <div>
     <table width="100%">
         <tr>
@@ -40,7 +57,7 @@
 
     </table>
 
-    <table width="100%">
+    <table width="100%" class="contentTable">
         <tr style="width:100%">
             <td class='inner colwidth head '> STT </td>
             <td class='inner colwidth head '> Ngày chi </td>
@@ -63,42 +80,42 @@
                         @i
                     </td>
                     <td class="inner colwidth" title="Xem chi tiết hóa đơn nhập kho">
-                                @DateTime.Parse(dbHist.NGAY_CHI.ToString()).ToString("dd/MM/yyyy")                        
+                        @DateTime.Parse(dbHist.NGAY_CHI.ToString()).ToString("dd/MM/yyyy")
                     </td>
                     <td class="inner colwidth">
-                             @dbHist.TEN_NGUOI_DUNG
+                        @dbHist.TEN_NGUOI_DUNG
                     </td>
                     <td class="inner colwi  dth">
-                            @dbHist.TEN_NGUOI_NHAN
+                        @dbHist.TEN_NGUOI_NHAN
                     </td>
                     <td class="inner colwidth">
                         @dbHist.TONG_CHI.ToString("#,###.##")
                     </td>
                     <td class="innerLast colwidth">
                         @{
-                            switch (dbHist.LOAI_CHI)
-                            {
-                                case 1:
-                                    loai_chi = "Mua hàng";
-                                    break;
-                                case 2:
-                                    loai_chi = "Vận chuyển";
-                                    break;
-                                case 3:
-                                    loai_chi = "Lương nhân viên";
-                                    break;
-                                case 4:
-                                    loai_chi = "Mục đích khác";
-                                    break;
-                            }
+                switch (dbHist.LOAI_CHI)
+                {
+                    case 1:
+                        loai_chi = "Mua hàng";
+                        break;
+                    case 2:
+                        loai_chi = "Vận chuyển";
+                        break;
+                    case 3:
+                        loai_chi = "Lương nhân viên";
+                        break;
+                    case 4:
+                        loai_chi = "Mục đích khác";
+                        break;
+                }
                         }
                         @loai_chi
                     </td>
                     <td class='innerLast alignCenter' style="width:50px;">
-                       
+
                         <a href="@Url.Action("EditExpense", "Expense", new { id = @dbHist.ID })" class="button-module">
                             <img width="18" height="18" alt="edit" src="~/Content/images/edit-icon.png"></img>
-                           
+
                         </a>
 
                     </td>
@@ -122,6 +139,7 @@
             </tr>
         }
     </table>
+
     <table width="100%">
         <tr>
             <td>
