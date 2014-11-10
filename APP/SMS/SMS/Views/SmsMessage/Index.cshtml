@@ -115,7 +115,7 @@
                     Nội dung tin nhắn :
                 </td>
                 <td>
-                    @Html.TextBox("searchString", ViewBag.SearchString as string, new { id = "searchString" })
+                    @Html.TextBox("searchString", ViewBag.SearchString as string, new { id = "searchString", @class="keySearch" })
                 </td>
             </tr>
 
@@ -129,7 +129,7 @@
             </tr>
         </table>
         <div style="float:right">
-            <input type="submit" value="Tìm kiếm" class="myButton" />
+            <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
             <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew","SmsMessage")'" />
         </div>
     </div>

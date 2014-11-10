@@ -93,8 +93,8 @@
     {
         <hr style="width:100%" />
         <div style="float:right">
-            Tên sản phẩm: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
-            <input type="submit" value="Tìm kiếm" class="myButton" />
+            Tên sản phẩm: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString", @class="keySearch" })
+            <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
         </div>
         <div style="clear:both"></div>
     }
