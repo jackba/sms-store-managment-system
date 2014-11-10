@@ -106,7 +106,7 @@ namespace SMS.Controllers
                 phanquyen.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công.");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace SMS.Controllers
                 phanquyen.UPDATE_AT = DateTime.Now;
                 phanquyen.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }
@@ -166,7 +166,7 @@ namespace SMS.Controllers
                     oldPermission.UPDATE_BY = (int)Session["UserId"];
                     oldPermission.CREATE_BY = (int)Session["UserId"];
                     db.SaveChanges();
-                    return Redirect("Index");
+                    return RedirectToAction("Index").Success("Lưu thành công.");
                 }else
                 {
                     var phanquyen = db.PHAN_QUYEN.Create();
@@ -185,7 +185,7 @@ namespace SMS.Controllers
                     phanquyen.CREATE_BY = (int)Session["UserId"];
                     db.PHAN_QUYEN.Add(phanquyen);
                     db.SaveChanges();
-                    return Redirect("Index");
+                    return RedirectToAction("Index").Success("Lưu thành công.");
                 }
                 
             }

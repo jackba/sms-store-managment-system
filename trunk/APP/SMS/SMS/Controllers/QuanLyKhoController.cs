@@ -91,6 +91,8 @@ namespace SMS.Controllers
             fileStringBuilder.Append("\"Đơn vị tính\",");
             fileStringBuilder.Append("\"" + firstDate.ToString("dd/MM/yyyy") + "\",");
             fileStringBuilder.Append("\"" + secondDate.ToString("dd/MM/yyyy") + "\",");
+            fileStringBuilder.Append("\"Nhập\",");
+            fileStringBuilder.Append("\"Xuất\",");
             fileStringBuilder.Append("\"Thay đổi\"");
             if (storeId == null)
             {
@@ -125,6 +127,8 @@ namespace SMS.Controllers
                 fileStringBuilder.Append("\"" + detail.TEN_DON_VI + "\",");
                 fileStringBuilder.Append("\"" + detail.INVEN_FIRST_DATE.ToString("#,##0.##") + "\",");
                 fileStringBuilder.Append("\"" + detail.INVEN_SECOND_DATE.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.IMPORT.ToString("#,##0.##") + "\",");
+                fileStringBuilder.Append("\"" + detail.EXPORT.ToString("#,##0.##") + "\",");
                 fileStringBuilder.Append("\"" + detail.COMPARED.ToString("#,##0.##") + "\",");
             }
             ctx.Dispose();

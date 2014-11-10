@@ -45,6 +45,8 @@
             <td class='inner colwidth head '> Đơn vị </td>
             <td class='inner colwidth head ' id="FisrtDateHead">  </td>
             <td class='innerLast colwidth head ' id="SecondDateHead">  </td>
+            <td class='inner colwidth head '> Nhập </td>
+            <td class='inner colwidth head '> Xuất </td>
             <td class='innerLast colwidth head '>  Thay đổi </td>
         </tr>
         @foreach (var dbHist in Model.ComparedList)
@@ -55,9 +57,11 @@
                 </td>
                 <td class="inner colwidth"> @dbHist.TEN_SAN_PHAM</td>
                 <td class="inner colwidth"> @dbHist.TEN_DON_VI</td>
-                <td class="inner colwidth numberic">@dbHist.INVEN_FIRST_DATE.ToString("0,0.00")</td>
-                <td class="inner colwidth numberic">@dbHist.INVEN_SECOND_DATE.ToString("0,0.00")</td>
-                <td class="innerLast colwidth numberic">@dbHist.COMPARED.ToString("0,0.00")</td>
+                <td class="inner colwidth numberic">@dbHist.INVEN_FIRST_DATE.ToString("#,##0.##")</td>
+                <td class="inner colwidth numberic">@dbHist.INVEN_SECOND_DATE.ToString("#,##0.##")</td>
+                <td class="inner colwidth numberic">@dbHist.IMPORT.ToString("#,##0.##")</td>
+                <td class="inner colwidth numberic">@dbHist.EXPORT.ToString("#,##0.##")</td>
+                <td class="innerLast colwidth numberic">@dbHist.COMPARED.ToString("#,##0.##")</td>
             </tr>
         }
     </table>

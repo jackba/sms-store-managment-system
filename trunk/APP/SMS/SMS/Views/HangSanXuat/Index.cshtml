@@ -33,11 +33,10 @@
     <a href="@Url.Action("DanhMuc", "Home")"> Danh mục </a>
     > Danh sách hãng sản xuất
 </div>
-<br />
+@Html.Partial("_Flash")
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
 <hr style="width:100%" />
 @using (Html.BeginForm("Index", "HangSanXuat", FormMethod.Get))
 {

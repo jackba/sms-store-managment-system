@@ -143,7 +143,7 @@ namespace SMS.Controllers
                 khuVucNew.CREATE_BY = (int)Session["UserId"];
                 db.NHA_CUNG_CAP.Add(khuVucNew);
                 db.SaveChanges();
-                return Redirect("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }
@@ -192,7 +192,7 @@ namespace SMS.Controllers
                 khuVucNew.UPDATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công") ;
             }
             return View();
         }
@@ -213,7 +213,7 @@ namespace SMS.Controllers
                 donvi.ACTIVE = "I";
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công.");
             }
             else
             {

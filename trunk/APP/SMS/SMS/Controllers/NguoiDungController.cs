@@ -241,7 +241,7 @@ namespace SMS.Controllers
                 nguoidung.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công");
             }
             else
             {
@@ -281,7 +281,7 @@ namespace SMS.Controllers
                 nguoidung.UPDATE_AT = DateTime.Now;
                 nguoidung.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công");
             }
             var ctx = new SmsContext();
             NGUOI_DUNG nguoidung1 = ctx.NGUOI_DUNG.Find((int)nguoiDung.MA_NGUOI_DUNG);
@@ -339,7 +339,7 @@ namespace SMS.Controllers
                 nguoidung.CREATE_BY = (int)Session["UserId"];
                 db.NGUOI_DUNG.Add(nguoidung);
                 db.SaveChanges();
-                return Redirect("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             //Ma Kho
             BindKho();
