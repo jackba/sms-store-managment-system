@@ -14,6 +14,8 @@ namespace SMS.Models
         public string TEN_DON_VI { get; set; }
         public double INVEN_FIRST_DATE { get; set; }
         public double INVEN_SECOND_DATE { get; set; }
+        public double IMPORT { get; set; }
+        public double EXPORT { get; set; }
         public double COMPARED { get; set; }
     }
 

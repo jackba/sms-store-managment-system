@@ -114,7 +114,7 @@ namespace SMS.Controllers
                 khuVucNew.CREATE_BY = (int)Session["UserId"];
                 db.NHA_SAN_XUAT.Add(khuVucNew);
                 db.SaveChanges();
-                return Redirect("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }
@@ -158,7 +158,7 @@ namespace SMS.Controllers
                 khuvuc.UPDATE_AT = DateTime.Now;
                 khuvuc.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }
@@ -179,7 +179,7 @@ namespace SMS.Controllers
                 donvi.ACTIVE = "I";
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công.");
             }
             else
             {

@@ -228,7 +228,7 @@ namespace SMS.Controllers
                 khuVuc.UPDATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công.");
             }
             else
             {

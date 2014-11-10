@@ -20,24 +20,30 @@ namespace SMS.Controllers
     [HandleError]    
     public class KhachHangController : Controller
     {
-        public FileContentResult downloadCSV(string SearchString)
+        public FileContentResult downloadWarningCSV(string SearchString)
         {
             string fileName = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             fileStringBuilder.Append("\"STT\",");
             fileStringBuilder.Append("\"Tên khách hàng\",");
+            fileStringBuilder.Append("\"Địa chỉ\",");
             fileStringBuilder.Append("\"Doanh số\",");
             fileStringBuilder.Append("\"Công nợ\",");
-            fileStringBuilder.Append("\"Ngày phát sinh nợ\",");
-            fileStringBuilder.Append("\"Mã thẻ khách hàng\",");
-            fileStringBuilder.Append("\"Loại khách hàng\",");
-            fileStringBuilder.Append("\"Số điện thoại\",");
-            fileStringBuilder.Append("\"Email\",");
-            fileStringBuilder.Append("\"Địa chỉ\",");
-            fileStringBuilder.Append("\"Khu vực\"");
+            fileStringBuilder.Append("\"Ngày phát sinh nợ\"");
             var ctx = new SmsContext();
             var khList = ctx.Database.SqlQuery<KHACH_HANG_RESULT>(" exec GET_KHACH_HANG_ALERT @NAME ", new SqlParameter("NAME", string.IsNullOrEmpty(SearchString) ? "" : SearchString.Trim())).ToList<KHACH_HANG_RESULT>();
-            
+             int i = 0;
+             foreach (var product in khList)
+             {
+                 fileStringBuilder.Append("\n");
+                 i += 1;
+                 fileStringBuilder.Append("\"" + i + "\",");
+                 fileStringBuilder.Append("\"" + product.TEN_KHACH_HANG+ "\",");
+                 fileStringBuilder.Append("\"" + product.DIA_CHI + "\",");
+                 fileStringBuilder.Append("\"" + (product.DOANH_SO == null ? "" : ((Double)product.DOANH_SO).ToString("#,###.##")).Replace("\"", "\"\"") + "\",");
+                 fileStringBuilder.Append("\"" + (product.NO_GOI_DAU == null ? "" : ((Double)product.NO_GOI_DAU).ToString("#,###.##")).Replace("\"", "\"\"") + "\",");
+                 fileStringBuilder.Append("\"" + (product.NGAY_PHAT_SINH_NO == null ? "" : (DateTime.Parse(product.NGAY_PHAT_SINH_NO.ToString())).ToString("dd/MM/yyyy")).Replace("\"", "\"\"") + "\"");
+             }
             ctx.Dispose();
             return File(new System.Text.UTF8Encoding().GetBytes(fileStringBuilder.ToString()), "text/csv", fileName + ".csv");
 

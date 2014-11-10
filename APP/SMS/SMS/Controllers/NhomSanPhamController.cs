@@ -157,7 +157,7 @@ namespace SMS.Controllers
                 nhomSP.CREATE_BY = (int)Session["UserId"];
                 ctx.SaveChanges();
                 ctx.Dispose();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Xóa thành công.");
             }
             else
             {
@@ -181,7 +181,7 @@ namespace SMS.Controllers
                 nhomSP.UPDATE_AT = DateTime.Now;
                 nhomSP.UPDATE_BY = (int)Session["UserId"];
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index").Success("Lưu thành công.");
             }
             return View();
         }
@@ -203,7 +203,7 @@ namespace SMS.Controllers
                     nhomSP.CREATE_BY = (int)Session["UserId"];
                     db.NHOM_SAN_PHAM.Add(nhomSP);
                     db.SaveChanges();
-                    return Redirect("Index");
+                    return RedirectToAction("Index").Success("Lưu thành công.");
                 }
                 return View();
         }
