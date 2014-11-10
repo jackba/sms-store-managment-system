@@ -34,6 +34,23 @@
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $(".keySearch").keypress(function (event) {
+                //press Enter
+                if (event.which == 13) {
+                    //trigger click button Search
+                    $(".actSearch").click();
+                } else if (event.which == 92) { // press key '\'
+                    event.preventDefault();
+                }               
+            });
+            // press key '\' for inputtext autocomplete
+            $(".ui-autocomplete-input").keypress(function (event) {
+                if (event.which == 92) {
+                    event.preventDefault();
+                }
+            });
+
             var pathname = window.location.pathname;
             if (pathname.indexOf("Home/Index") > 0) {
                 $('#Index').addClass('current');

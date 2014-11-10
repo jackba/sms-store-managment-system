@@ -26,8 +26,8 @@
 {
     <div style="float:right">
         <p>
-            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-            <input type="submit" value="Tìm kiếm" class="myButton" />
+            Từ khóa tìm kiếm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "keySearch" })
+            <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
             @{
     if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true)
     {
