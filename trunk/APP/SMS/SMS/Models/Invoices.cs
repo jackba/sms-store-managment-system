@@ -29,6 +29,8 @@ namespace SMS.Models
         public SP_GET_RETURN_INFO_BY_ID_Result Infor { get; set; }
         public List<SP_GET_RETURN_DETAIL_BY_ID_Result> Detail { get; set; }
         public KHACH_HANG Customer { get; set; }
+        public int OldCustomerID { get; set; }
+        public int OldDebitHistID { get; set; }
     }
 
 }
