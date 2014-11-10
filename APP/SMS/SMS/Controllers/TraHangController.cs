@@ -529,14 +529,18 @@ namespace SMS.Controllers
             model.Detail = detail;
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             model.Units = units;
-
             if (infor != null && infor.MA_KHACH_HANG != null)
             {
                 var debitHist = ctx.KHACH_HANG_DEBIT_HIST.Where(u => u.ACTIVE == "A" && u.MA_PHIEU_TRA == infor.MA_TRA_HANG).FirstOrDefault();
                 var customer = ctx.KHACH_HANG.Find(infor.MA_KHACH_HANG);
                 if (debitHist != null)
                 {
-                    using (var transaction = new System.Transactions.TransactionScope())
+                    if (customer.NO_GOI_DAU == 0)
+                    {
+                        customer.NGAY_PHAT_SINH_NO = null;
+                    }
+                    customer.NO_GOI_DAU = (decimal)customer.NO_GOI_DAU + (decimal)debitHist.PHAT_SINH;
+                    /*using (var transaction = new System.Transactions.TransactionScope())
                     {
                         try
                         {
@@ -549,8 +553,7 @@ namespace SMS.Controllers
                             customer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
                             debitHist.ACTIVE = "I";
                             debitHist.UPDATE_AT = DateTime.Now;
-                            debitHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                           
+                            debitHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);                           
                             ctx.SaveChanges();
                             transaction.Complete();
                         }
@@ -559,9 +562,14 @@ namespace SMS.Controllers
                             Console.WriteLine(ex.ToString());
                             Transaction.Current.Rollback();
                         }
-                    }
+                    }*/
+                    model.OldDebitHistID = debitHist.ID;
                 }
                 model.Customer = customer;
+                if (customer != null)
+                {
+                    model.OldCustomerID = customer.MA_KHACH_HANG;
+                }
             }
             ctx.Dispose();
             return View(model);
@@ -572,10 +580,34 @@ namespace SMS.Controllers
         public ActionResult EditGetReturn(ReturnBillModel model)
         {
             var ctx = new SmsContext();
+            var oldCustomer = ctx.KHACH_HANG.Find(model.OldCustomerID);
+            var debitHist = ctx.KHACH_HANG_DEBIT_HIST.Find(model.OldDebitHistID);
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
                 {
+                    if (debitHist != null)
+                    {
+                        debitHist.ACTIVE = "I";
+                        debitHist.UPDATE_AT = DateTime.Now;
+                        debitHist.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+
+                        if (oldCustomer != null)
+                        {
+                            if (oldCustomer.NO_GOI_DAU == 0)
+                            {
+                                oldCustomer.NGAY_PHAT_SINH_NO = null;
+                            }
+                            oldCustomer.NO_GOI_DAU = (decimal)oldCustomer.NO_GOI_DAU + (decimal)debitHist.PHAT_SINH;
+                            oldCustomer.UPDATE_AT = DateTime.Now;
+                            oldCustomer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            oldCustomer.ACTIVE = "I";
+                            oldCustomer.UPDATE_AT = DateTime.Now;
+                            oldCustomer.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ctx.SaveChanges();
+                        }
+
+                    }
                     var returnInfor = ctx.TRA_HANG.Find(model.Infor.MA_TRA_HANG);
                     returnInfor.GHI_CHU = model.Infor.GHI_CHU;
                     returnInfor.NGAY_TRA = model.Infor.NGAY_TRA;

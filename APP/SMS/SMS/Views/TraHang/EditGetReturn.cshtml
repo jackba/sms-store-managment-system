@@ -101,6 +101,8 @@
 {
     @Html.HiddenFor(u => u.Customer.NO_GOI_DAU, new { id = "myCustomerDebit"})
     @Html.HiddenFor(u => u.Customer.KIND, new { id = "kind"})
+    @Html.HiddenFor(u => u.OldCustomerID, new { id = "OldCustomerID"});
+    @Html.HiddenFor(u => u.OldDebitHistID, new { id = "OldDebitHistID" })
     <input type="hidden" value="1" id="loaded"/>
     <table>
         <tr>
