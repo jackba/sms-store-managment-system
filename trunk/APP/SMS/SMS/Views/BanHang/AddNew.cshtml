@@ -102,7 +102,7 @@
 
                 setRelationCustomer(ui.item, true);
                 hideRelationCustomer();
-
+                $('input.code', $('#detailTable > tbody:last')).focus();
                 return false;
             },
             focus: function (event, ui) {
@@ -518,6 +518,7 @@
             return true;
         }
     }
+    
     function callbackEnterPress(itemAllowEnter){
         switch (itemAllowEnter)
         {
@@ -569,6 +570,15 @@
                 break;
         }
     }
+    
+
+    //function productCodeEnter() {
+    //    $("input.code").autocomplete({
+    //    });
+
+    //};
+
+
 
     function productAutocomplete() {
         $("input.productName").autocomplete({
@@ -606,7 +616,7 @@
                     $th.val(ui.item.label);
                     $('input.code', pa).val(ui.item.code);
                     $('input.productId', pa).val(ui.item.id);
-                    $('input.quantity', pa).val(1);
+                    $('input.quantity', pa).val("");
                     $('input.productName', pa).val(ui.item.value);
                     $('input.price', pa).val(ui.item.price);
                     $('input.discount', pa).val(ui.item.discount);
@@ -617,6 +627,7 @@
                     formatNumberic();
                     $('input.convertor', pa).val("1");
                     $th.css("background-color", "white");
+                    $('input.quantity', pa).focus();
                     counter();
                 } else {
                     alert("Sản phẩm này đã có trong danh sách");
@@ -647,6 +658,79 @@
         });
     }
 
+    function quantityEnter() {
+        $('input.quantity').keypress(function (event) {
+            var $this = $(this);
+            var $parent = $(this).parent().parent();
+            if (event.which === 13 || event.which === 27) {
+                if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                    addRow();
+                } else {
+                    $('input.code', $('#detailTable > tbody:last')).focus();
+                }
+            }
+        });
+    }
+
+    function customerEnter() {
+        $('#TenKhachHang').keypress(function (event) {
+            var $this = $(this);
+            if (event.which === 13 || event.which === 27) {
+                $('#kindCustomer').val('3');
+                $('input.code', $('#detailTable > tbody:last')).focus();
+            };
+        });
+    }
+
+    function codeEnter() {
+        $('input.code').keypress(function (event) {
+            var $this = $(this);
+            if (event.which === 13 || event.which === 27) {
+                    $.ajax({
+                        url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
+                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                        dataFilter: function (data) { return data; },
+                        success:
+                            function (data) {
+                                $.each(data, function (i, item) {
+                                    //alert(item.id);
+                                    var $th = $this;
+                                    var pa = $th.parent().parent();
+                                    if (!checkDuplicate(item.id)) {
+                                        $th.val(item.label);
+                                        $('input.productId', pa).val(item.id);
+                                        $('input.productName', pa).val(item.name);
+                                        $('input.price', pa).val(item.price);
+                                        $('input.quantity', pa).val("");
+                                        $('input.discount', pa).val(item.discount);
+                                        $('input.total', pa).val(item.price);
+                                        $('input.realTotal', pa).val(item.price - item.discount * item.price / 100);
+                                        createDonViTinh($th);
+                                        createStore($th);
+                                        formatNumberic();
+                                        $('input.convertor', pa).val("1");
+                                        $th.css("background-color", "white");
+                                        $('input.quantity', pa).focus();
+                                        counter();
+                                    } else {
+                                        alert("Sản phẩm này đã có trong danh sách");
+                                        $th.val("");
+                                        $('input.productId', pa).val("");
+                                        $('input.productName', pa).val("");
+                                        $('input.convertor', pa).val("1");
+                                        $('input.price', pa).val("");
+                                        $('input.quantity', pa).val("");
+                                    }
+                                    hideRelationProduct();
+                                    return false;
+                                });
+                            },
+                        error:
+                            function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                    });
+                };
+        });
+    }
     function unitOnchange() {
         $("select.unit").change(function (event) {
             var $this = $(this);
@@ -820,7 +904,7 @@
                     $('input.productId', pa).val(ui.item.id);
                     $('input.productName', pa).val(ui.item.name);
                     $('input.price', pa).val(ui.item.price);
-                    $('input.quantity', pa).val(1);
+                    $('input.quantity', pa).val("");
                     $('input.discount', pa).val(ui.item.discount);
                     $('input.total', pa).val(ui.item.price);
                     $('input.realTotal', pa).val(ui.item.price - ui.item.discount * ui.item.price / 100);
@@ -829,6 +913,7 @@
                     formatNumberic();
                     $('input.convertor', pa).val("1");
                     $th.css("background-color", "white");
+                    $('input.quantity', pa).focus();
                     counter();
                 } else {
                     alert("Sản phẩm này đã có trong danh sách");
@@ -997,6 +1082,8 @@
         //formatNumberic();
         discountKeyPress();
         numberOnly();
+        quantityEnter();
+        codeEnter();
         // format numberic 
         $('input.numberic').focusout(
          function (event) {
@@ -1091,6 +1178,9 @@
         onloadTotal();
         counter();
         formatNumberic();
+        quantityEnter();
+        codeEnter();
+        customerEnter();
     });
 
     function checkdlc() {
@@ -1109,6 +1199,111 @@
             }
         }
         return flg;
+    };
+
+    function returnPrintSubmit() {
+        $('#message').empty();
+        $('#InforMessage').empty();
+        var row = 0;
+        var rval = 1;
+        var pval = 1;
+        var ppval = 1;
+        var checkFlg = 0;
+        var showFlg = $("#showFlg").val();
+        var errorMessage = '';
+        if ($("#NgayBan").val() == null || $("#NgayBan").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Chưa nhập ngày bán hàng. Vui lòng chọn ngày bán hàng.";
+        }
+        if ($("#TenKhachHang").val() == null || $("#TenKhachHang").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng nhập tên khách hàng.";
+        }
+
+        if ($("#NgayGiao").val() == null || $("#NgayGiao").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Chưa nhập ngày giao hàng. Vui lòng chọn ngày giao hàng.";
+        }
+        /*if ($("#DienThoai").val() == null || $("#DienThoai").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng nhập điện thoại để liên lạc.";
+        }
+        if ($("#DiaChi").val() == null || $("#DiaChi").val().trim() == "") {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng nhập địa chỉ giao hàng.";
+        }*/
+        var totalr = 0;
+        $("#printFlg").val(1);
+        $('input.chcktbl').each(function () {
+            if (totalr != $('#detailTable >tbody >tr').length - 1) {
+                totalr++;
+                var flg = $('input.delFlg', $(this).parent().parent()).val();
+                if (flg != 1) {
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                    if ((quantity == null || quantity == '' || quantity == 0)) {
+                        rval = 0;
+                    }
+                    if (showFlg == 1) {
+
+                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                        if ((price == null || price == '' || price == 0)) {
+                            pval = 0;
+                        }
+                    }
+                    if ((productId == null || productId == '' || productId == 0)) {
+                        ppval = 0;
+                    }
+                    row++;
+                }
+            }
+        });
+
+        if (ppval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
+        }
+
+        if (pval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
+        }
+
+        if (row == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Hóa đơn  không có mặt hàng nào. Vui lòng kiểm tra lại.";
+        }
+        else if (rval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+        }
+        if (errorMessage != '') {
+            $('#message').append(errorMessage);
+            $('#message').append("<hr class='mydashed'/>");
+            return false;
+        }
+        else {
+            $('#formContent').submit();
+        }
     };
 
     function returnSubmit() {
@@ -1140,7 +1335,7 @@
             }
             errorMessage += "Chưa nhập ngày giao hàng. Vui lòng chọn ngày giao hàng.";
         }
-        if ($("#DienThoai").val() == null || $("#DienThoai").val().trim() == "") {
+        /*if ($("#DienThoai").val() == null || $("#DienThoai").val().trim() == "") {
             if (errorMessage != '') {
                 errorMessage += "<br>";
             }
@@ -1151,28 +1346,32 @@
                 errorMessage += "<br>";
             }
             errorMessage += "Vui lòng nhập địa chỉ giao hàng.";
-        }
-
+        }*/
+        var totalr = 0;
+        $("#printFlg").val(0);
         $('input.chcktbl').each(function () {
-            var flg = $('input.delFlg', $(this).parent().parent()).val();
-            if (flg != 1) {
-                var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                if (quantity == null || quantity == '' || quantity == 0) {
-                    rval = 0;
-                }
-                if (showFlg == 1) {
-
-                    var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
-
-                    if (price == null || price == '' || price == 0) {
-                        pval = 0;
+            if (totalr != $('#detailTable >tbody >tr').length - 1) {                
+                totalr ++;
+                var flg = $('input.delFlg', $(this).parent().parent()).val();
+                if (flg != 1) {
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                    if ((quantity == null || quantity == '' || quantity == 0)) {
+                        rval = 0;
                     }
+                    if (showFlg == 1) {
+
+                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                        if ((price == null || price == '' || price == 0)) {
+                            pval = 0;
+                        }
+                    }
+                    if ((productId == null || productId == '' || productId == 0)) {
+                        ppval = 0;
+                    }
+                    row++;
                 }
-                if (productId == null || productId == '' || productId == 0) {
-                    ppval = 0;
-                }
-                row++;
             }
         });
 
@@ -1194,7 +1393,7 @@
             if (errorMessage != '') {
                 errorMessage += "<br>";
             }
-            errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
+            errorMessage += "Hóa đơn  không có mặt hàng nào. Vui lòng kiểm tra lại.";
         }
         else if (rval == 0) {
             if (errorMessage != '') {
@@ -1296,7 +1495,7 @@
                
                 <tr>
                     <td>
-                        <div class="titleItem required">Điện thoại</div>
+                        <div class="titleItem ">Điện thoại</div>
                         <br />
                         <div>
                             @Html.TextBoxFor(u => u.KH_Info.Dien_Thoai, new { @name = "DienThoai", @id = "DienThoai", @class = "numberfone alignNumberic marginTopMinus10" })
@@ -1304,7 +1503,7 @@
                         </div>
                     </td>
                     <td colspan="2">
-                        <div class="titleItem required">Địa chỉ giao hàng</div>
+                        <div class="titleItem ">Địa chỉ giao hàng</div>
                         <br />
                         <div>
                             @Html.TextBoxFor(u => u.KH_Info.Dia_Chi, new { @name = "DiaChi", @id = "DiaChi", @class = "alignText marginTopMinus10", @style = "width:476px !important;" })
@@ -1409,6 +1608,7 @@
         
         <div>
             <input type="button"id="btnSave_Top" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
+            <input type="button" id="savePrintBill_bottom" style="width: 250px" onclick="return returnPrintSubmit()" value="Lưu & In hóa đơn ">
             <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
             <table id="detailTable" name="detailTable" width="100%" class="contentTable">
                 <thead>
@@ -1540,8 +1740,11 @@
                     <input type="text" class="numberic" disabled="disabled" id="paymentTotal" style="font-size:20px; color:red; background-color:lightblue"/></td>
                 </tr>
             </table>
+            @Html.HiddenFor(u => u.printFlg, new { @id = "printFlg" })
             <input type="button" id="btnSave_Bottom" value="Lưu" style="width:250px;" onclick="return returnSubmit()" />
+            <input type="button" id="savePrintBill_bottom" style="width: 250px" onclick="return returnPrintSubmit()"  value="Lưu & In hóa đơn ">
             <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
+
             <div class="mainContentScroll">
                 <table id="tableContent" class="tableContentScroll">
                     <tbody>
@@ -1553,6 +1756,8 @@
 
         </div>
 
+   
+        
     <!--total money-->
     <div style="display:none">
         <div id="divTotal">
@@ -1572,11 +1777,21 @@
         <div style="float: right; margin-right: -8px;">
             @*<input type="button" id="exportExcel" style="width:100px" value="Xuất Excel" onclick="exportExcel();" />*@
             <input type="submit" id="saveBill_bottom" style="width: 120px" value="Lưu hóa đơn">
+            <input type="submit" id="savePrintBill_bottom" style="width: 120px" value="Lưu & In hóa đơn ">
             <input type="button" id="createNewBill_bottom" style="width: 100px" value="Tạo mới">
             <input type="button" id="back_bottom" style="width:100px" value="Trở về">
             <input type="button" id="hidBtnBack" style="display:none;" onclick="location.href='@Url.Action("BanHang", "Home")'">
         </div>
     </div>
+
+
+    
+    
+    
     }
 
+
+
+
+    
 </fieldset>

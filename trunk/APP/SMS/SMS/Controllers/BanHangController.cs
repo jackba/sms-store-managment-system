@@ -104,23 +104,26 @@ namespace SMS.Controllers
                     CHI_TIET_HOA_DON ct;
                     foreach (var detail in model.Details)
                     {
-                        ct = ctx.CHI_TIET_HOA_DON.Create();
-                        ct.MA_HOA_DON = infor.MA_HOA_DON;
-                        ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
-                        ct.SO_LUONG_TEMP = detail.SO_LUONG;
-                        ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
-                        ct.DON_GIA_TEMP = (double)detail.DON_GIA;
-                        ct.DON_GIA = (double)detail.DON_GIA / detail.HE_SO;
-                        ct.PHAN_TRAM_CHIEC_KHAU = detail.PHAN_TRAM_CHIEC_KHAU;
-                        ct.MA_DON_VI = detail.MA_DON_VI;
-                        ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
-                        ct.CREATE_AT = DateTime.Now;
-                        ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
-                        ct.UPDATE_AT = DateTime.Now;
-                        ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
-                        ct.ACTIVE = "A";
-                        ctx.CHI_TIET_HOA_DON.Add(ct);
-                        ctx.SaveChanges();
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
+                        {
+                            ct = ctx.CHI_TIET_HOA_DON.Create();
+                            ct.MA_HOA_DON = infor.MA_HOA_DON;
+                            ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
+                            ct.SO_LUONG_TEMP = detail.SO_LUONG;
+                            ct.SO_LUONG = detail.SO_LUONG * detail.HE_SO;
+                            ct.DON_GIA_TEMP = (double)detail.DON_GIA;
+                            ct.DON_GIA = (double)detail.DON_GIA / detail.HE_SO;
+                            ct.PHAN_TRAM_CHIEC_KHAU = detail.PHAN_TRAM_CHIEC_KHAU;
+                            ct.MA_DON_VI = detail.MA_DON_VI;
+                            ct.MA_KHO_XUAT = detail.MA_KHO_XUAT;
+                            ct.CREATE_AT = DateTime.Now;
+                            ct.CREATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.UPDATE_AT = DateTime.Now;
+                            ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
+                            ct.ACTIVE = "A";
+                            ctx.CHI_TIET_HOA_DON.Add(ct);
+                            ctx.SaveChanges();
+                        }
                     }
                     transaction.Complete();
                     ctx.Dispose();
@@ -207,7 +210,7 @@ namespace SMS.Controllers
                     CHI_TIET_HOA_DON ct;
                     foreach (var detail in details)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.Ma_SP != null && !string.IsNullOrWhiteSpace(detail.Ma_SP.ToString()))
                         {
                             ct = ctx.CHI_TIET_HOA_DON.Create();
                             ct.MA_HOA_DON = invoice.MA_HOA_DON;
@@ -233,6 +236,10 @@ namespace SMS.Controllers
                     transaction.Complete();
                     hoaDon.InforMessage = "Lưu hóa đơn thành công.";
                     ctx.Dispose();
+                    if (hoaDon.printFlg == "1")
+                    {
+                        return RedirectToAction("PrintBill", "HoaDon", new { @id = invoice.MA_HOA_DON });
+                    }
                     return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
                 }
                 catch (Exception ex)
