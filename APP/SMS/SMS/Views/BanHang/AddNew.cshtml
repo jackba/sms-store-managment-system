@@ -65,6 +65,20 @@
         $('#NgayBan').datepicker('setDate', 'today');
         $('#NgayGiao').datepicker('setDate', 'today');
 
+        //add catch event user press Ctr+S & Ctrl+Shift+S
+        $(window).bind('keydown', function (e) {
+            if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+                if (e.shiftKey) { // Ctrl+Shift+S
+                    returnPrintSubmit();
+                    return false;
+                }
+                // Ctrl + S
+                returnSubmit();
+                return false;
+            }
+            return true;
+        });
+
 
         /**AUTOCOMPLETE**/
         // Customer name
