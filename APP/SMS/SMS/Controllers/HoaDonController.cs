@@ -382,7 +382,15 @@ namespace SMS.Controllers
             List<V_HOA_DON> detailList = ctx.V_HOA_DON.Where(dh => dh.MA_HOA_DON == id).ToList();
             model.Infor = invoiceInfor;
             model.detailList = detailList;
-
+            if (invoiceInfor.MA_KHACH_HANG != null && invoiceInfor.MA_KHACH_HANG >= 1)
+            {
+                var customer = ctx.KHACH_HANG.Find(invoiceInfor.MA_KHACH_HANG);
+                if (customer != null && customer.NO_GOI_DAU != null && customer.NO_GOI_DAU > 0)
+                {
+                    model.CustomerInformation = customer;
+                }
+            }
+            
             SmsMasterModel master = new SmsMasterModel();
             var companyName = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "COMPANY_NAME").FirstOrDefault();
             var address = ctx.SMS_MASTER.Where(u => u.ACTIVE == "A" && u.NAME == "ADDRESS").FirstOrDefault();

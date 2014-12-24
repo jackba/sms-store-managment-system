@@ -19,6 +19,8 @@ namespace SMS.Models
         public List<ChiTiet_HoaDon> lstChiTietHoaDon { get; set; }
         public string Message { get; set; }
         public string InforMessage { get; set; }
+
+        public string printFlg { get; set; }
     }
 
     public class EditHoaDonBanHang

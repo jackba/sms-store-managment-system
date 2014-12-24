@@ -54,7 +54,7 @@
 
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("BanHang", "Home")"> Bán hàng </a> >
-    <a href="@Url.Action("Collection", "HoaDon")"> Danh sách hóa đơn </a> >
+    <a href="@Url.Action("Index", "HoaDon")"> Danh sách hóa đơn </a> >
     In hóa đơn
 </div>
 
@@ -196,6 +196,33 @@
             <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
             <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
         </tr>
+        @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
+        {
+            double debit = 0;
+            if (Model.Infor.STATUS <= 1)
+            {
+                <tr>
+                    <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng nợ cũ</td>
+                    @{
+                debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
+                double ttall = debit + allTotal;
+                    }
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###.##")</td>
+                </tr>
+            }
+            else
+            {
+                debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
+                <tr>
+                    <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                </tr>
+            }
+        }
     </table>
     <hr />
     <table style="width: 100%; text-align: center">
@@ -377,6 +404,33 @@
             <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
             <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
         </tr>
+        @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
+        {
+            double debit = 0;
+            if (Model.Infor.STATUS <= 1)
+            {
+                <tr>
+                    <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng nợ cũ</td>
+                    @{
+                debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
+                double ttall = debit + allTotal;
+                    }
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###.##")</td>
+                </tr>
+            }
+            else
+            {
+                debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
+                <tr>
+                    <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                </tr>
+            }
+        }
     </table>
     <hr />
     <table style="width: 100%; text-align: center">
@@ -554,6 +608,32 @@
             <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
             <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
         </tr>
+        @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
+        {
+            double debit = 0;
+            if (Model.Infor.STATUS <= 1) { 
+                    <tr>
+                        <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng nợ cũ</td>
+                        @{
+                            debit = (Double)Model.CustomerInformation.NO_GOI_DAU ;
+                            double ttall = debit + allTotal;
+                        }
+                        <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                    </tr>
+                <tr>
+                    <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###.##")</td>
+                </tr>
+            }
+            else
+            {
+                debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
+                <tr>
+                    <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                </tr>
+            }
+        }
     </table>
     <hr />
     <table style="width: 100%; text-align: center">
@@ -586,6 +666,7 @@
         @Model.SmsMaster.AdvertisementFooter
     </div>
 </div>
+<input type="button" value="Thêm mới hóa đơn" class="myButton" onclick="window.location.href='@Url.Action("AddNew","BanHang")'" />
 <input type="button" value="In hóa đơn" onclick="pagePrint(); return false;">
 <input type="button" value="In hóa đơn không % CK" onclick="PageWithoutPercentPrint(); return false;">
 <input type="button" value="In hóa đơn (80x***)" onclick="smallPagePrint(); return false;">
