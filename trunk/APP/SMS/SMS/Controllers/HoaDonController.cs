@@ -497,7 +497,8 @@ namespace SMS.Controllers
                             DebitHist.CREATE_BY = (int)Session["UserId"];
                             ctx.KHACH_HANG_DEBIT_HIST.Add(DebitHist);
                         }
-                        customer.NO_GOI_DAU = customer.NO_GOI_DAU + Convert.ToDecimal(model.Infor.SO_TIEN_NO_GOI_DAU);
+                        //customer.NO_GOI_DAU = customer.NO_GOI_DAU + Convert.ToDecimal(model.Infor.SO_TIEN_NO_GOI_DAU);
+                        customer.NO_GOI_DAU = Convert.ToDecimal(model.Infor.SO_TIEN_NO_GOI_DAU);
                         customer.UPDATE_AT = DateTime.Now;
                         customer.UPDATE_BY = (int)Session["UserId"];
                     }else
@@ -549,6 +550,7 @@ namespace SMS.Controllers
                 {
                     var kind = customer.KIND;
                     model.customerDebit = customer.NO_GOI_DAU;
+                    invoiceInfor.SO_TIEN_NO_GOI_DAU = Convert.ToDouble(customer.NO_GOI_DAU); 
                     string key = "";
                     if(kind ==1)
                     {

@@ -346,8 +346,11 @@ else
                 } else {
                     debit.replace(/,/gi, "");
                 }
-                if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
-                    var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
+                //update debit
+                $("#icusDebit").attr("value", debit);      
+                // if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
+                if (debit >= 0 && maxDebit <= debit) {
+                    var r = confirm("Khách hàng này có tổng nợ tới ngưỡng nợ cho phép. Bạn có tiếp tục cho khách nợ?");
                     if (r == true) {
                         var form = $("#ShowDetail");
                         form.attr("action", "/HoaDon/Payment");
@@ -395,8 +398,9 @@ else
                     debit.replace(/,/gi, "");
                 }
 
-                if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
-                    var r = confirm("Khách hàng này có tổng nợ lớn hơn nợ cho phép. Bạn có tiếp tục cho khách nợ?");
+                //if (debit >= 0 && maxDebit <= (cusDebit + debit)) {
+                if (debit >= 0 && maxDebit < debit) {
+                    var r = confirm("Khách hàng này có tổng nợ tới ngưỡng nợ cho phép. Bạn có tiếp tục cho khách nợ?");
                     if (r == true) {
                         var form = $("#ShowDetail");
                         form.attr("action", "/HoaDon/PaymentAndExport");
@@ -438,6 +442,16 @@ else
         });
     };
 
+    /*remove comma from value input*/
+    function removeCommas(str) {
+        if (str != null && str != '') {
+            return (str.replace(/,/g, ''));
+        } else {
+            return null;
+        }
+
+    }
+
     function RemoveRougeChar(convertString) {
         if (convertString.substring(0, 1) == ",") {
             return convertString.substring(1, convertString.length)
@@ -449,8 +463,10 @@ else
         var total = $("#tongtien").val();
         var totalPayment = $("#payMoney").val();
         var totalDiscount = $("#ChiecKhau").val();
-        if (total - totalDiscount - totalPayment > 0) {
-            $("#debitMoney").val(total - totalDiscount - totalPayment);
+        var totalOldDebit = $("#icusDebit").val();
+        var rs1 =  parseFloat(total - totalDiscount - totalPayment) ; 
+        if (rs1 > 0) {
+            $("#debitMoney").val(rs1 + parseFloat(totalOldDebit));
         }
         else
         {
@@ -531,7 +547,10 @@ else
                 var totalDiscount = $("#ChiecKhau").val();
                 var amount = $this.val().replace(/,/gi, "");
 
-                var AmountWithCommas = (total - totalDiscount - amount);
+                var totalOldDebit = $("#icusDebit").val();
+                var rs1 = parseFloat(total - totalDiscount - amount); 
+
+                var AmountWithCommas = rs1 + parseFloat(totalOldDebit);
                 if (AmountWithCommas < 0) {
                     $("#debitMoney").val(0);
                 } else
@@ -551,6 +570,7 @@ else
                     }
                     if (arParts.length > 1) {
                         $("#debitMoney").val(num2 + DecimalSeparator + decPart);
+                       
                     } else {
                         $("#debitMoney").val(num2);
                     }
@@ -574,7 +594,11 @@ else
                     $("#debitMoney").val(0);
                 }
 
-
+           
+                $("#debitMoney").attr("value", removeCommas($("#debitMoney").val()));              
+              
+                $("#returnMoney").attr("value", removeCommas($("#returnMoney").val()));
+                formatNumberic();
             });
 
             $('input.numberic').bind("paste", function (e) {
