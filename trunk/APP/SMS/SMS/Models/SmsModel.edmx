@@ -182,7 +182,7 @@
           <Property Name="MA_THE_KHACH_HANG" Type="varchar" MaxLength="15" />
           <Property Name="TEN_KHACH_HANG" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DIA_CHI" Type="nvarchar" MaxLength="200" />
-          <Property Name="SO_DIEN_THOAI" Type="varchar" MaxLength="15" />
+          <Property Name="SO_DIEN_THOAI" Type="varchar" MaxLength="100" />
           <Property Name="EMAIL" Type="varchar" MaxLength="50" />
           <Property Name="MA_KHU_VUC" Type="int" />
           <Property Name="DOANH_SO" Type="money" />
@@ -3526,7 +3526,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <Property Name="MA_THE_KHACH_HANG" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="TEN_KHACH_HANG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DIA_CHI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SO_DIEN_THOAI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SO_DIEN_THOAI" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MA_KHU_VUC" Type="Int32" />
           <Property Name="DOANH_SO" Type="Decimal" Precision="19" Scale="4" />
@@ -6626,7 +6626,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="SO_DIEN_THOAI" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SO_DIEN_THOAI" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="KIND" Nullable="true" />
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />
@@ -6798,7 +6798,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <Property Type="String" Name="SO_HOA_DON" Nullable="true" MaxLength="30" />
           <Property Type="Int32" Name="MA_KHACH_HANG" Nullable="true" />
           <Property Type="String" Name="TEN_KHACH_HANG" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="SO_DIEN_THOAI" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SO_DIEN_THOAI" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="MA_NHAN_VIEN_BAN" Nullable="true" />
           <Property Type="String" Name="TEN_NGUOI_BAN" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="NGAY_BAN" Nullable="true" />

@@ -69,7 +69,7 @@ namespace SMS.Models
 
         [Required]
         [Display(Name = "Số điện thoại")]
-        [StringLength(40, ErrorMessage = "Số CMND không hợp lệ", MinimumLength = 8)]
+        [StringLength(100, ErrorMessage = "Số CMND không hợp lệ", MinimumLength = 8)]
         public string SO_DIEN_THOAI { get; set; }
 
         [Display(Name = "Email")]

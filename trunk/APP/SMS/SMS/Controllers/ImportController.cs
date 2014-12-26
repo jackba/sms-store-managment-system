@@ -88,6 +88,11 @@ namespace SMS.Controllers
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             var storeId = model.StoreId;
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }            
+            model.StoreId = storeId;
             string ImportNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             if (file != null)
             {
@@ -235,8 +240,7 @@ namespace SMS.Controllers
                     ViewBag.Message = fileStringBuilder.ToString();
                 }                            
             }
-            model.Stores = stores;
-            model.StoreId = storeId;
+            model.Stores = stores;            
             ctx.Dispose();
             return View(model);
         }
@@ -879,7 +883,6 @@ namespace SMS.Controllers
             ViewBag.Stores = stores;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
-            ctx.Dispose();
             return View();
         }
 

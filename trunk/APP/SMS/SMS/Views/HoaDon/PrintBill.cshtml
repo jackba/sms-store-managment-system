@@ -19,6 +19,7 @@
             document.body.innerHTML = originalContents;
         }
 
+        
         function smallPagePrint() {
             var printContents = document.getElementById("smallPagePrint").innerHTML;
             var originalContents = document.body.innerHTML;
@@ -40,8 +41,9 @@
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-        }
-    </script>
+        };
+
+</script>
     <style type="text/css">
         .required:after {
             content: "*";
@@ -69,31 +71,25 @@
     <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/css/print.css" rel="stylesheet" media="print" type="text/css" />
-    <table style="width:100%">
+    <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
-            <td rowspan="3" style="width:30%">
-                <img width="100" height="100" src="~/Images/logo2.png"></img>
-            </td>
-            <td style="text-align:right">
-                <table style="width:100%">
-                    <tr>
-                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center"> @Model.SmsMaster.Address</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber  - Fax: @Model.SmsMaster.FaxNumber</td>
-                    </tr>
-                </table>
-            </td>
+            <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"> @Model.SmsMaster.Address</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"> Fax: @Model.SmsMaster.FaxNumber</td>
         </tr>
     </table>
-    <hr />
-    <table style="width:100%">
+    <div style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
-            <td style="width:50%">
-                Số hóa đơn
+            <td style="width:20%">
+                Số:
             </td>
             <td>
                 @Model.Infor.SO_HOA_DON
@@ -101,65 +97,21 @@
         </tr>
         <tr>
             <td>
-                Tên khách hàng
+                KH:
             </td>
             <td>
                 @Model.Infor.TEN_KHACH_HANG
             </td>
         </tr>
-        <tr>
-            <td>
-                Số điện thoại
-            </td>
-            <td>
-                @Model.Infor.SO_DIEN_THOAI
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Điạ chỉ giao hàng
-            </td>
-            <td>
-                @Model.Infor.DIA_CHI_GIAO_HANG
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Ngày bán hàng
-            </td>
-            <td>
-                @if (@Model.Infor != null && @Model.Infor.NGAY_BAN != null)
-                {
-                    @DateTime.Parse(@Model.Infor.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
-                }
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Ngày giao hàng
-            </td>
-            <td>
-                @if (@Model.Infor != null && @Model.Infor.NGAY_GIAO != null)
-                {
-                    @DateTime.Parse(@Model.Infor.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
-                }
-
-            </td>
-        </tr>
     </table>
-    <hr />
-    <div style="text-align:center">
-        @Model.SmsMaster.AdvertisementHeader
-    </div>
-    <hr />
+
     <table style="width:100%" id="SmallMainTable" class="details">
         <tr>
             <td class='inner colwidth head '>
-                Số lượng
+                SL
             </td>
             <td class='innerLast colwidth head '>
-                Đơn vị
+                ĐV
             </td>
             <td class='inner colwidth head '>
                 Đơn giá
@@ -168,7 +120,7 @@
                 (%)
             </td>
             <td class='innerLast colwidth head '>
-                Thành tiền
+                &nbsp;&nbsp;&nbsp;&nbsp; Thành tiền &nbsp;&nbsp;&nbsp;&nbsp;
             </td>
         </tr>
         @{
@@ -184,17 +136,17 @@
             <tr>
                 <td class="innerLast colwidth" colspan="6">(@i) @detail.TEN_SAN_PHAM</td>
             </tr>
-            <tr>
-                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###.##")</td>
+            <tr style="font-family:Arial">
+                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###")</td>
                 <td class="innerLast colwidth">@detail.TEN_DON_VI_TEMP</td>
-                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###.##")</td>
-                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###.##")</td>
-                <td class="innerLast colwidth">@total.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###")</td>
+                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###")</td>
+                <td class="innerLast colwidth">@total.ToString("#,###")</td>
             </tr>
         }
         <tr>
             <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
-            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
+            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###")</td>
         </tr>
         @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
         {
@@ -207,11 +159,11 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 double ttall = debit + allTotal;
                     }
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
                 </tr>
                 <tr>
                     <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###")</td>
                 </tr>
             }
             else
@@ -219,40 +171,11 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 <tr>
                     <td colspan="4" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
                 </tr>
             }
         }
     </table>
-    <hr />
-    <table style="width: 100%; text-align: center">
-        <tr>
-            <td style="width: 33%; text-align: center">
-                Người bán hàng
-            </td>
-            <td style="width:33%; text-align:center">
-                Người thu tiền
-            </td>
-            <td style="width: 33%; text-align: center">
-                Người nhận hàng
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-        </tr>
-        <tr>
-            <td rowspan="3">
-                @Model.Infor.TEN_NGUOI_BAN
-            </td>
-            <td rowspan="3">
-                @Model.Infor.TEN_NV_TT
-            </td>
-            <td rowspan="3">..........................</td>
-        </tr>
-    </table>
-    <div class="innerLast" style="text-align:center">
-        @Model.SmsMaster.AdvertisementFooter
-    </div>
 
 </div>
 
@@ -262,12 +185,12 @@
     <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/css/print.css" rel="stylesheet" media="print" type="text/css" />
 
-    <table style="width:100%">
+    <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
-            <td rowspan="3">
-                <img width="100" height="100" src="~/Images/logo2.png"></img>
+            <td rowspan="4" style="margin-left:0px; margin-right:0px;">
+                <img width="80" height="80" src="~/Images/logo2.png"></img>
             </td>
-            <td style="text-align:right">
+            <td style="text-align:right ; padding: 0px 0px 0px 0px; margin-left:0px; margin-right:0px;">
                 <table style="width:100%">
                     <tr>
                         <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
@@ -276,87 +199,68 @@
                         <td style="text-align:center"> @Model.SmsMaster.Address</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber  - Fax: @Model.SmsMaster.FaxNumber</td>
+                        <td style="text-align:center"> Phone: @Model.SmsMaster.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"> Fax: @Model.SmsMaster.FaxNumber</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
-    <hr />
-    <table style="width:100%">
+    <div style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td>
-                <table>
-                    <tr>
-                        <td>
-                            Tên khách hàng
-                        </td>
-                        <td>
-                            @Model.Infor.TEN_KHACH_HANG
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Điạ chỉ giao hàng
-                        </td>
-                        <td>
-                            @Model.Infor.DIA_CHI_GIAO_HANG
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Số điện thoại
-                        </td>
-                        <td>
-                            @Model.Infor.SO_DIEN_THOAI
-                        </td>
-                    </tr>
-                </table>
+                Số:
+            </td>
+            <td colspan="3">@Model.Infor.SO_HOA_DON</td>
+        </tr>
+        <tr>
+            <td>
+                KH:
             </td>
             <td>
-                <table>
-                    <tr>
-                        <td style="width:50%">
-                            Số hóa đơn
-                        </td>
-                        <td>
-                            @Model.Infor.SO_HOA_DON
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Ngày bán hàng
-                        </td>
-                        <td>
-                            @if (@Model.Infor != null && @Model.Infor.NGAY_BAN != null)
-                            {
-                                @DateTime.Parse(@Model.Infor.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Ngày giao hàng
-                        </td>
-                        <td>
-                            @if (@Model.Infor != null && @Model.Infor.NGAY_GIAO != null)
-                            {
-                                @DateTime.Parse(@Model.Infor.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
-                            }
-
-                        </td>
-                    </tr>
-                </table>
+                @Model.Infor.TEN_KHACH_HANG
+            </td>
+            <td>
+                ĐT:
+            </td>
+            <td>
+                @Model.Infor.SO_DIEN_THOAI
             </td>
         </tr>
+        <tr>
+            <td>
+                Địa chỉ:
+            </td>
+            <td colspan="3">@Model.Infor.DIA_CHI_GIAO_HANG</td>
+        </tr>
+        <tr>
+            <td>
+                Ngày bán: 
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_BAN != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_BAN.ToString()).ToString("dd/MM/yyyy")
+                }
+            </td>
+            <td>
+                Ngày giao:
+            </td>
+            <td>
+                @if (@Model.Infor != null && @Model.Infor.NGAY_GIAO != null)
+                {
+                    @DateTime.Parse(@Model.Infor.NGAY_GIAO.ToString()).ToString("dd/MM/yyyy")
+                }
+            </td>
+        </tr>        
     </table>
-   
-    <hr />
     <div style="text-align:center">
         @Model.SmsMaster.AdvertisementHeader
     </div>
-    <hr />
-    <table style="width:100%" id="MainTable" class="details">
+    <table style="width:100%; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;" id="MainTable" class="details">
         <tr>
             <td class='inner colwidth head ' width="5%;">
                 STT
@@ -365,10 +269,10 @@
                 Tên sản phầm
             </td>
             <td class='inner colwidth head '>
-                Số lượng
+                SL
             </td>
             <td class='innerLast colwidth head '>
-                Đơn vị
+                ĐV
             </td>
             <td class='inner colwidth head '>
                 Đơn giá
@@ -377,7 +281,7 @@
                 (%)
             </td>
             <td class='innerLast colwidth head '>
-                Thành tiền
+                &nbsp;&nbsp;&nbsp;&nbsp; Thành tiền &nbsp;&nbsp;&nbsp;&nbsp;
             </td>
         </tr>
         @{
@@ -390,19 +294,19 @@
             i++;
             total = detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP - detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP * detail.PHAN_TRAM_CHIEC_KHAU / 100;
             allTotal += total;
-            <tr>
+            <tr style="font-family:'Times New Roman'">
                 <td class="innerLast colwidth">@i</td>
                 <td class="innerLast colwidth">@detail.TEN_SAN_PHAM</td>
-                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.SO_LUONG_TEMP.ToString("#,###")</td>
                 <td class="innerLast colwidth">@detail.TEN_DON_VI_TEMP</td>
-                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###.##")</td>
-                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###.##")</td>
-                <td class="innerLast colwidth">@total.ToString("#,###.##")</td>
+                <td class="innerLast colwidth">@detail.DON_GIA_TEMP.ToString("#,###")</td>
+                <td class="innerLast colwidth">@detail.PHAN_TRAM_CHIEC_KHAU.ToString("#,###")</td>
+                <td class="innerLast colwidth">@total.ToString("#,###")</td>
             </tr>
         }
         <tr>
             <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng hóa đơn</td>
-            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###.##")</td>
+            <td style="background-color:lightgray" class="innerLast">@allTotal.ToString("#,###")</td>
         </tr>
         @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
         {
@@ -415,11 +319,11 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 double ttall = debit + allTotal;
                     }
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
                 </tr>
                 <tr>
                     <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###")</td>
                 </tr>
             }
             else
@@ -427,7 +331,7 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 <tr>
                     <td colspan="6" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###.##")</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
                 </tr>
             }
         }
@@ -436,14 +340,11 @@
     <table style="width: 100%; text-align: center">
         <tr>
             <td style="width: 33%; text-align: center">
-                Người bán hàng
-            </td>
+                NV Bán          </td>
             <td style="width:33%; text-align:center">
-                Người thu tiền
-            </td>
+                NV thu tiền    </td>
             <td style="width: 33%; text-align: center">
-                Người nhận hàng
-            </td>
+                Người nhận   </td>
         </tr>
         <tr>
             <td colspan="3"> &nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -490,7 +391,6 @@
             </td>
         </tr>
     </table>
-    <hr />
     <table style="width:100%">
         <tr>
             <td>
@@ -636,7 +536,7 @@
         }
     </table>
     <hr />
-    <table style="width: 100%; text-align: center">
+    <table style="width: 100%; text-align: center width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td style="width: 33%; text-align: center">
                 Người bán hàng
@@ -667,6 +567,6 @@
     </div>
 </div>
 <input type="button" value="Thêm mới hóa đơn" class="myButton" onclick="window.location.href='@Url.Action("AddNew","BanHang")'" />
-<input type="button" value="In hóa đơn" onclick="pagePrint(); return false;">
+<input type="button" id ="printbtn" value="In hóa đơn" onclick="pagePrint(); return false;">
 <input type="button" value="In hóa đơn không % CK" onclick="PageWithoutPercentPrint(); return false;">
 <input type="button" value="In hóa đơn (80x***)" onclick="smallPagePrint(); return false;">

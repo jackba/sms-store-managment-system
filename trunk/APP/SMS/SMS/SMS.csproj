@@ -472,9 +472,6 @@
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_ALL_CUS_RETURN_BY_WEEK.cs">
-      <DependentUpon>SmsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\V_BUGET_BY_MONTH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
