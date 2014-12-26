@@ -127,6 +127,13 @@
             
            </div>
        }
+       else
+       {
+        <div style="display:inline-block">
+            Kho - cửa hàng: @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName", @disabled = "disabled" })
+            @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+        </div>
+       }
         <div style="display:inline-block">
             @Html.DropDownList("productGroupId", new SelectList(ViewBag.ProductGroups, "MA_NHOM", "TEN_NHOM"), "Nhóm sản phẩm", new { @id = "productGroupId", style = "padding:5px;font-size:1.2em" })
             @Html.Hidden("ProductId", ViewBag.ProductId as int?,  new { id = "ProductId" })

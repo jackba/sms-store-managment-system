@@ -19,8 +19,8 @@ a.print-preview {
     border-right: 1px solid #666;
     border-bottom: 1px solid #666;
     border-top: 1px solid #666;
-    padding: 3px;
-    height: 28px;
+    padding: 1px;
+    height: 23px;
 }
 
 #SmallMainTable td {
@@ -28,18 +28,24 @@ a.print-preview {
     border-right: 1px solid #666;
     border-bottom: 1px solid #666;
     border-top: 1px solid #666;
-    padding: 3px;
-    height: 28px;
+    padding: 1px;
+    height: 23px;
 }
 
+.details  {
+    margin-top:0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
 
 .details td {
     border-left: 1px solid #666;
     border-right: 1px solid #666;
     border-bottom: 1px solid #666;
     border-top: 1px solid #666;
-    padding: 3px;
-    height: 28px;
+    padding: 1px;
+    height: 23px;
 } 
 
 /* -- Typography -- */

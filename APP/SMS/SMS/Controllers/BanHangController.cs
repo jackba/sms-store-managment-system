@@ -238,7 +238,7 @@ namespace SMS.Controllers
                     ctx.Dispose();
                     if (hoaDon.printFlg == "1")
                     {
-                        return RedirectToAction("PrintBill", "HoaDon", new { @id = invoice.MA_HOA_DON });
+                        return RedirectToAction("PrintBill", "HoaDon", new { @id = invoice.MA_HOA_DON});
                     }
                     return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
                 }

@@ -155,7 +155,7 @@ namespace SMS.Controllers
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             if (file != null)
             {
-                var fp = Path.Combine(HttpContext.Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
+                var fp = Path.Combine(Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
                 file.SaveAs(fp);
                 
                 if (Path.GetExtension(fp) == null || Path.GetExtension(fp).ToLower() != ".csv")
@@ -323,7 +323,7 @@ namespace SMS.Controllers
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             if (file != null)
             {
-                var fp = Path.Combine(HttpContext.Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
+                var fp = Path.Combine(Server.MapPath("~/ImportUploads"), Path.GetFileName(file.FileName));
                 file.SaveAs(fp);
 
                 if (Path.GetExtension(fp)  == null || Path.GetExtension(fp).ToLower() != ".csv")

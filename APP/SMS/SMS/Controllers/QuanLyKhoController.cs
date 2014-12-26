@@ -178,9 +178,13 @@ namespace SMS.Controllers
         }
 
         [CustomActionFilter]
-        public PartialViewResult getWarningbyStoreIdPtv(int storeId, string productName, int? currentPageIndex)
+        public PartialViewResult getWarningbyStoreIdPtv(int? storeId, string productName, int? currentPageIndex)
         {
             var ctx = new SmsContext();
+            if (!(bool)Session["IsAdmin"])
+            {
+                storeId = Convert.ToInt32(Session["MyStore"]);
+            }
             var inventory = ctx.SP_GET_WARNING_BY_STORE(storeId, productName).ToList<SP_GET_WARNING_BY_STORE_Result>();
             ViewBag.CurrentPageIndex = currentPageIndex;
             int pageSize = SystemConstant.ROWS;

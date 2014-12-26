@@ -368,6 +368,7 @@ namespace SMS.Controllers
         [HttpGet]
         public ActionResult changePass()
         {
+            ViewData["errorcode"] = "";
             return View();
         }
 

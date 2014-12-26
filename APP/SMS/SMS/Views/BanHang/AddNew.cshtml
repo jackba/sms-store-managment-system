@@ -782,6 +782,13 @@
                 function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
         });
     }
+    
+    function storeChange() {
+        $("select.store").change(function (event) {
+            var $this = $(this);
+            $('#myStore').val($this.val());
+        });        
+    }
 
     function createStore(obj) {        
         var result = '';
@@ -796,7 +803,7 @@
                     $('select.store', parent).empty();
                     $.each(data, function (i, item) {
                         var opt = '';
-                        if (item.value == parseInt($('#MyStore').val())) {
+                        if (item.value == parseInt($('#myStore').val())) {
                             opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
                         } else {
                             opt = "<option value=" + item.value + ">" + item.name + "</option>"
@@ -1098,6 +1105,7 @@
         numberOnly();
         quantityEnter();
         codeEnter();
+        storeChange();
         // format numberic 
         $('input.numberic').focusout(
          function (event) {
@@ -1195,6 +1203,7 @@
         quantityEnter();
         codeEnter();
         customerEnter();
+        storeChange();
     });
 
     function checkdlc() {

@@ -91,6 +91,12 @@
     </style>
 
 }
+<!--Hidden field use for mode UPDATE-->
+@{
+    var myStore = Convert.ToInt32(Session["MyStore"]);
+}
+<input type="hidden" id="myStore" value="@myStore" />
+
 @using (Html.BeginForm("Edit", "BanHang", FormMethod.Post, new { @id = "formContent" }))
 {
     <table>
@@ -424,6 +430,14 @@
                 var unitId = $('select.store', parent).val(value);
             });
         }
+
+        function storeSelectChange() {
+            $("select.store").change(function (event) {
+                var $this = $(this);
+                $('#myStore').val($this.val());
+            });
+        }
+
 
         function checkEnough(storeId, ProductId, quantity, convertor) {
             var inventorNumber = 0;
@@ -1420,6 +1434,7 @@
             quantityEnter();
             customerEnter();
             codeEnter();
+            storeSelectChange();
         });
 
         function counter() {
@@ -1497,6 +1512,7 @@
             codeEnter();
             //unitChange();
             //codeFocusout();
+            storeSelectChange();
         };
 
         function createStore(obj) {
@@ -1512,20 +1528,14 @@
                         $('select.store', parent).empty();
                         $.each(data, function (i, item) {
                             var opt = '';
-                            if (item.value == parseInt($('#MyStore').val())) {
+                            if (item.value == parseInt($('#myStore').val())) {
                                 opt = "<option value=" + item.value + " selected>" + item.name + "</option>"
                             } else {
                                 opt = "<option value=" + item.value + ">" + item.name + "</option>"
                             }
                             $(opt).appendTo(un);
                         });
-                        var storeTemp = $('input.storeTemp', parent).val();
-                        if (storeTemp != '') {
-                            un.val(storeTemp);
-                        }
-                        else {
-                            un.val($("#myStore").val());
-                        }
+                        un.val($("#myStore").val());
                     },
                 error:
                     function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }

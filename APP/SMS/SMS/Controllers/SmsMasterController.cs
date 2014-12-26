@@ -331,9 +331,9 @@ namespace SMS.Controllers
                 sms5.VALUE = int.Parse(MaxMonth2).ToString();
 
                 var sms6 = ctx.SMS_MASTER.FirstOrDefault(u => u.NAME.Equals("MAX_MOUNTH_KIND_3") && u.ACTIVE.Equals("A"));
-                sms6.VALUE = int.Parse(MaxMonth3).ToString();
-                ctx.Dispose();
+                sms6.VALUE = int.Parse(MaxMonth3).ToString();               
                 ctx.SaveChanges();
+                ctx.Dispose();
             }
             return View();
         }
