@@ -10,10 +10,27 @@
         });
         //Stop Form Submission of Enter Key Press
         function pagePrint() {
-            var printContents = document.getElementById("printFeature").innerHTML;
             var originalContents = document.body.innerHTML;
+            /*format by css s*/
+            $('#printFeature').find( "#fTitleMain" ).css( "margin-top", "-25px" );
+            // resize line-height
+            $('#MainTable tr').each(function() {
+                $(this).css("line-height","20px !important");
+            });
+            // set border-bottom : dot
+            $('#MainTable tr:not(:first-child):not(:last-child)').each(function() {
+                $(this).css("border-bottom-style","dotted");
+                $(this).css("border-bottom-width","2px");
+            });
+            $( "#MainTable tr:nth-last-child(2)").css("border-bottom-style","");
+            $( "#MainTable tr:nth-last-child(2)").css("border-bottom-width","");
+            /*format by css e*/
+            var printContents = document.getElementById("printFeature").innerHTML;
+          
             document.getElementById('myHeader').style.display = 'none';
             document.getElementById('myFooter').style.display = 'none';
+           
+            //$('#titleMain').css( "margin-top", "-7px" );
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
@@ -21,8 +38,24 @@
 
         
         function smallPagePrint() {
-            var printContents = document.getElementById("smallPagePrint").innerHTML;
             var originalContents = document.body.innerHTML;
+            /*format by css s*/
+            $('#smallPagePrint').find( "#sTitleMain" ).css( "margin-top", "-12px" );
+            // resize line-height
+            $('#SmallMainTable tr').each(function() {
+                $(this).css("line-height","20px !important");
+            });
+            // set border-bottom : dot
+            /*
+            $('#SmallMainTable tr:not(:first-child):not(:last-child)').each(function() {
+                $(this).css("border-bottom-style","dotted");
+                $(this).css("border-bottom-width","2px");
+            });
+            $( "#SmallMainTable tr:nth-last-child(2)").css("border-bottom-style","");
+            $( "#SmallMainTable tr:nth-last-child(2)").css("border-bottom-width","");
+            */
+            /*format by css e*/
+            var printContents = document.getElementById("smallPagePrint").innerHTML;
             document.getElementById('printFeature').style.display = 'none';
             document.getElementById('printFeatureWithoutPercent').style.display = 'none';
             document.getElementById('myHeader').style.display = 'none';
@@ -85,7 +118,7 @@
             <td style="text-align:center"> Fax: @Model.SmsMaster.FaxNumber</td>
         </tr>
     </table>
-    <div style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <div id="sTitleMain" style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
     <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td style="width:20%">
@@ -208,8 +241,8 @@
             </td>
         </tr>
     </table>
-    <div style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
-    <table style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
+    <div id="fTitleMain" style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <table  style="width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td>
                 Số:
@@ -260,7 +293,7 @@
     <div style="text-align:center">
         @Model.SmsMaster.AdvertisementHeader
     </div>
-    <table style="width:100%; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;" id="MainTable" class="details">
+    <table style="width: 100%; width: 100%; margin-top: 0px; margin-left: 0px; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; border-bottom: 1px dashed #494949 !important;" id="MainTable" class="details">
         <tr>
             <td class='inner colwidth head ' width="5%;">
                 STT
