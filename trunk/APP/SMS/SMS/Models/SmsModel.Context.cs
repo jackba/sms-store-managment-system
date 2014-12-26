@@ -58,7 +58,6 @@ namespace SMS.Models
         public virtual DbSet<TRA_HANG_NCC> TRA_HANG_NCC { get; set; }
         public virtual DbSet<TRA_HANG_NCC_CHI_TIET> TRA_HANG_NCC_CHI_TIET { get; set; }
         public virtual DbSet<XUAT_KHO> XUAT_KHO { get; set; }
-        public virtual DbSet<V_ALL_CUS_RETURN_BY_WEEK> V_ALL_CUS_RETURN_BY_WEEK { get; set; }
         public virtual DbSet<V_BUGET_BY_MONTH> V_BUGET_BY_MONTH { get; set; }
         public virtual DbSet<V_BUGET_BY_WEEK> V_BUGET_BY_WEEK { get; set; }
         public virtual DbSet<V_HOA_DON> V_HOA_DON { get; set; }
@@ -74,6 +73,11 @@ namespace SMS.Models
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+    
+        public virtual int dynTable()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("dynTable");
+        }
     
         public virtual ObjectResult<GET_HOA_DON_Result> GET_HOA_DON(Nullable<System.DateTime> fROM_DATE, Nullable<System.DateTime> tO_DATE, Nullable<int> mA_KHACH_HANG)
         {
@@ -147,27 +151,6 @@ namespace SMS.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_COMPARE_INVENTORY_Result>("SP_COMPARE_INVENTORY", mA_KHOParameter, mA_SAN_PHAMParameter, tEN_SAN_PHAMParameter, mA_NHOMParameter, fIRST_DATEParameter, sECOND_DATEParameter);
         }
     
-        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
-        }
-    
         public virtual int SP_DELETE_EXPORT_4_SALE(Nullable<int> mA_XUAT_KHO, Nullable<int> mA_NHAN_VIEN_TH, ObjectParameter rETURN_VALUE)
         {
             var mA_XUAT_KHOParameter = mA_XUAT_KHO.HasValue ?
@@ -179,19 +162,6 @@ namespace SMS.Models
                 new ObjectParameter("MA_NHAN_VIEN_TH", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DELETE_EXPORT_4_SALE", mA_XUAT_KHOParameter, mA_NHAN_VIEN_THParameter, rETURN_VALUE);
-        }
-    
-        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
         public virtual int SP_EXPORT_4_RETURN_2_PROVIDER(Nullable<int> iD, Nullable<int> sTORE_ID, Nullable<int> uSER_ID, Nullable<System.DateTime> eXPORT_DATE, ObjectParameter rETURN_VALUE)

@@ -15,6 +15,9 @@ namespace SMS.Models
         public decimal customerDebit { get; set; }
         public decimal maxDebit { get; set; }
         public SmsMasterModel SmsMaster { get; set; }
+        public int? flag { get; set; }
+
+
     }
 
     public class InvoicesNoReciveModel
