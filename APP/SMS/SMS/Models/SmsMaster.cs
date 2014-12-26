@@ -13,12 +13,12 @@ namespace SMS.Models
     {
         [Required]
         [Display(Name = "Tên công ty")]
-        [StringLength(100)]
+        [StringLength(1000)]
         public string CompanyName { get; set; }
 
         [Required]
         [Display(Name = "Số điện thoại")]
-        [StringLength(20)]
+        [StringLength(200)]
         public string PhoneNumber { get; set; }
 
         [Required]
