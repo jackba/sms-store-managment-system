@@ -322,6 +322,9 @@
     <Compile Include="Models\SP_GET_EXPORT_4_CANCEL_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_EXPORT_DETAIL_BY_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_EX_BY_ID_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>

@@ -123,7 +123,7 @@
     <link href="~/Content/css/style.css" rel="stylesheet" />
     <table style=" font-family:'Times New Roman'; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
-            <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+            <td style="text-align:center"><strong><strong>@Model.SmsMaster.CompanyName</strong></strong> </td>
         </tr>
         <tr>
             <td style="text-align:center"> @Model.SmsMaster.Address</td>
@@ -135,7 +135,7 @@
             <td style="text-align:center"> Fax: @Model.SmsMaster.FaxNumber</td>
         </tr>
     </table>
-    <div id="sTitleMain" style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <div id="sTitleMain" style="text-align:center; font-size:23px"> <strong>PHIẾU XUẤT HÀNG</strong> </div>
     <table style=" font-family:'Times New Roman'; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td style="width:20%">
@@ -248,7 +248,7 @@
             <td style="text-align:right ; padding: 0px 0px 0px 0px; margin-left:0px; margin-right:0px;">
                 <table style="width:100%; font-family:'Times New Roman';font-size:16px;">
                     <tr>
-                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+                        <td style="text-align:center"> <strong>@Model.SmsMaster.CompanyName</strong></td>
                     </tr>
                     <tr>
                         <td style="text-align:center"> @Model.SmsMaster.Address</td>
@@ -440,7 +440,7 @@
             <td style="text-align:right ; padding: 0px 0px 0px 0px; margin-left:0px; margin-right:0px;">
                 <table style="width:100% ;font-family:'Times New Roman'">
                     <tr>
-                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+                        <td style="text-align:center"> <strong>@Model.SmsMaster.CompanyName</strong></td>
                     </tr>
                     <tr>
                         <td style="text-align:center"> @Model.SmsMaster.Address</td>
@@ -452,7 +452,7 @@
             </td>
         </tr>
     </table>
-    <div id="fTitleMain" style="text-align:center; font-size:23px"> PHIẾU XUẤT HÀNG</div>
+    <div id="fTitleMain" style="text-align:center; font-size:23px"> <strong>PHIẾU XUẤT HÀNG</strong> </div>
     <table style="font-family:'Times New Roman' ; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td>
@@ -501,9 +501,6 @@
             </td>
         </tr>
     </table>
-    <div style="text-align:center">
-        @Model.SmsMaster.AdvertisementHeader
-    </div>
     <table style="width: 100%; width: 100%; margin-top: 0px; margin-left: 0px; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; border-bottom: 1px dashed #494949 !important;" id="MainTable" class="details">
         <tr>
             <td class='inner colwidth head alignCenter' width="5%;">
@@ -534,7 +531,7 @@
             allTotal = 0;
             int j = 0;
         }
-        @if (Model.detailList.Count <= 17)
+        @if (Model.detailList.Count <= 18)
         {
            foreach (var detail in Model.detailList)
            {
@@ -561,7 +558,7 @@
                 i++;
                 total = detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP - detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP * detail.PHAN_TRAM_CHIEC_KHAU / 100;
                 allTotal += total;
-                if(i <= 17)
+                if(i <= 18)
                 { 
                     <tr style="font-family:'Times New Roman'">
                         <td class="innerLast colwidth">@i</td>
@@ -616,7 +613,7 @@
                         <td class="innerLast colwidth numberic">@total.ToString("#,###")</td>
                     </tr>
                     j++;
-                    if(j==27)
+                    if(j==26)
                     {
                         j = 0;
                     }
@@ -702,7 +699,7 @@
             <td style="text-align:right ; padding: 0px 0px 0px 0px; margin-left:0px; margin-right:0px;">
                 <table style="width:100% ;font-family:'Times New Roman'">
                     <tr>
-                        <td style="text-align:center"> @Model.SmsMaster.CompanyName</td>
+                        <td style="text-align:center"> <strong>@Model.SmsMaster.CompanyName</strong></td>
                     </tr>
                     <tr>
                         <td style="text-align:center"> @Model.SmsMaster.Address</td>
@@ -714,7 +711,7 @@
             </td>
         </tr>
     </table>
-    <div id="fTitleMain" style="text-align:center; font-size:23px; margin-top:-25px;"> PHIẾU XUẤT HÀNG</div>
+    <div id="fTitleMain" style="text-align:center; font-size:23px; margin-top:-25px;"> <strong>PHIẾU XUẤT HÀNG</strong> </div>
     <table style="font-family:'Times New Roman' ; width:100%; margin-top:0px; margin-left:0px; margin-left:0px; margin-right: 0px; padding-left:0px; padding-right:0px;">
         <tr>
             <td>
@@ -763,9 +760,6 @@
             </td>
         </tr>
     </table>
-    <div style="text-align:center; width:100%">
-        @Model.SmsMaster.AdvertisementHeader
-    </div>
     <table style="width: 100%; width: 100%; margin-top: 0px; margin-left: 0px; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; border-bottom: 1px dashed #494949 !important;" id="MainTable" class="details">
         <tr>
             <td class='inner colwidth head alignCenter' width="5%;">
@@ -819,7 +813,7 @@
                 i++;
                 total = detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP - detail.SO_LUONG_TEMP * detail.DON_GIA_TEMP * detail.PHAN_TRAM_CHIEC_KHAU / 100;
                 allTotal += total;
-                if (i <= 17)
+                if (i <= 18)
                 {
                     <tr style="font-family:'Times New Roman'">
                         <td class="innerLast colwidth">@i</td>
@@ -870,7 +864,7 @@
                         <td class="innerLast colwidth numberic">@total.ToString("#,###")</td>
                     </tr>
                     jj++;
-                    if (jj == 27)
+                    if (jj == 26)
                     {
                         jj = 0;
                     }
@@ -879,7 +873,7 @@
         }
         <tr>
             <td colspan="5" class="innerLast" style="background-color:lightgray"><strong> Tổng hóa đơn</strong> </td>
-            <td style="background-color:lightgray ;font-family:'Times New Roman'" class="innerLast"><strong>@allTotal.ToString("#,###")</strong> </td>
+            <td style="background-color:lightgray ;font-family:'Times New Roman'" class="innerLast numberic"><strong>@allTotal.ToString("#,###")</strong> </td>
         </tr>
         @if (Model.CustomerInformation != null && Model.CustomerInformation.NO_GOI_DAU > 0)
         {
@@ -904,7 +898,7 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 <tr>
                     <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
+                    <td style="background-color:lightgray" class="innerLast numberic">@debit.ToString("#,###")</td>
                 </tr>
             }
         }
