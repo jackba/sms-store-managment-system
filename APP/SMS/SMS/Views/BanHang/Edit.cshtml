@@ -1360,52 +1360,68 @@
             });
         }
 
+        function discountEnter() {
+            $('input.discount').keypress(function (event) {
+                var $this = $(this);
+                var $parent = $(this).parent().parent();
+                if (event.which === 13 || event.which === 27) {
+                    if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                        addRow();
+                    } else {
+                        $('input.code', $('#detailTable > tbody:last')).focus();
+                    }
+                }
+            });
+        }
+
         function codeEnter() {
             $('input.code').keypress(function (event) {
                 var $this = $(this);
                 if (event.which === 13 || event.which === 27) {
-                    $.ajax({
-                        url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
-                        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                        dataFilter: function (data) { return data; },
-                        success:
-                            function (data) {
-                                $.each(data, function (i, item) {
-                                    //alert(item.id);
-                                    var $th = $this;
-                                    var pa = $th.parent().parent();
-                                    if (!checkDuplicate(item.id)) {
-                                        $th.val(item.label);
-                                        $('input.productId', pa).val(item.id);
-                                        $('input.productName', pa).val(item.name);
-                                        $('input.price', pa).val(item.price);
-                                        $('input.quantity', pa).val("");
-                                        $('input.discount', pa).val(item.discount);
-                                        $('input.total', pa).val(item.price);
-                                        $('input.realTotal', pa).val(item.price - item.discount * item.price / 100);
-                                        createDonViTinh($th);
-                                        createStore($th);
-                                        formatNumberic();
-                                        $('input.convertor', pa).val("1");
-                                        $th.css("background-color", "white");
-                                        $('input.quantity', pa).focus();
-                                        counter();
-                                    } else {
-                                        alert("Sản phẩm này đã có trong danh sách");
-                                        $th.val("");
-                                        $('input.productId', pa).val("");
-                                        $('input.productName', pa).val("");
-                                        $('input.convertor', pa).val("1");
-                                        $('input.price', pa).val("");
-                                        $('input.quantity', pa).val("");
-                                    }
-                                    hideRelationProduct();
-                                    return false;
-                                });
-                            },
-                        error:
-                            function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-                    });
+                    if ($this.val().length >= 1) {
+                        $.ajax({
+                            url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
+                            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                            dataFilter: function (data) { return data; },
+                            success:
+                                function (data) {
+                                    $.each(data, function (i, item) {
+                                        //alert(item.id);
+                                        var $th = $this;
+                                        var pa = $th.parent().parent();
+                                        if (!checkDuplicate(item.id)) {
+                                            $th.val(item.label);
+                                            $('input.productId', pa).val(item.id);
+                                            $('input.productName', pa).val(item.name);
+                                            $('input.price', pa).val(item.price);
+                                            $('input.quantity', pa).val("");
+                                            $('input.discount', pa).val(item.discount);
+                                            $('input.total', pa).val(item.price);
+                                            $('input.realTotal', pa).val(item.price - item.discount * item.price / 100);
+                                            createDonViTinh($th);
+                                            createStore($th);
+                                            formatNumberic();
+                                            $('input.convertor', pa).val("1");
+                                            $th.css("background-color", "white");
+                                            $('input.quantity', pa).focus();
+                                            counter();
+                                        } else {
+                                            alert("Sản phẩm này đã có trong danh sách");
+                                            $th.val("");
+                                            $('input.productId', pa).val("");
+                                            $('input.productName', pa).val("");
+                                            $('input.convertor', pa).val("1");
+                                            $('input.price', pa).val("");
+                                            $('input.quantity', pa).val("");
+                                        }
+                                        hideRelationProduct();
+                                        return false;
+                                    });
+                                },
+                            error:
+                                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        });
+                    }
                 };
             });
         }
@@ -1435,6 +1451,7 @@
             customerEnter();
             codeEnter();
             storeSelectChange();
+            discountEnter();
         });
 
         function counter() {
@@ -1513,6 +1530,7 @@
             //unitChange();
             //codeFocusout();
             storeSelectChange();
+            discountEnter();
         };
 
         function createStore(obj) {
