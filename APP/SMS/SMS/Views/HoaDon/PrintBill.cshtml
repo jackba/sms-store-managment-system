@@ -208,11 +208,11 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 double ttall = debit + allTotal;
                     }
-                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
+                    <td style="background-color:lightgray" class="innerLast numberic">@debit.ToString("#,###")</td>
                 </tr>
                 <tr>
                     <td colspan="3" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast">@ttall.ToString("#,###")</td>
+                    <td style="background-color:lightgray" class="innerLast numberic">@ttall.ToString("#,###")</td>
                 </tr>
             }
             else
