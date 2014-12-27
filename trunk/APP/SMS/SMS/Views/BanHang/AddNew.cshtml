@@ -37,9 +37,10 @@
     var rowNumCurrent = null;
     // ONLOAD WINDOW
     $(document).ready(function () {
+        // catch event user press arrow key
+        addArrowKeys();
 
         //show calendar
-
         $('.datePicker').datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
@@ -156,6 +157,58 @@
         }
         obj.value = parseFloat(obj.value);
     
+    }
+
+    function addArrowKeys() {
+        $('.arrowkey').keydown(function (e) {
+            var keyCode = e.keyCode || e.which,
+                arrow = { left: 37, up: 38, right: 39, down: 40 };
+
+            switch (keyCode) {
+                case arrow.left:
+                    $(this).closest('td').prev().find('.arrowkey').focus();
+                    break;
+                case arrow.up:
+                    // row n + 1
+                    var prevrow = $(this).closest('tr').prev();
+                    if (prevrow != null && prevrow.length > 0) {
+                        var currClass = $(this).attr('class');
+                        // get next Element to focus by class 
+                        var arrControl = prevrow.find('.arrowkey');
+                        for (i = 0; i < arrControl.length; i++) {
+                            var control = arrControl[i];
+                            if (control.className.trim() == currClass.trim()) {
+                                control.focus();
+                                return;
+                            }
+
+                        }
+
+                    }
+                    break;
+                case arrow.right:                    
+                    $(this).closest('td').next().find('.arrowkey').not('.disabled').focus();
+                    break;
+                case arrow.down:
+                    // row n + 1
+                    var nextrow = $(this).closest('tr').next();
+                    if (nextrow != null && nextrow.length > 0) {
+                        var currClass = $(this).attr('class');                        
+                        // get next Element to focus by class 
+                        var arrControl = nextrow.find('.arrowkey') ; 
+                        for (i = 0; i < arrControl.length; i++) {
+                            var control =  arrControl[i];
+                            if (control.className.trim() == currClass.trim()) {
+                                control.focus();
+                                return;
+                            }
+                                
+                        }                       
+                       
+                    }
+                    break;
+            }
+        });
     }
   
     function setDisableControl(idControl, isDisable) {
@@ -1084,33 +1137,34 @@
         var row = parseInt($("#rowIndex").val()) + 1;
         $('#detailTable > tbody:last').append('<tr> ' +
                 '<td class="inner alignCenter colwidth" width="5%;">' +
-                '<input type="checkbox" class="chcktbl"> </td>' +
+                '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
                 '<td class="inner colwidth "><input name="lstChiTietHoaDon[' + row + '].Code_SP" class="code codebtl" id="lstChiTietHoaDon_' + row + '__Code_SP" type="text" value=""></td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Ma_SP" class="productId " id="lstChiTietHoaDon_' + row + '__Ma_SP" type="hidden" value="" data-val="true" data-val-number="The field Ma_SP must be a number."> ' +
-                '<input name="lstChiTietHoaDon[' + row + '].DEL_FLG" class="delFlg" id="lstChiTietHoaDon_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
-                '<input name="lstChiTietHoaDon[' + row + '].HE_SO" class="convertor" id="lstChiTietHoaDon_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Ten_SP" class="productName" id="lstChiTietHoaDon_' + row + '__Ten_SP" type="text" value="">' +                
+                '<input name="lstChiTietHoaDon[' + row + '].Ma_SP" class="arrowkey productId " id="lstChiTietHoaDon_' + row + '__Ma_SP" type="hidden" value="" data-val="true" data-val-number="The field Ma_SP must be a number."> ' +
+                '<input name="lstChiTietHoaDon[' + row + '].DEL_FLG" class="arrowkey delFlg" id="lstChiTietHoaDon_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
+                '<input name="lstChiTietHoaDon[' + row + '].HE_SO" class="arrowkey convertor" id="lstChiTietHoaDon_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Ten_SP" class="arrowkey productName" id="lstChiTietHoaDon_' + row + '__Ten_SP" type="text" value="">' +
                 '</td>' +
                 '<td class="inner colwidth ">'+
-                '<input name="lstChiTietHoaDon[' + row + '].So_Luong" class="quantity numberic" maxlength = "7" id="lstChiTietHoaDon_' + row + '__So_Luong" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
+                '<input name="lstChiTietHoaDon[' + row + '].So_Luong" class="arrowkey quantity numberic" maxlength = "7" id="lstChiTietHoaDon_' + row + '__So_Luong" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
                 '<td class="inner colwidth ">' +
-                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="unit " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
+                '<select name="lstChiTietHoaDon[' + row + '].Ma_Don_Vi" class="arrowkey unit " id="lstChiTietHoaDon_' + row + '__Ma_Don_Vi" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
                 '</select></td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Gia_Ban" class="price numberic" maxlength = "9" id="lstChiTietHoaDon_' + row + '__Gia_Ban" type="text" value="" readonly="True" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Gia_Ban" class="arrowkey price numberic" maxlength = "9" id="lstChiTietHoaDon_' + row + '__Gia_Ban" type="text" value="" readonly="True" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Thanh_Tien" disabled="disabled" class="total numberic" id="lstChiTietHoaDon_' + row + '__Thanh_Tien" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Thanh_Tien" class="arrowkey total numberic" id="lstChiTietHoaDon_' + row + '__Thanh_Tien" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Phan_Tram_CK" class="discount numberic" maxlength = "4" id="lstChiTietHoaDon_' + row + '__Phan_Tram_CK" type="text"  value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Phan_Tram_CK" class="arrowkey discount numberic" maxlength = "4" id="lstChiTietHoaDon_' + row + '__Phan_Tram_CK" type="text"  value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="lstChiTietHoaDon[' + row + '].Gia_Thuc" disabled="disabled" class="realTotal numberic" id="lstChiTietHoaDon_' + row + '__Gia_Thuc" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
+                '<input name="lstChiTietHoaDon[' + row + '].Gia_Thuc" class="arrowkey realTotal numberic" id="lstChiTietHoaDon_' + row + '__Gia_Thuc" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +
-                '<select name="lstChiTietHoaDon[' + row + '].Ma_Kho_Xuat" class="store " id="lstChiTietHoaDon_' + row + '__Ma_Kho_Xuat" style="padding: 5px; width: 100px; font-size: 1.2em"><option value="">---------</option>' +
+                '<select name="lstChiTietHoaDon[' + row + '].Ma_Kho_Xuat" class="arrowkey store " id="lstChiTietHoaDon_' + row + '__Ma_Kho_Xuat" style="padding: 5px; width: 100px; font-size: 1.2em"><option value="">---------</option>' +
                 '</select></td>' +
                 '</tr>');
         $("#rowIndex").val(row);
         $('input.code', $('#detailTable > tbody:last')).focus();
+        addArrowKeys();
         productAutocomplete();
         productCodeAutocomplete();
         tableCheck();
@@ -1674,37 +1728,37 @@
         {
             <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
-                            <input type="checkbox" class="chcktbl">
+                            <input type="checkbox" class="arrowkey chcktbl">
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Code_SP, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Code_SP, new { @class = "arrowkey code codebtl" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].Ma_SP, new { @class = "productId " })
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].DEL_FLG, new { @class = "delFlg" })
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Ten_SP, new { @class = "productName" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].Ma_SP, new { @class = "arrowkey productId " })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].DEL_FLG, new { @class = "arrowkey delFlg" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[0].HE_SO, new { @class = "arrowkey convertor" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Ten_SP, new { @class = "arrowkey productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].So_Luong, new { @class = "quantity numberic", @maxlength = "7" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].So_Luong, new { @class = "arrowkey quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "arrowkey unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "price numberic", @maxlength = "9", @readOnly = true })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Ban, new { @class = "arrowkey price numberic", @maxlength = "9", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Thanh_Tien, new { @class = "arrowkey total numberic", @readOnly = true})
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "discount numberic", @maxlength = "4" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Phan_Tram_CK, new { @class = "arrowkey discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[0].Gia_Thuc, new { @class = "arrowkey realTotal numberic", @readOnly = true })
                         </td>
                         <td class='innerLast colwidth '>
-                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[0].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "arrowkey store " })
                         </td>
                     </tr>
         }
@@ -1716,36 +1770,36 @@
                 if (detail.DEL_FLG != 1) { 
                  <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
-                            <input type="checkbox" class="chcktbl">
+                            <input type="checkbox" class="arrowkey chcktbl">
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Code_SP, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Code_SP, new { @class = "arrowkey code codebtl" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].Ma_SP, new { @class = "productId " })
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].DEL_FLG, new { @class = "delFlg" })
-                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Ten_SP, new { @class = "productName" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].Ma_SP, new { @class = "arrowkey productId " })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].DEL_FLG, new { @class = "arrowkey delFlg" })
+                            @Html.HiddenFor(u => u.lstChiTietHoaDon[i].HE_SO, new { @class = "arrowkey convertor" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Ten_SP, new { @class = "arrowkey productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].So_Luong, new { @class = "quantity numberic", @maxlength = "7" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].So_Luong, new { @class = "arrowkey quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Don_Vi, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "arrowkey unit " })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Ban, new { @class = "price numberic", @maxlength = "9", @readOnly = true })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Ban, new { @class = "arrowkey price numberic", @maxlength = "9", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Thanh_Tien, new { @class = "arrowkey total numberic", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled"  })
+                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "arrowkey realTotal numberic", @readOnly = true })
                         </td>
                         <td class='innerLast colwidth '>
-                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
+                            @Html.DropDownListFor(u => u.lstChiTietHoaDon[i].Ma_Kho_Xuat, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "arrowkey store " })
                         </td>
                     </tr>
                     i++;
