@@ -35,6 +35,12 @@ namespace SMS.Models
         public long PageCount { get; set; }
     }
 
+    public class ExportedDetailModel
+    {
+        public List<SP_GET_EXPORT_DETAIL_BY_ID_Result> thelist { get; set; }
+
+        public int flg { get; set; }
+    }
     public class CancelExportModel
     {
         public IPagedList<SP_GET_EXPORT_4_CANCEL_Result> TheList { get; set; }

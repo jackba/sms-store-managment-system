@@ -16,6 +16,23 @@ namespace SMS.Controllers
     [HandleError]   
     public class ExportController : Controller
     {
+
+        public ActionResult ShowDetail(int id, int? flg)
+        {
+            ExportedDetailModel model = new ExportedDetailModel();
+            model.flg = (int)flg;
+            return View();
+        }
+
+        public PartialViewResult ShowDetailPtv(int id)
+        {
+            var ctx = new SmsContext();
+            var theList = ctx.SP_GET_EXPORT_DETAIL_BY_ID(id).ToList < SP_GET_EXPORT_DETAIL_BY_ID_Result>();
+            ExportedDetailModel model = new ExportedDetailModel();
+            model.thelist = theList;
+            return PartialView("ShowDetailPtv", model);
+        }
+
         [CustomActionFilter]
         [HttpPost]
         public ActionResult Export2Provider(Export2ProviderModel model)
@@ -79,6 +96,8 @@ namespace SMS.Controllers
             }
             return View(model);
         }
+
+
 
         [CustomActionFilter]
         public ActionResult Export2Provider(int id, int? storeId)
