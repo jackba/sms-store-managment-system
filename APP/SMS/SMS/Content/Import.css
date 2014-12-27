@@ -407,6 +407,7 @@ td{
    width:95%;
 }
 
+/*
 table.contentTable tr:nth-child(even) {
     background: #E2F7FF;
 }
@@ -414,3 +415,4 @@ table.contentTable tr:nth-child(even) {
 table.contentTable tr:nth-child(odd) {
     background: #FFF;
 }
+*/

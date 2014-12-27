@@ -258,7 +258,7 @@
                             @Html.TextBoxFor(u => u.Details[i].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled"})
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4", @readOnly = true })
+                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.Details[i].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
@@ -1490,7 +1490,7 @@
                 '</td><td class="inner colwidth ">' +
                 '<input name="Details[' + row + '].THANH_TIEN" disabled="disabled" class="total numberic" id="Details_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="discount numberic" maxlength = "4" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text" readonly="True" value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="discount numberic" maxlength = "4" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text"  value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
                 '</td><td class="inner colwidth ">' +
                 '<input name="Details[' + row + '].THUC_THU" disabled="disabled" class="realTotal numberic" id="Details_' + row + '__THUC_THU" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +

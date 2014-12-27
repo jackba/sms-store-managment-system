@@ -116,6 +116,7 @@
 }
 
 <div id="smallPagePrint" style="width:450px">
+    <link href="~/Content/HoaDonBanHang.css" rel="stylesheet" />
     <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" media="screen" />
@@ -319,7 +320,7 @@
     </div>
     <hr />
 
-    <table style="width: 100%; width: 100%; margin-top: 0px; margin-left: 0px; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; border-bottom: 1px dashed #494949 !important;" id="MainTable" class="details">
+    <table style="width: 100%; width: 100%; margin-top: 0px; margin-left: 0px; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; border-bottom: 1px dashed #494949 !important;" id="MainTable" class="details contentTable">
         <tr>
             <td class='inner colwidth head alignCenter' width="5%;">
                 <strong>STT</strong>
@@ -340,7 +341,7 @@
                 <strong>(%) </strong>
             </td>
             <td class='innerLast colwidth head alignCenter'>
-                <strong>Thành tiền </strong> 
+                <strong>Thành tiền </strong>
             </td>
         </tr>
         @{
@@ -898,7 +899,7 @@
                 debit = (Double)Model.CustomerInformation.NO_GOI_DAU;
                 <tr>
                     <td colspan="5" class="innerLast" style="background-color:lightgray">Tồng nợ</td>
-                    <td style="background-color:lightgray" class="innerLast numberic">@debit.ToString("#,###")</td>
+                    <td style="background-color:lightgray" class="innerLast">@debit.ToString("#,###")</td>
                 </tr>
             }
         }
