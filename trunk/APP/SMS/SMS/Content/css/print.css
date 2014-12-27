@@ -14,6 +14,21 @@ a.print-preview {
     display: none;
 }
 
+.numberic{
+    text-align:right;
+}
+
+.alignLeft{
+    text-align:left;
+}
+
+.alignCenter{
+    text-align:center;
+}
+.alignNumberic{
+    text-align:right;
+}
+
 #MainTable td {
     border-left: 1px solid #666;
     border-right: 1px solid #666;
