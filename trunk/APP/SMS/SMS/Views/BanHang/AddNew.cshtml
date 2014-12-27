@@ -688,6 +688,20 @@
         });
     }
 
+    function discountEnter() {
+        $('input.discount').keypress(function (event) {
+            var $this = $(this);
+            var $parent = $(this).parent().parent();
+            if (event.which === 13 || event.which === 27) {
+                if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                    addRow();
+                } else {
+                    $('input.code', $('#detailTable > tbody:last')).focus();
+                }
+            }
+        });
+    }
+
     function customerEnter() {
         $('#TenKhachHang').keypress(function (event) {
             var $this = $(this);
@@ -702,6 +716,7 @@
         $('input.code').keypress(function (event) {
             var $this = $(this);
             if (event.which === 13 || event.which === 27) {
+                if ($this.val().length >= 1) {
                     $.ajax({
                         url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#kindCustomer").val() + "'}",
                         dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
@@ -744,6 +759,7 @@
                         error:
                             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                     });
+                    }
                 };
         });
     }
@@ -1108,6 +1124,7 @@
         quantityEnter();
         codeEnter();
         storeChange();
+        discountEnter();
         // format numberic 
         $('input.numberic').focusout(
          function (event) {
@@ -1206,6 +1223,7 @@
         codeEnter();
         customerEnter();
         storeChange();
+        discountEnter();
     });
 
     function checkdlc() {
@@ -1722,7 +1740,6 @@
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Thanh_Tien, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Phan_Tram_CK, new { @class = "discount numberic" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.TextBoxFor(u => u.lstChiTietHoaDon[i].Gia_Thuc, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled"  })
