@@ -107,13 +107,7 @@ input[type="radio"] {
 .rowHeight {
     height: 29px;
 }
-table.tableContentScroll tr:nth-child(even) {
-    background: #E2F7FF;
-}
 
-table.tableContentScroll tr:nth-child(odd) {
-    background: #FFF;
-}
 
 .textRight{
     text-align:right;
@@ -407,3 +401,17 @@ input.realTotal{
 .store{
     width:125px !important;
 }
+
+.contentTable tr:hover, .contentTable tr.alt:hover {
+    color: #261F1D;
+    background-color: #E5C37E;
+}
+/*
+table.tableContentScroll tr:nth-child(even) {
+    background: #E2F7FF;
+}
+
+table.tableContentScroll tr:nth-child(odd) {
+    background: #FFF;
+}
+*/
