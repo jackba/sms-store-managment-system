@@ -189,39 +189,38 @@
         {
             <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
-                            <input type="checkbox" class="chcktbl">
+                            <input type="checkbox" class="chcktbl arrowkey">
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].CODE, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.Details[0].CODE, new { @class = "arrowkey code codebtl" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.HiddenFor(u => u.Details[0].MA_SAN_PHAM, new { @class = "productId " })
-                            @Html.HiddenFor(u => u.Details[0].DEL_FLG, new { @class = "delFlg" })
-                            @Html.HiddenFor(u => u.Details[0].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.Details[0].TEN_SAN_PHAM, new { @class = "productName" })
+                            @Html.HiddenFor(u => u.Details[0].MA_SAN_PHAM, new { @class = "arrowkey productId arrowkey" })
+                            @Html.HiddenFor(u => u.Details[0].DEL_FLG, new { @class = "delFlg arrowkey" })
+                            @Html.HiddenFor(u => u.Details[0].HE_SO, new { @class = "convertor arrowkey" })
+                            @Html.TextBoxFor(u => u.Details[0].TEN_SAN_PHAM, new { @class = "arrowkey productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].SO_LUONG, new { @class = "quantity numberic", @maxlength = "7" })
+                            @Html.TextBoxFor(u => u.Details[0].SO_LUONG, new { @class = "arrowkey quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
                             
-                            @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
+                            @Html.DropDownListFor(u => u.Details[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit arrowkey" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].DON_GIA, new { @class = "price numberic", @maxlength = "9" })
+                            @Html.TextBoxFor(u => u.Details[0].DON_GIA, new { @class = "arrowkey price numberic", @maxlength = "9" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.Details[0].THANH_TIEN, new { @class = "arrowkey total numberic", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4" })
+                            @Html.TextBoxFor(u => u.Details[0].PHAN_TRAM_CHIEC_KHAU, new { @class = "arrowkey discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[0].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.Details[0].THUC_THU, new { @class = "arrowkey realTotal numberic", @readOnly = true })
                         </td>
-                        <td class='innerLast colwidth '>
-                            
-                            @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
+                        <td class='innerLast colwidth '>                            
+                            @Html.DropDownListFor(u => u.Details[0].MA_KHO_XUAT, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store arrowkey" })
                         </td>
                     </tr>
         }
@@ -233,39 +232,39 @@
                 if (detail.DEL_FLG != 1) { 
                  <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
-                            <input type="checkbox" class="chcktbl">
+                            <input type="checkbox" class="chcktbl arrowkey">
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].CODE, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.Details[i].CODE, new { @class = "arrowkey code codebtl" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.HiddenFor(u => u.Details[i].MA_SAN_PHAM, new { @class = "productId " })
-                            @Html.HiddenFor(u => u.Details[i].DEL_FLG, new { @class = "delFlg" })
-                            @Html.HiddenFor(u => u.Details[i].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.Details[i].TEN_SAN_PHAM, new { @class = "productName" })
+                            @Html.HiddenFor(u => u.Details[i].MA_SAN_PHAM, new { @class = "productId arrowkey" })
+                            @Html.HiddenFor(u => u.Details[i].DEL_FLG, new { @class = "delFlg arrowkey" })
+                            @Html.HiddenFor(u => u.Details[i].HE_SO, new { @class = "convertor arrowkey" })
+                            @Html.TextBoxFor(u => u.Details[i].TEN_SAN_PHAM, new { @class = "arrowkey productName" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].SO_LUONG, new { @class = "quantity numberic", @maxlength = "7" })
+                            @Html.TextBoxFor(u => u.Details[i].SO_LUONG, new { @class = "arrowkey quantity numberic", @maxlength = "7" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.Hidden("unitTemp", Model.Details[0].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                            @Html.DropDownListFor(u => u.Details[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit " })
+                            @Html.DropDownListFor(u => u.Details[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit arrowkey" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].DON_GIA, new { @class = "price numberic", @maxlength = "9", @readOnly = true })
+                            @Html.TextBoxFor(u => u.Details[i].DON_GIA, new { @class = "arrowkey price numberic", @maxlength = "9", @readOnly = true })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].THANH_TIEN, new { @class = "total numberic", @readOnly = true, @disabled = "disabled"})
+                            @Html.TextBoxFor(u => u.Details[i].THANH_TIEN, new { @class = "arrowkey total numberic", @readOnly = true})
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "discount numberic", @maxlength = "4" })
+                            @Html.TextBoxFor(u => u.Details[i].PHAN_TRAM_CHIEC_KHAU, new { @class = "arrowkey discount numberic", @maxlength = "4" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.Details[i].THUC_THU, new { @class = "realTotal numberic", @readOnly = true, @disabled = "disabled" })
+                            @Html.TextBoxFor(u => u.Details[i].THUC_THU, new { @class = "arrowkey realTotal numberic", @readOnly = true })
                         </td>
-                        <td class='innerLast colwidth '>
+                        <td class='innerLast colwidth '>                            
+                            @Html.DropDownListFor(u => u.Details[i].MA_KHO_XUAT, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store arrowkey" })
                             @Html.Hidden("storeTemp", Model.Details[i].MA_KHO_XUAT, new { @class = "storeTemp" })
-                            @Html.DropDownListFor(u => u.Details[i].MA_KHO_XUAT, new SelectList(@Model.Store, "MA_KHO", "TEN_KHO"), "---------", new { style = "padding:5px;font-size:1.2em; width:100px;", @class = "store " })
                         </td>
                     </tr>
                     i++;
@@ -498,10 +497,10 @@
             $('input.chcktbl').each(function () {
                 var $this = $(this);
                 var $parent = $(this).parent().parent();
-                if ($parent.index()!= ($('#detailTable >tbody >tr').length - 1)){
                     var flg = $('input.delFlg', $(this).parent().parent()).val();
                     if (flg != 1) {
-                        var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+                    if (productId != null && productId != '' && productId != '0') {
                         var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
                         if (quantity == null || quantity == '' || quantity == 0) {
                             rval = 0;
@@ -518,7 +517,7 @@
                             ppval = 0;
                         }
                         row++;
-                    }
+                    }                    
                 }
             });
 
@@ -1340,8 +1339,9 @@
             $('input.quantity').keypress(function (event) {
                 var $this = $(this);
                 var $parent = $(this).parent().parent();
+                var last = $('#detailTable >tbody >tr:visible').last().index();
                 if (event.which === 13 || event.which === 27) {
-                    if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                    if (last == $parent.index()) {
                         addRow();
                     } else {
                         $('input.code', $('#detailTable > tbody:last')).focus();
@@ -1360,12 +1360,29 @@
             });
         }
 
+        function productNameEnter() {
+            $('input.productName').keypress(function (event) {
+                var $this = $(this);
+                var $parent = $(this).parent().parent();
+                var last = $('#detailTable >tbody >tr:visible').last().index();
+                if (event.which === 13 || event.which === 27) {
+                    if (last == $parent.index()) {
+                        addRow();
+                    } else {
+                        $('input.code', $('#detailTable > tbody:last')).focus();
+                    }
+                }
+            });
+        }
+
+
         function discountEnter() {
             $('input.discount').keypress(function (event) {
                 var $this = $(this);
                 var $parent = $(this).parent().parent();
+                var last = $('#detailTable >tbody >tr:visible').last().index();
                 if (event.which === 13 || event.which === 27) {
-                    if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                    if (last == $parent.index()) {
                         addRow();
                     } else {
                         $('input.code', $('#detailTable > tbody:last')).focus();
@@ -1452,6 +1469,8 @@
             codeEnter();
             storeSelectChange();
             discountEnter();
+            productNameEnter();
+            addArrowKeys();
         });
 
         function counter() {
@@ -1485,33 +1504,100 @@
             formatNumberic();
         };
 
+        function addArrowKeys() {
+            $('.arrowkey').keydown(function (e) {
+                var keyCode = e.keyCode || e.which,
+                    arrow = { left: 37, up: 38, right: 39, down: 40 };
+
+                switch (keyCode) {
+                    case arrow.left:
+                        var preColum = $(this).closest('td').prev().find('.arrowkey');
+                        while (preColum != null && preColum.is(':hidden')) {
+                            preColum = preColum.closest('td').prev().find('.arrowkey')
+                        }
+                        preColum.focus();
+                        break;
+                    case arrow.up:
+                        // row n + 1
+                        var prevrow = $(this).closest('tr').prev();
+                        while (prevrow != null && prevrow.is(':hidden')) {
+                            prevrow = prevrow.closest('tr').prev();
+                        }
+
+                        if (prevrow != null && prevrow.length > 0) {
+                            var currClass = $(this).attr('class');
+                            // get next Element to focus by class 
+                            var arrControl = prevrow.find('.arrowkey');
+                            for (i = 0; i < arrControl.length; i++) {
+                                var control = arrControl[i];
+                                if (control.className.trim() == currClass.trim()) {
+                                    control.focus();
+                                    return;
+                                }
+
+                            }
+
+                        }
+                        break;
+                    case arrow.right:
+                        var nextColumn = $(this).closest('td').next().find('.arrowkey').not('.disabled');
+                        while (nextColumn != null && nextColumn.is(':hidden')) {
+                            nextColumn = nextColumn.closest('td').next().find('.arrowkey');
+                        }
+                        nextColumn.focus();
+                        break;
+                    case arrow.down:
+                        // row n + 1
+                        var nextrow = $(this).closest('tr').next();
+                        while (nextrow != null && nextrow.is(':hidden')) {
+                            nextrow = nextrow.closest('tr').next();
+                        }
+                        if (nextrow != null && nextrow.length > 0) {
+                            var currClass = $(this).attr('class');
+                            // get next Element to focus by class 
+                            var arrControl = nextrow.find('.arrowkey');
+                            for (i = 0; i < arrControl.length; i++) {
+                                var control = arrControl[i];
+                                if (control.className.trim() == currClass.trim()) {
+                                    control.focus();
+                                    return;
+                                }
+
+                            }
+
+                        }
+                        break;
+                }
+            });
+        }
+
         function addRow() {
             var row = parseInt($("#rowIndex").val()) + 1;
             $('#detailTable > tbody:last').append('<tr> ' +
                 '<td class="inner alignCenter colwidth" width="5%;">' +
-                '<input type="checkbox" class="chcktbl"> </td>' +
-                '<td class="inner colwidth "><input name="Details[' + row + '].CODE" class="code codebtl" id="Details_' + row + '__CODE" type="text" value=""></td>' +
+                '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
+                '<td class="inner colwidth "><input name="Details[' + row + '].CODE" class="arrowkey code codebtl" id="Details_' + row + '__CODE" type="text" value=""></td>' +
                 '<td class="inner colwidth ">' +
                 '<input name="Details[' + row + '].MA_SAN_PHAM" class="productId " id="Details_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field Ma_SP must be a number."> ' +
-                '<input name="Details[' + row + '].DEL_FLG" class="delFlg" id="Details_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
-                '<input name="Details[' + row + '].HE_SO" class="convertor" id="Details_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-                '<input name="Details[' + row + '].TEN_SAN_PHAM" class="productName" id="Details_' + row + '__TEN_SAN_PHAM" type="text" value="">' +
+                '<input name="Details[' + row + '].DEL_FLG" class="arrowkey delFlg" id="Details_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
+                '<input name="Details[' + row + '].HE_SO" class="arrowkey convertor" id="Details_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+                '<input name="Details[' + row + '].TEN_SAN_PHAM" class="arrowkey productName" id="Details_' + row + '__TEN_SAN_PHAM" type="text" value="">' +
                 '</td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].SO_LUONG" class="quantity numberic" maxlength = "7" id="Details_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
+                '<input name="Details[' + row + '].SO_LUONG" class="arrowkey quantity numberic" maxlength = "7" id="Details_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field So_Luong must be a number."></td>' +
                 '<td class="inner colwidth ">' +
-                '<select name="Details[' + row + '].MA_SON_VI" class="unit " id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
+                '<select name="Details[' + row + '].MA_SON_VI" class="arrowkey unit " id="Details_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val-required="The Ma_Don_Vi field is required." data-val="true" data-val-number="The field Ma_Don_Vi must be a number."><option value="">---------</option>' +
                 '</select></td>' +
                 '<td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].DON_GIA" class="price numberic" maxlength = "9" id="Details_' + row + '__DON_GIA" type="text" value="" readonly="True" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
+                '<input name="Details[' + row + '].DON_GIA" class="arrowkey price numberic" maxlength = "9" id="Details_' + row + '__DON_GIA" type="text" value="" readonly="True" data-val="true" data-val-number="The field Gia_Ban must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].THANH_TIEN" disabled="disabled" class="total numberic" id="Details_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
+                '<input name="Details[' + row + '].THANH_TIEN"  class="arrowkey total numberic" id="Details_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val="true" data-val-number="The field Thanh_Tien must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="discount numberic" maxlength = "4" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text"  value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
+                '<input name="Details[' + row + '].PHAN_TRAM_CHIEC_KHAU" class="arrowkey discount numberic" maxlength = "4" id="Details_' + row + '__PHAN_TRAM_CHIEC_KHAU" type="text"  value="" data-val="true" data-val-number="The field Phan_Tram_CK must be a number.">' +
                 '</td><td class="inner colwidth ">' +
-                '<input name="Details[' + row + '].THUC_THU" disabled="disabled" class="realTotal numberic" id="Details_' + row + '__THUC_THU" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
+                '<input name="Details[' + row + '].THUC_THU"  class="arrowkey realTotal numberic" id="Details_' + row + '__THUC_THU" type="text" readonly="True" value="" data-val="true" data-val-number="The field Gia_Thuc must be a number.">' +
                 '</td><td class="innerLast colwidth ">' +
-                '<select name="Details[' + row + '].MA_KHO_XUAT" class="store " id="Details_' + row + '__MA_KHO_XUAT" style="padding: 5px; width: 100px; font-size: 1.2em"><option value="">---------</option>' +
+                '<select name="Details[' + row + '].MA_KHO_XUAT" class="arrowkey store " id="Details_' + row + '__MA_KHO_XUAT" style="padding: 5px; width: 100px; font-size: 1.2em"><option value="">---------</option>' +
                 '</select></td>' +
                 '</tr>');
             $("#rowIndex").val(row);
@@ -1531,6 +1617,8 @@
             //codeFocusout();
             storeSelectChange();
             discountEnter();
+            productNameEnter();
+            addArrowKeys();
         };
 
         function createStore(obj) {

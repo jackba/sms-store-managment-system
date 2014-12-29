@@ -194,12 +194,15 @@
             <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
             
             @{
-    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsMetadataManager"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
+    if ((bool)Session["IsAdmin"] == true || (bool)Session["IsSaler"] == true || (bool)Session["IsAccounting"] == true)
     {
                 <input type="button" value="Thêm Mới" class="myButton" onclick="window.location.href='@Url.Action("AddNew", "KhachHang")'" />
     }
             }
+        @if ((bool)Session["IsAdmin"] == true || (bool)Session["IsAccounting"] == true)
+        {
             <input type="button" value="Xuất excel" id="btnExport" class="ExportExcel" />
+        }
         </p>
     </div>
     <div style="clear:both"></div>

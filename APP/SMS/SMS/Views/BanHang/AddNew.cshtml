@@ -166,11 +166,19 @@
 
             switch (keyCode) {
                 case arrow.left:
-                    $(this).closest('td').prev().find('.arrowkey').focus();
+                    var preColum = $(this).closest('td').prev().find('.arrowkey');
+                    while (preColum != null && preColum.is(':hidden')) {
+                        preColum = preColum.closest('td').prev().find('.arrowkey')
+                    }
+                    preColum.focus();
                     break;
                 case arrow.up:
                     // row n + 1
                     var prevrow = $(this).closest('tr').prev();
+                    while (prevrow != null && prevrow.is(':hidden')) {
+                        prevrow = prevrow.closest('tr').prev();
+                    }
+
                     if (prevrow != null && prevrow.length > 0) {
                         var currClass = $(this).attr('class');
                         // get next Element to focus by class 
@@ -187,11 +195,18 @@
                     }
                     break;
                 case arrow.right:                    
-                    $(this).closest('td').next().find('.arrowkey').not('.disabled').focus();
+                    var nextColumn = $(this).closest('td').next().find('.arrowkey').not('.disabled');
+                    while (nextColumn != null && nextColumn.is(':hidden')) {
+                        nextColumn = nextColumn.closest('td').next().find('.arrowkey').not('.disabled');
+                    }
+                    nextColumn.focus();
                     break;
                 case arrow.down:
                     // row n + 1
                     var nextrow = $(this).closest('tr').next();
+                    while (nextrow != null && nextrow.is(':hidden')) {
+                        nextrow = nextrow.closest('tr').next();
+                    }
                     if (nextrow != null && nextrow.length > 0) {
                         var currClass = $(this).attr('class');                        
                         // get next Element to focus by class 
@@ -731,8 +746,9 @@
         $('input.quantity').keypress(function (event) {
             var $this = $(this);
             var $parent = $(this).parent().parent();
+            var last = $('#detailTable >tbody >tr:visible').last().index();
             if (event.which === 13 || event.which === 27) {
-                if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                if (last == $parent.index()) {
                     addRow();
                 } else {
                     $('input.code', $('#detailTable > tbody:last')).focus();
@@ -745,8 +761,24 @@
         $('input.discount').keypress(function (event) {
             var $this = $(this);
             var $parent = $(this).parent().parent();
+            var last = $('#detailTable >tbody >tr:visible').last().index();
             if (event.which === 13 || event.which === 27) {
-                if ($('#detailTable >tbody >tr').length - 1 == $parent.index()) {
+                if (last == $parent.index()) {
+                    addRow();
+                } else {
+                    $('input.code', $('#detailTable > tbody:last')).focus();
+                }
+            }
+        });
+    }
+
+    function productNameEnter() {
+        $('input.productName').keypress(function (event) {
+            var $this = $(this);
+            var $parent = $(this).parent().parent();
+            var last = $('#detailTable >tbody >tr:visible').last().index();
+            if (event.which === 13 || event.which === 27) {
+                if (last == $parent.index()) {
                     addRow();
                 } else {
                     $('input.code', $('#detailTable > tbody:last')).focus();
@@ -762,8 +794,9 @@
                 $('#kindCustomer').val('3');
                 $('input.code', $('#detailTable > tbody:last')).focus();
             };
-        });
+        });    
     }
+    
 
     function codeEnter() {
         $('input.code').keypress(function (event) {
@@ -1138,7 +1171,7 @@
         $('#detailTable > tbody:last').append('<tr> ' +
                 '<td class="inner alignCenter colwidth" width="5%;">' +
                 '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
-                '<td class="inner colwidth "><input name="lstChiTietHoaDon[' + row + '].Code_SP" class="code codebtl" id="lstChiTietHoaDon_' + row + '__Code_SP" type="text" value=""></td>' +
+                '<td class="inner colwidth "><input name="lstChiTietHoaDon[' + row + '].Code_SP" class="arrowkey code codebtl" id="lstChiTietHoaDon_' + row + '__Code_SP" type="text" value=""></td>' +
                 '<td class="inner colwidth ">' +
                 '<input name="lstChiTietHoaDon[' + row + '].Ma_SP" class="arrowkey productId " id="lstChiTietHoaDon_' + row + '__Ma_SP" type="hidden" value="" data-val="true" data-val-number="The field Ma_SP must be a number."> ' +
                 '<input name="lstChiTietHoaDon[' + row + '].DEL_FLG" class="arrowkey delFlg" id="lstChiTietHoaDon_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number."> ' +
@@ -1179,6 +1212,7 @@
         codeEnter();
         storeChange();
         discountEnter();
+        productNameEnter();
         // format numberic 
         $('input.numberic').focusout(
          function (event) {
@@ -1278,6 +1312,7 @@
         customerEnter();
         storeChange();
         discountEnter();
+        productNameEnter();
     });
 
     function checkdlc() {
@@ -1342,29 +1377,27 @@
         var totalr = 0;
         $("#printFlg").val(1);
         $('input.chcktbl').each(function () {
-            if (totalr != $('#detailTable >tbody >tr').length - 1) {
-                totalr++;
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
                 if (flg != 1) {
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    if ((quantity == null || quantity == '' || quantity == 0)) {
-                        rval = 0;
-                    }
-                    if (showFlg == 1) {
-
-                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
-
-                        if ((price == null || price == '' || price == 0)) {
-                            pval = 0;
+                    if (productId != null && productId != '' && productId != '0') {
+                        var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                        if ((quantity == null || quantity == '' || quantity == 0)) {
+                            rval = 0;
+                        } else {
+                            if (showFlg == 1) {
+                                var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+                                if ((price == null || price == '' || price == 0)) {
+                                    pval = 0;
+                                }
+                            }
+                            if ((productId == null || productId == '' || productId == 0)) {
+                                ppval = 0;
+                            }
                         }
-                    }
-                    if ((productId == null || productId == '' || productId == 0)) {
-                        ppval = 0;
-                    }
-                    row++;
+                        row++;
+                    }                    
                 }
-            }
         });
 
         if (ppval == 0) {
@@ -1447,29 +1480,30 @@
         var totalr = 0;
         $("#printFlg").val(0);
         $('input.chcktbl').each(function () {
-            if (totalr != $('#detailTable >tbody >tr').length - 1) {                
-                totalr ++;
                 var flg = $('input.delFlg', $(this).parent().parent()).val();
                 if (flg != 1) {
                     var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
-                    var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                    if ((quantity == null || quantity == '' || quantity == 0)) {
-                        rval = 0;
-                    }
-                    if (showFlg == 1) {
-
-                        var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
-
-                        if ((price == null || price == '' || price == 0)) {
-                            pval = 0;
+                    if (productId != null && productId != '' && productId != '0') {
+                        var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                        if ((quantity == null || quantity == '' || quantity == 0)) {
+                            rval = 0;
                         }
+                        if (showFlg == 1) {
+
+                            var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                            if ((price == null || price == '' || price == 0)) {
+                                pval = 0;
+                            }
+                        }
+                        if ((productId == null || productId == '' || productId == 0)) {
+                            ppval = 0;
+                        }
+                        row++;
                     }
-                    if ((productId == null || productId == '' || productId == 0)) {
-                        ppval = 0;
-                    }
-                    row++;
+                    
                 }
-            }
+            
         });
 
         if (ppval == 0) {
@@ -1536,7 +1570,7 @@
 
 <fieldset>
     @using (Ajax.BeginForm("AddNew", "BanHang", new { MaHoaDon = ViewBag.MaHoaDon },
-     null, new { @id = "formContent" })
+     null, new { @id = "formContent", @autocomplete = "off" })
      )
     {
         <!--customer & user area-->
