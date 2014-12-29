@@ -208,10 +208,12 @@ namespace SMS.Controllers
                     ctx.HOA_DON.Add(invoice);
                     ctx.SaveChanges();
                     CHI_TIET_HOA_DON ct;
+                    int i = 0;
                     foreach (var detail in details)
                     {
                         if (detail.DEL_FLG != 1 && detail.Ma_SP != null && !string.IsNullOrWhiteSpace(detail.Ma_SP.ToString()))
                         {
+                            i++;
                             ct = ctx.CHI_TIET_HOA_DON.Create();
                             ct.MA_HOA_DON = invoice.MA_HOA_DON;
                             ct.MA_SAN_PHAM = detail.Ma_SP;
@@ -233,14 +235,23 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                     }
-                    transaction.Complete();
-                    hoaDon.InforMessage = "Lưu hóa đơn thành công.";
-                    ctx.Dispose();
-                    if (hoaDon.printFlg == "1")
+                    if (i == 0)
                     {
-                        return RedirectToAction("PrintBill", "HoaDon", new { @id = invoice.MA_HOA_DON});
+                        Transaction.Current.Rollback();
+                        ctx.Dispose();
+                        hoaDon.Message = "Vui lòng kiểm tra lại thông tin hàng hóa. Không có mặt hàng nào được lưu. ";
                     }
-                    return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
+                    else
+                    {
+                        transaction.Complete();
+                        hoaDon.InforMessage = "Lưu hóa đơn thành công.";
+                        ctx.Dispose();
+                        if (hoaDon.printFlg == "1")
+                        {
+                            return RedirectToAction("PrintBill", "HoaDon", new { @id = invoice.MA_HOA_DON });
+                        }
+                        return RedirectToAction("AddNew", new { @inforMessage = "Lưu hóa đơn thành công" });
+                    }                    
                 }
                 catch (Exception ex)
                 {

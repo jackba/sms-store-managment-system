@@ -344,6 +344,13 @@ table td{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0px 0px 0px 0px;
+    margin:0px 0px 0px 0px;
+}
+
+.info{
+    padding: 0px 0px 0px 0px;
+    margin:-20px 0px -10px 0px;
 }
 
 td{
@@ -407,12 +414,17 @@ td{
    width:95%;
 }
 
-/*
-table.contentTable tr:nth-child(even) {
+.contentTable tr:hover, .contentTable tr.alt:hover {
+    color: #261F1D;
+    background-color: #E5C37E;
+}
+
+
+table.listView tr:nth-child(even) {
+    background: #FFF;
+}
+
+table.listView tr:nth-child(odd) {
     background: #E2F7FF;
 }
 
-table.contentTable tr:nth-child(odd) {
-    background: #FFF;
-}
-*/
