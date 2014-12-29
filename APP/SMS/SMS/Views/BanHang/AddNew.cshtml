@@ -1017,11 +1017,7 @@
                 $('input.price', parent).val("");
             },
             select: function (event, ui) {
-                //setFixedField(ui.item, true);
                 hideRelationProduct();
-               // $('#hidUnitRootName').val(ui.item.unitNm);
-
-               // $('#hidFactorValue').val('1');
                 var $th = $(this);
                 var pa = $th.parent().parent();
                 if (!checkDuplicate(ui.item.id)) {
@@ -1134,7 +1130,6 @@
             } else {
                 $('td input.total', parent).val(num2);
             }
-            //formatNumberic();
             counter();
         });
     };
@@ -1149,7 +1144,6 @@
             var discount = $('input.discount', parent).val().replace(/,/gi, "");
             var realTotal = tt - discount * tt / 100;
             $('input.realTotal', parent).val(realTotal);
-            //formatNumberic();
             counter();
         });
     };

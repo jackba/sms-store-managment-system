@@ -24,6 +24,7 @@ namespace SMS.Controllers
             return float.TryParse(s, out outNum);
         }
 
+        [CustomActionFilter]
         public ActionResult InventoryCompared(string message, string inforMessage)
         {
             var ctx = new SmsContext();
@@ -80,6 +81,7 @@ namespace SMS.Controllers
             return PartialView("InventoryComparedPtv", model);
         }
 
+        [CustomActionFilter]
         public FileContentResult downloadCompared(int? storeId, int? productGroupId,
             int? productId, string productName, DateTime firstDate, DateTime secondDate)
         {

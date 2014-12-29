@@ -45,12 +45,14 @@ namespace SMS.Models
         [Display(Name = "Số điện thoại")]
         [StringLength(15)]
         public string SO_DIEN_THOAI { get; set; }
+        
         [Required]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         [StringLength(50)]
         public string EMAIL { get; set; }
-        [Required]
+        
+
         [Display(Name = "Ghi chú")]
         [StringLength(1000)]
         public string GHI_CHU { get; set; }

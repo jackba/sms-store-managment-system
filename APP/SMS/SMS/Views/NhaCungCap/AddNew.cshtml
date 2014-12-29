@@ -8,13 +8,11 @@
     <a href="@Url.Action("Index", "NhaCungCap")"> Danh sách nhà cung cấp </a>
     > @ViewBag.Title
 </div>
-<br />
 <hgroup class="title">
     <h2> @ViewBag.Title</h2>
 </hgroup>
-<br />
+<hr />
 <h3 style="color:red">@ViewBag.Message</h3>
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Vui lòng kiểm tra lại các giá trị đã nhập!");
