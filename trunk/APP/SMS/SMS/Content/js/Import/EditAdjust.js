@@ -1,4 +1,32 @@
-﻿function checkdlc() {
+﻿$(document).ready(function () {
+    productIdChange();
+    formatNumberic();
+    numberOnly();
+    productAutocomplete();
+    productCodeAutocomplete();
+    quantityKeyPress();
+    priceKeyPress();
+    unitOnchange();
+    tableCheck();
+    headerCheck();
+    unitChange();
+    getAllTotal();
+    getNumberOfRow();
+    codeEnter();
+    quantityEnter();
+    addArrowKeys();
+    $(window).bind('keydown', function (e) {
+        if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+            // Ctrl + S
+            returnSubmit();
+            return false;
+        }
+        return true;
+    });
+});
+
+
+function checkdlc() {
     var flg = false;
     var productIdes = $('td input.productId');
     var i = 0;
@@ -15,7 +43,6 @@
     }
     return flg;
 }
-
 
 function returnSubmit() {
     $('#message').empty();
@@ -36,12 +63,6 @@ function returnSubmit() {
         }
         errorMessage += "Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.";
     }
-    if ($("#providerId option:selected").val() == null || $("#providerId option:selected").val().trim() == "") {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
-        }
-        errorMessage += "Chưa chọn nhà cung cấp, Vui lòng chọn nhà cung cấp";
-    }
     if ($("#storeId option:selected").val() == null || $("#storeId option:selected").val().trim() == "") {
         if (errorMessage != '') {
             errorMessage += "<br>";
@@ -58,9 +79,7 @@ function returnSubmit() {
                     rval = 0;
                 }
                 if (showFlg == 1) {
-
                     var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
-
                     if (price == null || price == '' || price == 0) {
                         pval = 0;
                     }
@@ -71,36 +90,38 @@ function returnSubmit() {
                 row++;
             }
         }
-    });   
+    });
+
 
     if (row == 0) {
         if (errorMessage != '') {
             errorMessage += "<br>";
         }
-        errorMessage += "Hóa đơn không có mặt hàng nào. Vui lòng kiểm tra lại.";
-    } else {
-
-            if (ppval == 0) {
-                if (errorMessage != '') {
-                    errorMessage += "<br>";
-                }
-                errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
+        errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
+    }else{
+        if (ppval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
             }
+            errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
 
-            if (pval == 0) {
-                if (errorMessage != '') {
-                    errorMessage += "<br>";
-                }
-                errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
-            }
+        }
 
-            if (rval == 0) {
-                if (errorMessage != '') {
-                    errorMessage += "<br>";
-                }
-                errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+        if (pval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
             }
-    } 
+            errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
+
+        }
+
+        if (rval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+        }
+    }
     if (errorMessage != '') {
         $('#message').append(errorMessage);
         $('#message').append("<hr/>");
@@ -124,10 +145,6 @@ function tableCheck() {
     });
 }
 
-/*
-    Checked all
-    UnChecked all
-*/
 function headerCheck() {
     $('#chckHead').click(function () {
         if (this.checked == false) {
@@ -261,41 +278,10 @@ function unitOnchange() {
         var $this = $(this);
         var parent = $this.parent().parent();
         var productId = $('input.productId', parent).val();
-        var unitId = $this.val();
+        var unitId = $('select.unit :selected').val();
         var convertor = $('input.convertor', parent);
         if (productId != null && productId != '' && unitId != null && unitId != '') {
             GetFactorOfProduct(productId, unitId, convertor);
-        }
-    });
-}
-
-
-function codeFocusout() {
-    $("input.code").focusout(function () {
-        var $this = $(this);
-        var code = $this.val();
-        var parent = $this.parent().parent();
-        if (code != null && code.trim() != '') {
-            $.ajax({
-                url: "/SanPham/FindProductByCode",
-                data: "{ 'code': '" + code + "' }",
-                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data != null && data.ma_san_pham != null && data.ma_san_pham != '') {
-                        $('input.productId', parent).val(data.ma_san_pham);
-                        $('input.productname', parent).val(data.ten_san_pham);
-                        createDonViTinh($this);
-                        $('input.convertor', parent).val("1");
-                        $this.css("background-color", "white");
-                    } else {
-                        alert("Sản phẩm này không tồn tại.");
-                        $this.val("");
-                        $this.css("background-color", "yellow");
-                        $this.focus();
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
-            });
         }
     });
 }
@@ -334,7 +320,6 @@ function productCodeAutocomplete() {
                 createDonViTinh($th);
                 $('input.convertor', pa).val("1");
                 $th.css("background-color", "white");
-                $('input.quantity', pa).focus();
             } else {
                 alert("Sản phẩm này đã có trong danh sách");
                 $th.val("");
@@ -414,8 +399,35 @@ function checkDuplicate(val) {
     return flg;
 }
 
-
-
+function codeFocusout() {
+    $("input.code").focusout(function () {
+        var $this = $(this);
+        var code = $this.val();
+        var parent = $this.parent().parent();
+        if (code != null && code.trim() != '') {
+            $.ajax({
+                url: "/SanPham/FindProductByCode",
+                data: "{ 'code': '" + code + "' }",
+                dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data != null && data.ma_san_pham != null && data.ma_san_pham != '') {
+                        $('input.productId', parent).val(data.ma_san_pham);
+                        $('input.productname', parent).val(data.ten_san_pham);
+                        createDonViTinh($this);
+                        $('input.convertor', parent).val("1");
+                        $this.css("background-color", "white");
+                    } else {
+                        alert("Sản phẩm này không tồn tại.");
+                        $this.val("");
+                        $this.css("background-color", "yellow");
+                        $this.focus();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            });
+        }
+    });
+}
 
 function productAutocomplete() {
     $("input.productname").autocomplete({
@@ -440,7 +452,6 @@ function productAutocomplete() {
             $('input.productId', parent).val("");
             $('input.code', parent).val("");
             $('input.convertor', parent).val("1");
-
         },
         select: function (event, ui) {
             var $th = $(this);
@@ -483,6 +494,8 @@ function createDonViTinh(obj) {
                     var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
                     $(opt).appendTo(un);
                 });
+                var unitId = $('input.unitTemp', parent).val();
+                $('select.unit', parent).val(unitId);
             },
         error:
             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -536,7 +549,23 @@ function getAllTotal() {
     }
 };
 
+function unitChange() {
+    $("input.unitTemp").each(function () {
+        var $this = $(this);
+        var value = $this.val();
+        var parent = $this.parent().parent();
+        var unitId = $('select.unit', parent).val(value);
+    });
+}
+function productIdChange() {
+    $("input.productId").each(function () {
+        var $this = $(this);
+        createDonViTinh($this);
+    });
+}
+
 $(document).ready(function () {
+    productIdChange();
     formatNumberic();
     numberOnly();
     productAutocomplete();
@@ -546,23 +575,12 @@ $(document).ready(function () {
     unitOnchange();
     tableCheck();
     headerCheck();
+    unitChange();
+    getAllTotal();
+    getNumberOfRow();
     codeEnter();
     quantityEnter();
-    productNameEnter();
-    priceEnter();
     addArrowKeys();
-    $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
-
-    //add catch event user press Ctr+S & Ctrl+Shift+S
-    $(window).bind('keydown', function (e) {
-        if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
-            // Ctrl + S
-            returnSubmit();
-            return false;
-        }
-        return true;
-    });
-
 });
 
 
@@ -576,42 +594,43 @@ function addRow() {
         '<td class="inner alignCenter colwidth" width="5%;">' +
         '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="code codebtl_Import arrowkey" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="arrowkey code codebtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtl_Import arrowkey" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl_Import numberic arrowkey" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="inner colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="unit arrowkey" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].GIA_VON" class="price textbtl_Import numberic arrowkey" id="Detail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+        '<input name="Detail[' + row + '].DON_GIA" class="arrowkey price textbtl numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="Detail[' + row + '].THANH_TIEN"  class="total textbtl_Import numberic arrowkey" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
+        '<input name="Detail[' + row + '].THANH_TIEN" disabled="disabled" class="arrowkey total textbtl numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
         '</tr>');
     } else {
         $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
         '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="code codebtl_Import arrowkey" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="arrowkey code codebtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtl_Import arrowkey" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl_Import numberic arrowkey" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="unit arrowkey" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
-        '<option value="">-----</option></select> </td>' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<option value="">---------</option></select> </td>' +
         '</tr>');
     }
+
     $("#rowIndex").val(row);
     $('input.code', $('#detailTable > tbody:last')).focus();
     numberOnly();
@@ -625,10 +644,24 @@ function addRow() {
     headerCheck();
     codeEnter();
     quantityEnter();
-    productNameEnter();
-    priceEnter();
     addArrowKeys();
 };
+
+
+function quantityEnter() {
+    $('input.quantity').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            if (last == $parent.index()) {
+                addRow();
+            } else {
+                $('input.code', $('#detailTable > tbody:last')).focus();
+            }
+        }
+    });
+}
 
 
 
@@ -677,58 +710,6 @@ function codeEnter() {
     });
 }
 
-function productNameEnter() {
-    $('input.productname').keypress(function (event) {
-        var $this = $(this);
-        var $parent = $(this).parent().parent();
-        var last = $('#detailTable >tbody >tr:visible').last().index();
-        if (event.which === 13 || event.which === 27) {
-            if (last == $parent.index()) {
-                addRow();
-            } else {
-                $('input.code', $('#detailTable > tbody:last')).focus();
-            }
-        }
-    });
-}
-
-
-function priceEnter() {
-    $('input.price').keypress(function (event) {
-        var $this = $(this);
-        var $parent = $(this).parent().parent();
-        var last = $('#detailTable >tbody >tr:visible').last().index();
-        if (event.which === 13 || event.which === 27) {
-            if (last == $parent.index()) {
-                addRow();
-            } else {
-                $('input.code', $('#detailTable > tbody:last')).focus();
-            }
-        }
-    });
-}
-
-function quantityEnter() {
-    $('input.quantity').keypress(function (event) {
-        var $this = $(this);
-        var $parent = $(this).parent().parent();
-        var showFlg = $("#showFlg").val();
-        var last = $('#detailTable >tbody >tr:visible').last().index();
-        if (event.which === 13 || event.which === 27) {
-            if (showFlg != 1) {
-                if (last == $parent.index()) {
-                    addRow();
-                } else {
-                    $('input.code', $('#detailTable > tbody:last')).focus();
-                }
-            } else {
-                $('input.price', $parent).focus();
-            }
-        }
-    });
-}
-
-
 function addArrowKeys() {
     $('.arrowkey').keydown(function (e) {
         var keyCode = e.keyCode || e.which,
@@ -748,7 +729,7 @@ function addArrowKeys() {
                 while (prevrow != null && prevrow.is(':hidden')) {
                     prevrow = prevrow.closest('tr').prev();
                 }
-
+                
                 if (prevrow != null && prevrow.length > 0) {
                     var currClass = $(this).attr('class');
                     // get next Element to focus by class 
@@ -759,9 +740,7 @@ function addArrowKeys() {
                             control.focus();
                             return;
                         }
-
                     }
-
                 }
                 break;
             case arrow.right:
@@ -794,4 +773,4 @@ function addArrowKeys() {
                 break;
         }
     });
-}
+};

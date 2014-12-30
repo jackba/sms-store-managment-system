@@ -500,10 +500,12 @@ namespace SMS.Controllers
                     ctx.SaveChanges();
 
                     CHI_TIET_NHAP_KHO importDetail;
+                    int i = 0;
                     foreach (var detail in model.Detail)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
+                            i++;
                             importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
                             importDetail.ACTIVE = "A";
                             importDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
@@ -520,9 +522,20 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                     }
-                    transaction.Complete();
-                    ctx.Dispose();
-                    return RedirectToAction("Index", new { @messageInfor = "Nhập điều chỉnh kho thành công." });
+                    if (i != 0)
+                    {
+                        transaction.Complete();
+                        ctx.Dispose();
+                        return RedirectToAction("Index", new { @messageInfor = "Nhập điều chỉnh kho thành công." });
+                    }
+                    else
+                    {
+                        Transaction.Current.Rollback();
+                        ctx.Dispose();
+                        ViewBag.Message = "Hóa đơn không có mặt hàng nào. Vui lòng kiểm tra lại.";
+                        return View(model);
+                    }
+                   
                 }
                 catch (Exception)
                 {
@@ -776,10 +789,12 @@ namespace SMS.Controllers
 
                     ctx.CHI_TIET_NHAP_KHO.RemoveRange(ctx.CHI_TIET_NHAP_KHO.Where(u => u.MA_NHAP_KHO == model.Infor.MA_NHAP_KHO));
                     CHI_TIET_NHAP_KHO importDetail;
+                    int i = 0;
                     foreach (var detail in model.Detail)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
+                            i++;
                             importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
                             importDetail.ACTIVE = "A";
                             importDetail.MA_SAN_PHAM = detail.MA_SAN_PHAM;
@@ -798,9 +813,20 @@ namespace SMS.Controllers
                             ctx.SaveChanges();
                         }
                     }
-                    transaction.Complete();
-                    ctx.Dispose();
-                    return RedirectToAction("Index", new { @messageInfor = "Sửa hóa đơn mua hàng thành công." });
+                    if (i != 0)
+                    {
+                        transaction.Complete();
+                        ctx.Dispose();
+                        return RedirectToAction("Index", new { @messageInfor = "Sửa hóa đơn mua hàng thành công." });
+                    }
+                    else
+                    {
+                        Transaction.Current.Rollback();
+                        ctx.Dispose();
+                        ViewBag.Message = "Hóa đơn không có mặt hàng nào. Vui lòng kiểm tra lại.";
+                        return View(model);
+                    }
+                    
                 }
                 catch (Exception)
                 {
@@ -1205,7 +1231,7 @@ namespace SMS.Controllers
                     foreach (var detail in model.Detail)
                     {
                         
-                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null &&! string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
                             i++;
                             importDetail = ctx.CHI_TIET_NHAP_KHO.Create();
