@@ -49,7 +49,7 @@
     </style>
 
 }
-@using (Html.BeginForm("Import", "Import", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("Import", "Import", FormMethod.Post, new { @id = "index", @autocomplete = "off" }))
 {
     
         var showFlg = 0;
@@ -130,7 +130,7 @@
         <tbody>
             <tr>
                 <td class='inner alignCenter colwidth' width="5%;">
-                    <input type="checkbox" class="chcktbl">
+                    <input type="checkbox" class="chcktbl arrowkey">
                 </td>
                 <td class='inner colwidth '>
                     @Html.TextBoxFor(u => u.Detail[0].CODE, new { @class = "code codebtl_Import arrowkey" })
@@ -144,8 +144,8 @@
                 <td class='inner colwidth '>
                     @Html.TextBoxFor(u => u.Detail[0].SO_LUONG_TEMP, new { @class = "quantity textbtl_Import numberic arrowkey" })
                 </td>
-                <td class="innerLast colwidth">
-                    @Html.DropDownListFor(u => u.Detail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%;", @class = "unit arrowkey" })
+                <td class="innerLast colwidth" style="width:20px">
+                    @Html.DropDownListFor(u => u.Detail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;", @class = "unit arrowkey" })
                 </td>
                 @if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
                 {

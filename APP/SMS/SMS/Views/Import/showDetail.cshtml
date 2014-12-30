@@ -12,7 +12,7 @@
 <br />
 <hgroup class="title">
     <h2>
-        @ViewBag.Title
+        <strong>@ViewBag.Title</strong>
     </h2>
 </hgroup>
 <hr />
@@ -99,7 +99,7 @@
     </table>
     <hr />
     <div style="clear:both"></div>
-    <table id="detailTable" name="detailTable" width="100%">
+    <table id="detailTable" name="detailTable" width="100%" class="listView">
         <thead>
             <tr class="inner column-hscroll alignCenter">
                 <td class='inner colwidth head ' width="5%;"> STT </td>
@@ -129,7 +129,7 @@
                 allTotal += total;
                 <tr>
                     <td class='inner alignCenter colwidth' width="5%;">
-                       @(i+1)
+                        @(i + 1)
                     </td>
                     <td class='inner colwidth '>
                         @Html.HiddenFor(u => u.Details[i].MA_SAN_PHAM, new { @class = "productId " })
