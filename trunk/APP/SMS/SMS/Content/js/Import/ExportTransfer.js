@@ -1,30 +1,45 @@
 ﻿$(document).ready(function () {
-    productIdChange();
     formatNumberic();
     numberOnly();
     productAutocomplete();
     productCodeAutocomplete();
     quantityKeyPress();
-    priceKeyPress();
     unitOnchange();
     tableCheck();
     headerCheck();
-    unitChange();
-    getAllTotal();
-    getNumberOfRow();
+    $("#storeInformation").hide();
+    $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
     codeEnter();
     quantityEnter();
     addArrowKeys();
+
+    //add catch event user press Ctr+S & Ctrl+Shift+S
     $(window).bind('keydown', function (e) {
         if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+            if (e.shiftKey) { // Ctrl+Shift+S
+                saveAndExport();
+                return false;
+            }
             // Ctrl + S
             returnSubmit();
             return false;
         }
         return true;
     });
+
+
 });
 
+
+
+function placeDiv(event) {
+    var width = event.width();
+    var offset = event.offset();
+    offset.left = offset.left + width + 20;
+    $('#storeInformation').show();
+    $('#storeInformation').offset({ top: offset.top, left: offset.left })
+
+}
 
 function checkdlc() {
     var flg = false;
@@ -44,45 +59,177 @@ function checkdlc() {
     return flg;
 }
 
+function checkEnough(storeId, ProductId, quantity, convertor) {
+
+    var inventorNumber = 0;
+    if (storeId != null && ProductId != null && quantity != null && convertor != null) {
+        $.ajax({
+            url: "/Import/getInventory",
+            data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                inventorNumber = data;
+                if (inventorNumber < (quantity * convertor)) {
+                    return false;
+                } else {
+                    return true;
+                };
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+
+
+    }
+}
+
+function saveAndExport() {
+    $('#message').empty();
+    var errorMessage = '';
+    if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.";
+    }
+    if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa chọn kho xuất, Vui lòng chọn kho xuất.";
+    }
+    if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa chọn kho nhập, Vui lòng chọn kho nhập.";
+    }
+    if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.";
+    }
+
+    var row = 0;
+    var rval = 1;
+    var ppval = 1;
+    var checkFlg = 0;
+    $('input.chcktbl').each(function () {
+
+        var flg = $('input.delFlg', $(this).parent().parent()).val();
+        if (flg != 1) {
+            var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
+            if (productId != null && productId != '' && productId != '0') {
+                var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
+                var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                if (quantity == '') {
+                    rval = 0;
+                }
+                quantity = parseFloat(quantity);
+                convertor = parseFloat(convertor);
+                if (quantity == null || quantity == '' || quantity == 0) {
+                    rval = 0;
+                }
+                if (productId == null || productId == '' || productId == 0) {
+                    ppval = 0;
+                } else {
+                    if ($("#exportStoreId option:selected").val() != '') {
+                        if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
+                            checkFlg = 1;
+                        }
+                    }
+
+                }
+                row++;
+            }
+        }
+    });
+
+    if (ppval == 0) {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Có ít nhất 1 dòng chưa nhập tên sản phẩm, hoặc sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
+    }
+    if (row == 0) {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
+    }
+    if (rval == 0) {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.";
+    }
+    if (errorMessage != '') {
+        $('#message').append(errorMessage);
+        $('#message').append("<hr/>");
+        return false;
+    } else {
+        if (checkFlg == 1) {
+            var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
+            if (r == true) {
+                $('#saveFlg').val(1);
+                $('#index').submit();
+            }
+            else {
+                return false;
+            }
+        }
+        $('#index').submit();
+    }
+}
+
+
+
 function returnSubmit() {
     $('#message').empty();
-    if (checkdlc()) {
-        $('#message').append("Trong danh sách có ít nhất 2 mặt hàng giống nhau. Vui lòng kiểm tra lại");
-        return false;
+    var errorMessage = '';
+    if ($("#exportDate").val() == null || $("#exportDate").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa nhập ngày xuất chuyển kho. Vui lòng chọn ngày xuất chuyển kho.";
+    }
+    if ($("#exportStoreId option:selected").val() == null || $("#exportStoreId option:selected").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa chọn kho xuất. Vui lòng chọn kho xuất";
+    }
+    if ($("#importStoreId option:selected").val() == null || $("#importStoreId option:selected").val().trim() == "") {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Chưa chọn kho nhập. Vui lòng chọn kho nhập.";
+    }
+    if ($("#importStoreId option:selected").val() == $("#exportStoreId option:selected").val()) {
+        if (errorMessage != '') {
+            errorMessage += "<br>";
+        }
+        errorMessage += "Kho nhận phải khác kho xuất. Vui lòng chọn lại kho nhận.";
     }
     var row = 0;
     var rval = 1;
-    var pval = 1;
     var ppval = 1;
-    var checkFlg = 0;
-    var showFlg = $("#showFlg").val();
-    var errorMessage = '';
-    if ($("#importDate").val() == null || $("#importDate").val().trim() == "") {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
-        }
-        errorMessage += "Chưa nhập ngày mua hàng. Vui lòng chọn ngày mua hàng.";
-    }
-    if ($("#storeId option:selected").val() == null || $("#storeId option:selected").val().trim() == "") {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
-        }
-        errorMessage += "Chưa chọn kho nhập, Vui lòng chọn kho nhập";
-    }
     $('input.chcktbl').each(function () {
         var flg = $('input.delFlg', $(this).parent().parent()).val();
         if (flg != 1) {
             var productId = $('input.productId', $(this).parent().parent()).val().replace(/,/gi, "");
             if (productId != null && productId != '' && productId != '0') {
                 var quantity = $('input.quantity', $(this).parent().parent()).val().replace(/,/gi, "");
-                if (quantity == null || quantity == '' || quantity == 0) {
+                var convertor = $('input.convertor', $(this).parent().parent()).val().replace(/,/gi, "");
+
+                if (quantity == '') {
                     rval = 0;
                 }
-                if (showFlg == 1) {
-                    var price = $('input.price', $(this).parent().parent()).val().replace(/,/gi, "");
-                    if (price == null || price == '' || price == 0) {
-                        pval = 0;
-                    }
+                quantity = parseFloat(quantity);
+                convertor = parseFloat(convertor);
+                if (quantity == null || quantity == '' || quantity == 0) {
+                    rval = 0;
                 }
                 if (productId == null || productId == '' || productId == 0) {
                     ppval = 0;
@@ -92,13 +239,14 @@ function returnSubmit() {
         }
     });
 
-
+   
     if (row == 0) {
         if (errorMessage != '') {
             errorMessage += "<br>";
         }
         errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
-    }else{
+
+    } else {
         if (ppval == 0) {
             if (errorMessage != '') {
                 errorMessage += "<br>";
@@ -107,27 +255,21 @@ function returnSubmit() {
 
         }
 
-        if (pval == 0) {
-            if (errorMessage != '') {
-                errorMessage += "<br>";
-            }
-            errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0, hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
-
-        }
-
         if (rval == 0) {
             if (errorMessage != '') {
                 errorMessage += "<br>";
             }
-            errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+            errorMessage += "Có ít nhất 1 mặt hàng với số lượng xuất là 0, hoặc không được nhập số lượng xuất. Vui lòng kiểm tra lại.";
+
         }
     }
+    
     if (errorMessage != '') {
         $('#message').append(errorMessage);
         $('#message').append("<hr/>");
         return false;
-    }
-    else {
+    } else {
+        $('#saveFlg').val(1);
         $('#index').submit();
     }
 };
@@ -155,7 +297,6 @@ function headerCheck() {
         }
     });
 }
-
 
 function deleteCheckedRow() {
     var rows = 0;
@@ -273,12 +414,14 @@ function GetFactorOfProduct(productId, unitId, convertor) {
     }
 }
 
+
+
 function unitOnchange() {
     $("select.unit").change(function (event) {
         var $this = $(this);
         var parent = $this.parent().parent();
         var productId = $('input.productId', parent).val();
-        var unitId = $('select.unit :selected').val();
+        var unitId = $this.val();
         var convertor = $('input.convertor', parent);
         if (productId != null && productId != '' && unitId != null && unitId != '') {
             GetFactorOfProduct(productId, unitId, convertor);
@@ -319,7 +462,6 @@ function productCodeAutocomplete() {
                 $('input.productname', pa).val(ui.item.name);
                 createDonViTinh($th);
                 $('input.convertor', pa).val("1");
-                $th.css("background-color", "white");
                 $('input.quantity', pa).focus();
             } else {
                 alert("Sản phẩm này đã có trong danh sách");
@@ -329,6 +471,19 @@ function productCodeAutocomplete() {
                 $('input.convertor', pa).val("1");
             }
             return false;
+        },
+        focus: function (event, ui) {
+            var $this = $(this);
+            $('#proName').text(ui.item.name);
+            var storeId = $("#exportStoreId").val();
+            if (storeId != '') {
+                //alert(ui.item.id);
+                getStoreInformation(storeId, ui.item.id);
+            }
+            placeDiv($this);
+        },
+        close: function () {
+            $("#storeInformation").hide();
         },
         minLength: 1
     });
@@ -360,31 +515,9 @@ function priceKeyPress() {
 }
 
 function quantityKeyPress() {
-    var showFlg = $("#showFlg").val();
-    if (showFlg == 1) {
-        $('input.quantity').keyup(function (event) {
-            var $this = $(this);
-            var parent = $this.parent().parent();
-            var price = $('input.price', parent).val().replace(/,/gi, "");
-            var tt = $this.val().replace(/,/gi, "") * price;
-
-            var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-            var arParts = String(tt).split(DecimalSeparator);
-            var intPart = arParts[0];
-            var decPart = (arParts.length > 1 ? arParts[1] : '');
-            var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-            if (decPart.length > 2) {
-                decPart = (decPart + '00').substr(0, 2);
-            }
-            if (arParts.length > 1) {
-                $('td input.total', parent).val(num2 + DecimalSeparator + decPart);
-            } else {
-                $('td input.total', parent).val(num2);
-            }
-            getAllTotal();
-        });
-    }
+    $('input.quantity').keyup(function (event) {
+        getAllTotal();
+    });
 }
 
 function checkDuplicate(val) {
@@ -427,6 +560,23 @@ function codeFocusout() {
                 error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
             });
         }
+    });
+}
+
+function getStoreInformation(storeId, ProductId) {
+    $.ajax({
+        url: "/SanPham/FindInventory",
+        data: "{ 'storeId': '" + storeId + "' , 'productId' : '" + ProductId + "'}",
+        dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            var inventorNumber = data.ton_kho;
+            if (inventorNumber == '') {
+                $('#stInfor').text("0");
+            } else {
+                $('#stInfor').text(inventorNumber);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
     });
 }
 
@@ -473,6 +623,19 @@ function productAutocomplete() {
             }
             return false;
         },
+        focus: function (event, ui) {
+            var $this = $(this);
+            $('#proName').text(ui.item.value);
+            var storeId = $("#exportStoreId").val();
+            if (storeId != '') {
+                //alert(ui.item.id);
+                getStoreInformation(storeId, ui.item.id);
+            }
+            placeDiv($this);
+        },
+        close: function () {
+            $("#storeInformation").hide();
+        },
         minLength: 1
     });
 }
@@ -496,8 +659,6 @@ function createDonViTinh(obj) {
                     var opt = "<option value=" + item.MA_DON_VI + ">" + item.TEN_DON_VI + "</option>"
                     $(opt).appendTo(un);
                 });
-                var unitId = $('input.unitTemp', parent).val();
-                $('select.unit', parent).val(unitId);
             },
         error:
             function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -519,120 +680,55 @@ function getNumberOfRow() {
 
 
 function getAllTotal() {
-    var showFlg = $("#showFlg").val();
-    if (showFlg == 1) {
-        var AllTotal = 0;
-        var total = 0;
-        $('td input.total').each(function () {
-            $this = $(this);
-            $parent = $this.parent().parent();
-            if ($('input.delFlg', $parent).val() != 1) {
-                total = $this.val().replace(/,/gi, "");
-                if (total != null && total != '') {
-                    AllTotal += parseFloat(total);
-                }
+    var AllTotal = 0;
+    var total = 0;
+    $('td input.quantity').each(function () {
+        $this = $(this);
+        $parent = $this.parent().parent();
+        if ($('input.delFlg', $parent).val() != 1) {
+            total = $this.val().replace(/,/gi, "");
+            if (total != null && total != '') {
+                AllTotal += parseFloat(total);
             }
-        });
+        }
+    });
 
-        var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
-        var arParts = String(AllTotal).split(DecimalSeparator);
-        var intPart = arParts[0];
-        var decPart = (arParts.length > 1 ? arParts[1] : '');
-        var num = intPart.replace(/,/gi, "").split("").reverse().join("");
-        var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
-        if (decPart.length > 2) {
-            decPart = (decPart + '00').substr(0, 2);
-        }
-        if (arParts.length > 1) {
-            $('strong.fall').text(num2 + DecimalSeparator + decPart);
-        } else {
-            $('strong.fall').text(num2);
-        }
+    var DecimalSeparator = Number("1.2").toLocaleString().substr(1, 1);
+    var arParts = String(AllTotal).split(DecimalSeparator);
+    var intPart = arParts[0];
+    var decPart = (arParts.length > 1 ? arParts[1] : '');
+    var num = intPart.replace(/,/gi, "").split("").reverse().join("");
+    var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+    if (decPart.length > 2) {
+        decPart = (decPart + '00').substr(0, 2);
+    }
+    if (arParts.length > 1) {
+        $('strong.fall').text(num2 + DecimalSeparator + decPart);
+    } else {
+        $('strong.fall').text(num2);
     }
 };
-
-function unitChange() {
-    $("input.unitTemp").each(function () {
-        var $this = $(this);
-        var value = $this.val();
-        var parent = $this.parent().parent();
-        var unitId = $('select.unit', parent).val(value);
-    });
-}
-function productIdChange() {
-    $("input.productId").each(function () {
-        var $this = $(this);
-        createDonViTinh($this);
-    });
-}
-
-$(document).ready(function () {
-    productIdChange();
-    formatNumberic();
-    numberOnly();
-    productAutocomplete();
-    productCodeAutocomplete();
-    quantityKeyPress();
-    priceKeyPress();
-    unitOnchange();
-    tableCheck();
-    headerCheck();
-    unitChange();
-    getAllTotal();
-    getNumberOfRow();
-    codeEnter();
-    quantityEnter();
-    addArrowKeys();
-});
-
-
 
 
 function addRow() {
     var row = parseInt($("#rowIndex").val()) + 1;
-    var showFlg = $("#showFlg").val();
-    if (showFlg == 1) {
-        $('#detailTable > tbody:last').append('<tr> ' +
+    $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
+        '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="arrowkey code codebtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="ExportDetail[' + row + '].CODE" class="arrowkey code codebtl" id="ExportDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
-        '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
-        '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="ExportDetail[' + row + '].DEL_FLG" class="delFlg" id="ExportDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
+        '<input name="ExportDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ExportDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
+        '<input name="ExportDetail[' + row + '].HE_SO" class="convertor" id="ExportDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
+        '<input name="ExportDetail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtl" id="ExportDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
-        '<td class="inner colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
-        '<option value="">---------</option></select> </td>' +
-        '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].DON_GIA" class="arrowkey price textbtl numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+        '<input name="ExportDetail[' + row + '].SO_LUONG_TEMP" class="arrowkey quantity textbtl numberic" id="ExportDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="Detail[' + row + '].THANH_TIEN" disabled="disabled" class="arrowkey total textbtl numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
-        '</tr>');
-    } else {
-        $('#detailTable > tbody:last').append('<tr> ' +
-        '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
-        '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="code codebtl arrowkey" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
-        '</td>' +
-        '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
-        '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
-        '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtl arrowkey" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
-        '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG" class="quantity textbtl numberic arrowkey" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
-        '<td class="innerLast colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="unit textbtl arrowkey" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="ExportDetail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="ExportDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '</tr>');
-    }
-
     $("#rowIndex").val(row);
     $('input.code', $('#detailTable > tbody:last')).focus();
     numberOnly();
@@ -640,15 +736,14 @@ function addRow() {
     productCodeAutocomplete();
     getNumberOfRow();
     quantityKeyPress();
-    priceKeyPress();
     unitOnchange();
     tableCheck();
     headerCheck();
     codeEnter();
     quantityEnter();
     addArrowKeys();
+    //codeFocusout();
 };
-
 
 function quantityEnter() {
     $('input.quantity').keypress(function (event) {
@@ -731,7 +826,7 @@ function addArrowKeys() {
                 while (prevrow != null && prevrow.is(':hidden')) {
                     prevrow = prevrow.closest('tr').prev();
                 }
-                
+
                 if (prevrow != null && prevrow.length > 0) {
                     var currClass = $(this).attr('class');
                     // get next Element to focus by class 
@@ -742,7 +837,9 @@ function addArrowKeys() {
                             control.focus();
                             return;
                         }
+
                     }
+
                 }
                 break;
             case arrow.right:

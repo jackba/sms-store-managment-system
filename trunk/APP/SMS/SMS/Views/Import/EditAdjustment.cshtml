@@ -142,7 +142,7 @@
                     </td>
                     <td class="innerLast colwidth">
                         @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @name = i + "MA_DON_VI", @class = "unitTemp" })
-                        @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl arrowkey" })
+                        @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%", @class = "unit textbtl arrowkey" })
                     </td>
                    
                 </tr>

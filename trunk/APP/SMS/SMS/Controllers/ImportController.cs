@@ -410,13 +410,13 @@ namespace SMS.Controllers
                     }
                     transaction.Complete();
                     ctx.Dispose();
-                    return RedirectToAction("Index", new { @messageInfor = "Sửa phiếu nhập điều chĩnh thành công." });
+                    return RedirectToAction("Index", new { @messageInfor = "Sửa phiếu nhập điều chỉnh thành công." });
                 }
                 catch (Exception)
                 {
                     Transaction.Current.Rollback();
                     ctx.Dispose();
-                    return RedirectToAction("Index", new { @message = "Sửa phiếu nhập điều chĩnh thất bại, vui lòng liên hệ admin." });
+                    return RedirectToAction("Index", new { @message = "Sửa phiếu nhập điều chỉnh thất bại, vui lòng liên hệ admin." });
                 }
             }
         }

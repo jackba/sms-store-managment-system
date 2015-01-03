@@ -21,7 +21,10 @@ namespace SMS.Controllers
         {
             ExportedDetailModel model = new ExportedDetailModel();
             model.flg = (int)flg;
-            return View();
+            var ctx = new SmsContext();
+            var theList = ctx.SP_GET_EXPORT_DETAIL_BY_ID(id).ToList<SP_GET_EXPORT_DETAIL_BY_ID_Result>();
+            model.thelist = theList;
+            return View(model);
         }
 
         public PartialViewResult ShowDetailPtv(int id)
