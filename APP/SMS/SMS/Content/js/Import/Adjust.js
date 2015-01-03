@@ -575,7 +575,7 @@ function addRow() {
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="inner colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="unit arrowkey" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em; width:100%;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].GIA_VON" class="arrowkey price textbtl numberic" id="Detail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
@@ -597,7 +597,7 @@ function addRow() {
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="unit arrowkey" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em; width:100%;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '</tr>');
     }

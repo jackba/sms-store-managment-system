@@ -697,7 +697,9 @@
     <Content Include="Content\js\HoaDon.js" />
     <Content Include="Content\js\Import\Adjust.js" />
     <Content Include="Content\js\Import\EditAdjust.js" />
+    <Content Include="Content\js\Import\EditExportTransfer.js" />
     <Content Include="Content\js\Import\EditImport.js" />
+    <Content Include="Content\js\Import\ExportTransfer.js" />
     <Content Include="Content\js\Import\Import.js" />
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\images\storage.png" />
@@ -1022,6 +1024,8 @@
     <Content Include="Views\QuanLyKho\InventoryCompared.cshtml" />
     <Content Include="Views\QuanLyKho\InventoryComparedPtv.cshtml" />
     <Content Include="Views\Shared\_Flash.cshtml" />
+    <Content Include="Views\Export\ShowDetail.cshtml" />
+    <Content Include="Views\Export\ShowDetailPtv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

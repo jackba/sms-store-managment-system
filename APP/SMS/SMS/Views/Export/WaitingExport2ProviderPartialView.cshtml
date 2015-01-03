@@ -71,9 +71,21 @@
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    <a href="@Url.Action("Export2Provider", "Export", new { @id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
+                    @if (dbHist.STATUS != 1)
+                    {  
+                        <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO, @flg = 4 })" class="button-module">
                         @dbHist.TEN_NHA_CUNG_CAP
-                    </a>
+                        </a>
+                        
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Export2Provider", "Export", new { @id = @dbHist.ID, @storeId = ViewBag.storeId })" class="button-module">
+                        @dbHist.TEN_NHA_CUNG_CAP
+                         </a>
+                    }
+
+
                 </td>
                 <td class="inner colwidth">
                     @dbHist.TEN_NGUOI_DUNG

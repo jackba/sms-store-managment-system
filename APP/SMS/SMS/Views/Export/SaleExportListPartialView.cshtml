@@ -73,7 +73,7 @@
             }
             <tr class="inner column-hscroll alignCenter">
                 <td class="inner colwidth">
-                    <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO})" class="button-module">
+                    <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO, @flg = 1 })" class="button-module">
                         @dbHist.TEN_KHACH_HANG
                     </a>
                 </td>

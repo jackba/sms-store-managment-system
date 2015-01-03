@@ -55,8 +55,10 @@
         foreach (var dbHist in Model.TheList)
         {
             <tr class="inner column-hscroll alignCenter">
-                <td class="inner colwidth" title="Xem chi tiết hóa đơn xuất kho">
+                <td class="inner colwidth" title="Xem chi tiết hóa đơn xuất kho">  
+                    <a href="@Url.Action("ShowDetail", "Export", new { @id = @dbHist.MA_XUAT_KHO, @flg = 2 })" class="button-module">
                         @dbHist.TEN_KHO_XUAT
+                    </a>   
                 </td>
                 <td class="inner colwidth">
                     @dbHist.TEN_KHO_NHAN

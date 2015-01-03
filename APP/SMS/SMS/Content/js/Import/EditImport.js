@@ -591,7 +591,7 @@ function addRow() {
         '<td class="inner alignCenter colwidth" width="5%;">' +
         '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="arrowkey code codebtl_Edit ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="code codebtl_Edit arrowkey" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
@@ -606,14 +606,14 @@ function addRow() {
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DON_GIA" class="arrowkey price textbtl_Edit numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="Detail[' + row + '].THANH_TIEN" class="total textbtl_Edit numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
+        '<input name="Detail[' + row + '].THANH_TIEN" class="arrowkey total textbtl_Edit numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
         '</tr>');
     } else {
         $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
         '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="arrowkey code codebtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="code codebtl_Edit arrowkey" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
@@ -621,7 +621,7 @@ function addRow() {
         '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
         '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity textbtl_Edit numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
         '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
