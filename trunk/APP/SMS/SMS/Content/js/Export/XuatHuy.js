@@ -10,6 +10,19 @@
     addArrowKeys();
     quantityEnter();
     codeEnter();
+
+
+    //add catch event user press Ctr+S & Ctrl+Shift+S
+    $(window).bind('keydown', function (e) {
+        if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+            // Ctrl + S
+            returnSubmit();
+            return false;
+        }
+        return true;
+    });
+
+
 });
 
 
@@ -477,19 +490,19 @@ function addRow() {
     var row = parseInt($("#rowIndex").val()) + 1;
     $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl"> </td>' +
+        '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="code textbtl ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="arrowkey code textbtl" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname textbtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname textbtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="Detail[' + row + '].SO_LUONG_TEMP" class="arrowkey quantity textbtl numberic" id="Detail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit textbtl" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         //'<td class="inner colwidth">' +
         //'<input name="Detail[' + row + '].GIA_VON" class="price textbtl numberic" id="Detail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
