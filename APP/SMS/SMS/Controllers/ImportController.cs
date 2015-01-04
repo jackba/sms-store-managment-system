@@ -1011,7 +1011,7 @@ namespace SMS.Controllers
                     CHI_TIET_XUAT_KHO ct;
                     foreach (var detail in details)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
                             ct = ctx.CHI_TIET_XUAT_KHO.Create();
                             if (infor.SAVE_FLG == 1)
@@ -1138,7 +1138,7 @@ namespace SMS.Controllers
 
                     foreach (var detail in details)
                     {
-                        if(detail.DEL_FLG != 1)
+                        if(detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
                             ct = ctx.CHI_TIET_XUAT_KHO.Create();
                             if(infor.SAVE_FLG == 1)
