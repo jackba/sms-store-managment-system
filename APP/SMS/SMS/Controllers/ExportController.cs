@@ -318,7 +318,7 @@ namespace SMS.Controllers
                     CHI_TIET_XUAT_KHO exportDetail;
                     foreach (var detail in model.Detail)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
                         {
                             exportDetail = ctx.CHI_TIET_XUAT_KHO.Create();
                             exportDetail.ACTIVE = "A";
@@ -935,12 +935,8 @@ namespace SMS.Controllers
                     {
                         infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
                     }
-                    //infor.MA_KHO = model.Infor.MA_KHO;
-                    //infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
-                    //infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
                     infor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
-                    //infor.SO_HOA_DON = model.Infor.SO_HOA_DON;
                     infor.CREATE_AT = DateTime.Now;
                     infor.CREATE_BY = Convert.ToInt32(Session["UserId"]);
                     infor.UPDATE_AT = DateTime.Now;
@@ -954,7 +950,7 @@ namespace SMS.Controllers
                     CHI_TIET_XUAT_KHO exportDetail;
                     foreach (var detail in model.Detail)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrEmpty(detail.MA_SAN_PHAM.ToString()))
                         {
                             exportDetail = ctx.CHI_TIET_XUAT_KHO.Create();
                             exportDetail.ACTIVE = "A";
