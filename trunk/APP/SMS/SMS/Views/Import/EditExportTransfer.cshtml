@@ -53,7 +53,7 @@
     </style>
 
 }
-@using (Html.BeginForm("EditExportTransfer", "Import", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("EditExportTransfer", "Import", FormMethod.Post, new { @id = "index", @autocomplete = "off" }))
 {
     <table>
         <tr>
@@ -118,23 +118,23 @@
                 {
                     <tr>
                         <td class='inner alignCenter colwidth' width="5%;">
-                            <input type="checkbox" class="chcktbl">
+                            <input type="checkbox" class="chcktbl arrowkey">
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl" })
+                            @Html.TextBoxFor(u => u.ExportDetail[i].CODE, new { @class = "code codebtl arrowkey" })
                         </td>
                         <td class='inner colwidth '>
                             @Html.HiddenFor(u => u.ExportDetail[i].MA_SAN_PHAM, new { @class = "productId " })
                             @Html.HiddenFor(u => u.ExportDetail[i].DEL_FLG, new { @class = "delFlg" })
                             @Html.HiddenFor(u => u.ExportDetail[i].HE_SO, new { @class = "convertor" })
-                            @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl" })
+                            @Html.TextBoxFor(u => u.ExportDetail[i].TEN_SAN_PHAM, new { @class = "productname namebtl arrowkey" })
                         </td>
                         <td class='inner colwidth '>
-                            @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic" })
+                            @Html.TextBoxFor(u => u.ExportDetail[i].SO_LUONG_TEMP, new { @class = "quantity textbtl numberic arrowkey" })
                         </td>
                         <td class="innerLast colwidth">
                             @Html.Hidden("unitTemp", Model.ExportDetail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                            @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em", @class = "unit textbtl" })
+                            @Html.DropDownListFor(u => u.ExportDetail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em; width:100%", @class = "unit textbtl arrowkey" })
                         </td>
                     </tr>
                 }

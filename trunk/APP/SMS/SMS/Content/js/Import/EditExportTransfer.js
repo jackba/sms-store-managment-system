@@ -452,7 +452,7 @@ function productCodeAutocomplete() {
         select: function (event, ui) {
             var $th = $(this);
             var pa = $th.parent().parent();
-            if (!checkDuplicate(ui.item.id)) {
+            if (!checkDuplicate(ui.item.id, pa.index())) {
                 $th.val(ui.item.label);
                 $('input.productId', pa).val(ui.item.id);
                 $('input.productname', pa).val(ui.item.name);
@@ -515,10 +515,12 @@ function quantityKeyPress() {
     });
 }
 
-function checkDuplicate(val) {
+function checkDuplicate(val, p_index) {
     var flg = false;
+    var index = -1;
     $('td input.productId').each(function () {
-        if ($('input.delFlg', $(this).parent().parent()).val() != 1) {
+        index = $(this).parent().parent().index();
+        if ($('input.delFlg', $(this).parent().parent()).val() != 1 && p_index != index) {
             var checkVal = $(this).val();
             if (val == checkVal) {
                 flg = true;
@@ -555,7 +557,7 @@ function productAutocomplete() {
         select: function (event, ui) {
             var $th = $(this);
             var pa = $th.parent().parent();
-            if (!checkDuplicate(ui.item.id)) {
+            if (!checkDuplicate(ui.item.id, pa.index())) {
                 $th.val(ui.item.label);
                 $('input.productId', pa).val(ui.item.id);
                 $('input.code', pa).val(ui.item.code);
@@ -679,19 +681,19 @@ function addRow() {
     var row = parseInt($("#rowIndex").val()) + 1;
     $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl"> </td>' +
+        '<input type="checkbox" class="chcktbl arrowkey"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="ExportDetail[' + row + '].CODE" class="code codebtl ui-autocomplete-input" id="ExportDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="ExportDetail[' + row + '].CODE" class="code codebtl arrowkey" id="ExportDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="ExportDetail[' + row + '].DEL_FLG" class="delFlg" id="ExportDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="ExportDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ExportDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="ExportDetail[' + row + '].HE_SO" class="convertor" id="ExportDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="ExportDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtl" id="ExportDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="ExportDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtl arrowkey" id="ExportDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="ExportDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic" id="ExportDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="ExportDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtl numberic arrowkey" id="ExportDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<select name="ExportDetail[' + row + '].MA_DON_VI" class="unit textbtl" id="ExportDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="ExportDetail[' + row + '].MA_DON_VI" class="unit textbtl arrowkey" id="ExportDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em; width:100%" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '</tr>');
     $("#rowIndex").val(row);
@@ -741,7 +743,7 @@ function codeEnter() {
                                 //alert(item.id);
                                 var $th = $this;
                                 var pa = $th.parent().parent();
-                                if (!checkDuplicate(item.id)) {
+                                if (!checkDuplicate(item.id, pa.index())) {
                                     $th.val(item.label);
                                     $('input.productId', pa).val(item.id);
                                     $('input.productname', pa).val(item.name);
