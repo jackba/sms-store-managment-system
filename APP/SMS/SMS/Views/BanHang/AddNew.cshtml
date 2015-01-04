@@ -696,7 +696,7 @@
                 hideRelationProduct();               
                 var $th = $(this);
                 var pa = $th.parent().parent();
-                if (!checkDuplicate(ui.item.id)) {
+                if (!checkDuplicate(ui.item.id, pa.index())) {
                     $th.val(ui.item.label);
                     $('input.code', pa).val(ui.item.code);
                     $('input.productId', pa).val(ui.item.id);
@@ -813,7 +813,7 @@
                                     //alert(item.id);
                                     var $th = $this;
                                     var pa = $th.parent().parent();
-                                    if (!checkDuplicate(item.id)) {
+                                    if (!checkDuplicate(item.id, pa.index())) {
                                         $th.val(item.label);
                                         $('input.productId', pa).val(item.id);
                                         $('input.productName', pa).val(item.name);
@@ -921,10 +921,12 @@
         });
     }
 
-    function checkDuplicate(val) {
+    function checkDuplicate(val, p_index) {
         var flg = false;
+        var index = -1;
         $('td input.productId').each(function () {
-            if ($('input.delFlg', $(this).parent()).val() != 1) {
+            index = $(this).parent().parent().index();
+            if ($('input.delFlg', $(this).parent()).val() != 1 && index != p_index) {
                 var checkVal = $(this).val();
                 if (val == checkVal) {
                     flg = true;
@@ -1020,7 +1022,7 @@
                 hideRelationProduct();
                 var $th = $(this);
                 var pa = $th.parent().parent();
-                if (!checkDuplicate(ui.item.id)) {
+                if (!checkDuplicate(ui.item.id, pa.index())) {
                     $th.val(ui.item.label);
                     $('input.productId', pa).val(ui.item.id);
                     $('input.productName', pa).val(ui.item.name);
