@@ -294,9 +294,11 @@ namespace SMS.Controllers
                     double percent;
                     foreach (var detail in model.ReturnDetail)
                     {
-                        CHI_TIET_TRA_HANG ct;
-                        if (detail.DEL_FLG != 1)
-                        {
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
+                        {                      
+                            CHI_TIET_TRA_HANG ct;
+                        //if (detail.DEL_FLG != 1)
+                        //{
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
                             if (detail.PHAN_TRAM_KHAU_HAO == null)
                             {
@@ -623,9 +625,11 @@ namespace SMS.Controllers
                     double percent = 0;
                     foreach (var detail in model.Detail)
                     {
-                        CHI_TIET_TRA_HANG ct;
-                        if (detail.DEL_FLG != 1)
-                        {
+                         if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
+                        {  
+                            CHI_TIET_TRA_HANG ct;
+                        //if (detail.DEL_FLG != 1)
+                        //{
                             ct = ctx.CHI_TIET_TRA_HANG.Create();
                             ct.MA_SAN_PHAM = detail.MA_SAN_PHAM;
                             if (detail.PHAN_TRAM_KHAU_HAO == null)
