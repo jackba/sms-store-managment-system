@@ -28,6 +28,8 @@ namespace SMS.Controllers
             return View();
         }
 
+
+
         [HttpGet]
         public ActionResult SetQuestions()
         {
