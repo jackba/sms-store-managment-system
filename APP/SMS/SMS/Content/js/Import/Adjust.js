@@ -345,7 +345,7 @@ function productCodeAutocomplete() {
         select: function (event, ui) {
             var $th = $(this);
             var pa = $th.parent().parent();
-            if (!checkDuplicate(ui.item.id)) {
+            if (!checkDuplicate(ui.item.id, pa.index())) {
                 $th.val(ui.item.label);
                 $('input.productId', pa).val(ui.item.id);
                 $('input.productname', pa).val(ui.item.name);
@@ -420,10 +420,12 @@ function quantityKeyPress() {
     });
 }
 
-function checkDuplicate(val) {
+function checkDuplicate(val, p_index) {
     var flg = false;
+    var index = -1;
     $('td input.productId').each(function () {
-        if ($('input.delFlg', $(this).parent()).val() != 1) {
+        index = $(this).parent().parent().index();
+        if ($('input.delFlg', $(this).parent()).val() != 1 && p_index != index) {
             var checkVal = $(this).val();
             if (val == checkVal) {
                 flg = true;
@@ -464,7 +466,7 @@ function productAutocomplete() {
         select: function (event, ui) {
             var $th = $(this);
             var pa = $th.parent().parent();
-            if (!checkDuplicate(ui.item.id)) {
+            if (!checkDuplicate(ui.item.id, pa.index())) {
                 $th.val(ui.item.label);
                 $('input.productId', pa).val(ui.item.id);
                 $('input.code', pa).val(ui.item.code);
@@ -649,7 +651,7 @@ function codeEnter() {
                                 //alert(item.id);
                                 var $th = $this;
                                 var pa = $th.parent().parent();
-                                if (!checkDuplicate(item.id)) {
+                                if (!checkDuplicate(item.id, pa.index())) {
                                     $th.val(item.label);
                                     $('input.productId', pa).val(item.id);
                                     $('input.productname', pa).val(item.name);

@@ -1,4 +1,38 @@
-﻿//Stop Form Submission of Enter Key Press
+﻿$(document).ready(function () {
+    formatNumberic();
+    numberOnly();
+    productAutocomplete();
+    productCodeAutocomplete();
+    quantityKeyPress();
+    priceKeyPress();
+    unitOnchange();
+    tableCheck();
+    headerCheck();
+    percentKeyPress();
+    $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
+    $("#DebitInfor").hide();
+    productNameEnter();
+    priceEnter();
+    percentEnter();
+    quantityEnter();
+    codeEnter();
+    addArrowKeys();
+
+    //add catch event user press Ctr+S & Ctrl+Shift+S
+    $(window).bind('keydown', function (e) {
+        if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+            // Ctrl + S
+            returnSubmit();
+            return false;
+        }
+        return true;
+    });
+
+});
+
+
+
+//Stop Form Submission of Enter Key Press
 $(document).ready(function () {
     $("#customerName").autocomplete({
         source: function (request, response) {
@@ -96,31 +130,36 @@ function returnSubmit() {
         }
     });
 
-    if (ppval == 0) {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
-        }
-        errorMessage += "Có ít nhất 1 sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
-    }
-
-    if (pval == 0) {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
-        }
-        errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0 hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
-    }
+    
 
     if (row == 0) {
         if (errorMessage != '') {
             errorMessage += "<br>";
         }
-        errorMessage += "Hóa đơn trả không có mặt hàng nào. Vui lòng kiểm tra lại.";
-    }
-    else if (rval == 0) {
-        if (errorMessage != '') {
-            errorMessage += "<br>";
+        errorMessage += "Hóa đơn không có mặt hàng nào. Vui lòng kiểm tra lại.";
+    } else {
+
+        if (ppval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 sản phẩm không có trong danh mục sản phẩm. Vui lòng kiểm tra lại.";
         }
-        errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+
+        if (pval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 mặt hàng với giá nhập là 0 hoặc không được nhập đơn giá. Vui lòng kiểm tra lại.";
+        }
+
+        if (rval == 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Có ít nhất 1 mặt hàng với số lượng nhập là 0, hoặc không được nhập số lượng nhập. Vui lòng kiểm tra lại.";
+        }
+
     }
 
     if (errorMessage != '') {
@@ -332,7 +371,8 @@ function productCodeAutocomplete() {
                                 name: item.name,
                                 code: item.code,
                                 id: item.id,
-                                price: item.price * (100 - item.discount) / 100
+                                price: item.price,
+                                discount: item.discount
                             }
                         }))
                     }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -343,6 +383,7 @@ function productCodeAutocomplete() {
             $('input.productname', parent).val("");
             $('input.price', parent).val("");
             $('input.convertor', parent).val("1");
+
         },
         select: function (event, ui) {
             var $th = $(this);
@@ -354,6 +395,8 @@ function productCodeAutocomplete() {
                 $('input.price', pa).val(ui.item.price);
                 createDonViTinh($th);
                 $('input.convertor', pa).val("1");
+                $('input.quantity', pa).focus();
+                $('input.percent', pa).val(ui.item.discount)
             } else {
                 alert("Sản phẩm này đã có trong danh sách");
                 $th.val("");
@@ -443,8 +486,9 @@ function productAutocomplete() {
                                 label: item.name,
                                 value: item.name,
                                 code: item.code,
-                                price: item.price - item.price * item.discount / 100,
-                                id: item.id
+                                price: item.price,
+                                id: item.id,
+                                discount: item.discount
                             }
                         }))
                     }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -465,6 +509,8 @@ function productAutocomplete() {
                 $('input.code', pa).val(ui.item.code);
                 $('input.price', pa).val(ui.item.price);
                 $('input.convertor', pa).val("1");
+                $('input.quantity', pa).focus();
+                $('input.percent', pa).val(ui.item.discount);
                 createDonViTinh($th);
             } else {
                 alert("Sản phầm này đã được nhập.");
@@ -546,20 +592,6 @@ function getAllTotal() {
     $('strong.fall').text($("#totalOfBill").val());
 };
 
-$(document).ready(function () {
-    formatNumberic();
-    numberOnly();
-    productAutocomplete();
-    productCodeAutocomplete();
-    quantityKeyPress();
-    priceKeyPress();
-    unitOnchange();
-    tableCheck();
-    headerCheck();
-    percentKeyPress();
-    $("input.datePicker").datepicker({ dateFormat: "dd/mm/yy" }).datepicker("setDate", new Date());
-    $("#DebitInfor").hide();
-});
 
 
 
@@ -568,26 +600,26 @@ function addRow() {
     var row = parseInt($("#rowIndex").val()) + 1;
     $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl"> </td>' +
+        '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="ReturnDetail[' + row + '].CODE" class="code codebtlReturn ui-autocomplete-input" id="ReturnDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="ReturnDetail[' + row + '].CODE" class="arrowkey code codebtlReturn" id="ReturnDetail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="ReturnDetail[' + row + '].DEL_FLG" class="delFlg" id="ReturnDetail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="ReturnDetail[' + row + '].MA_SAN_PHAM" class="productId " id="ReturnDetail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="ReturnDetail[' + row + '].HE_SO" class="convertor" id="ReturnDetail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="ReturnDetail[' + row + '].TEN_SAN_PHAM" class="productname namebtlReturn" id="ReturnDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="ReturnDetail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname namebtlReturn" id="ReturnDetail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="ReturnDetail[' + row + '].SO_LUONG_TEMP" class="quantity textbtlReturn numberic" id="ReturnDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="ReturnDetail[' + row + '].SO_LUONG_TEMP" class="arrowkey quantity textbtlReturn numberic" id="ReturnDetail_' + row + '__SO_LUONG_TEMP" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="inner colwidth">' +
-        '<select name="ReturnDetail[' + row + '].MA_DON_VI" class="unit" id="ReturnDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="ReturnDetail[' + row + '].MA_DON_VI" class="arrowkey unit" id="ReturnDetail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="ReturnDetail[' + row + '].GIA_VON" class="price textbtlReturn numberic" id="ReturnDetail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+        '<input name="ReturnDetail[' + row + '].GIA_VON" class="arrowkey price textbtlReturn numberic" id="ReturnDetail_' + row + '__GIA_VON" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="ReturnDetail[' + row + '].PHAN_TRAM_KHAU_HAO" class="percent textbtlReturn numberic" id="ReturnDetail_' + row + '__PHAN_TRAM_KHAU_HAO" type="text" value="" data-val="true" data-val-number="The field PHAN_TRAM_KHAU_HAO must be a number."> </td>' +
+        '<input name="ReturnDetail[' + row + '].PHAN_TRAM_KHAU_HAO" class="arrowkey percent textbtlReturn numberic" id="ReturnDetail_' + row + '__PHAN_TRAM_KHAU_HAO" type="text" value="" data-val="true" data-val-number="The field PHAN_TRAM_KHAU_HAO must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="ReturnDetail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtlReturn numberic" id="ReturnDetail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
+        '<input name="ReturnDetail[' + row + '].THANH_TIEN"  class="total textbtlReturn numberic" id="ReturnDetail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
         '</tr>');
     $("#rowIndex").val(row);
     $('input.code', $('#detailTable > tbody:last')).focus();
@@ -601,4 +633,178 @@ function addRow() {
     unitOnchange();
     tableCheck();
     headerCheck();
+    productNameEnter();
+    priceEnter();
+    percentEnter();
+    quantityEnter();
+    codeEnter();
+    addArrowKeys();
 };
+
+
+
+function productNameEnter() {
+    $('input.productname').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.quantity', $parent).focus();
+        }
+    });
+}
+
+
+function priceEnter() {
+    $('input.price').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.percent', $parent).focus();
+        }
+    });
+}
+
+function percentEnter() {
+    $('input.percent').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            if (last == $parent.index()) {
+                addRow();
+            } else {
+                $('input.code', $('#detailTable > tbody:last')).focus();
+            }
+        }
+    });
+}
+
+function quantityEnter() {
+    $('input.quantity').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var showFlg = $("#showFlg").val();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.price', $parent).focus();
+        }
+    });
+}
+
+
+function addArrowKeys() {
+    $('.arrowkey').keydown(function (e) {
+        var keyCode = e.keyCode || e.which,
+            arrow = { left: 37, up: 38, right: 39, down: 40 };
+
+        switch (keyCode) {
+            case arrow.left:
+                var preColum = $(this).closest('td').prev().find('.arrowkey');
+                while (preColum != null && preColum.is(':hidden')) {
+                    preColum = preColum.closest('td').prev().find('.arrowkey')
+                }
+                preColum.focus();
+                break;
+            case arrow.up:
+                // row n + 1
+                var prevrow = $(this).closest('tr').prev();
+                while (prevrow != null && prevrow.is(':hidden')) {
+                    prevrow = prevrow.closest('tr').prev();
+                }
+
+                if (prevrow != null && prevrow.length > 0) {
+                    var currClass = $(this).attr('class');
+                    // get next Element to focus by class 
+                    var arrControl = prevrow.find('.arrowkey');
+                    for (i = 0; i < arrControl.length; i++) {
+                        var control = arrControl[i];
+                        if (control.className.trim() == currClass.trim()) {
+                            control.focus();
+                            return;
+                        }
+
+                    }
+
+                }
+                break;
+            case arrow.right:
+                var nextColumn = $(this).closest('td').next().find('.arrowkey').not('.disabled');
+                while (nextColumn != null && nextColumn.is(':hidden')) {
+                    nextColumn = nextColumn.closest('td').next().find('.arrowkey').not('.disabled');
+                }
+                nextColumn.focus();
+                break;
+            case arrow.down:
+                // row n + 1
+                var nextrow = $(this).closest('tr').next();
+                while (nextrow != null && nextrow.is(':hidden')) {
+                    nextrow = nextrow.closest('tr').next();
+                }
+                if (nextrow != null && nextrow.length > 0) {
+                    var currClass = $(this).attr('class');
+                    // get next Element to focus by class 
+                    var arrControl = nextrow.find('.arrowkey');
+                    for (i = 0; i < arrControl.length; i++) {
+                        var control = arrControl[i];
+                        if (control.className.trim() == currClass.trim()) {
+                            control.focus();
+                            return;
+                        }
+
+                    }
+
+                }
+                break;
+        }
+    });
+}
+
+
+function codeEnter() {
+    $('input.code').keypress(function (event) {
+        var $this = $(this);
+        if (event.which === 13 || event.which === 27) {
+            if ($this.val().length >= 1) {
+                $.ajax({
+                    url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
+                    //url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; },
+                    success:
+                        function (data) {
+                            $.each(data, function (i, item) {
+                                //alert(item.id);
+                                var $th = $this;
+                                var pa = $th.parent().parent();
+                                if (!checkDuplicate(item.id, pa.index())) {
+                                    $th.val(item.label);
+                                    $('input.productId', pa).val(item.id);
+                                    $('input.productname', pa).val(item.name);
+                                    $('input.quantity', pa).val("");
+                                    createDonViTinh($th);
+                                    formatNumberic();
+                                    $('input.convertor', pa).val("1");
+                                    $th.css("background-color", "white");
+                                    $('input.quantity', pa).focus();
+                                    $('input.price', pa).val(item.price);
+                                    $('input.percent', pa).val(item.discount);
+                                } else {
+                                    alert("Sản phẩm này đã có trong danh sách");
+                                    $th.val("");
+                                    $('input.productId', pa).val("");
+                                    $('input.productname', pa).val("");
+                                    $('input.convertor', pa).val("1");
+                                    $('input.quantity', pa).val("");
+                                }
+                                return false;
+                            });
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            }
+        };
+    });
+}

@@ -195,7 +195,7 @@ namespace SMS.Controllers
             {
                 salerId = Convert.ToInt32(Session["UserId"]);
             }
-            if (!(bool)Session["IsAdmin"] && (bool)Session["IsAccounting"])
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 accountantId = Convert.ToInt32(Session["UserId"]);
             }
@@ -263,7 +263,7 @@ namespace SMS.Controllers
             {
                 salerId = Convert.ToInt32(Session["UserId"]);
             }
-            if (!(bool)Session["IsAdmin"] && (bool)Session["IsAccounting"])
+            if (!(bool)Session["IsAdmin"] && !(bool)Session["IsAccounting"])
             {
                 accountantId = Convert.ToInt32(Session["UserId"]);
             }

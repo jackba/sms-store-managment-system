@@ -23,6 +23,12 @@ namespace SMS.Controllers
         // GET: /DonVi/
 
         [HttpGet]
+        public ActionResult StoreUser()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult SetQuestions()
         {
             SecurityQuestion model = new SecurityQuestion();
