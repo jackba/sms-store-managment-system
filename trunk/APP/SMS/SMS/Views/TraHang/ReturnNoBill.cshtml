@@ -41,7 +41,7 @@
     </style>
 
 }
-@using (Html.BeginForm("ReturnNoBill", "TraHang", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("ReturnNoBill", "TraHang", FormMethod.Post, new { @id = "index", @autocomplete = "off" }))
 {
     <table>
         <tr>
@@ -52,8 +52,6 @@
                 @Html.HiddenFor(u => u.ReturnInfor.MA_KHACH_HANG, new { @id = "customerId" })
                 @Html.TextBoxFor(u => u.ReturnInfor.TEN_KHACH_HANG, new { @id = "customerName" })
             </td>
-        </tr>
-        <tr>
             <td>
                 Loại nghiệp vụ:
             </td>
@@ -64,8 +62,6 @@
                     <option value="1"> L1 - 01 </option>
                 </select>
             </td>
-        </tr>
-        <tr>
             <td>
                 Ngày trả hàng :
             </td>
@@ -77,8 +73,8 @@
             <td>
                 Ghi chú :
             </td>
-            <td >
-               @Html.TextAreaFor(u => u.ReturnInfor.GHI_CHU)
+            <td  colspan="5">
+               @Html.TextAreaFor(u => u.ReturnInfor.GHI_CHU, new { @style = "width:100%" })
             </td>
         </tr>        
     </table>
@@ -115,7 +111,7 @@
     <input type="hidden" id="rowIndex" value="0" />
 
     <div style="clear:both"></div>
-    <table id="detailTable" name="detailTable" width="100%">
+    <table id="detailTable" name="detailTable" width="100%" class="contentTable">
         <thead>
             <tr class="inner column-hscroll alignCenter">
                 <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
@@ -132,31 +128,31 @@
         <tbody>
             <tr>
                 <td class='inner alignCenter colwidth' width="5%;">
-                    <input type="checkbox" class="chcktbl">
+                    <input type="checkbox" class="arrowkey chcktbl">
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].CODE, new { @class = "code codebtlReturn" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].CODE, new { @class = "arrowkey code codebtlReturn" })
                 </td>
                 <td class='inner colwidth '>
                     @Html.HiddenFor(u => u.ReturnDetail[0].MA_SAN_PHAM, new { @class = "productId " })
                     @Html.HiddenFor(u => u.ReturnDetail[0].DEL_FLG, new { @class = "delFlg" })
                     @Html.HiddenFor(u => u.ReturnDetail[0].HE_SO, new { @class = "convertor" })
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].TEN_SAN_PHAM, new { @class = "productname namebtlReturn" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].TEN_SAN_PHAM, new { @class = "arrowkey productname namebtlReturn" })
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].SO_LUONG_TEMP, new { @class = "quantity textbtlReturn numberic" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].SO_LUONG_TEMP, new { @class = "arrowkey quantity textbtlReturn numberic" })
                 </td>
                 <td class="inner colwidth">
-                    @Html.DropDownListFor(u => u.ReturnDetail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;width:100%", @class = "unit" })
+                    @Html.DropDownListFor(u => u.ReturnDetail[0].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;width:100%", @class = "arrowkey unit" })
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].GIA_VON, new { @class = "price textbtlReturn numberic" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].GIA_VON, new { @class = "arrowkey price textbtlReturn numberic" })
                 </td>
                 <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].PHAN_TRAM_KHAU_HAO, new { @class = "percent textbtlReturn numberic" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].PHAN_TRAM_KHAU_HAO, new { @class = "arrowkey percent textbtlReturn numberic" })
                 </td>
                 <td class='innerLast colwidth '>
-                    @Html.TextBoxFor(u => u.ReturnDetail[0].THANH_TIEN, new { @class = "total textbtlReturn numberic", @readOnly = true, @disabled = "disabled" })
+                    @Html.TextBoxFor(u => u.ReturnDetail[0].THANH_TIEN, new { @class = "total textbtlReturn numberic", @readOnly = true })
                 </td>
             </tr>
         </tbody>
