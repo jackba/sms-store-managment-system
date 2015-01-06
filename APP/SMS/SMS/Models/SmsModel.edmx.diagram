@@ -162,6 +162,11 @@
         <AssociationConnector Association="SmsModel.FK__TRA_HANG__MA_XUA__6477ECF3" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__TRA_HANG___MA_PH__5CA1C101" ManuallyRouted="false" />
         <AssociationConnector Association="SmsModel.FK__XUAT_KHO__MA_PHI__336AA144" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SmsModel.USER_STORE" Width="1.5" PointX="13.5" PointY="75.75" />
+        <AssociationConnector Association="SmsModel.FK__USER_STOR__MA_KH__3335971A" />
+        <AssociationConnector Association="SmsModel.FK__USER_STOR__CREAT__351DDF8C" />
+        <AssociationConnector Association="SmsModel.FK__USER_STOR__UPDAT__361203C5" />
+        <AssociationConnector Association="SmsModel.FK__USER_STOR__USR_I__3429BB53" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
