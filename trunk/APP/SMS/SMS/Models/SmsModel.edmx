@@ -532,6 +532,20 @@
           <Property Name="MA_DON_VI" Type="int" />
           <Property Name="DON_GIA_TEMP" Type="float" />
         </EntityType>
+        <EntityType Name="USER_STORE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_KHO" Type="int" />
+          <Property Name="USR_ID" Type="int" />
+          <Property Name="IS_DEFAULT" Type="bit" />
+          <Property Name="CREATE_BY" Type="int" />
+          <Property Name="UPDATE_BY" Type="int" />
+          <Property Name="CREATE_AT" Type="date" />
+          <Property Name="UPDATE_AT" Type="date" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="XUAT_KHO">
           <Key>
             <PropertyRef Name="MA_XUAT_KHO" />
@@ -553,7 +567,7 @@
           <Property Name="MA_PHIEU_TRA_NCC" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_BUGET_BY_MONTH' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_BUGET_BY_MONTH' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_BUGET_BY_MONTH">
           <Key>
             <PropertyRef Name="SO_TIEN_KHACH_TRA" />
@@ -567,7 +581,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_BUGET_BY_MONTH' does not have a pr
           <Property Name="YEAR" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_BUGET_BY_WEEK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_BUGET_BY_WEEK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_BUGET_BY_WEEK">
           <Key>
             <PropertyRef Name="SO_TIEN_KHACH_TRA" />
@@ -583,7 +597,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_BUGET_BY_WEEK' does not have a pri
           <Property Name="END_DATE" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_HOA_DON' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_HOA_DON' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_HOA_DON">
           <Key>
             <PropertyRef Name="MA_HOA_DON" />
@@ -626,7 +640,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_HOA_DON' does not have a primary k
           <Property Name="TEN_DON_VI_TEMP" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_HOA_DON_DISTICNT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_HOA_DON_DISTICNT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_HOA_DON_DISTICNT">
           <Key>
             <PropertyRef Name="MA_HOA_DON" />
@@ -653,7 +667,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_HOA_DON_DISTICNT' does not have a 
           <Property Name="SO_TIEN_NO_GOI_DAU" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_IMPORT_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_IMPORT_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_IMPORT_DETAIL">
           <Key>
             <PropertyRef Name="TEN_SAN_PHAM" />
@@ -667,7 +681,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_IMPORT_DETAIL' does not have a pri
           <Property Name="GIA_VON" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_MA_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_MA_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_MA_TRA_HANG">
           <Key>
             <PropertyRef Name="MA_TRA_HANG" />
@@ -675,7 +689,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_MA_TRA_HANG' does not have a prima
           <Property Name="MA_TRA_HANG" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_NHAP_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_NHAP_KHO">
           <Key>
             <PropertyRef Name="MA_NHAP_KHO" />
@@ -689,7 +703,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_KHO' does not have a primary 
           <Property Name="GIA_VON" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_XUAT_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_NHAP_XUAT_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_NHAP_XUAT_DETAIL">
           <Key>
             <PropertyRef Name="SO_LUONG_NHAP" />
@@ -702,7 +716,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_XUAT_DETAIL' does not have a 
           <Property Name="SO_LUONG_XUAT" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_NHAP_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_NHAP_XUAT_KHO">
           <Key>
             <PropertyRef Name="SO_LUONG_NHAP" />
@@ -716,7 +730,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_NHAP_XUAT_KHO' does not have a pri
           <Property Name="SO_LUONG_TON" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_REPORT_TOTAL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_REPORT_TOTAL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_REPORT_TOTAL">
           <Key>
             <PropertyRef Name="SO_TIEN_KHACH_TRA" />
@@ -739,7 +753,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_REPORT_TOTAL' does not have a prim
           <Property Name="DAY" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_RETURN_2_PROVIDER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_RETURN_2_PROVIDER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_RETURN_2_PROVIDER">
           <Key>
             <PropertyRef Name="ID" />
@@ -759,7 +773,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_RETURN_2_PROVIDER' does not have a
           <Property Name="DON_GIA_TEMP" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_TRA_HANG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_TRA_HANG">
           <Key>
             <PropertyRef Name="MA_TRA_HANG" />
@@ -772,7 +786,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_TRA_HANG' does not have a primary 
           <Property Name="TOTAL" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_TRA_NHAP_TRA_NCC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_TRA_NHAP_TRA_NCC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_TRA_NHAP_TRA_NCC">
           <Key>
             <PropertyRef Name="MA_TRA_HANG" />
@@ -783,7 +797,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_TRA_NHAP_TRA_NCC' does not have a 
           <Property Name="SO_LUONG" Type="float" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_WARNING_PRODUCTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_WARNING_PRODUCTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_WARNING_PRODUCTS">
           <Key>
             <PropertyRef Name="MA_SAN_PHAM" />
@@ -796,7 +810,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_WARNING_PRODUCTS' does not have a 
           <Property Name="TON_KHO" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_XUAT_KHO">
           <Key>
             <PropertyRef Name="MA_XUAT_KHO" />
@@ -2057,6 +2071,54 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__USER_STOR__CREAT__351DDF8C">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="USER_STORE" Type="Self.USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__MA_KH__3335971A">
+          <End Role="KHO" Type="Self.KHO" Multiplicity="0..1" />
+          <End Role="USER_STORE" Type="Self.USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHO">
+              <PropertyRef Name="MA_KHO" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="MA_KHO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__UPDAT__361203C5">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="USER_STORE" Type="Self.USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__USR_I__3429BB53">
+          <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
+          <End Role="USER_STORE" Type="Self.USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="USR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__XUAT_KHO__CREATE__59FA5E80">
           <End Role="NGUOI_DUNG" Type="Self.NGUOI_DUNG" Multiplicity="0..1" />
           <End Role="XUAT_KHO" Type="Self.XUAT_KHO" Multiplicity="*" />
@@ -2685,6 +2747,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <EntitySet Name="TRA_HANG" EntityType="Self.TRA_HANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC" EntityType="Self.TRA_HANG_NCC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRA_HANG_NCC_CHI_TIET" EntityType="Self.TRA_HANG_NCC_CHI_TIET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_STORE" EntityType="Self.USER_STORE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_KHO" EntityType="Self.XUAT_KHO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="V_BUGET_BY_MONTH" EntityType="Self.V_BUGET_BY_MONTH" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3280,6 +3343,22 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="TRA_HANG" EntitySet="TRA_HANG" />
           </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__CREAT__351DDF8C" Association="Self.FK__USER_STOR__CREAT__351DDF8C">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__MA_KH__3335971A" Association="Self.FK__USER_STOR__MA_KH__3335971A">
+            <End Role="KHO" EntitySet="KHO" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__UPDAT__361203C5" Association="Self.FK__USER_STOR__UPDAT__361203C5">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__USR_I__3429BB53" Association="Self.FK__USER_STOR__USR_I__3429BB53">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
           <AssociationSet Name="FK__XUAT_KHO__CREATE__59FA5E80" Association="Self.FK__XUAT_KHO__CREATE__59FA5E80">
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="XUAT_KHO" EntitySet="XUAT_KHO" />
@@ -3596,6 +3675,7 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <NavigationProperty Name="TON_KHO_MIN_MAX_KHO" Relationship="Self.FK__TON_KHO_M__MA_KH__15A53433" FromRole="KHO" ToRole="TON_KHO_MIN_MAX_KHO" />
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__XUAT_KHO__MA_KHO__571DF1D5" FromRole="KHO" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO1" Relationship="Self.FK__XUAT_KHO__MA_KHO__5812160E" FromRole="KHO" ToRole="XUAT_KHO" />
+          <NavigationProperty Name="USER_STORE" Relationship="SmsModel.FK__USER_STOR__MA_KH__3335971A" FromRole="KHO" ToRole="USER_STORE" />
         </EntityType>
         <EntityType Name="KHU_VUC">
           <Key>
@@ -3729,6 +3809,9 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <NavigationProperty Name="XUAT_KHO" Relationship="Self.FK__XUAT_KHO__CREATE__59FA5E80" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO1" Relationship="Self.FK__XUAT_KHO__MA_NHA__59063A47" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
           <NavigationProperty Name="XUAT_KHO2" Relationship="Self.FK__XUAT_KHO__UPDATE__5AEE82B9" FromRole="NGUOI_DUNG" ToRole="XUAT_KHO" />
+          <NavigationProperty Name="USER_STORE" Relationship="SmsModel.FK__USER_STOR__CREAT__351DDF8C" FromRole="NGUOI_DUNG" ToRole="USER_STORE" />
+          <NavigationProperty Name="USER_STORE1" Relationship="SmsModel.FK__USER_STOR__UPDAT__361203C5" FromRole="NGUOI_DUNG" ToRole="USER_STORE" />
+          <NavigationProperty Name="USER_STORE2" Relationship="SmsModel.FK__USER_STOR__USR_I__3429BB53" FromRole="NGUOI_DUNG" ToRole="USER_STORE" />
         </EntityType>
         <EntityType Name="NHA_CUNG_CAP">
           <Key>
@@ -6558,8 +6641,25 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
             <Parameter Name="GIA_TRI_HANG_TON_TOTAL" Mode="InOut" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="SP_GET_EXPORT_DETAIL_BY_ID" ReturnType="Collection(SmsModel.SP_GET_EXPORT_DETAIL_BY_ID_Result)">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="USER_STORE" EntityType="SmsModel.USER_STORE" />
+          <AssociationSet Name="FK__USER_STOR__MA_KH__3335971A" Association="SmsModel.FK__USER_STOR__MA_KH__3335971A">
+            <End Role="KHO" EntitySet="KHOes" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__CREAT__351DDF8C" Association="SmsModel.FK__USER_STOR__CREAT__351DDF8C">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__UPDAT__361203C5" Association="SmsModel.FK__USER_STOR__UPDAT__361203C5">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USER_STOR__USR_I__3429BB53" Association="SmsModel.FK__USER_STOR__USR_I__3429BB53">
+            <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
+            <End Role="USER_STORE" EntitySet="USER_STORE" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -7185,6 +7285,72 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
           <Property Type="Double" Name="SO_LUONG" Nullable="true" />
           <Property Type="Double" Name="DON_GIA" Nullable="true" />
         </ComplexType>
+        <EntityType Name="USER_STORE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_KHO" Type="Int32" />
+          <Property Name="USR_ID" Type="Int32" />
+          <Property Name="IS_DEFAULT" Type="Boolean" />
+          <Property Name="CREATE_BY" Type="Int32" />
+          <Property Name="UPDATE_BY" Type="Int32" />
+          <Property Name="CREATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="UPDATE_AT" Type="DateTime" Precision="0" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="KHO" Relationship="SmsModel.FK__USER_STOR__MA_KH__3335971A" FromRole="USER_STORE" ToRole="KHO" />
+          <NavigationProperty Name="NGUOI_DUNG" Relationship="SmsModel.FK__USER_STOR__CREAT__351DDF8C" FromRole="USER_STORE" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG1" Relationship="SmsModel.FK__USER_STOR__UPDAT__361203C5" FromRole="USER_STORE" ToRole="NGUOI_DUNG" />
+          <NavigationProperty Name="NGUOI_DUNG2" Relationship="SmsModel.FK__USER_STOR__USR_I__3429BB53" FromRole="USER_STORE" ToRole="NGUOI_DUNG" />
+        </EntityType>
+        <Association Name="FK__USER_STOR__MA_KH__3335971A">
+          <End Type="SmsModel.KHO" Role="KHO" Multiplicity="0..1" />
+          <End Type="SmsModel.USER_STORE" Role="USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHO">
+              <PropertyRef Name="MA_KHO" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="MA_KHO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__CREAT__351DDF8C">
+          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SmsModel.USER_STORE" Role="USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="CREATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__UPDAT__361203C5">
+          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SmsModel.USER_STORE" Role="USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="UPDATE_BY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USER_STOR__USR_I__3429BB53">
+          <End Type="SmsModel.NGUOI_DUNG" Role="NGUOI_DUNG" Multiplicity="0..1" />
+          <End Type="SmsModel.USER_STORE" Role="USER_STORE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOI_DUNG">
+              <PropertyRef Name="MA_NGUOI_DUNG" />
+            </Principal>
+            <Dependent Role="USER_STORE">
+              <PropertyRef Name="USR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8859,6 +9025,21 @@ warning 6002: The table/view 'SMS_EMPTY.dbo.V_XUAT_KHO' does not have a primary 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="USER_STORE">
+            <EntityTypeMapping TypeName="SmsModel.USER_STORE">
+              <MappingFragment StoreEntitySet="USER_STORE">
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+                <ScalarProperty Name="USR_ID" ColumnName="USR_ID" />
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

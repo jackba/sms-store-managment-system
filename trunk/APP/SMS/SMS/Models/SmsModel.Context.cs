@@ -73,6 +73,7 @@ namespace SMS.Models
         public virtual DbSet<V_TRA_NHAP_TRA_NCC> V_TRA_NHAP_TRA_NCC { get; set; }
         public virtual DbSet<V_WARNING_PRODUCTS> V_WARNING_PRODUCTS { get; set; }
         public virtual DbSet<V_XUAT_KHO> V_XUAT_KHO { get; set; }
+        public virtual DbSet<USER_STORE> USER_STORE { get; set; }
     
         public virtual int dynTable()
         {
