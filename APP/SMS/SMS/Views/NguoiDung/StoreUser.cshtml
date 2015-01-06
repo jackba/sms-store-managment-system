@@ -1,5 +1,68 @@
-﻿@{
-    ViewBag.Title = "StoreUser";
-}
+﻿@model SMS.Models.GetTonKhoAlertModel
+@using PagedList.Mvc;
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/jquery-1.9.1.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+    <script>
+            $(document).ready(function () {
+                $("#SearchString").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                            dataFilter: function (data) { return data; }, success:
+                                function (data) {
+                                    response($.map(data, function (item) {
+                                        return {
+                                            label: item.value,
+                                            value: item.value,
+                                            id: item.id
+                                        }
+                                    }))
+                                }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                        });
+                    },
+                    select: function (event, ui) {
+                        $('#SearchString').val(ui.item.label);
+                        return false;
+                    },
+                    minLength: 1
 
-<h2>StoreUser</h2>
+                });
+                $('#mainForm').submit();
+            });
+    </script>
+}
+@using (Ajax.BeginForm("StoreUserPtv", "NguoiDung", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                LoadingElementId = "resultLoadingDiv",
+                                UpdateTargetId = "mainDiv"
+                            },
+                           new { @id = "mainForm", @SearchString = ViewBag.SearchString }
+                      ))
+{
+    <hr style="width:100%" />
+    <div style="float:right">
+        Tên người dùng: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString", @class = "keySearch" })
+        <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
+    </div>
+    <div style="clear:both"></div>
+}
+<hr style="width:100%" />
+<div id="resultLoadingDiv" style="border: none; display: none; z-index: 99; text-align: center; position: absolute; margin-left: 525px; ">
+    <img src="/Content/images/loading-2.gif" />
+</div>
+<div id="mainDiv">
+</div>
