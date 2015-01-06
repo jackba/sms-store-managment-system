@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
 using System.Transactions;
+using System.Data.SqlClient;
 
 namespace SMS.Controllers
 {
@@ -28,7 +29,24 @@ namespace SMS.Controllers
             return View();
         }
 
+        [HttpPost]
+        public PartialViewResult StoreUserPtv(int? userId, string userName)
+        {
+            var ctx = new SmsContext();
+            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList();
 
+            userId = userId == null ? 0 : userId;
+            var usersStore = ctx.Database.SqlQuery<StoreUser>("exec SP_GET_USER_STORE @USR_ID , @USR_NAME",
+                new SqlParameter("USR_ID", Convert.ToInt32(userId)),
+                new SqlParameter("USR_NAME", string.IsNullOrWhiteSpace(userName) ? string.Empty : userName.Trim())
+                ).Take(SystemConstant.MAX_ROWS); ;
+
+            StoreAndUserList model = new StoreAndUserList();
+            model.Stores = stores;
+            model.StoresUser = usersStore.ToList < StoreUser>();
+            ctx.Dispose();
+            return PartialView("StoreUserPtv", model);
+        }
 
         [HttpGet]
         public ActionResult SetQuestions()

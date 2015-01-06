@@ -475,6 +475,9 @@
     <Compile Include="Models\TRA_HANG_NCC_CHI_TIET.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\USER_STORE.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_BUGET_BY_MONTH.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -1029,6 +1032,8 @@
     <Content Include="Views\Shared\_Flash.cshtml" />
     <Content Include="Views\Export\ShowDetail.cshtml" />
     <Content Include="Views\Export\ShowDetailPtv.cshtml" />
+    <Content Include="Views\NguoiDung\StoreUser.cshtml" />
+    <Content Include="Views\NguoiDung\StoreUserPtv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

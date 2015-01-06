@@ -29,9 +29,10 @@ namespace SMS.Models
             this.CHI_TIET_HOA_DON = new HashSet<CHI_TIET_HOA_DON>();
             this.NGUOI_DUNG3 = new HashSet<NGUOI_DUNG>();
             this.NHAP_KHO = new HashSet<NHAP_KHO>();
+            this.TON_KHO_MIN_MAX_KHO = new HashSet<TON_KHO_MIN_MAX_KHO>();
             this.XUAT_KHO = new HashSet<XUAT_KHO>();
             this.XUAT_KHO1 = new HashSet<XUAT_KHO>();
-            this.TON_KHO_MIN_MAX_KHO = new HashSet<TON_KHO_MIN_MAX_KHO>();
+            this.USER_STORE = new HashSet<USER_STORE>();
         }
     
         public int MA_KHO { get; set; }
@@ -57,7 +58,6 @@ namespace SMS.Models
         public string ACTIVE { get; set; }
         public Nullable<int> CREATE_BY { get; set; }
         public Nullable<int> UPDATE_BY { get; set; }
-
         [Display(Name = "Người đứng đầu")]
         public Nullable<int> MA_NGUOI_DUNG_DAU { get; set; }
     
@@ -67,8 +67,9 @@ namespace SMS.Models
         public virtual NGUOI_DUNG NGUOI_DUNG2 { get; set; }
         public virtual ICollection<NGUOI_DUNG> NGUOI_DUNG3 { get; set; }
         public virtual ICollection<NHAP_KHO> NHAP_KHO { get; set; }
+        public virtual ICollection<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO { get; set; }
         public virtual ICollection<XUAT_KHO> XUAT_KHO1 { get; set; }
-        public virtual ICollection<TON_KHO_MIN_MAX_KHO> TON_KHO_MIN_MAX_KHO { get; set; }
+        public virtual ICollection<USER_STORE> USER_STORE { get; set; }
     }
 }
