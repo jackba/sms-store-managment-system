@@ -1528,5 +1528,40 @@ namespace SMS.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_EXPORT_DETAIL_BY_ID_Result>("SP_GET_EXPORT_DETAIL_BY_ID", iDParameter);
         }
+    
+        public virtual ObjectResult<SP_GET_STORES_BY_USR_ID_Result> SP_GET_STORES_BY_USR_ID(Nullable<int> uSR_ID)
+        {
+            var uSR_IDParameter = uSR_ID.HasValue ?
+                new ObjectParameter("USR_ID", uSR_ID) :
+                new ObjectParameter("USR_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_STORES_BY_USR_ID_Result>("SP_GET_STORES_BY_USR_ID", uSR_IDParameter);
+        }
+    
+        public virtual ObjectResult<SP_GET_STORES_USER_Result> SP_GET_STORES_USER(Nullable<int> uSR_ID, string uSR_NAME)
+        {
+            var uSR_IDParameter = uSR_ID.HasValue ?
+                new ObjectParameter("USR_ID", uSR_ID) :
+                new ObjectParameter("USR_ID", typeof(int));
+    
+            var uSR_NAMEParameter = uSR_NAME != null ?
+                new ObjectParameter("USR_NAME", uSR_NAME) :
+                new ObjectParameter("USR_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GET_STORES_USER_Result>("SP_GET_STORES_USER", uSR_IDParameter, uSR_NAMEParameter);
+        }
+    
+        public virtual int SP_GET_USER_STORE(Nullable<int> uSR_ID, string uSR_NAME)
+        {
+            var uSR_IDParameter = uSR_ID.HasValue ?
+                new ObjectParameter("USR_ID", uSR_ID) :
+                new ObjectParameter("USR_ID", typeof(int));
+    
+            var uSR_NAMEParameter = uSR_NAME != null ?
+                new ObjectParameter("USR_NAME", uSR_NAME) :
+                new ObjectParameter("USR_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GET_USER_STORE", uSR_IDParameter, uSR_NAMEParameter);
+        }
     }
 }

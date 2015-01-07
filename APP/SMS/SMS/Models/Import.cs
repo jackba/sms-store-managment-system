@@ -41,6 +41,7 @@ namespace SMS.Models
         public int ProviderId { get; set; }
         public NHAP_KHO Infor { get; set; }
         public List<KHO> Stores { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> UserStore { get; set; }
         public List<DON_VI_TINH> Units { get; set; }
         public List<NHA_CUNG_CAP> Providers { get; set; }
         public List<CHI_TIET_NHAP_KHO> Detail { get; set; }
@@ -92,6 +93,7 @@ namespace SMS.Models
     public class ListExportTransferModel
     {
         public IPagedList<SP_GET_PHIEU_CHUYEN_KHO_Result> TheList { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
         public int Count { get; set; }
     }
 

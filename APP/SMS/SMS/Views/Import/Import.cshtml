@@ -42,7 +42,7 @@
     </script>
     <style type="text/css">
         .required:after {
-            content: "*";
+            content: ""(*)";
             font-weight: bold;
             color: red;
         }
@@ -62,45 +62,42 @@
     <table style="font-family:'Times New Roman'" class="info">
         <tr>
             <td style="width:10%">
-                Số hóa đơn :
+                Số hóa đơn
             </td>
-            <td style="width:40%">
-                @Html.TextBoxFor(u => u.Infor.SO_HOA_DON)
+            <td>
+                Nhà cung cấp
             </td>
-            <td style="width:10%">
-                Nhà cung cấp :
+            <td>
+                Kho
             </td>
-            <td class="required" style="width:40%">
-                @Html.DropDownListFor(u => u.Infor.MA_NHA_CUNG_CAP, new SelectList(@Model.Providers, "MA_NHA_CUNG_CAP", "TEN_NHA_CUNG_CAP"), "-------Chọn nhà cung cấp---------", new { @id = "providerId", style = "padding:5px;font-size:1.2em", @class = "required" })
+            <td>
+                 Ngày nhập
             </td>
         </tr>
         <tr>
             <td>
-                Kho :
+                @Html.TextBoxFor(u => u.Infor.SO_HOA_DON)
             </td>
             <td class="required">
-                @if ((bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho ------------", new { @id = "storeId", style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
-                else
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "storeId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
+                @Html.DropDownListFor(u => u.Infor.MA_NHA_CUNG_CAP, new SelectList(@Model.Providers, "MA_NHA_CUNG_CAP", "TEN_NHA_CUNG_CAP"), "-------Chọn nhà cung cấp---------", new { @id = "providerId", style = "padding:5px;font-size:1.2em", @class = "required" })
             </td>
-            <td>
-                Ngày nhập kho :
+
+            <td class="required">
+                @Html.DropDownListFor(u => u.Infor.MA_KHO, new SelectList(@Model.UserStore, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho ------------", new { @id = "storeId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                
             </td>
             <td class="required">
                 @Html.TextBoxFor(u => u.Infor.NGAY_NHAP, "{0:dd/MM/yyyy}", new { @class = "datePicker ", @id = "importDate" })
             </td>
         </tr>
         <tr>
-            <td>
+            <td colspan="4">
                 Ghi chú :
             </td>
-            <td colspan="3">
-                @Html.TextAreaFor(u => u.Infor.GHI_CHU)
+        </tr>
+        <tr>
+            <td colspan="4">
+                @Html.TextAreaFor(u => u.Infor.GHI_CHU, new { @style = "width:95%"})
             </td>
         </tr>
     </table>

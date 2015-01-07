@@ -349,8 +349,21 @@ table td{
 }
 
 .info{
+    width:100%;
     padding: 0px 0px 0px 0px;
-    margin:-20px 0px -10px 0px;
+    margin:-20px 0px -10px 0px;    
+    font-family: Arial;
+    font-size:14px;
+}
+
+.info td{
+    width:22%;
+    padding: 0px 10px 0px 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+.info input{
+    width:98%;
 }
 
 td{
@@ -379,7 +392,7 @@ td{
 }
 
 .textbtl{
-    width:96%;
+    width:93%;
 } 
 
 .codebtl{

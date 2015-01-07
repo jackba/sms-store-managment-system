@@ -172,58 +172,58 @@
 {
     
     <hr style="width:100%" />
-        <table>
+        <table class="info">
             <tr>
                 <td>
                     Loại nhập :
                 </td>
-                <td colspan="2">
-                    @Html.DropDownList("reasonId", kinds, new { @id = "reasonId", @style = "padding:2px;font-size:1.2em; " })
+                <td>
+                    Nhà cung cấp
                 </td>
                 <td>
-                    &nbsp;&nbsp;&nbsp;&nbsp; Nhà cung cấp :
+                    Kho - Cửa hàng
+                </td>
+                <td>Người nhập kho </td>
+                
+            </tr>            
+            <tr>
+                <td>
+                    @Html.DropDownList("reasonId", kinds, new { @id = "reasonId", @style = "padding:2px;font-size:1.2em; width:98%" })
                 </td>
                 <td>
                     @Html.Hidden("ProviderId", ViewBag.ProviderId as int?, new { id = "ProductId" })
-                    @Html.TextBox("ProviderName", ViewBag.ProviderName as string, new { id = "ProviderName" })
+                    @Html.TextBox("ProviderName", ViewBag.ProviderName as string, new { @id = "ProviderName"})
                 </td>
-            </tr> 
-            @if((bool)Session["IsAdmin"])
-            {
-            <tr>
                 <td>
-                    Kho - Cửa hàng :
-                </td>
-                <td colspan="2">
-                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName"})
                     @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
                 </td>
                 <td>
-                    &nbsp;&nbsp;&nbsp;&nbsp;  Nhân viên nhập kho : 
-                </td>
-                <td>
-                    @Html.TextBox("ImporterName", ViewBag.ImporterName as string, new { id = "ImporterName" })
-                    @Html.Hidden("ImporterName", ViewBag.ImporterId as int?, new { id = "ImporterId" })
-                </td>
+                @if ((bool)Session["IsAdmin"])
+                {
+                    @Html.TextBox("ImporterName", ViewBag.ImporterName as string, new { id = "ImporterName"})
+                    @Html.Hidden("ImporterId", ViewBag.ImporterId as int?, new { id = "ImporterId" })
+                }
+                else
+                {
+                    <input type="text" value="@Session["UserName"]" readonly ="readonly" />
+                }</td>
             </tr> 
-            }
+            
             <tr>
-                <td>
+                <td colspan="4">
                     Ngày mua:
                 </td>
-                <td>
+            </tr>
+            <tr>
+                <td colspan="4">
                     @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", @style = "width: 120px;" })
                    
-                </td>
-                <td>
-                    ~  &nbsp;&nbsp; @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", @style = "width: 120px;" })
-                </td>
-                <td colspan="2">
-                   
+                    ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", @style = "width: 120px;" })
                 </td>
             </tr>
      </table>
-
+    <br />
     <div style="clear:both">
         <input type="submit" value="Tìm kiếm" class="myButton" />
         <input type="button" value="Nhập kho mua hàng" class="myButton" onclick="window.location.href='@Url.Action("Import","Import")'" />

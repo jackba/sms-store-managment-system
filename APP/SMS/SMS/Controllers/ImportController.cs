@@ -450,17 +450,18 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var userStores = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
             var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             ViewBag.Stores = stores;
             ImportModel model = new ImportModel();
             NHAP_KHO Infor = new NHAP_KHO();
             model.Infor = Infor;
-            if (!(bool)Session["IsAdmin"])
+            if (userStores != null && userStores.Count >0)
             {
-                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+                model.Infor.MA_KHO = userStores.First().MA_KHO;
             }
-
+            model.UserStore = userStores;
             model.Stores = stores;
             model.Providers = providers;
             model.Units = units;
@@ -478,15 +479,8 @@ namespace SMS.Controllers
             {
                 try
                 {
-                    var infor = ctx.NHAP_KHO.Create();
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        infor.MA_KHO = model.Infor.MA_KHO;
-                    }
-                    else
-                    {
-                        infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
-                    }
+                    var infor = ctx.NHAP_KHO.Create();                    
+                    infor.MA_KHO = model.Infor.MA_KHO;                    
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
                     infor.CREATE_AT = DateTime.Now;
@@ -1204,14 +1198,7 @@ namespace SMS.Controllers
                 try
                 {
                     var infor = ctx.NHAP_KHO.Create();
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        infor.MA_KHO = model.Infor.MA_KHO;
-                    }
-                    else
-                    {
-                        infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
-                    }
+                    infor.MA_KHO = model.Infor.MA_KHO;
                     infor.MA_NHA_CUNG_CAP = model.Infor.MA_NHA_CUNG_CAP;
                     infor.NGAY_NHAP = model.Infor.NGAY_NHAP;
                     infor.NHAN_VIEN_NHAP = Convert.ToInt32(Session["UserId"]);
@@ -1277,17 +1264,24 @@ namespace SMS.Controllers
         public ActionResult Import()
         {
             var ctx = new SmsContext();
-            var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            //var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var userStores = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
             var providers = ctx.NHA_CUNG_CAP.Where(u => u.ACTIVE == "A").ToList<NHA_CUNG_CAP>();
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
-            ViewBag.Stores = stores;
+            //ViewBag.Stores = stores;
             ImportModel model = new ImportModel();
+
             NHAP_KHO Infor = new NHAP_KHO();
             model.Infor = Infor;
-            if(!(bool)Session["IsAdmin"]){
-                model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            if (userStores != null && userStores.Count > 0)
+            {
+                model.Infor.MA_KHO = userStores.First().MA_KHO;
             }
-            model.Stores = stores;
+            //if(!(bool)Session["IsAdmin"]){
+            //    model.Infor.MA_KHO = Convert.ToInt32(Session["MyStore"]);
+            //}
+            model.UserStore = userStores;
+            //model.Stores = stores;
             model.Providers = providers;
             model.Units = units;
             ViewBag.InputKind = -1;
@@ -1325,8 +1319,7 @@ namespace SMS.Controllers
 
             if (!(bool)Session["IsAdmin"])
             {
-                importerId = (int)Session["UserId"];
-                storeId = (int)Session["MyStore"];
+                importerId = (int)Session["UserId"];                
             }
 
             ViewBag.ProviderId = providerId;
