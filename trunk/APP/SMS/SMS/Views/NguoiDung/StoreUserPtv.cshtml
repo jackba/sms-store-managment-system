@@ -3,21 +3,59 @@
 
 <script>
     function Cancel(userId, storeId) {
-        alert("Cancle permission " + userId + " - " + storeId);
-        return false;
+        //alert("Cancle permission " + userId + " - " + storeId);
+        $.ajax({
+            url: "/NguoiDung/CancelPermission",
+            data: "{'userId' : '" + userId + "', 'storeId' : '" + storeId + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $.each(data, function (i, item) {
+                        alert(item);
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
+        //return false;
     };
 
     function SetPermission(userId, storeId) {
-        alert("Set permission " + userId + " - " + storeId);
-        return false;
+        //alert("Set permission " + userId + " - " + storeId);
+        //return false;
+        $.ajax({
+            url: "/NguoiDung/SetPermission",
+            data: "{'userId' : '" + userId + "', 'storeId' : '" + storeId + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $.each(data, function (i, item) {
+                        alert(item);
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
     };
 
     function SetDefault(userId, storeId) {
-        alert("Set Default " + userId + " - " + storeId);
-        return false;
+        //alert("Set Default " + userId + " - " + storeId);
+        //return false;
+        $.ajax({
+            url: "/NguoiDung/SetDefaultPermission",
+            data: "{'userId' : '" + userId + "', 'storeId' : '" + storeId + "'}",
+            dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+            success:
+                function (data) {
+                    $.each(data, function (i, item) {
+                        alert(item);
+                    });
+                },
+            error:
+                function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+        });
     };
     
-
 </script>
 <table width="100%">
     <tr style="width:100%">
