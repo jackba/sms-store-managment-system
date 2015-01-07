@@ -1,4 +1,47 @@
-﻿//Stop Form Submission of Enter Key Press
+﻿
+$(document).ready(function () {
+
+    $("#typeCustomers").val($("#kind").val());
+    percentKeyPress();
+    numberOnly();
+    productAutocomplete();
+    productCodeAutocomplete();
+    quantityKeyPress();
+    priceKeyPress();
+    tableCheck();
+    headerCheck();
+    unitOnchange();
+    unitChange();
+    productIdChange();
+    getAllTotal();
+    getNumberOfRow();
+    var customerDebit = $("#myCustomerDebit").val();
+    if (customerDebit != null && customerDebit != '' && customerDebit > 0) {
+        $("#DebitInfor").show();
+        $("#CustomerDebit").val(customerDebit);
+    } else {
+        $("#DebitInfor").hide();
+    }
+    formatNumberic();
+    codeEnter();
+    priceEnter();
+    addArrowKeys();
+    quantityEnter();
+    percentEnter();
+
+    //add catch event user press Ctr+S & Ctrl+Shift+S
+    $(window).bind('keydown', function (e) {
+        if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+            // Ctrl + S
+            returnSubmit();
+            return false;
+        }
+        return true;
+    });
+});
+
+
+//Stop Form Submission of Enter Key Press
 $("#customerName").autocomplete({
     source: function (request, response) {
         $.ajax({
@@ -630,31 +673,6 @@ function percentKeyPress() {
     });
 }
 
-$(document).ready(function () {
-
-    $("#typeCustomers").val($("#kind").val());
-    percentKeyPress();
-    numberOnly();
-    productAutocomplete();
-    productCodeAutocomplete();
-    quantityKeyPress();
-    priceKeyPress();
-    tableCheck();
-    headerCheck();
-    unitOnchange();
-    unitChange();
-    productIdChange();
-    getAllTotal();
-    getNumberOfRow();
-    var customerDebit = $("#myCustomerDebit").val();
-    if (customerDebit != null && customerDebit != '' && customerDebit > 0) {
-        $("#DebitInfor").show();
-        $("#CustomerDebit").val(customerDebit);
-    } else {
-        $("#DebitInfor").hide();
-    }
-    formatNumberic();
-});
 
 
 
@@ -663,24 +681,24 @@ function addRow() {
     var row = parseInt($("#rowIndex").val()) + 1;
     $('#detailTable > tbody:last').append('<tr> ' +
         '<td class="inner alignCenter colwidth" width="5%;">' +
-        '<input type="checkbox" class="chcktbl"> </td>' +
+        '<input type="checkbox" class="arrowkey chcktbl"> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].CODE" class="code codebtlReturn ui-autocomplete-input" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
+        '<input name="Detail[' + row + '].CODE" class="arrowkey code textbt" id="Detail_' + row + '__CODE" role="textbox" aria-haspopup="true" aria-autocomplete="list" type="text" value="" autocomplete="off">' +
         '</td>' +
         '<td class="inner colwidth">' +
         '<input name="Detail[' + row + '].DEL_FLG" class="delFlg" id="Detail_' + row + '__DEL_FLG" type="hidden" value="" data-val="true" data-val-number="The field DEL_FLG must be a number.">' +
         '<input name="Detail[' + row + '].MA_SAN_PHAM" class="productId " id="Detail_' + row + '__MA_SAN_PHAM" type="hidden" value="" data-val="true" data-val-number="The field MA_SAN_PHAM must be a number.">' +
         '<input name="Detail[' + row + '].HE_SO" class="convertor" id="Detail_' + row + '__HE_SO" type="hidden" value="" data-val="true" data-val-number="The field HE_SO must be a number.">' +
-        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="productname namebtlReturn" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
+        '<input name="Detail[' + row + '].TEN_SAN_PHAM" class="arrowkey productname textbtl" id="Detail_' + row + '__TEN_SAN_PHAM" type="text" value=""> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].SO_LUONG" class="quantity textbtlReturn numberic" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
+        '<input name="Detail[' + row + '].SO_LUONG" class="arrowkey quantity numberic textbtl" id="Detail_' + row + '__SO_LUONG" type="text" value="" data-val="true" data-val-number="The field SO_LUONG_TEMP must be a number."> </td>' +
         '<td class="inner colwidth">' +
-        '<select name="Detail[' + row + '].MA_DON_VI" class="unit " id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
+        '<select name="Detail[' + row + '].MA_DON_VI" class="arrowkey unit" id="Detail_' + row + '__MA_DON_VI" style="padding: 5px; font-size: 1.2em;width:100%;" data-val="true" data-val-number="The field MA_DON_VI must be a number.">' +
         '<option value="">---------</option></select> </td>' +
         '<td class="inner colwidth">' +
-        '<input name="Detail[' + row + '].DON_GIA" class="price textbtlReturn numberic" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
+        '<input name="Detail[' + row + '].DON_GIA" class="arrowkey price numberic textbtl" id="Detail_' + row + '__DON_GIA" type="text" value="" data-val="true" data-val-number="The field GIA_VON must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
-        '<input name="Detail[' + row + '].PHAN_TRAM_KHAU_HAO" class="percent textbtlReturn numberic" id="Detail_' + row + '__PHAN_TRAM_KHAU_HAO" type="text" value="" data-val="true" data-val-number="The field PHAN_TRAM_KHAU_HAO must be a number."> </td>' +
+        '<input name="Detail[' + row + '].PHAN_TRAM_KHAU_HAO" class="arrowkey percent numberic textbtl" id="Detail_' + row + '__PHAN_TRAM_KHAU_HAO" type="text" value="" data-val="true" data-val-number="The field PHAN_TRAM_KHAU_HAO must be a number."> </td>' +
         '<td class="innerLast colwidth">' +
         '<input name="Detail[' + row + '].THANH_TIEN" disabled="disabled" class="total textbtlReturn numberic" id="Detail_' + row + '__THANH_TIEN" type="text" readonly="True" value="" data-val-required="The THANH_TIEN field is required." data-val="true" data-val-number="The field THANH_TIEN must be a number."> </td>' +
         '</tr>');
@@ -696,4 +714,177 @@ function addRow() {
     tableCheck();
     headerCheck();
     percentKeyPress();
+    codeEnter();
+    priceEnter();
+    addArrowKeys();
+    quantityEnter();
+    percentEnter();
 };
+
+
+
+function productNameEnter() {
+    $('input.productname').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.quantity', $parent).focus();
+        }
+    });
+}
+
+
+function priceEnter() {
+    $('input.price').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.percent', $parent).focus();
+        }
+    });
+}
+
+function percentEnter() {
+    $('input.percent').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            if (last == $parent.index()) {
+                addRow();
+            } else {
+                $('input.code', $('#detailTable > tbody:last')).focus();
+            }
+        }
+    });
+}
+
+function quantityEnter() {
+    $('input.quantity').keypress(function (event) {
+        var $this = $(this);
+        var $parent = $(this).parent().parent();
+        var showFlg = $("#showFlg").val();
+        var last = $('#detailTable >tbody >tr:visible').last().index();
+        if (event.which === 13 || event.which === 27) {
+            $('input.price', $parent).focus();
+        }
+    });
+}
+
+
+function addArrowKeys() {
+    $('.arrowkey').keydown(function (e) {
+        var keyCode = e.keyCode || e.which,
+            arrow = { left: 37, up: 38, right: 39, down: 40 };
+
+        switch (keyCode) {
+            case arrow.left:
+                var preColum = $(this).closest('td').prev().find('.arrowkey');
+                while (preColum != null && preColum.is(':hidden')) {
+                    preColum = preColum.closest('td').prev().find('.arrowkey')
+                }
+                preColum.focus();
+                break;
+            case arrow.up:
+                // row n + 1
+                var prevrow = $(this).closest('tr').prev();
+                while (prevrow != null && prevrow.is(':hidden')) {
+                    prevrow = prevrow.closest('tr').prev();
+                }
+
+                if (prevrow != null && prevrow.length > 0) {
+                    var currClass = $(this).attr('class');
+                    // get next Element to focus by class 
+                    var arrControl = prevrow.find('.arrowkey');
+                    for (i = 0; i < arrControl.length; i++) {
+                        var control = arrControl[i];
+                        if (control.className.trim() == currClass.trim()) {
+                            control.focus();
+                            return;
+                        }
+
+                    }
+
+                }
+                break;
+            case arrow.right:
+                var nextColumn = $(this).closest('td').next().find('.arrowkey').not('.disabled');
+                while (nextColumn != null && nextColumn.is(':hidden')) {
+                    nextColumn = nextColumn.closest('td').next().find('.arrowkey').not('.disabled');
+                }
+                nextColumn.focus();
+                break;
+            case arrow.down:
+                // row n + 1
+                var nextrow = $(this).closest('tr').next();
+                while (nextrow != null && nextrow.is(':hidden')) {
+                    nextrow = nextrow.closest('tr').next();
+                }
+                if (nextrow != null && nextrow.length > 0) {
+                    var currClass = $(this).attr('class');
+                    // get next Element to focus by class 
+                    var arrControl = nextrow.find('.arrowkey');
+                    for (i = 0; i < arrControl.length; i++) {
+                        var control = arrControl[i];
+                        if (control.className.trim() == currClass.trim()) {
+                            control.focus();
+                            return;
+                        }
+
+                    }
+
+                }
+                break;
+        }
+    });
+}
+
+
+function codeEnter() {
+    $('input.code').keypress(function (event) {
+        var $this = $(this);
+        if (event.which === 13 || event.which === 27) {
+            if ($this.val().length >= 1) {
+                $.ajax({
+                    url: "/SanPham/FindSuggestFirstbyCode", data: "{ 'prefixText': '" + $this.val() + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
+                    //url: "/SanPham/FindSuggestByCode", data: "{ 'prefixText': '" + request.term + "' , 'typeCustomer' : '" + $("#typeCustomers").val() + "'}",
+                    dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; },
+                    success:
+                        function (data) {
+                            $.each(data, function (i, item) {
+                                //alert(item.id);
+                                var $th = $this;
+                                var pa = $th.parent().parent();
+                                if (!checkDuplicate(item.id, pa.index())) {
+                                    $th.val(item.label);
+                                    $('input.productId', pa).val(item.id);
+                                    $('input.productname', pa).val(item.name);
+                                    $('input.quantity', pa).val("");
+                                    createDonViTinh($th);
+                                    formatNumberic();
+                                    $('input.convertor', pa).val("1");
+                                    $th.css("background-color", "white");
+                                    $('input.quantity', pa).focus();
+                                    $('input.price', pa).val(item.price);
+                                    $('input.percent', pa).val(item.discount);
+                                } else {
+                                    alert("Sản phẩm này đã có trong danh sách");
+                                    $th.val("");
+                                    $('input.productId', pa).val("");
+                                    $('input.productname', pa).val("");
+                                    $('input.convertor', pa).val("1");
+                                    $('input.quantity', pa).val("");
+                                }
+                                return false;
+                            });
+                        },
+                    error:
+                        function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+                });
+            }
+        };
+    });
+}
