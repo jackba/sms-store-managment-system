@@ -23,7 +23,6 @@
 
 <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
 <script src="~/Content/js/jquery-1.9.1.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
@@ -44,7 +43,7 @@
     </style>
 
 }
-@using (Html.BeginForm("EditGetReturn", "TraHang", FormMethod.Post, new { @id = "index" }))
+@using (Html.BeginForm("EditGetReturn", "TraHang", FormMethod.Post, new { @id = "index", @autocomplete = "off" }))
 {
     @Html.HiddenFor(u => u.Customer.NO_GOI_DAU, new { id = "myCustomerDebit"})
     @Html.HiddenFor(u => u.Customer.KIND, new { id = "kind"})
@@ -93,7 +92,7 @@
     </table>
     <hr />
     <div id="DebitInfor">
-        <table border="1" class="innerLast" style="width:100%">
+        <table border="1" class="innerLast " style="width:100%">
             <tr class="innerLast">
                 <td style=" background-color: lightblue;" colspan="2" class="innerLast">
                     <strong> Thông tin nợ gối đầu của khách hàng </strong>
@@ -124,7 +123,7 @@
     <input type="button" value="Xóa" style="width:200px" onclick="deleteCheckedRow()" />
 
     <div style="clear:both"></div>
-    <table id="detailTable" name="detailTable" width="100%">
+    <table id="detailTable" name="detailTable" width="100%" class="contentTable">
         <thead>
             <tr class="inner column-hscroll alignCenter">
                 <td class='inner colwidth head ' width="5%;"> <input type="checkbox" id="chckHead" /> </td>
@@ -140,44 +139,44 @@
 
         <tbody>
             @{
-                    double total = 0;
+    double total = 0;
             }
-            @for (int i = 0; i < Model.Detail.Count; i++ )
+            @for (int i = 0; i < Model.Detail.Count; i++)
             {
-                total = Convert.ToDouble(@Model.Detail[i].SO_LUONG)*Convert.ToDouble(@Model.Detail[i].DON_GIA);
+                total = Convert.ToDouble(@Model.Detail[i].SO_LUONG) * Convert.ToDouble(@Model.Detail[i].DON_GIA);
                 <tr>
-                <td class='inner alignCenter colwidth' width="5%;">
-                    <input type="checkbox" class="chcktbl">
-                </td>
-                <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].CODE, new { @class = "code codebtlReturn" })
-                </td>
-                <td class='inner colwidth '>
-                    @Html.HiddenFor(u => u.Detail[i].MA_SAN_PHAM, new { @class = "productId " })
-                    @Html.HiddenFor(u => u.Detail[i].DEL_FLG, new { @class = "delFlg" })
-                    @Html.HiddenFor(u => u.Detail[i].HE_SO, new { @class = "convertor" })
-                    @Html.TextBoxFor(u => u.Detail[i].TEN_SAN_PHAM, new { @class = "productname namebtlReturn" })
-                </td>
-                <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "quantity textbtlReturn numberic" })
-                </td>
-                <td class="inner colwidth">
-                    @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
-                    @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;width:100%;", @class = "unit" })
-                </td>
-
-                <td class='inner colwidth '>
-                    @Html.TextBoxFor(u => u.Detail[i].DON_GIA, new { @class = "price textbtlReturn numberic" })
-                </td>
-                    <td class='inner colwidth '>
-                        @Html.TextBoxFor(u => u.Detail[i].PHAN_TRAM_KHAU_HAO, new { @class = "percent textbtlReturn numberic" })
+                    <td class='inner alignCenter colwidth' width="5%;">
+                        <input type="checkbox" class="arrowkey chcktbl">
                     </td>
-                <td class='innerLast colwidth '>
-                    @Html.TextBox("total", @total.ToString("#,###.##"), new { @class = "total textbtlReturn numberic", @readOnly = true, @disabled = "disabled" })
-                </td>
-            </tr>
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.Detail[i].CODE, new { @class = "arrowkey code textbtl" })
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.HiddenFor(u => u.Detail[i].MA_SAN_PHAM, new { @class = "productId " })
+                        @Html.HiddenFor(u => u.Detail[i].DEL_FLG, new { @class = "delFlg" })
+                        @Html.HiddenFor(u => u.Detail[i].HE_SO, new { @class = "convertor" })
+                        @Html.TextBoxFor(u => u.Detail[i].TEN_SAN_PHAM, new { @class = "arrowkey productname textbtl" })
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.Detail[i].SO_LUONG, new { @class = "arrowkey quantity numberic textbtl" })
+                    </td>
+                    <td class="inner colwidth">
+                        @Html.Hidden("unitTemp", Model.Detail[i].MA_DON_VI, new { @id = i + "MA_DON_VI", @class = "unitTemp" })
+                        @Html.DropDownListFor(u => u.Detail[i].MA_DON_VI, new SelectList(@Model.Units, "MA_DON_VI", "TEN_DON_VI"), "---------", new { style = "padding:5px;font-size:1.2em;width:70px;", @class = "arrowkey unit" })
+                    </td>
+
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.Detail[i].DON_GIA, new { @class = "arrowkey price numberic textbtl" })
+                    </td>
+                    <td class='inner colwidth '>
+                        @Html.TextBoxFor(u => u.Detail[i].PHAN_TRAM_KHAU_HAO, new { @class = "arrowkey percent numberic textbtl" })
+                    </td>
+                    <td class='innerLast colwidth '>
+                        @Html.TextBox("total", @total.ToString("#,###.##"), new { @class = "total textbtl numberic", @readOnly = true })
+                    </td>
+                </tr>
             }
-            
+
         </tbody>
         <tfoot>
             <tr>
