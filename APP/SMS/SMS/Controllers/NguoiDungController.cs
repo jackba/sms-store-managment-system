@@ -563,5 +563,145 @@ namespace SMS.Controllers
                 return Json(yourOjbect);
             }
         }
+
+        [HttpPost]
+        public JsonResult CancelPermission(int userId, int storeId) 
+        {
+            object yourOjbect;
+            string data = "";
+            var ctx = new SmsContext();
+            var usrStore = ctx.USER_STORE.Where(u => u.ACTIVE == "A" && u.MA_KHO == storeId && u.USR_ID == userId).FirstOrDefault();
+            if (usrStore != null)
+            {
+                usrStore.ACTIVE = "I";
+                ctx.SaveChanges();
+                data = "{ \"Message \" : \"Hủy quyền thành công.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                return Json(yourOjbect);
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy người dùng với quyền tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy người dùng với quyền tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
+                return Json(yourOjbect);
+            }          
+        }
+
+        [HttpPost]
+        public JsonResult SetPermission(int userId, int storeId)
+        {
+            object yourOjbect;
+            string data = "";
+            var ctx = new SmsContext();
+            var user = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.MA_NGUOI_DUNG == userId).FirstOrDefault();
+            var store = ctx.KHOes.Where(u => u.MA_KHO == storeId).FirstOrDefault();
+            if (user == null)
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
+                return Json(yourOjbect);
+            }
+            if (store == null)
+            {
+                ViewBag.Message = "Không tìm thấy kho tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy kho tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
+                return Json(yourOjbect);
+            }
+            
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var usrStore = ctx.USER_STORE.Create();
+                    usrStore.USR_ID = userId;
+                    usrStore.MA_KHO = storeId;
+                    usrStore.ACTIVE = "A";
+                    usrStore.CREATE_BY = (int)Session["UserId"];
+                    usrStore.CREATE_AT = DateTime.Now;
+                    usrStore.UPDATE_AT = DateTime.Now;
+                    ctx.USER_STORE.Add(usrStore);
+
+                    ctx.SaveChanges();
+                    transaction.Complete();
+                    data = "{ \"Message \" : \"Thiết lập quyền thành công.\"}";
+                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                    return Json(yourOjbect);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    ViewBag.Message = "Có lỗi xảy ra trong quá trình thiết lập quyền cho người dùng.";
+                    data = "{ \"Message \" : \"Có lỗi xảy ra trong quá trình thiết lập quyền cho người dùng.\"}";
+                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                    ctx.Dispose();
+                    return Json(yourOjbect);
+                }
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SetDefaultPermission(int userId, int storeId)
+        {
+            object yourOjbect;
+            string data = "";
+            var ctx = new SmsContext();
+            var user = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.MA_NGUOI_DUNG == userId).FirstOrDefault();
+            var store = ctx.KHOes.Where(u => u.MA_KHO == storeId).FirstOrDefault();
+            if (user == null)
+            {
+                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
+                return Json(yourOjbect);
+            }
+            if (store == null)
+            {
+                ViewBag.Message = "Không tìm thấy kho tương ứng.";
+                data = "{ \"Message \" : \"Không tìm thấy kho tương ứng.\"}";
+                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
+                return Json(yourOjbect);
+            }
+
+            using (var transaction = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    var usrStore = ctx.USER_STORE.Create();
+                    usrStore.USR_ID = userId;
+                    usrStore.MA_KHO = storeId;
+                    usrStore.IS_DEFAULT = true;
+                    usrStore.ACTIVE = "A";
+                    usrStore.CREATE_BY = (int)Session["UserId"];
+                    usrStore.CREATE_AT = DateTime.Now;
+                    usrStore.UPDATE_AT = DateTime.Now;
+                    ctx.USER_STORE.Add(usrStore);
+
+                    ctx.SaveChanges();
+                    transaction.Complete();
+                    data = "{ \"Message \" : \"Thiết lập quyền mặc định thành công.\"}";
+                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                    return Json(yourOjbect);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.ToString());
+                    Transaction.Current.Rollback();
+                    ViewBag.Message = "Có lỗi xảy ra trong quá trình thiết lập quyền mặc định cho người dùng.";
+                    data = "{ \"Message \" : \"Có lỗi xảy ra trong quá trình thiết lập quyền mặc định cho người dùng.\"}";
+                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                    ctx.Dispose();
+                    return Json(yourOjbect);
+                }
+            }
+        }
     }
 }
