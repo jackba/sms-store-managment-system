@@ -427,6 +427,12 @@
     <Compile Include="Models\SP_GET_SMS_MESSAGES_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GET_STORES_BY_USR_ID_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_GET_STORES_USER_Result.cs">
+      <DependentUpon>SmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_GET_VALUE_ALL_HOA_DON_Result.cs">
       <DependentUpon>SmsModel.tt</DependentUpon>
     </Compile>
@@ -712,6 +718,8 @@
     <Content Include="Content\js\jquery.print-preview.js" />
     <Content Include="Content\js\EditGetReturn.js" />
     <Content Include="Content\js\ReturnNoBill.js" />
+    <Content Include="Content\js\TraHang\EditReturn2Provider.js" />
+    <Content Include="Content\js\TraHang\Return2Provider.js" />
     <Content Include="Content\KhachHang.css" />
     <Content Include="Content\Kho.css" />
     <Content Include="Content\KhuVuc.css" />

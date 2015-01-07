@@ -2580,6 +2580,13 @@ warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary 
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
           <Parameter Name="TO_DATE" Type="date" Mode="In" />
         </Function>
+        <Function Name="SP_GET_STORES_BY_USR_ID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USR_ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GET_STORES_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USR_ID" Type="int" Mode="In" />
+          <Parameter Name="USR_NAME" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SP_GET_TON_KHO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SP_GET_TON_KHO_ALERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NAME" Type="nvarchar" Mode="In" />
@@ -2594,6 +2601,10 @@ warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary 
           <Parameter Name="STORE_ID" Type="int" Mode="In" />
           <Parameter Name="PRODUC_ID" Type="int" Mode="In" />
           <Parameter Name="RETURN_VAL" Type="float" Mode="InOut" />
+        </Function>
+        <Function Name="SP_GET_USER_STORE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USR_ID" Type="int" Mode="In" />
+          <Parameter Name="USR_NAME" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="SP_GET_VALUE_ALL_HOA_DON" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FROM_DATE" Type="date" Mode="In" />
@@ -6660,6 +6671,17 @@ warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary 
             <End Role="NGUOI_DUNG" EntitySet="NGUOI_DUNG" />
             <End Role="USER_STORE" EntitySet="USER_STORE" />
           </AssociationSet>
+          <FunctionImport Name="SP_GET_STORES_BY_USR_ID" ReturnType="Collection(SmsModel.SP_GET_STORES_BY_USR_ID_Result)">
+            <Parameter Name="USR_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_STORES_USER" ReturnType="Collection(SmsModel.SP_GET_STORES_USER_Result)">
+            <Parameter Name="USR_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USR_NAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GET_USER_STORE">
+            <Parameter Name="USR_ID" Mode="In" Type="Int32" />
+            <Parameter Name="USR_NAME" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GET_HOA_DON_Result">
           <Property Type="Int32" Name="MA_HOA_DON" Nullable="false" />
@@ -7351,6 +7373,14 @@ warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_GET_STORES_BY_USR_ID_Result">
+          <Property Type="Int32" Name="MA_KHO" Nullable="true" />
+          <Property Type="String" Name="TEN_KHO" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="SP_GET_STORES_USER_Result">
+          <Property Type="Int32" Name="MA_KHO" Nullable="true" />
+          <Property Type="String" Name="TEN_KHO" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9040,6 +9070,23 @@ warning 6002: The table/view 'VAN_PHUOC.dbo.V_XUAT_KHO' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_STORES_BY_USR_ID" FunctionName="SmsModel.Store.SP_GET_STORES_BY_USR_ID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_STORES_BY_USR_ID_Result">
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+                <ScalarProperty Name="TEN_KHO" ColumnName="TEN_KHO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_STORES_USER" FunctionName="SmsModel.Store.SP_GET_STORES_USER">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SmsModel.SP_GET_STORES_USER_Result">
+                <ScalarProperty Name="MA_KHO" ColumnName="MA_KHO" />
+                <ScalarProperty Name="TEN_KHO" ColumnName="TEN_KHO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GET_USER_STORE" FunctionName="SmsModel.Store.SP_GET_USER_STORE" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

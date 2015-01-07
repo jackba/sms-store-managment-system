@@ -111,19 +111,10 @@ namespace SMS.Controllers
 
                     foreach (var detail in details)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
                         {
                             ct = ctx.TRA_HANG_NCC_CHI_TIET.Create();
                             ct.ACTIVE = "A";
-                            //ct = ctx.CHI_TIET_XUAT_KHO.Create();
-                            //if (infor.SAVE_FLG == 1)
-                            //{
-                            //    ct.ACTIVE = "W";
-                            //}
-                            //else
-                            //{
-                            //    ct.ACTIVE = "A";
-                            //}
                             ct.CREATE_AT = DateTime.Now;
                             ct.UPDATE_AT = DateTime.Now;
                             ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
@@ -197,7 +188,6 @@ namespace SMS.Controllers
                     {
                         return RedirectToAction("ListOfToProvider", new { @message = "Phiếu nhập hàng không tồn tại, hoặc đã bị xóa. Vui lòng kiểm tra lại" });
                     }
-                    //returnInfor.ACTIVE = "A";
                     returnInfor.MA_NHA_CUNG_CAP = infor.MA_NHA_CUNG_CAP;
                     returnInfor.NGAY_LAP_PHIEU = infor.NGAY_LAP_PHIEU;
                     returnInfor.NGUOI_LAP_PHIEU = Convert.ToInt32(Session["UserId"]);
@@ -213,19 +203,10 @@ namespace SMS.Controllers
 
                     foreach (var detail in details)
                     {
-                        if (detail.DEL_FLG != 1)
+                        if (detail.DEL_FLG != 1 && detail.MA_SAN_PHAM != null && !string.IsNullOrWhiteSpace(detail.MA_SAN_PHAM.ToString()))
                         {
                             ct = ctx.TRA_HANG_NCC_CHI_TIET.Create();
                             ct.ACTIVE = "A";
-                            //ct = ctx.CHI_TIET_XUAT_KHO.Create();
-                            //if (infor.SAVE_FLG == 1)
-                            //{
-                            //    ct.ACTIVE = "W";
-                            //}
-                            //else
-                            //{
-                            //    ct.ACTIVE = "A";
-                            //}
                             ct.CREATE_AT = DateTime.Now;
                             ct.UPDATE_AT = DateTime.Now;
                             ct.UPDATE_BY = Convert.ToInt32(Session["UserId"]);

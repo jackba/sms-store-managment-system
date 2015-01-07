@@ -103,7 +103,7 @@
 
                 <td class="innerLast colwidth">
                     @{
-            if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]) && dbHist.MA_PHIEU_TRA > 0)
+            if (((bool)Session["IsAccounting"] || (bool)Session["IsAdmin"] || (bool)Session["IsStoreManager"]))
             {
                 <a href="@Url.Action("DeleteExport2Provider", "Export", new { id = @dbHist.ID })" class="button-module">
                     <img width="16" height="16" alt="edit" src="~/Content/images/delete.png"></img>
