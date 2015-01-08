@@ -43,7 +43,7 @@ namespace SMS.Controllers
 
             StoreAndUserList model = new StoreAndUserList();
             model.Stores = stores;
-            model.StoresUser = usersStore.ToList < StoreUser>();
+            model.StoresUser = usersStore.ToList<StoreUser>();
             ctx.Dispose();
             return PartialView("StoreUserPtv", model);
         }
@@ -56,7 +56,7 @@ namespace SMS.Controllers
             var questions = ctx.SECURITY_QUESTIONS.Where(u => u.ACTIVE == "A").ToList<SECURITY_QUESTIONS>();
             int userId = 0;
             int.TryParse(Session["UserId"].ToString(), out userId);
-            var persionalQuestions = ctx.PERSONAL_QUESTIONS.Where(u => u.ACTIVE == "A" && u.USR_ID == userId).Take(3).ToList < PERSONAL_QUESTIONS>();
+            var persionalQuestions = ctx.PERSONAL_QUESTIONS.Where(u => u.ACTIVE == "A" && u.USR_ID == userId).Take(3).ToList<PERSONAL_QUESTIONS>();
             if (persionalQuestions != null && persionalQuestions.Count == 3)
             {
                 model.QuestionId1 = (int)persionalQuestions[0].QUESTION_ID;
@@ -164,7 +164,7 @@ namespace SMS.Controllers
                                   where (u.ACTIVE == "A" && (String.IsNullOrEmpty(searchString) || u.TEN_NGUOI_DUNG.ToUpper().Contains(searchString.ToUpper()) || u.USER_NAME.ToUpper().Contains(searchString.ToUpper())))
                                   select new NguoiDungObj
                                   {
-                                      Kho = kho, 
+                                      Kho = kho,
                                       NhomNguoiDung = gro,
                                       NguoiDung = u,
                                       NguoiTao = u1,
@@ -243,7 +243,7 @@ namespace SMS.Controllers
             }
 
         }
-        
+
         [CustomActionFilter]
         [HttpGet]
         public ActionResult Delete(int id)
@@ -407,7 +407,7 @@ namespace SMS.Controllers
             String oldpass = form["oldpass"];
             String newpass = form["newpass"];
             String confirmpass = form["confirmpass"];
-            
+
             using (var ctx = new SmsContext())
             {
                 ViewData["errorcode"] = "99";
@@ -426,7 +426,7 @@ namespace SMS.Controllers
                                 {
                                     if (newpass.Equals(confirmpass))
                                     {
-                                        
+
                                         nd.MAT_KHAU = crypto.Compute(newpass);
                                         nd.SALT = crypto.Salt;
                                         ctx.SaveChanges();
@@ -511,7 +511,7 @@ namespace SMS.Controllers
                                  };
             var result = Json(suggestedUsers.Take(10).ToList());
             ctx.Dispose();
-            return result; 
+            return result;
         }
 
         [CustomActionFilter]
@@ -565,7 +565,7 @@ namespace SMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult CancelPermission(int userId, int storeId) 
+        public JsonResult CancelPermission(int userId, int storeId)
         {
             object yourOjbect;
             string data = "";
@@ -574,9 +574,11 @@ namespace SMS.Controllers
             if (usrStore != null)
             {
                 usrStore.ACTIVE = "I";
+                usrStore.IS_DEFAULT = false;
                 ctx.SaveChanges();
                 data = "{ \"Message \" : \"Hủy quyền thành công.\"}";
                 yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                ctx.Dispose();
                 return Json(yourOjbect);
             }
             else
@@ -586,7 +588,7 @@ namespace SMS.Controllers
                 yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
                 ctx.Dispose();
                 return Json(yourOjbect);
-            }          
+            }
         }
 
         [HttpPost]
@@ -595,43 +597,40 @@ namespace SMS.Controllers
             object yourOjbect;
             string data = "";
             var ctx = new SmsContext();
-            var user = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.MA_NGUOI_DUNG == userId).FirstOrDefault();
-            var store = ctx.KHOes.Where(u => u.MA_KHO == storeId).FirstOrDefault();
-            if (user == null)
-            {
-                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
-                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
-                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                ctx.Dispose();
-                return Json(yourOjbect);
-            }
-            if (store == null)
-            {
-                ViewBag.Message = "Không tìm thấy kho tương ứng.";
-                data = "{ \"Message \" : \"Không tìm thấy kho tương ứng.\"}";
-                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                ctx.Dispose();
-                return Json(yourOjbect);
-            }
-            
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
                 {
-                    var usrStore = ctx.USER_STORE.Create();
-                    usrStore.USR_ID = userId;
-                    usrStore.MA_KHO = storeId;
-                    usrStore.ACTIVE = "A";
-                    usrStore.CREATE_BY = (int)Session["UserId"];
-                    usrStore.CREATE_AT = DateTime.Now;
-                    usrStore.UPDATE_AT = DateTime.Now;
-                    ctx.USER_STORE.Add(usrStore);
+                    var userStore = ctx.USER_STORE.Where(u => u.MA_KHO == storeId && u.USR_ID == userId).FirstOrDefault();
+                    if (userStore != null)
+                    {
+                        userStore.ACTIVE = "A";
+                        ctx.SaveChanges();
+                        transaction.Complete();
+                        data = "{ \"Message \" : \"Thiết lập quyền thành công.\"}";
+                        yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        ctx.Dispose();
+                        return Json(yourOjbect);
+                    }
+                    else
+                    {
 
-                    ctx.SaveChanges();
-                    transaction.Complete();
-                    data = "{ \"Message \" : \"Thiết lập quyền thành công.\"}";
-                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                    return Json(yourOjbect);
+                        var usrStore = ctx.USER_STORE.Create();
+                        usrStore.USR_ID = userId;
+                        usrStore.MA_KHO = storeId;
+                        usrStore.ACTIVE = "A";
+                        usrStore.CREATE_BY = (int)Session["UserId"];
+                        usrStore.CREATE_AT = DateTime.Now;
+                        usrStore.UPDATE_AT = DateTime.Now;
+                        ctx.USER_STORE.Add(usrStore);
+
+                        ctx.SaveChanges();
+                        transaction.Complete();
+                        data = "{ \"Message \" : \"Thiết lập quyền thành công.\"}";
+                        yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        ctx.Dispose();
+                        return Json(yourOjbect);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -652,44 +651,74 @@ namespace SMS.Controllers
             object yourOjbect;
             string data = "";
             var ctx = new SmsContext();
-            var user = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.MA_NGUOI_DUNG == userId).FirstOrDefault();
-            var store = ctx.KHOes.Where(u => u.MA_KHO == storeId).FirstOrDefault();
-            if (user == null)
-            {
-                ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
-                data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
-                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                ctx.Dispose();
-                return Json(yourOjbect);
-            }
-            if (store == null)
-            {
-                ViewBag.Message = "Không tìm thấy kho tương ứng.";
-                data = "{ \"Message \" : \"Không tìm thấy kho tương ứng.\"}";
-                yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                ctx.Dispose();
-                return Json(yourOjbect);
-            }
-
             using (var transaction = new System.Transactions.TransactionScope())
             {
                 try
                 {
-                    var usrStore = ctx.USER_STORE.Create();
-                    usrStore.USR_ID = userId;
-                    usrStore.MA_KHO = storeId;
-                    usrStore.IS_DEFAULT = true;
-                    usrStore.ACTIVE = "A";
-                    usrStore.CREATE_BY = (int)Session["UserId"];
-                    usrStore.CREATE_AT = DateTime.Now;
-                    usrStore.UPDATE_AT = DateTime.Now;
-                    ctx.USER_STORE.Add(usrStore);
+                    var userStore = ctx.USER_STORE.Where(u => u.MA_KHO == storeId && u.USR_ID == userId).FirstOrDefault();
 
-                    ctx.SaveChanges();
-                    transaction.Complete();
-                    data = "{ \"Message \" : \"Thiết lập quyền mặc định thành công.\"}";
-                    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
-                    return Json(yourOjbect);
+                    var userAtOtherStores = ctx.USER_STORE.Where(u => u.MA_KHO != storeId && u.USR_ID == userId && u.ACTIVE == "A");
+                    if (userAtOtherStores != null)
+                    {
+                        foreach (var i in userAtOtherStores)
+                        {
+                            i.IS_DEFAULT = false;
+                        }
+                    }
+
+                    if (userStore != null)
+                    {
+                        userStore.ACTIVE = "A";
+                        userStore.IS_DEFAULT = true;
+                        //reset default permission at other stores 
+
+                        //end reset
+                        ctx.SaveChanges();
+                        transaction.Complete();
+                        data = "{ \"Message \" : \"Thiết lập quyền mặc định thành công.\"}";
+                        yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        ctx.Dispose();
+                        return Json(yourOjbect);
+                    }
+                    else
+                    {
+                        //var user = ctx.NGUOI_DUNG.Where(u => u.ACTIVE == "A" && u.MA_NGUOI_DUNG == userId).FirstOrDefault();
+                        //var store = ctx.KHOes.Where(u => u.MA_KHO == storeId).FirstOrDefault();
+                        //if (user == null)
+                        //{
+                        //    ViewBag.Message = "Không tìm thấy người dùng tương ứng.";
+                        //    data = "{ \"Message \" : \"Không tìm thấy người dùng tương ứng.\"}";
+                        //    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        //    ctx.Dispose();
+                        //    return Json(yourOjbect);
+                        //}
+                        //if (store == null)
+                        //{
+                        //    ViewBag.Message = "Không tìm thấy kho tương ứng.";
+                        //    data = "{ \"Message \" : \"Không tìm thấy kho tương ứng.\"}";
+                        //    yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        //    ctx.Dispose();
+                        //    return Json(yourOjbect);
+                        //}
+
+
+                        var usrStore = ctx.USER_STORE.Create();
+                        usrStore.USR_ID = userId;
+                        usrStore.MA_KHO = storeId;
+                        usrStore.IS_DEFAULT = true;
+                        usrStore.ACTIVE = "A";
+                        usrStore.CREATE_BY = (int)Session["UserId"];
+                        usrStore.CREATE_AT = DateTime.Now;
+                        usrStore.UPDATE_AT = DateTime.Now;
+                        ctx.USER_STORE.Add(usrStore);
+                        ctx.SaveChanges();
+                        transaction.Complete();
+                        data = "{ \"Message \" : \"Thiết lập quyền mặc định thành công.\"}";
+                        yourOjbect = new JavaScriptSerializer().DeserializeObject(data);
+                        ctx.Dispose();
+                        return Json(yourOjbect);
+
+                    }
                 }
                 catch (Exception ex)
                 {
