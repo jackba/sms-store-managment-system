@@ -117,14 +117,8 @@ namespace SMS.Controllers
                 {                  
 
                     var import = ctx.NHAP_KHO.Create();
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        import.MA_KHO = model.MaKho;
-                    }
-                    else
-                    {
-                        import.MA_KHO = Convert.ToInt32(Session["MyStore"]);
-                    }
+                    import.MA_KHO = model.MaKho;
+                    
                     import.NGAY_NHAP = model.NgayNhapKho;
                     import.LY_DO_NHAP = 1;
                     import.MA_PHIEU_TRA = model.Infor.MA_TRA_HANG;
@@ -200,6 +194,9 @@ namespace SMS.Controllers
             }
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             ViewBag.Kho = stores;
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            model.StoreList = storeList;
+
             ctx.Dispose();
             return View(model);
         }

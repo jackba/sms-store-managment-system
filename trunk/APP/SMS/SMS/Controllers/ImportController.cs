@@ -87,12 +87,10 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             System.Text.StringBuilder fileStringBuilder = new System.Text.StringBuilder();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
-            var storeId = model.StoreId;
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }            
+            var storeId = model.StoreId;          
             model.StoreId = storeId;
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            model.StoreList = storeList;
             string ImportNo = DateTime.Now.ToString("ddMMyyyyHHmmss") + DateTime.Now.Millisecond.ToString();
             if (file != null)
             {
@@ -251,9 +249,11 @@ namespace SMS.Controllers
             ImportCsvModel model = new ImportCsvModel();
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
-            if (!(bool)Session["IsAdmin"])
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            model.StoreList = storeList;
+            if (storeList != null && storeList.Count > 0)
             {
-                model.StoreId = Convert.ToInt32(Session["MyStore"]);
+                model.StoreId = (int)storeList.First().MA_KHO;
             }else
             {
                 model.StoreId = 0;
@@ -896,14 +896,21 @@ namespace SMS.Controllers
             ViewBag.InputKind = 0;
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A");
             ViewBag.Stores = stores;
-            if (!(bool)Session["IsAdmin"])
+           
+            var userStore = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            ListExportTransferModel model = new ListExportTransferModel(); 
+            model.StoreList = userStore;
+
+            if (userStore != null && userStore.Count > 0)
             {
-                ViewBag.ImportStoreId = Session["MyStore"];
+                ViewBag.ImportStoreId = userStore.First().MA_KHO;
             }
+
             ViewBag.Stores = stores;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
-            return View();
+
+            return View(model);
         }
 
         [HttpPost]
@@ -918,16 +925,16 @@ namespace SMS.Controllers
             {
                 todate = SystemConstant.MAX_DATE;
             }
-            if (!(bool)Session["IsAdmin"])
-            {
-                importStoreId = Convert.ToInt32(Session["MyStore"]);
-            }
-            var ctx = new SmsContext();
+
+            var ctx = new SmsContext();            
+
             var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
                 Convert.ToInt32(importStoreId), fromDate, todate, Convert.ToInt32(0), string.Empty).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_PHIEU_CHUYEN_KHO_Result>();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
-            ListExportTransferModel model = new ListExportTransferModel();
+            ListExportTransferModel model = new ListExportTransferModel();            
+           
+
             model.TheList = theList.ToPagedList(pageIndex, pageSize);
             model.Count = theList.Count;
             ViewBag.Status = status;
