@@ -17,6 +17,7 @@ namespace SMS.Models
     {
         public TRA_HANG Infor { get; set; }
         public List<SP_GET_REFUND_DETAIL_Result> Detail { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
         public DateTime? NgayNhapKho { get; set; }
         public int? MaKho { get; set; }
     }

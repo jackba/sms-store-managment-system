@@ -29,6 +29,8 @@ namespace SMS.Models
         public List<ImportCsvFile> TheList { get; set; }
         public List<KHO> Stores { get; set; }
 
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
+
         [Required]
         public int StoreId { get; set; }
         [Required]
