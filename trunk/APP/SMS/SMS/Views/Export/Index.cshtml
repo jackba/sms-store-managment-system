@@ -1,4 +1,4 @@
-﻿@model SMS.Models.HoaDonBHModel
+﻿@model SMS.Models.ExportModel
 @using PagedList.Mvc;
 
 @{
@@ -11,15 +11,14 @@
 </div>
 <br />
 <hgroup class="title">
-    <h2> Danh sách hóa đơn chờ xuất kho</h2>
+    <h2> <strong>Danh sách hóa đơn chờ xuất kho</strong></h2>
 </hgroup>
 
 <h3 style="color:red">@ViewBag.Message</h3>
 <h3 style="color:blue">@ViewBag.MessageInfor</h3>
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
 <script src="~/Content/js/jquery-1.9.1.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -126,36 +125,29 @@
 {
     <hr style="width:100%" />
     <div style="float:left">
-        <table>
-            <tr>
-                <td>
+        <table style="width:100%;">
+            <tr style="font-family:'Times New Roman'; font-size:15px;">
+                <td style="padding-left:10px">
                     @Html.Hidden("customerId", ViewBag.CustomerId as int?,  new { id = "customerId" })
-                    Khách hàng:
+                    Khách hàng
                 </td>
-                <td>
-                    @Html.TextBox("customerName",  ViewBag.customerName as string, new { id = "customerName" })
+                <td style="padding-left:10px">
+                    Kho xuất
                 </td>
+                <td style="padding-left:10px">
+                    Ngày xuất
+                </td>
+            
             </tr>
-            @{
-    if ((bool)Session["IsAdmin"] || (bool)Session["IsAccounting"])
-    {
-        <tr>
-            <td>
-                @Html.Hidden("storeId", ViewBag.StoreId as int?, new { id = "storeId" })
-                Cửa hàng:
-            </td>
-            <td>
-                @Html.TextBox("storeName", ViewBag.ProductName as string, new { id = "storeName" })
-            </td>
-        </tr>
-    }
-            }
             <tr>
-                <td>
-                    Ngày Mua:
+                <td style="padding-left:10px">
+                    @Html.TextBox("customerName", ViewBag.customerName as string, new { id = "customerName" })
                 </td>
-                <td>
-                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
+                <td style="padding-left:10px">
+                    @Html.DropDownListFor(u => u.storeId, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), new { @id = "storeId", name = "storeId", style = "padding:5px;font-size:1.2em; width:200px;", @class = "required" })
+                </td>
+                <td style="padding-left:10px">
+                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", style = "width:100px;" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", style = "width:100px;" })
                 </td>
             </tr>
         </table>

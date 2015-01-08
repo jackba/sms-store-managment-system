@@ -48,7 +48,7 @@
         <hr />
     }
 </div>  
-@using (Html.BeginForm("importCsv", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("importCsv", "Import", FormMethod.Post, new {id = "index",  enctype = "multipart/form-data" }))
 {    
     
       <div class="control-group">
@@ -58,14 +58,8 @@
                       <label> Kho nhập  </label>
                   </td>
                   <td class="required">
-                      @if ((bool)Session["IsAdmin"])
-                      {
-                          @Html.DropDownListFor(u => u.StoreId, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
-                      }
-                      else
-                      {
-                          @Html.DropDownListFor(u => u.StoreId, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                      }
+                     @Html.DropDownListFor(u => u.StoreId, new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                     
                   </td>
               </tr>
               <tr>
@@ -89,7 +83,7 @@
             
         </div>
       </div>
-    <input class="btn btn-primary" type="submit" value="Nhập kho" />
+    <input class="btn btn-primary" type="button" value="Nhập kho"  onclick="returnSubmit()"/>
     <div style="clear:both"></div>
     <hr style="width:100%" />
     <div>
@@ -159,6 +153,45 @@
 
 
 <script>
+
+    function returnSubmit() {
+        var importStore = $("#importStoreId").val();
+        var inportDate = $("#importDate").val();
+        var file = $("#file").val();
+
+        $("#message").empty();
+        var errorMessage = '';
+
+        if (importStore == null || importStore == '' && importStore < 1) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng chọn kho nhập. ";
+        }
+
+        if (inportDate == null || inportDate == '') {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng chọn ngày nhập kho. ";
+        }
+
+        if (file == null || file.length <= 0) {
+            if (errorMessage != '') {
+                errorMessage += "<br>";
+            }
+            errorMessage += "Vui lòng chọn file import. ";
+        }
+        if (errorMessage != '') {
+            $('#message').append(errorMessage);
+            $('#message').append("<hr/>");
+            return false;
+        }
+        else {
+            $('#index').submit();
+        }
+
+    }
     $(document).ready(function () {
         var message = $("#hidenMessage").val();
         if (message != '') {

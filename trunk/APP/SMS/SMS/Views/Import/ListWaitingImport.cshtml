@@ -158,14 +158,9 @@
                 Cửa hàng nhận:
             </td>
             <td>
-                @if (!(bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownList("importStoreId", theImportStoreList, "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", @style = "padding:5px;font-size:1.2em", @disabled = "disabled" })
-                }
-                else
-                {
-                    @Html.DropDownList("importStoreId", theImportStoreList, "-------------------- Chọn  kho ---------------------", new { @id = "importStoreId", @style = "padding:5px;font-size:1.2em" })
-                }
+
+                @Html.DropDownList("importStoreId", new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho ------------", new { @id = "importStoreId", style = "padding:5px;font-size:1.2em" })
+
             </td>
         </tr>
         <tr>
