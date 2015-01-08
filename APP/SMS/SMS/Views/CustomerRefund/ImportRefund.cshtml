@@ -65,14 +65,8 @@
                         Kho nhập
                     </td>
                     <td class="required">
-                        @if ((bool)Session["IsAdmin"])
-                        {
-                           @Html.DropDownListFor(u => u.MaKho, new SelectList(ViewBag.Kho, "MA_KHO", "TEN_KHO"), "--------------Chọn mã kho---------------", new { style = "padding:5px;font-size:1.2em", @class = "required" }) 
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(u => u.MaKho, new SelectList(ViewBag.Kho, "MA_KHO", "TEN_KHO"), "--------------Chọn mã kho---------------", new { @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                        }
+                        @Html.DropDownListFor(u => u.MaKho, new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho ------------", new { @id = "MaKho", style = "padding:5px;font-size:1.2em", @class = "required" })
+
                     </td>
                 </tr>
             </table>
