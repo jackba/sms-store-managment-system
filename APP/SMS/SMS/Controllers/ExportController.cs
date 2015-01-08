@@ -484,12 +484,6 @@ namespace SMS.Controllers
                 customerName = string.Empty;
                 customerId = 0;
             }
-            
-
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }
 
             if (!(bool)Session["IsAdmin"])
             {
@@ -604,11 +598,6 @@ namespace SMS.Controllers
                 customerId = 0;
             }
             var ctx = new SmsContext();
-
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }
 
             if (!(bool)Session["IsAdmin"])
             {
@@ -802,7 +791,20 @@ namespace SMS.Controllers
         {
             ViewBag.Message = message;
             ViewBag.MessageInfor = messageInfor;
-            return View();
+            var ctx = new SmsContext();
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            ExportModel model = new ExportModel();
+            if (storeList != null && storeList.Count > 0)
+            {
+                model.storeId = (int)storeList.First().MA_KHO;
+            }
+            else
+            {
+                model.storeId = 0;
+            }
+
+            model.Stores = storeList;
+            return View(model);
         }
 
 
@@ -810,11 +812,6 @@ namespace SMS.Controllers
         public PartialViewResult PagingContent(DateTime? fromdate, DateTime? todate,
             int? customerId, string customerName, int? storeId, string storeName, int? currentPageIndex)
         {
-            if (string.IsNullOrEmpty(customerName))
-            {
-                customerName = string.Empty;
-                customerId = 0;
-            }
             if (string.IsNullOrEmpty(storeName))
             {
                 storeName = string.Empty;
@@ -837,14 +834,9 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(todate.ToString()).ToString("dd/MM/yyyy");
             }
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }
             var ctx = new SmsContext();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
-
             var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), storeName, fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
                 .Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CAN_XUAT_KHO_Result>();
             ExportModel model = new ExportModel();
@@ -871,11 +863,6 @@ namespace SMS.Controllers
                 customerName = string.Empty;
                 customerId = 0;
             }
-            if (string.IsNullOrEmpty(storeName))
-            {
-                storeName = string.Empty;
-                storeId = 0;
-            }
             if (fromdate == null)
             {
                 fromdate = SystemConstant.MIN_DATE;
@@ -893,15 +880,9 @@ namespace SMS.Controllers
             {
                 ViewBag.toDate = DateTime.Parse(todate.ToString()).ToString("dd/MM/yyyy");
             }
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }
-
             var ctx = new SmsContext();
             int pageSize = SystemConstant.ROWS;
             int pageIndex = currentPageIndex == null ? 1 : (int)currentPageIndex;
-
             var list = ctx.SP_GET_HOA_DON_CAN_XUAT_KHO(Convert.ToInt32(customerId), customerName, Convert.ToInt32(storeId), storeName, fromdate, todate).OrderByDescending(uh => uh.NGAY_BAN)
                 .Take(SystemConstant.MAX_ROWS).ToList<SP_GET_HOA_DON_CAN_XUAT_KHO_Result>();
             ExportModel model = new ExportModel();
