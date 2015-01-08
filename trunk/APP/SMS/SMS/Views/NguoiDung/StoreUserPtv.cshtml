@@ -13,6 +13,7 @@
                     $.each(data, function (i, item) {
                         alert(item);
                     });
+                    $('#mainForm').submit();
                 },
             error:
                 function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
@@ -32,7 +33,9 @@
                     $.each(data, function (i, item) {
                         alert(item);
                     });
+                    $('#mainForm').submit();
                 },
+
             error:
                 function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
         });
@@ -50,6 +53,7 @@
                     $.each(data, function (i, item) {
                         alert(item);
                     });
+                    $('#mainForm').submit();
                 },
             error:
                 function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
