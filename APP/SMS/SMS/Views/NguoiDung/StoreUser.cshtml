@@ -18,10 +18,10 @@
     @Styles.Render("~/Content/themes/base/css")
     <script>
             $(document).ready(function () {
-                $("#SearchString").autocomplete({
+                $("#userName").autocomplete({
                     source: function (request, response) {
                         $.ajax({
-                            url: "/SanPham/FindSuggest", data: "{ 'prefixText': '" + request.term + "' }",
+                            url: "/NguoiDung/Find", data: "{ 'prefixText': '" + request.term + "' }",
                             dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
                             dataFilter: function (data) { return data; }, success:
                                 function (data) {
@@ -34,13 +34,14 @@
                                     }))
                                 }, error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
                         });
+                        $('#userId').val("");
                     },
                     select: function (event, ui) {
-                        $('#SearchString').val(ui.item.label);
+                        $('#userName').val(ui.item.label);
+                        $('#userId').val(ui.item.id);
                         return false;
                     },
                     minLength: 1
-
                 });
                 $('#mainForm').submit();
             });
@@ -58,7 +59,10 @@
 {
     <hr style="width:100%" />
     <div style="float:right">
-        Tên người dùng: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString", @class = "keySearch" })
+        Tên người dùng: 
+        @Html.Hidden("userId", ViewBag.ProviderId as int?, new { id = "userId" })
+        @Html.TextBox("userName", ViewBag.ProviderName as string, new { id = "userName" })
+
         <input type="submit" value="Tìm kiếm" class="myButton actSearch" />
     </div>
     <div style="clear:both"></div>
