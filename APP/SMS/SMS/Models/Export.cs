@@ -54,6 +54,7 @@ namespace SMS.Models
         public int ProviderId { get; set; }
         public XUAT_KHO Infor { get; set; }
         public List<KHO> Stores { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
         public List<DON_VI_TINH> Units { get; set; }
         public List<CHI_TIET_XUAT_KHO> Detail { get; set; }
     }

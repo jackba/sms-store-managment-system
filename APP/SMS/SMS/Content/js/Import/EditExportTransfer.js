@@ -55,13 +55,15 @@ function checkEnough(storeId, ProductId, quantity, convertor) {
             dataType: "json", type: "POST", contentType: "application/json; charset=utf-8",
             success: function (data) {
                 inventorNumber = data;
+                //alert(inventorNumber);
+                //alert(quantity * convertor);
                 if (inventorNumber < (quantity * convertor)) {
                     return false;
                 } else {
                     return true;
                 };
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
+            //error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); }
         });
     }
 }
@@ -119,9 +121,9 @@ function saveAndExport() {
                 } else {
                     var st = $("#exportStoreId option:selected").val();
                     if (st != '') {
-                        if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
-                            checkFlg = 1;
-                        }
+                        //if (checkEnough($("#exportStoreId option:selected").val(), productId, quantity, convertor) == false) {
+                        //    checkFlg = 1;
+                        //}
                     }
                 }
                 row++;
@@ -155,16 +157,17 @@ function saveAndExport() {
             $('#message').append("<hr/>");
             return false;
         } else {
-            if (checkFlg == 1) {
-                var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
-                if (r == true) {
-                    $('#saveFlg').val(1);
-                    $('#index').submit();
-                }
-                else {
-                    return false;
-                }
-            }
+            //alert(checkFlg);
+            //if (checkFlg == 1) {
+            //    var r = confirm("Có ít nhất một sản phẩm không đủ số lượng để xuất kho. Bạn có muốn tiếp tục lưu phiếu xuất kho hay không?");
+            //    if (r == true) {
+            //        $('#saveFlg').val(1);
+            //        $('#index').submit();
+            //    }
+            //    else {
+            //        return false;
+            //    }
+            //}
             $('#index').submit();
         }
     }

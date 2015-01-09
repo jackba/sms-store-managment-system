@@ -908,14 +908,8 @@ namespace SMS.Controllers
                 try
                 {
                     var infor = ctx.XUAT_KHO.Create();
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
-                    }
-                    else
-                    {
-                        infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-                    }
+                    infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
+                    
                     infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
                     infor.MA_NHAN_VIEN_XUAT = Convert.ToInt32(Session["UserId"]);
                     infor.CREATE_AT = DateTime.Now;
@@ -973,12 +967,15 @@ namespace SMS.Controllers
             ExportModelXuatHuy model = new ExportModelXuatHuy();
             XUAT_KHO Infor = new XUAT_KHO();
             model.Infor = Infor;
-            if (!(bool)Session["IsAdmin"])
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+
+            if (storeList != null && storeList.Count > 0)
             {
-                model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+                model.Infor.MA_KHO_XUAT = storeList.First().MA_KHO;
             }
             model.Stores = stores;
             model.Units = units;
+            model.StoreList = storeList;
             ViewBag.InputKind = -1;
             ctx.Dispose();
             return View(model);

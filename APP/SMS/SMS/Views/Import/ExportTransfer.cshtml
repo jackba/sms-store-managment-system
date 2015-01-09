@@ -13,7 +13,7 @@
 <br />
 <hgroup class="title">
     <h2>
-        @ViewBag.Title
+        <strong>@ViewBag.Title</strong>
     </h2>
 </hgroup>
 <hr />
@@ -63,14 +63,8 @@
                 Kho xuất :
             </td>
             <td class="required">
-                @if ((bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownListFor(u => u.ExportInfor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "----------- Chọn  kho ------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
-                else
-                {
-                    @Html.DropDownListFor(u => u.ExportInfor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------- Chọn  kho ----------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
+               @Html.DropDownListFor(u => u.ExportInfor.MA_KHO_XUAT, new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "----------- Chọn  kho ------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                
             </td>
             <td>
                 Kho nhận :

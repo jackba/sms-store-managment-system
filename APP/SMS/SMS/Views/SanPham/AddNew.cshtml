@@ -94,7 +94,7 @@
             e.preventDefault();
         });
     });
-    
+
     function RemoveRougeChar(convertString) {
         if (convertString.substring(0, 1) == ",") {
             return convertString.substring(1, convertString.length)
@@ -134,15 +134,15 @@
         if($("#CAN_NANG").val() == ''){
             $("#CanNangID").val(0);
         }else{
-            $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));  
+            $("#CanNangID").val(removeCommas($("#CAN_NANG").val()));
         }
-      
+
         if($("#GIA_BAN_1").val() == ''){
             $("#GiaBan1ID").val(0);
         }else{
             $("#GiaBan1ID").val(removeCommas($("#GIA_BAN_1").val()));
         }
-       
+
         if($("#GIA_BAN_2").val() == ''){
             $("#GiaBan2ID").val(0);
         }else{
@@ -154,42 +154,42 @@
         }else{
             $("#GiaBan3ID").val(removeCommas($("#GIA_BAN_3").val()));
         }
-        
-        
+
+
         if($("#CHIET_KHAU_1").val() == ''){
             $("#ChietKhau1ID").val(0);
         }else{
             $("#ChietKhau1ID").val(removeCommas($("#CHIET_KHAU_1").val()));
         }
-        
+
 
         if($("#CHIET_KHAU_2").val() == ''){
             $("#ChietKhau2ID").val(0);
         }else{
             $("#ChietKhau2ID").val(removeCommas($("#CHIET_KHAU_2").val()));
         }
-       
+
 
         if($("#CHIET_KHAU_3").val() == ''){
             $("#ChietKhau3ID").val(0);
         }else{
             $("#ChietKhau3ID").val(removeCommas($("#CHIET_KHAU_3").val()));
         }
-       
+
 
         if($("#CO_SO_TOI_THIEU").val() == ''){
             $("#CoSoMinID").val(0);
         }else{
             $("#CoSoMinID").val(removeCommas($("#CO_SO_TOI_THIEU").val()));
         }
-        
+
 
         if($("#CO_SO_TOI_DA").val() == ''){
             $("#CoSoMaxID").val(0);
         }else{
             $("#CoSoMaxID").val(removeCommas($("#CO_SO_TOI_DA").val()));
         }
-       
+
     }
     /*remove comma from value input*/
     function removeCommas(str) {
@@ -198,8 +198,11 @@
         } else {
             return null;
         }
-        
+
     }
+
+
+
 </script>
     <div id="divMsg">
         <div id="msgErr" style="display: none;" class="validation-summary-errors">
@@ -209,7 +212,7 @@
             <hr />
         </div>
     </div>
-
+@Html.Partial("_Flash")
     <div>
         @using (Html.BeginForm(@ViewBag.Mode == "CREATE" ? "AddNew" : "Edit", "SanPham", FormMethod.Post, new { @id = "frmMain" }))
         {
