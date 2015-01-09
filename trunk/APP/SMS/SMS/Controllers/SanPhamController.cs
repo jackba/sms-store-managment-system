@@ -1207,46 +1207,76 @@ namespace SMS.Controllers
 
         [CustomActionFilter]
         [HttpPost]
+        [HandleError]
         public ActionResult AddNew(SAN_PHAM productInsert)
         {
-            var db = new SmsContext();
-            var sp = db.SAN_PHAM.Create();
-            // input fields
-            sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
-            sp.KICH_THUOC = productInsert.KICH_THUOC;
-            sp.CAN_NANG = productInsert.CAN_NANG;
-            sp.MA_DON_VI = productInsert.MA_DON_VI;
-            sp.CODE = productInsert.CODE;
-            if (-1 == productInsert.MA_NHA_SAN_XUAT)
-            {
-                productInsert.MA_NHA_SAN_XUAT = null;
-            }
-            if (-1 == productInsert.MA_NHOM)
-            {
-                productInsert.MA_NHOM = null;
-            }
-            sp.MA_DON_VI = productInsert.MA_DON_VI;
-            sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
-            sp.MA_NHOM = productInsert.MA_NHOM;
-            sp.DAC_TA = productInsert.DAC_TA;
-            sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
-            sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
-            sp.GIA_BAN_3 = productInsert.GIA_BAN_3;
-            sp.CHIEC_KHAU_1 = productInsert.CHIEC_KHAU_1;
-            sp.CHIEC_KHAU_2 = productInsert.CHIEC_KHAU_2;
-            sp.CHIEC_KHAU_3 = productInsert.CHIEC_KHAU_3;
-            sp.CO_SO_TOI_THIEU = productInsert.CO_SO_TOI_THIEU;
-            sp.CO_SO_TOI_DA = productInsert.CO_SO_TOI_DA;
-            //common fields
-            sp.ACTIVE = "A";
-            sp.UPDATE_AT = DateTime.Now;
-            sp.CREATE_AT = DateTime.Now;
-            sp.UPDATE_BY = (int)Session["UserId"];
-            sp.CREATE_BY = (int)Session["UserId"];
+            var ctx = new SmsContext();
+            //if (ModelState.IsValid)
+            //{
+                try
+                {
+                    var db = new SmsContext();
+                    var sp = db.SAN_PHAM.Create();
+                    // input fields
+                    sp.TEN_SAN_PHAM = productInsert.TEN_SAN_PHAM;
+                    sp.KICH_THUOC = productInsert.KICH_THUOC;
+                    sp.CAN_NANG = productInsert.CAN_NANG;
+                    sp.MA_DON_VI = productInsert.MA_DON_VI;
+                    sp.CODE = productInsert.CODE;
+                    if (-1 == productInsert.MA_NHA_SAN_XUAT)
+                    {
+                        productInsert.MA_NHA_SAN_XUAT = null;
+                    }
+                    if (-1 == productInsert.MA_NHOM)
+                    {
+                        productInsert.MA_NHOM = null;
+                    }
+                    sp.MA_DON_VI = productInsert.MA_DON_VI;
+                    sp.MA_NHA_SAN_XUAT = productInsert.MA_NHA_SAN_XUAT;
+                    sp.MA_NHOM = productInsert.MA_NHOM;
+                    sp.DAC_TA = productInsert.DAC_TA;
+                    sp.GIA_BAN_1 = productInsert.GIA_BAN_1;
+                    sp.GIA_BAN_2 = productInsert.GIA_BAN_2;
+                    sp.GIA_BAN_3 = productInsert.GIA_BAN_3;
+                    sp.CHIEC_KHAU_1 = productInsert.CHIEC_KHAU_1;
+                    sp.CHIEC_KHAU_2 = productInsert.CHIEC_KHAU_2;
+                    sp.CHIEC_KHAU_3 = productInsert.CHIEC_KHAU_3;
+                    sp.CO_SO_TOI_THIEU = productInsert.CO_SO_TOI_THIEU;
+                    sp.CO_SO_TOI_DA = productInsert.CO_SO_TOI_DA;
+                    //common fields
+                    sp.ACTIVE = "A";
+                    sp.UPDATE_AT = DateTime.Now;
+                    sp.CREATE_AT = DateTime.Now;
+                    sp.UPDATE_BY = (int)Session["UserId"];
+                    sp.CREATE_BY = (int)Session["UserId"];
 
-            db.SAN_PHAM.Add(sp);
-            db.SaveChanges();
-            return Redirect("Index");
+                    db.SAN_PHAM.Add(sp);
+                    db.SaveChanges();
+                    ctx.Dispose();
+                    return Redirect("Index");
+                }
+                catch (Exception ex)
+                {
+                    BindListDV(ctx);
+                    BindListNhomSP(ctx);
+                    BindListNSX(ctx);
+                    SetModeTitle(false);
+                    SetDefaultValue();
+                    ctx.Dispose();
+                    Console.Write(ex.ToString());
+                    return View(productInsert).Error("Thông tin nhập không đúng. Vui lòng kiểm tra lại CODE sản phẩm.") ;
+                }
+            //}
+            //else
+            //{
+            //    BindListDV(ctx);
+            //    BindListNhomSP(ctx);
+            //    BindListNSX(ctx);
+            //    SetModeTitle(false);
+            //    SetDefaultValue();
+            //    ctx.Dispose();
+            //    return View().Error("Thông tin nhập không đúng. Vui lòng kiểm tra lại CODE sản phẩm.");
+            //}
         }
 
         #region Common function

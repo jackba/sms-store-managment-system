@@ -878,11 +878,13 @@ namespace SMS.Controllers
             var ctx = new SmsContext();
             ViewBag.InputKind = -1;
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
-            if (!(bool)Session["IsAdmin"])
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+            if (storeList != null && storeList.Count > 0)
             {
                 ViewBag.ExportStoreId = Session["MyStore"];
             }
             ViewBag.Stores = stores;
+            ViewBag.StoreList = storeList;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
             ctx.Dispose();
@@ -954,15 +956,13 @@ namespace SMS.Controllers
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             var infor = ctx.SP_GET_PHIEU_CHUYEN_KHO_INFO_BY_ID(Convert.ToInt32(id)).FirstOrDefault();
             EditTransferModel model = new EditTransferModel();
-            //if (!(bool)Session["IsAdmin"])
-            //{
-            //    model.Infor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-            //}
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
             model.Stores = stores;
             model.Units = units;
             model.Infor = infor;
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
             model.ExportDetail = detail;
+            model.StoreList = storeList;
             ctx.Dispose();
             return View(model);
         }
@@ -1073,10 +1073,6 @@ namespace SMS.Controllers
             {
                 todate = SystemConstant.MAX_DATE;
             }
-            if (!(bool)Session["IsAdmin"])
-            {
-                exportStoreId = Convert.ToInt32(Session["MyStore"]);
-            }
             var ctx = new SmsContext();
             var theList = ctx.SP_GET_PHIEU_CHUYEN_KHO(Convert.ToInt32(status), Convert.ToInt32(exportStoreId),
                 Convert.ToInt32(importStoreId), fromDate, todate, Convert.ToInt32(userId), userFullName).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_PHIEU_CHUYEN_KHO_Result>();
@@ -1115,14 +1111,8 @@ namespace SMS.Controllers
                     {
                         exInfor.ACTIVE = "A"; 
                     }
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
-                    }
-                    else
-                    {
-                        exInfor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
-                    }
+                    exInfor.MA_KHO_XUAT = infor.MA_KHO_XUAT;
+                    
                     exInfor.MA_KHO_NHAN = infor.MA_KHO_NHAN;
                     exInfor.GHI_CHU = infor.GHI_CHU;
                     exInfor.NGAY_XUAT = infor.NGAY_XUAT;
@@ -1181,15 +1171,18 @@ namespace SMS.Controllers
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
+
             var units = ctx.DON_VI_TINH.Where(u => u.ACTIVE == "A").ToList<DON_VI_TINH>();
             TransferModel model = new TransferModel();
             XUAT_KHO ExportInfor = new XUAT_KHO();
             model.ExportInfor = ExportInfor;
-            if (!(bool)Session["IsAdmin"])
+            if (storeList != null && storeList.Count >0)
             {
-                model.ExportInfor.MA_KHO_XUAT = Convert.ToInt32(Session["MyStore"]);
+                model.ExportInfor.MA_KHO_XUAT = storeList.First().MA_KHO;
             }
             model.Stores = stores;
+            model.StoreList = storeList;
             model.Units = units;
             ctx.Dispose();
             return View(model);

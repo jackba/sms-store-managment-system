@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Lập phiếu xuất chuyển kho";
+    ViewBag.Title = "Sửa phiếu xuất chuyển kho";
 }
 <div style="background-color:lightblue; width:100%; padding-top:10px; padding-bottom:10px; padding-left: 5px;">
     <a href="@Url.Action("Export", "Home")"> Xuất kho </a> >
@@ -13,7 +13,7 @@
 <br />
 <hgroup class="title">
     <h2>
-        @ViewBag.Title
+       <strong>@ViewBag.Title</strong> 
     </h2>
 </hgroup>
 <hr />
@@ -62,14 +62,8 @@
                 Kho xuất :
             </td>
             <td class="required">
-                @if ((bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
-                else
-                {
-                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em", @class = "required" })
-                }
+                    @Html.DropDownListFor(u => u.Infor.MA_KHO_XUAT, new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "-------------------- Chọn  kho ---------------------", new { @id = "exportStoreId", style = "padding:5px;font-size:1.2em", @class = "required" })
+                
             </td>
             <td>
                 Kho Nhận :

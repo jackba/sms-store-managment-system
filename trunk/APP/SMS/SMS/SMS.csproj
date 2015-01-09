@@ -702,6 +702,7 @@
     <Content Include="Content\images\user.png" />
     <Content Include="Content\images\Warning.png" />
     <Content Include="Content\js\common.js" />
+    <Content Include="Content\js\Export\EditXuatHuy.js" />
     <Content Include="Content\js\Export\XuatHuy.js" />
     <Content Include="Content\js\FileSaver.js" />
     <Content Include="Content\js\HoaDon.js" />
