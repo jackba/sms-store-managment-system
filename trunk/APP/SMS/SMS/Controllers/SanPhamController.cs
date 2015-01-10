@@ -1149,7 +1149,19 @@ namespace SMS.Controllers
             sp.KICH_THUOC = productUpdated.KICH_THUOC;
             sp.CAN_NANG = productUpdated.CAN_NANG;
             sp.MA_DON_VI = productUpdated.MA_DON_VI;
-            sp.CODE = productUpdated.CODE;
+            sp.CODE = productUpdated.CODE;            
+            var checkSP = db.SAN_PHAM.Where(i => i.CODE == sp.CODE);
+            if (checkSP != null && checkSP.FirstOrDefault() != null)
+            {
+                BindListDV(db);
+                BindListNhomSP(db);
+                BindListNSX(db);
+                SetModeTitle(true);
+                SetDefaultValue();
+                db.Dispose();
+                return View("../SanPham/AddNew", productUpdated).Error("Thông tin nhập không đúng. Vui lòng kiểm tra lại CODE sản phẩm.");
+            }
+
             if (-1 == productUpdated.MA_NHA_SAN_XUAT)
             {
                 productUpdated.MA_NHA_SAN_XUAT = null;
@@ -1176,6 +1188,7 @@ namespace SMS.Controllers
             sp.UPDATE_BY = (int)Session["UserId"];
 
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
