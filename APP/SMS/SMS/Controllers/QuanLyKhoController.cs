@@ -1042,10 +1042,6 @@ namespace SMS.Controllers
                 StoreName = string.Empty;
                 StoreId = 0;
             }
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = (int)Session["MyStore"];
-            }
             if (string.IsNullOrEmpty(ProductName))
             {
                 ProductName = string.Empty;
