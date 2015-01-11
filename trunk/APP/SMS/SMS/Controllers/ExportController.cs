@@ -277,10 +277,12 @@ namespace SMS.Controllers
             var infor = ctx.XUAT_KHO.Where(u => u.ACTIVE == "A" && u.LY_DO_XUAT == 1 && u.MA_XUAT_KHO == id).FirstOrDefault();
             if (infor == null)
             {
-                return RedirectToAction("ExportCancelList", new { @message = "Không tìm thấy phiếu xuất hủy này, vui lòng kiểm tra lại" });
+                return RedirectToAction("ExportCancelList", new { @message = "Không tìm thấy phiếu xuất hủy này, vui lòng kiểm tra lại." }).Error("Không tìm thấy phiếu xuất hủy này, vui lòng kiểm tra lại.");
             }
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
             EditCancelTicketModel model = new EditCancelTicketModel();
             model.Stores = stores;
+            model.StoreList = storeList;
             model.Units = units;
             model.Infor = infor;
             var detail = ctx.SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN(Convert.ToInt32(id)).Take(SystemConstant.MAX_ROWS).ToList<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result>();
@@ -303,10 +305,7 @@ namespace SMS.Controllers
                     {
                         return RedirectToAction("ExportCancelList", new { @message = "Phiếu xuất hủy này không tồn tại, vui lòng liên hệ admin." });
                     }
-                    if ((bool)Session["IsAdmin"])
-                    {
-                        infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;
-                    }                    
+                    infor.MA_KHO_XUAT = model.Infor.MA_KHO_XUAT;                                    
                     infor.NGAY_XUAT = model.Infor.NGAY_XUAT;
                     infor.UPDATE_AT = DateTime.Now;
                     infor.UPDATE_BY = Convert.ToInt32(Session["UserId"]);
@@ -361,19 +360,10 @@ namespace SMS.Controllers
         public PartialViewResult ExportCancelListPartialView(int? storeId, string storeName, int? exporterId,
             string exporterName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
-            if (string.IsNullOrEmpty(exporterName))
-            {
-                exporterName = string.Empty;
-                exporterId = 0;
-            }
-            if (string.IsNullOrEmpty(storeName))
-            {
-                storeName = string.Empty;
-                storeId = 0;
-            }
+            storeId = string.IsNullOrEmpty(storeName) || storeId == null ? 0 : storeId;
+            exporterId = string.IsNullOrEmpty(exporterName) || exporterId == null ? 0 : exporterId;
             if (!(bool)Session["IsAdmin"])
             {
-                storeId = Convert.ToInt32(Session["MyStore"]);
                 exporterId = Convert.ToInt32(Session["UserId"]);
             }
             if (fromDate == null)

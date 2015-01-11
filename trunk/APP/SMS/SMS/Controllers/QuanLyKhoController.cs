@@ -869,27 +869,12 @@ namespace SMS.Controllers
              string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
             var ctx = new SmsContext();
-            ctx.Database.CommandTimeout = 300;
-            if (kind == null)
-            {
-                kind = -1;
-            }
+            ctx.Database.CommandTimeout = 300;            
+            kind = kind == null ? -1 : kind;
             ViewBag.InputKind = kind;
-            if (string.IsNullOrEmpty(StoreName))
-            {
-                StoreName = string.Empty;
-                StoreId = 0;
-            }
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = (int)Session["MyStore"];
-            }
-            if (string.IsNullOrEmpty(ProductName))
-            {
-                ProductName = string.Empty;
-                ProductId = 0;
-            }
 
+            StoreId = string.IsNullOrEmpty(StoreName) || StoreId == null ? 0 : StoreId;
+            ProductId = string.IsNullOrEmpty(ProductName) || ProductId == null ? 0 : ProductId;
             if (fromDate == null)
             {
                 fromDate = SystemConstant.MIN_DATE;
@@ -967,21 +952,12 @@ namespace SMS.Controllers
         public PartialViewResult ExportReportPartialView(int? kind, int? StoreId, int? ProductId, string StoreName, string ProductName, DateTime? fromDate, DateTime? toDate, int? currentPageIndex)
         {
             var ctx = new SmsContext();
-            if (kind == null)
-            {
-                kind = -1;
-            }
+
+            kind = kind == null ? 0 : kind;
+
             ViewBag.InputKind = kind;
-            if (string.IsNullOrEmpty(StoreName))
-            {
-                StoreName = string.Empty;
-                StoreId = 0;
-            }
-            if (string.IsNullOrEmpty(ProductName))
-            {
-                ProductName = string.Empty;
-                ProductId = 0;
-            }
+            StoreId = StoreId == null || string.IsNullOrEmpty(StoreName) ? 0 : StoreId;
+            ProductId = string.IsNullOrEmpty(ProductName) || ProductId == null ? 0 : ProductId;
 
             if (fromDate == null)
             {
@@ -999,10 +975,6 @@ namespace SMS.Controllers
             else
             {
                 ViewBag.toDate = DateTime.Parse(toDate.ToString()).ToString("dd/MM/yyyy");
-            }
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = (int)Session["MyStore"];
             }
 
             var tonkho = ctx.Database.SqlQuery<ExportRepot>("exec SP_EXPORT_REPORT @KIND, @MA_KHO, @TEN_KHO, @MA_SAN_PHAM, @TEN_SAN_PHAM, @FROM_DATE, @TO_DATE ",
