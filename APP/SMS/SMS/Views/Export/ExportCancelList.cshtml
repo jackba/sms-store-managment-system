@@ -166,8 +166,6 @@
             </td>
         </tr>
     }
-    if ((bool)Session["IsAdmin"])
-    {
         <tr>
             <td>
                 @Html.Hidden("storeId", ViewBag.StoreId as int?, new { id = "storeId" })
@@ -178,7 +176,7 @@
             </td>
         </tr>
 
-    }
+    
             }
             <tr>
                 <td>

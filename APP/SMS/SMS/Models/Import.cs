@@ -83,6 +83,7 @@ namespace SMS.Models
         public List<KHO> Stores { get; set; }
         public List<DON_VI_TINH> Units { get; set; }
         public List<SP_GET_CHI_TIET_PHIEU_XUAT_CHUYEN_Result> Detail { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
     }
 
     public class ImportTransferModel
