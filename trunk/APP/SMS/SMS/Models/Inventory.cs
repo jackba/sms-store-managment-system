@@ -23,6 +23,7 @@ namespace SMS.Models
     {
         public List<KHO> Stores { get; set; }
         public List<NHOM_SAN_PHAM> ProductGroups { get; set; }
+        public List<SP_GET_STORES_BY_USR_ID_Result> StoreList { get; set; }
         public List<SAN_PHAM> Products { get; set; }
         public IPagedList<Compared> ComparedList { get; set; }
     }

@@ -10,13 +10,13 @@
     > @ViewBag.Title
 </div>
 <hgroup class="title">
-    <h2> @ViewBag.Title </h2>
+    <h2> <strong> @ViewBag.Title </strong> </h2>
 </hgroup>
 <h3>@ViewBag.Message</h3>
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
 <script src="~/Content/js/jquery-1.9.1.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -113,35 +113,36 @@
 {
  <hr style="width:100%" />
  <div style="float:left; width: 100%">
-        <table>
-            @if ((bool)Session["IsAdmin"])
-            {
+        <table class="info">
             <tr>
                 <td>
-                    Kho - Cửa hàng :
-                    @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+                    Kho - Cửa hàng                   
                 </td>
                 <td>
-                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+                    Sản phẩm 
+                </td>
+                <td>
+                    Ngày nhập 
+                </td>
+                <td>
+
                 </td>
             </tr>
-            }
+            
             <tr>
                 <td>
-                    Sản phẩm :
+                    @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+                    @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+                </td>
+                <td>
+                   @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
                     @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
                 </td>
                 <td>
-                    @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
+                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker", @style = "width:120px;" }) ~ 
+                    @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", @style = "width:120px;" })
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    Ngày mua :
-                </td>
-                <td>
-                    @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
-                </td>
+                <td></td>
             </tr>
         </table>
         <div style="float:right">

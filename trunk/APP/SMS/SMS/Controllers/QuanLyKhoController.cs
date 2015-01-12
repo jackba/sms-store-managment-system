@@ -23,16 +23,17 @@ namespace SMS.Controllers
             float outNum =0;
             return float.TryParse(s, out outNum);
         }
-
-        [CustomActionFilter]
+        [HandleError]
         public ActionResult InventoryCompared(string message, string inforMessage)
         {
             var ctx = new SmsContext();
             var stores = ctx.KHOes.Where(u => u.ACTIVE == "A").ToList<KHO>();
             var productGroups = ctx.NHOM_SAN_PHAM.Where(u => u.ACTIVE == "A").ToList<NHOM_SAN_PHAM>();
+            var storeList = ctx.SP_GET_STORES_BY_USR_ID(Convert.ToInt32(Session["UserId"])).ToList<SP_GET_STORES_BY_USR_ID_Result>();
             CompareModel model = new CompareModel();
             model.Stores = stores;
             model.ProductGroups = productGroups;
+            model.StoreList = storeList;
             ViewBag.Message = message;
             ViewBag.InforMessage = inforMessage;
             ctx.Dispose();
@@ -49,10 +50,6 @@ namespace SMS.Controllers
             if (productGroupId == null)
             {
                 productGroupId = 0;
-            }
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
             }
             var ctx = new SmsContext();
 
@@ -183,10 +180,6 @@ namespace SMS.Controllers
         public PartialViewResult getWarningbyStoreIdPtv(int? storeId, string productName, int? currentPageIndex)
         {
             var ctx = new SmsContext();
-            if (!(bool)Session["IsAdmin"])
-            {
-                storeId = Convert.ToInt32(Session["MyStore"]);
-            }
             var inventory = ctx.SP_GET_WARNING_BY_STORE(storeId, productName).ToList<SP_GET_WARNING_BY_STORE_Result>();
             ViewBag.CurrentPageIndex = currentPageIndex;
             int pageSize = SystemConstant.ROWS;
@@ -620,11 +613,6 @@ namespace SMS.Controllers
                 StoreId = 0;
             }
 
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = (int)Session["MyStore"];
-            }
-
             if (string.IsNullOrEmpty(ProductName))
             {
                 ProductName = string.Empty;
@@ -705,11 +693,6 @@ namespace SMS.Controllers
             {
                 StoreName = string.Empty;
                 StoreId = 0;
-            }
-
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = (int)Session["MyStore"];
             }
 
             if (string.IsNullOrEmpty(ProductName))
@@ -795,10 +778,6 @@ namespace SMS.Controllers
             {
                 StoreName = string.Empty;
                 StoreId = 0;
-            }
-            if (!(bool)Session["IsAdmin"])
-            {
-                StoreId = Convert.ToInt32(Session["MyStore"]);
             }
             if (string.IsNullOrEmpty(ProductName))
             {

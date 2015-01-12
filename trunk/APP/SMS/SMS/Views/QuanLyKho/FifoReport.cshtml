@@ -10,7 +10,7 @@
     > @ViewBag.Title
 </div>
 <hgroup class="title">
-    <h2> @ViewBag.Title </h2>
+    <h2><strong>@ViewBag.Title</strong>  </h2>
 </hgroup>
 <h3 style="color:red">@ViewBag.Message</h3>
 <h3 style="color:blue">@ViewBag.InforMessage</h3>
@@ -114,14 +114,10 @@
 {
     <hr style="width:100%" />
     <div style="float:right">
-        @if ((bool)Session["IsAdmin"])
-            {
                 <div style="display:inline-block">
                     Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
                     @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
                 </div>
-            }
-        
         <div style="display:inline-block">
             @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
             Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
