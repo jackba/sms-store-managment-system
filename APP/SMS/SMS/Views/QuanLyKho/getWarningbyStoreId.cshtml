@@ -92,12 +92,10 @@
 {
     <hr style="width:100%" />
     <div style="float:right">
-        @if ((bool)Session["IsAdmin"])
-        {
             <div style="display:inline-block">
                 Kho - cửa hàng: @Html.DropDownList("StoreId", new SelectList(ViewBag.Stores, "MA_KHO", "TEN_KHO"), new { @id = "StoreId", style = "padding:5px;font-size:1.2em" })
             </div>
-        }
+        
         <div style="display:inline-block">           
             @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
             Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })

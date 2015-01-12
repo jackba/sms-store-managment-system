@@ -65,22 +65,19 @@
     <a href="@Url.Action("QuanLyKho", "Home")"> Quản lý kho </a> >
     <a href="@Url.Action("Export", "Home")"> Xuất kho </a> 
     > @ViewBag.Title
-
-    <br />
 </div>
 <br />
 <hgroup class="title">
-    <h2> @ViewBag.Title </h2>
+    <h2> <strong>@ViewBag.Title </strong> </h2>
 </hgroup>
     <h3>@ViewBag.Message</h3>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/KhachHang.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Import.css" rel="stylesheet" type="text/css" />
 <script src="~/Content/js/jquery-1.9.1.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.js"></script>
 <script src="~/Content/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../Scripts/scrollTable.js" type="text/javascript"></script>
-<br />
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
@@ -174,19 +171,43 @@
 {
     <hr style="width:100%" />
     <div style="clear:both"></div>
-    <div style="float:left">
-        Loại &nbspxuất : @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
-        @if((bool)Session["IsAdmin"])
-        {
-            <div>
-            Cửa hàng  : @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
-            @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
-            </div>
-        }
-        <div></div>
-        @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
-        Sản phẩm: @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
-        Ngày Mua: @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker" }) ~ @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker" })
+    <div style="float:right">
+        <table class="info">
+            <tr>
+                <td>
+                    Loại xuất:
+                </td>
+                <td>
+                    Kho - Cửa hàng
+                </td>
+                <td>
+                    Sản phẩm
+                </td>
+                <td>
+                    Ngày mua
+                </td>
+            </tr>
+           <tr>
+               <td>
+                   @Html.DropDownList("kind", kinds, new { @id = "kind", @style = "padding:2px;font-size:1.2em; " })
+               </td>
+               <td>
+                   @Html.Hidden("StoreId", ViewBag.StoreId as int?, new { id = "StoreId" })
+                   @Html.TextBox("StoreName", ViewBag.StoreName as string, new { id = "StoreName" })
+               </td>
+               <td>
+                   @Html.TextBox("ProductName", ViewBag.ProductName as string, new { id = "ProductName" })
+                   @Html.Hidden("ProductId", ViewBag.ProductId as int?, new { id = "ProductId" })
+               </td>
+               <td>
+                   @Html.TextBox("fromDate", ViewBag.FromDate as DateTime?, new { @class = "datePicker",  @style ="width:120px;"}) ~ 
+                   @Html.TextBox("toDate", ViewBag.ToDate as DateTime?, new { @class = "datePicker", @style = "width:120px;" })
+               </td>
+           </tr>
+        </table>         
+        
+    </div>
+    <div style="float:right; padding-top:10px;">
         <input type="submit" value="Tìm kiếm" class="myButton" />
     </div>
     <hr style="width:100%" />

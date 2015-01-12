@@ -117,15 +117,8 @@
         <tr>
             <td> Kho&nbsp;&nbsp;&nbsp;&nbsp; </td>
             <td>
-                @if ((bool)Session["IsAdmin"])
-                {
-                    @Html.DropDownList("storeId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho --------", new { @id = "storeId", style = "padding:5px;font-size:1.2em" })
-                }
-                else
-                {
-                    @Html.DropDownList("storeId", new SelectList(@Model.Stores, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho --------", new { @id = "storeId", @disabled = "disabled", @style = "padding:5px;font-size:1.2em" })
-                }
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                    @Html.DropDownList("storeId", new SelectList(@Model.StoreList, "MA_KHO", "TEN_KHO"), "---------- Chọn  kho --------", new { @id = "storeId", style = "padding:5px;font-size:1.2em" })
+
             </td>
             <td> Nhóm sản phẩm&nbsp;&nbsp;&nbsp;&nbsp; </td>
             <td>
